@@ -1,0 +1,24 @@
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Note>
+<table>
+    <thead>
+        <tr>
+            |<th>Note</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        { 
+        <tr>
+            <td>
+                <div class="comment-text" style="padding:15px;">
+                    @Html.Raw(note.NoteText)
+                </div>
+            </td>
+            <td style="padding:2px;">
+                <button id="btnAuthor1" value="@note.NoteText" class="btn btn-primary btn-small proto" onclick="SelectNote(this.value);return false;">Select</button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

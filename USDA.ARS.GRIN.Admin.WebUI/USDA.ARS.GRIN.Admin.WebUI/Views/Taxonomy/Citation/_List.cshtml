@@ -1,0 +1,24 @@
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Citation>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var citation in Model)
+        {
+            <tr>
+                <td>
+                    <div style="word-wrap:break-word;">
+                        @citation.Title>
+                    </div>
+                </td>
+                <td>
+                    <button id="btnCitation" value="@citation.Title" class="btn btn-primary btn-small proto" onclick="SelectCitation(@citation.ID, this.value);return false;">Select</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

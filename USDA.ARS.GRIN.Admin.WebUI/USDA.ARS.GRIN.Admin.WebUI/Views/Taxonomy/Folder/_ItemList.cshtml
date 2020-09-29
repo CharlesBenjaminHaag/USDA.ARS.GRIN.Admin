@@ -1,0 +1,131 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.FolderItemListViewModel
+
+    @{
+        string btn_id = "btnDeleteMultiple-" + Model.FolderID;
+    }
+
+    <div style="margin-top:15px;">
+        <div class="mailbox-controls">
+            <button type="button" id="btnCheckAll" class="btn btn-success btn-sm check-all-search-results">
+                <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+            </button>
+            <button type="button" id="btnUncheckAll" class="btn btn-danger btn-sm uncheck-all-search-results">
+                <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+            </button>
+            @*<button type="button" id="btnMoveSelectedItemsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
+                <img src="~/Content/img/folder-open.png" style="width:18px; height:18px;" />
+            </button>*@
+            <button type="button" id="@btn_id" class="btn btn-danger btn-sm">
+                <img src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+            </button>
+            <div class="pull-right">
+                <button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive mailbox-messages">
+            @if (Model != null)
+            {
+                if (Model.Results.Rows.Count > 0)
+                {
+                    <table id="data-list-crops" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="5%"></th>
+                                <th>ID</th>
+                                <th>Crop Name</th>
+                                <th>Created</th>
+                                <th>By</th>
+                                <th>Last Modified</th>
+                                <th>By</th>
+                                <th style="text-align:center;">Related CWR</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                if (Model.Results.Rows.Count > 0)
+                                {
+                                    foreach (System.Data.DataRow row in Model.Results.Rows)
+                                    {
+                                        DateTime dtCreatedDate = DateTime.Parse(row["created_date"].ToString());
+                                        DateTime dtModifiedDate = DateTime.MinValue;
+                                        string folderItemDeleteControlId = String.Empty;
+
+                                        if (row["modified_date"] != DBNull.Value)
+                                        {
+                                            dtModifiedDate = DateTime.Parse(row["modified_date"].ToString());
+                                        }
+
+                                        folderItemDeleteControlId = "btnDeleteItem_" + row["taxonomy_folder_id"].ToString() + "_" + row["taxonomy_folder_item_id"].ToString();
+
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@row["taxonomy_folder_item_id"]">
+                                            </td>
+                                            <td>
+                                                <span class="label label-default">@row["taxonomy_cwr_crop_id"]</span>
+                                            </td>
+                                            <td>
+                                                @row["crop_name"]
+                                            </td>
+                                            <td>
+                                                @dtCreatedDate.ToShortDateString()
+                                            </td>
+                                            <td>
+                                                @row["created_by_name"]
+                                            </td>
+                                            <td>
+                                                @if (dtModifiedDate != DateTime.MinValue)
+                                                {
+                                                    @dtModifiedDate.ToShortDateString()
+                                                }
+                                            </td>
+                                            <td>
+                                                @row["modified_by_name"]
+                                            </td>
+                                            <td style="text-align:center;">
+                                                @if (Int32.Parse(row["cwr_count"].ToString()) > 0)
+                                                {
+                                                    <span class="label label-success">@row["cwr_count"]</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="#" id="@folderItemDeleteControlId" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                                    <img src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+                                                </a>
+                                                <a href="@Url.Action("CropEdit", "Taxonomy", new { id = row["taxonomy_cwr_crop_id"] })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                    <img src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                        @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                        There are no items in this folder.
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                    Your search returned no matches.
+                </div>
+
+            }
+        </div>
+    </div>
+    <!-- ************************************************************************************************************************* -->
+    <!-- END FOLDER ITEM LIST -->
+    <!-- ************************************************************************************************************************* -->

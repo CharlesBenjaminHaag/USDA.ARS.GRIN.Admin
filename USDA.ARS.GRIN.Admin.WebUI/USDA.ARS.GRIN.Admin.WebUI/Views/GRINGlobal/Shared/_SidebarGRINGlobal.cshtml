@@ -1,0 +1,52 @@
+﻿@using WebHelpers.Mvc5
+<aside class="main-sidebar">
+    <section class="sidebar">
+        @* BEGIN Search *@
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        @* END Search *@
+        @* BEGIN Menu *@
+        <ul class="sidebar-menu tree" data-widget="tree">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="@Url.IsLinkActive("Index", "Home")">
+                <a href="@Url.Action("Index","Home")">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/icon-home.png" style="padding-right:3px; width:16px; height:16px;" />
+                    <span>GGTools Home</span>
+                </a>
+            </li>
+            <li class="@Url.IsLinkActive("Index", "GRINGlobal")">
+                <a href="@Url.Action("Index","GRINGlobal")">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-wrench.png" style="padding-right:3px; width:16px; height:16px; margin-right:2px;" />
+                    <span>GRINGlobal Admin Home</span>
+                </a>
+            </li>
+            <li class="header">MANAGE DATA</li>
+            <li class="treeview menu-open">
+                <a href="#">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" width="16" height="16" style="padding-right:1px; margin-right:2px;" />
+                    <span>INVENTORY</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: block;">
+                    <li>
+                        <a href="@Url.Action("Inventory", "GRINGlobal")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" width="16" height="16" style="padding-right:1px; margin-right:5px;" />Attachments
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        @* END Menu *@
+    </section>
+</aside>
+

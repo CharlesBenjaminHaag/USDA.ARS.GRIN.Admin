@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>USDA.ARS.GRIN.DB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{015dec4d-7791-42dc-a649-62c07e675f3c}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>USDA.ARS.GRIN.DB</RootNamespace>
+    <AssemblyName>USDA.ARS.GRIN.DB</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Storage\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\accession_action.sql" />
+    <Build Include="dbo\Tables\taxonomy_noxious.sql" />
+    <Build Include="dbo\Tables\taxonomy_folder.sql" />
+    <Build Include="dbo\Tables\inventory_viability_rule_map.sql" />
+    <Build Include="dbo\Tables\accession_inv_annotation.sql" />
+    <Build Include="dbo\Tables\taxonomy_folder_item_map.sql" />
+    <Build Include="dbo\Tables\taxonomy_use.sql" />
+    <Build Include="dbo\Tables\crop_germplasm_committee.sql" />
+    <Build Include="dbo\Tables\method.sql" />
+    <Build Include="dbo\Tables\taxonomy_cwr_priority.sql" />
+    <Build Include="dbo\Tables\w6_site_inventory.sql" />
+    <Build Include="dbo\Tables\crop_germplasm_committee_crop_descriptor.sql" />
+    <Build Include="dbo\Tables\method_map.sql" />
+    <Build Include="dbo\Tables\web_cooperator.sql" />
+    <Build Include="dbo\Tables\crop_germplasm_committee_document.sql" />
+    <Build Include="dbo\Tables\sys_application.sql" />
+    <Build Include="dbo\Tables\name_group.sql" />
+    <Build Include="dbo\Tables\web_help.sql" />
+    <Build Include="dbo\Tables\crop_germplasm_committee_meeting.sql" />
+    <Build Include="dbo\Tables\accession_inv_group_map.sql" />
+    <Build Include="dbo\Tables\nc7_site_inventory.sql" />
+    <Build Include="dbo\Tables\web_order_request.sql" />
+    <Build Include="dbo\Tables\accession_inv_name.sql" />
+    <Build Include="dbo\Tables\accession_inv_group.sql" />
+    <Build Include="dbo\Tables\ne9_site_inventory.sql" />
+    <Build Include="dbo\Tables\web_order_request_action.sql" />
+    <Build Include="dbo\Tables\accession_inv_voucher.sql" />
+    <Build Include="dbo\Tables\web_order_request_address.sql" />
+    <Build Include="dbo\Tables\sys_search_operator.sql" />
+    <Build Include="dbo\Tables\opgc_site_inventory.sql" />
+    <Build Include="dbo\Tables\accession_ipr.sql" />
+    <Build Include="dbo\Tables\web_order_request_attach.sql" />
+    <Build Include="dbo\Tables\order_request.sql" />
+    <Build Include="dbo\Tables\accession_pedigree.sql" />
+    <Build Include="dbo\Tables\web_order_request_item.sql" />
+    <Build Include="dbo\Tables\order_request_action.sql" />
+    <Build Include="dbo\Tables\accession_quarantine.sql" />
+    <Build Include="dbo\Tables\order_request_item_action.sql" />
+    <Build Include="dbo\Tables\taxonomy_common_name.sql" />
+    <Build Include="dbo\Tables\web_user.sql" />
+    <Build Include="dbo\Tables\order_request_attach.sql" />
+    <Build Include="dbo\Tables\web_user_cart.sql" />
+    <Build Include="dbo\Tables\web_user_cart_item.sql" />
+    <Build Include="dbo\Tables\order_request_item.sql" />
+    <Build Include="dbo\Tables\accession_source_map.sql" />
+    <Build Include="dbo\Tables\web_user_preference.sql" />
+    <Build Include="dbo\Tables\pvp_applicant.sql" />
+    <Build Include="dbo\Tables\order_request_phyto_log.sql" />
+    <Build Include="dbo\Tables\app_resource.sql" />
+    <Build Include="dbo\Tables\taxonomy_cwr_crop.sql" />
+    <Build Include="dbo\Tables\web_user_shipping_address.sql" />
+    <Build Include="dbo\Tables\parl_site_inventory.sql" />
+    <Build Include="dbo\Tables\app_setting.sql" />
+    <Build Include="dbo\Tables\region.sql" />
+    <Build Include="dbo\Tables\app_user_gui_setting.sql" />
+    <Build Include="dbo\Tables\site.sql" />
+    <Build Include="dbo\Tables\s9_site_inventory.sql" />
+    <Build Include="dbo\Tables\taxonomy_cwr_map.sql" />
+    <Build Include="dbo\Tables\app_user_item_list.sql" />
+    <Build Include="dbo\Tables\pvpo_import.sql" />
+    <Build Include="dbo\Tables\source_desc_observation.sql" />
+    <Build Include="dbo\Tables\code_value.sql" />
+    <Build Include="dbo\Tables\pvp_application_status.sql" />
+    <Build Include="dbo\Tables\source_descriptor.sql" />
+    <Build Include="dbo\Tables\code_value_lang.sql" />
+    <Build Include="dbo\Tables\PVPO_IMPORT_ERRORS.sql" />
+    <Build Include="dbo\Tables\source_descriptor_code.sql" />
+    <Build Include="dbo\Tables\taxonomy_cwr_trait.sql" />
+    <Build Include="dbo\Tables\cooperator.sql" />
+    <Build Include="dbo\Tables\pvp_common_name.sql" />
+    <Build Include="dbo\Tables\rhy.sql" />
+    <Build Include="dbo\Tables\source_descriptor_code_lang.sql" />
+    <Build Include="dbo\Tables\cooperator_group.sql" />
+    <Build Include="dbo\Tables\literature.sql" />
+    <Build Include="dbo\Tables\pvp_application.sql" />
+    <Build Include="dbo\Tables\source_descriptor_lang.sql" />
+    <Build Include="dbo\Tables\cooperator_map.sql" />
+    <Build Include="dbo\Tables\taxonomy_species.sql" />
+    <Build Include="dbo\Tables\sys_database.sql" />
+    <Build Include="dbo\Tables\crop.sql" />
+    <Build Include="dbo\Tables\taxonomy_regulation.sql" />
+    <Build Include="dbo\Tables\sys_database_migration.sql" />
+    <Build Include="dbo\Tables\crop_attach.sql" />
+    <Build Include="dbo\Tables\taxonomy_cwr.sql" />
+    <Build Include="dbo\Tables\sys_database_migration_lang.sql" />
+    <Build Include="dbo\Tables\crop_trait.sql" />
+    <Build Include="dbo\Tables\sys_datatrigger.sql" />
+    <Build Include="dbo\Tables\taxonomy_regulation_map.sql" />
+    <Build Include="dbo\Tables\crop_trait_attach.sql" />
+    <Build Include="dbo\Tables\sys_datatrigger_lang.sql" />
+    <Build Include="dbo\Tables\sys_dataview.sql" />
+    <Build Include="dbo\Tables\crop_trait_code.sql" />
+    <Build Include="dbo\Tables\plant_inventory.sql" />
+    <Build Include="dbo\Tables\nssl_site_inventory.sql" />
+    <Build Include="dbo\Tables\sys_dataview_field.sql" />
+    <Build Include="dbo\Tables\crop_trait_code_attach.sql" />
+    <Build Include="dbo\Tables\plant_inventory_index.sql" />
+    <Build Include="dbo\Tables\sys_dataview_field_lang.sql" />
+    <Build Include="dbo\Tables\plant_immigrant_index.sql" />
+    <Build Include="dbo\Tables\crop_trait_code_lang.sql" />
+    <Build Include="dbo\Tables\sys_dataview_lang.sql" />
+    <Build Include="dbo\Tables\crop_trait_lang.sql" />
+    <Build Include="dbo\Tables\sys_dataview_param.sql" />
+    <Build Include="dbo\Tables\crop_trait_observation.sql" />
+    <Build Include="dbo\Tables\sys_dataview_sql.sql" />
+    <Build Include="dbo\Tables\crop_trait_observation_data.sql" />
+    <Build Include="dbo\Tables\sys_file.sql" />
+    <Build Include="dbo\Tables\email.sql" />
+    <Build Include="dbo\Tables\sys_file_group.sql" />
+    <Build Include="dbo\Tables\email_attach.sql" />
+    <Build Include="dbo\Tables\sys_file_group_map.sql" />
+    <Build Include="dbo\Tables\exploration.sql" />
+    <Build Include="dbo\Tables\sys_file_lang.sql" />
+    <Build Include="dbo\Tables\exploration_map.sql" />
+    <Build Include="dbo\Tables\sys_group.sql" />
+    <Build Include="dbo\Tables\feedback.sql" />
+    <Build Include="dbo\Tables\sys_group_lang.sql" />
+    <Build Include="dbo\Tables\feedback_attach.sql" />
+    <Build Include="dbo\Tables\sys_group_permission_map.sql" />
+    <Build Include="dbo\Tables\citation.sql" />
+    <Build Include="dbo\Tables\feedback_form.sql" />
+    <Build Include="dbo\Tables\sys_group_user_map.sql" />
+    <Build Include="dbo\Tables\feedback_form_field.sql" />
+    <Build Include="dbo\Tables\sys_index.sql" />
+    <Build Include="dbo\Tables\feedback_form_trait.sql" />
+    <Build Include="dbo\Tables\sys_index_field.sql" />
+    <Build Include="dbo\Tables\inventory_viability.sql" />
+    <Build Include="dbo\Tables\feedback_inventory.sql" />
+    <Build Include="dbo\Tables\THUMBNAIL_URLS_FOR_MARK.sql" />
+    <Build Include="dbo\Tables\taxonomy_ista_seed.sql" />
+    <Build Include="dbo\Tables\sys_lang.sql" />
+    <Build Include="dbo\Tables\feedback_report.sql" />
+    <Build Include="dbo\Tables\taxonomy_cultivar.sql" />
+    <Build Include="dbo\Tables\taxonomy_ref_upov_crop.sql" />
+    <Build Include="dbo\Tables\sys_permission.sql" />
+    <Build Include="dbo\Tables\feedback_report_attach.sql" />
+    <Build Include="dbo\Tables\taxonomy_cultivar_group.sql" />
+    <Build Include="dbo\Tables\taxonomy_upov_crop_map.sql" />
+    <Build Include="dbo\Tables\sys_permission_field.sql" />
+    <Build Include="dbo\Tables\feedback_result.sql" />
+    <Build Include="dbo\Tables\sys_permission_lang.sql" />
+    <Build Include="dbo\Tables\inventory_viability_data.sql" />
+    <Build Include="dbo\Tables\feedback_result_attach.sql" />
+    <Build Include="dbo\Tables\sys_search_autofield.sql" />
+    <Build Include="dbo\Tables\inventory_action.sql" />
+    <Build Include="dbo\Tables\feedback_result_field.sql" />
+    <Build Include="dbo\Tables\inventory_quality_status.sql" />
+    <Build Include="dbo\Tables\geography.sql" />
+    <Build Include="dbo\Tables\sys_search_resolver.sql" />
+    <Build Include="dbo\Tables\feedback_result_group.sql" />
+    <Build Include="dbo\Tables\sys_table.sql" />
+    <Build Include="dbo\Tables\feedback_result_trait_obs.sql" />
+    <Build Include="dbo\Tables\sys_table_field.sql" />
+    <Build Include="dbo\Tables\genetic_annotation.sql" />
+    <Build Include="dbo\Tables\sys_table_field_lang.sql" />
+    <Build Include="dbo\Tables\inventory_viability_rule.sql" />
+    <Build Include="dbo\Tables\genetic_marker.sql" />
+    <Build Include="dbo\Tables\sys_table_lang.sql" />
+    <Build Include="dbo\Tables\accession_inv_group_attach.sql" />
+    <Build Include="dbo\Tables\genetic_observation.sql" />
+    <Build Include="dbo\Tables\sys_table_relationship.sql" />
+    <Build Include="dbo\Tables\genetic_observation_data.sql" />
+    <Build Include="dbo\Tables\sys_user.sql" />
+    <Build Include="dbo\Tables\geneva_site_inventory.sql" />
+    <Build Include="dbo\Tables\accession_inv_attach.sql" />
+    <Build Include="dbo\Tables\sys_user_permission_map.sql" />
+    <Build Include="dbo\Tables\method_attach.sql" />
+    <Build Include="dbo\Tables\accession_inv_attach_validation.sql" />
+    <Build Include="dbo\Tables\accession.sql" />
+    <Build Include="dbo\Tables\taxonomy_alt_family_map.sql" />
+    <Build Include="dbo\Tables\geography_region_map.sql" />
+    <Build Include="dbo\Tables\taxonomy_attach.sql" />
+    <Build Include="dbo\Tables\accession_source.sql" />
+    <Build Include="dbo\Tables\gspi_site_inventory.sql" />
+    <Build Include="dbo\Tables\taxonomy_author.sql" />
+    <Build Include="dbo\Tables\inventory.sql" />
+    <Build Include="dbo\Tables\taxonomy_crop_map.sql" />
+    <Build Include="dbo\Tables\inventory_maint_policy.sql" />
+    <Build Include="dbo\Tables\taxonomy_family.sql" />
+    <Build Include="dbo\Tables\taxonomy_genus.sql" />
+    <Build Include="dbo\Tables\taxonomy_geography_map.sql" />
+    <Build Include="dbo\Views\genetic_annotation_view.sql" />
+    <Build Include="dbo\Views\taxtorc.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_crop_cwr.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_secondary_tu.sql" />
+    <Build Include="dbo\Views\mbr.sql" />
+    <Build Include="dbo\Views\im.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_tertiary_tu.sql" />
+    <Build Include="dbo\Views\mcpd.sql" />
+    <Build Include="dbo\Views\oi.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_quaternary_tu.sql" />
+    <Build Include="dbo\Views\ipr.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_progenitor_tu.sql" />
+    <Build Include="dbo\Views\vc_inventory.sql">
+      <QuotedIdentifier>Off</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cooperator_view.sql" />
+    <Build Include="dbo\Views\taxgeo_site_qs_view.sql" />
+    <Build Include="dbo\Views\inventory_viability_final2.sql" />
+    <Build Include="dbo\Views\inventory_viability_final_view.sql" />
+    <Build Include="dbo\Views\code.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_alt_family_map_view.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_author_view.sql" />
+    <Build Include="dbo\Views\genetic_marker_view.sql" />
+    <Build Include="dbo\Views\vw_taxonomy_trait_classes.sql" />
+    <Build Include="dbo\Views\accession_export.sql" />
+    <Build Include="dbo\Views\taxgeo_cooperator2_view.sql" />
+    <Build Include="dbo\Views\web_order_request_view.sql" />
+    <Build Include="dbo\Views\taxgeo_site_view.sql" />
+    <Build Include="dbo\Views\tax.sql" />
+    <Build Include="dbo\Views\s9ivall.sql" />
+    <Build Include="dbo\Views\curators.sql" />
+    <Build Include="dbo\Views\an.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_common_name_view.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_family_view.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_genus_view.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_geography_map_view.sql" />
+    <Build Include="dbo\Views\acit.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_noxious_view.sql" />
+    <Build Include="dbo\Views\smbr.sql" />
+    <Build Include="dbo\Views\vw_pvp_applications_by_expiration.sql" />
+    <Build Include="dbo\Views\taxgeo_geography_view.sql" />
+    <Build Include="dbo\Views\taxgeo_literature_view.sql" />
+    <Build Include="dbo\Views\taxgeo_region_view.sql" />
+    <Build Include="dbo\Views\hordeum_1.sql" />
+    <Build Include="dbo\Views\taxgeo_species_view.sql" />
+    <Build Include="dbo\Views\order_request_item_view.sql" />
+    <Build Include="dbo\Views\dsc.sql" />
+    <Build Include="dbo\Views\accession_flag.sql" />
+    <Build Include="dbo\Views\ob.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_crop_cm.sql" />
+    <Build Include="dbo\Views\cd.sql" />
+    <Build Include="dbo\Views\taxgeo_taxonomy_use_view.sql" />
+    <Build Include="dbo\Views\order_request_view.sql" />
+    <Build Include="dbo\Views\crop_trait_observation_view.sql" />
+    <Build Include="dbo\Views\topname.sql" />
+    <Build Include="dbo\Views\iv.sql" />
+    <Build Include="dbo\Views\al.sql" />
+    <Build Include="dbo\Views\taxgeo_geography_region_map_view.sql" />
+    <Build Include="dbo\Views\iact.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_tertiary_cwr.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_quaternary_cwr.sql" />
+    <Build Include="dbo\Views\vw_accession_inventory_attachments_by_validation.sql" />
+    <Build Include="dbo\Views\oact.sql" />
+    <Build Include="dbo\Views\src.sql" />
+    <Build Include="dbo\Views\web_qry_order_items.sql" />
+    <Build Include="dbo\Views\web_order_request_item_view.sql" />
+    <Build Include="dbo\Views\accession_quarantine_view.sql" />
+    <Build Include="dbo\Views\initial_and_last_germinations_view.sql" />
+    <Build Include="dbo\Views\web_qry_orders.sql" />
+    <Build Include="dbo\Views\s9_cucumis.sql" />
+    <Build Include="dbo\Views\geo.sql" />
+    <Build Include="dbo\Views\accession_view.sql" />
+    <Build Include="dbo\Views\sys_table_field_view.sql" />
+    <Build Include="dbo\Views\vw_taxonomy_genepools.sql" />
+    <Build Include="dbo\Views\cooperator_view.sql" />
+    <Build Include="dbo\Views\coop.sql" />
+    <Build Include="dbo\Views\vw_pvp_application_accession_map.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_progenitor_cwr.sql" />
+    <Build Include="dbo\Views\vw_accession_ipr.sql" />
+    <Build Include="dbo\Views\ord.sql" />
+    <Build Include="dbo\Views\inventory_view.sql" />
+    <Build Include="dbo\Views\vw_sys_table_fields.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_primary_tu.sql" />
+    <Build Include="dbo\Views\taxgeo_citation_view.sql" />
+    <Build Include="dbo\Views\geography_view.sql" />
+    <Build Include="dbo\Views\acc.sql" />
+    <Build Include="dbo\Views\via_final.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_primary_cwr.sql" />
+    <Build Include="dbo\Views\vw_table_fields.sql" />
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_secondary_cwr.sql" />
+    <Build Include="dbo\Views\vou.sql" />
+    <Build Include="dbo\Views\vw_taxonomy_genepool_codes.sql" />
+    <Build Include="dbo\Views\vw_taxonomy_breeding_types.sql" />
+    <Build Include="Storage\gringlobalftsc.sql" />
+    <Build Include="FullTextIndexes.sql" />
+    <Build Include="Security\gg_user.sql" />
+    <Build Include="Security\gg_user_1.sql" />
+    <Build Include="Security\gg_search.sql" />
+    <Build Include="Security\gg_search_1.sql" />
+    <Build Include="Security\gg_admin.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Functions\get_obs_by_acid2.sql" />
+    <Build Include="dbo\Functions\get_images.sql" />
+    <Build Include="dbo\Functions\get_avstat2.sql" />
+    <Build Include="dbo\Functions\get_nssl_seed_clone.sql" />
+    <Build Include="dbo\Functions\get_coop_address.sql" />
+    <Build Include="dbo\Functions\fn_ts_taxon.sql" />
+    <Build Include="dbo\Functions\get_obs_by_acid.sql" />
+    <Build Include="dbo\Functions\createInsertSP.sql" />
+    <Build Include="dbo\Functions\get_avstat.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Search.sql" />
+    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttachValidationCounts_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_AccessionInventoryAttachments_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_User_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Applications_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SysGroup_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulations_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SearchOperators_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TableFieldName_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByUser_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByMonth_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByWeek_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Folder_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByCrop_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FolderItemMap_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMapsByCrop_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FoldersByUser_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FolderItemMaps_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Folder_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttach_Search.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Search.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMaps_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplication_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CodeValues_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsAvailable_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByApplicationStatus_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByCommonName_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByExpiration_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByScientificName_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationStatuses_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPCommonNames_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetCropsBySite.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetSpeciesList.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPExpirationPeriods_Select.sql" />
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_CROP_DESCRIPTORS.sql" />
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_DETAIL.sql" />
+    <Build Include="dbo\Stored Procedures\usp_PVPSearch.sql" />
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_DOCUMENTS.sql" />
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_LIST.sql" />
+    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_GET_DETAIL.sql" />
+    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_GET_HOST_PLANT_LIST.sql" />
+    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_SEARCH.sql" />
+    <Build Include="dbo\Stored Procedures\LP_SEARCH_RHIZOBIUM.sql" />
+    <Build Include="dbo\Stored Procedures\LP_SEARCH_RHYZOBIUM.sql" />
+    <Build Include="dbo\Stored Procedures\usp_ActiveUsers_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Code_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Cooperator_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CropGermplasmCommitteeDocument_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_InventoryOwner_Update.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Regulation_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Regulations_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SysUser_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Folder_Update.sql" />
+    <Build Include="dbo\Stored Procedures\usp_WebCooperator_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_WebUser_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMaps_Search.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SearchSpecies.sql" />
+    <Build Include="dbo\Stored Procedures\usp_FolderItemMap_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderItemCropMaps_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpecies_Search.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTraits_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Citation_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttach_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Update.sql" />
+    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttachValidation_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Folder_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_Citation_Search.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Update.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CitationsBySpecies_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Update.sql" />
+    <Build Include="dbo\Stored Procedures\update_iv_owner.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationMap_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationMap_Update.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Update.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Select.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CropTrait_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Select.sql" />
+  </ItemGroup>
+</Project>

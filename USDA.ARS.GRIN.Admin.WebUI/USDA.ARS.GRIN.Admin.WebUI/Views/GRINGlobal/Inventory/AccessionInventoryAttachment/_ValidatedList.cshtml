@@ -1,0 +1,171 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Inventory.AccessionInventoryAttachmentListViewModel
+
+<div>
+    <div class="mailbox-controls">
+        @*<button type="button" class="btn btn-success btn-sm check-all-search-results">
+            <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+        </button>
+        <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+            <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+        </button>*@
+        @*<label style="margin-left:25px; margin-right:5px;">Batch Size</label>
+        <div class="btn-group">
+            @Html.DropDownListFor(x => x.ValidationStatus, Model.ValidationStatuses, new { @id = "ddlValidationStatuses", @class = "form-control" })
+        </div>*@
+
+        @*<button type="submit" id="btnValidate" class="btn btn-default btn-sm">
+            Validate
+        </button>*@
+
+        <div class="pull-right">
+            @if (Model.AccessionInventoryAttachments.Count() > 0)
+            {
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+            }
+        </div>
+    </div>
+
+    <!-- "SEARCHING...PLEASE WAIT OVERLAY -->
+    <div id="wait" style="display:none;  background-color: black;  position: fixed;  top: 0; right: 0; bottom: 0; left: 0;  opacity: 0.2; /* also -moz-opacity, etc. */  z-index: 10;">
+        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/giphy.gif" style="position: absolute; top: 50%; left: 50%; width: 300px; height: 300px; margin-top: -250px; /* Half the height */  margin-left: -250px; /* Half the width */" />
+    </div>
+
+    <div class="table-responsive mailbox-messages">
+        @if (Model != null)
+        {
+            if (Model.AccessionInventoryAttachments.Count() > 0)
+            {
+                <table id="validated-data-list" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Virtual Path</th>
+                            <th>Thumbnail Virtual Path</th>
+                            <th>Validated</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var accessionInventoryAttachment in Model.AccessionInventoryAttachments)
+                        {
+                            string validatedDateTimeDisplayString = accessionInventoryAttachment.ValidatedDate.ToShortDateString() + " at " + accessionInventoryAttachment.ValidatedDate.ToShortTimeString();
+
+                            <tr>
+                                <td>
+                                    <span class="label label-default">@accessionInventoryAttachment.ID</span>
+                                </td>
+                                <td>
+                                    @accessionInventoryAttachment.Title
+                                </td>
+                                <td>
+                                    <a href='@accessionInventoryAttachment.VirtualPath'>@accessionInventoryAttachment.VirtualPath</a>
+                                </td>
+                                <td>
+                                    <a href='@accessionInventoryAttachment.ThumbnailVirtualPath'>@accessionInventoryAttachment.ThumbnailVirtualPath</a>
+                                </td>
+                                <td>
+                                    @if (accessionInventoryAttachment.ValidatedDate != DateTime.MinValue)
+                                    {
+                                        @validatedDateTimeDisplayString
+                                    }
+                                </td>
+                                <td>
+                                    @*<a href="#" id="@folderItemDeleteControlId" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                            <img src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+                                        </a>
+                                        <a href="@Url.Action("CropEdit", "Taxonomy", new { id = row["taxonomy_cwr_crop_id"] })" class="btn btn-primary btn-sm pull-right row-edit">
+                                            <img src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
+                                        </a>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="callout callout-info" style="vertical-align:middle;">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/info.png" style="margin:0px;" />
+                    There are no validated accession inventory attachment records in the database.
+                </div>
+
+            }
+        }
+        else
+        {
+            <div class="callout callout-info" style="vertical-align:middle;">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/info.png" style="margin:0px;" />
+                Your search returned no matches.
+            </div>
+
+        }
+    </div>
+</div>
+<script type="text/javascript">
+
+    if ($.fn.dataTable.isDataTable('#validated-data-list')) {
+        table = $('#validated-data-list').DataTable();
+    }
+    else {
+        table = $('#validated-data-list').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+
+    }
+
+    $(document).ajaxStart(function () {
+        $("#wait").css("display", "block");
+    });
+
+    $(document).ajaxComplete(function () {
+        $("#wait").css("display", "none");
+    });
+   
+    $(function () {
+        $('.check-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+        $('.uncheck-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+
+    @*$('#ddlValidationStatuses').on('change', function () {
+        var link = '@Url.Action("ValidatedAccessionInventoryAttachments", "GRINGlobal")' + "?validationStatus=" + this.value;
+        $("#section-attachments-by-batch").load(link);
+    });*@
+
+    $('#btnValidate').on('click', function () {
+        var valueArray = [];
+        var batchSize = 0;
+        var validationStatus = "";
+
+        validationStatus = $('#ddlValidationStatuses').val();
+
+        $(".active input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        $.ajax({
+            url: '@Url.Action("Validate","GRINGlobal")',
+            type: "GET",
+            data: { values: valueArray.toString() },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                Load("NV");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,166 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropSearchViewModel
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Search</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <!-- /.box-header -->
+        @*<div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Tab 1</a></li>
+                    <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Tab 2</a></li>
+                    <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Tab 3</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Dropdown <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                    <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <b>How to use:</b>
+
+                        <p>
+                            Exactly like the original bootstrap tabs except you should use
+                            the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.
+                        </p>
+                        A wonderful serenity has taken possession of my entire soul,
+                        like these sweet mornings of spring which I enjoy with my whole heart.
+                        I am alone, and feel the charm of existence in this spot,
+                        which was created for the bliss of souls like mine. I am so happy,
+                        my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
+                        that I neglect my talents. I should be incapable of drawing a single stroke
+                        at the present moment; and yet I feel that I never was a greater artist than now.
+                    </div>
+                     /.tab-pane
+                    <div class="tab-pane" id="tab_2">
+                        The European languages are members of the same family. Their separate existence is a myth.
+                        For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+                        in their grammar, their pronunciation and their most common words. Everyone realizes why a
+                        new common language would be desirable: one could refuse to pay expensive translators. To
+                        achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+                        words. If several languages coalesce, the grammar of the resulting language is more simple
+                        and regular than that of the individual languages.
+                    </div>
+                     /.tab-pane
+                    <div class="tab-pane" id="tab_3">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        It has survived not only five centuries, but also the leap into electronic typesetting,
+                        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                        sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                        like Aldus PageMaker including versions of Lorem Ipsum.
+                    </div>
+                     /.tab-pane
+                </div>
+                 /.tab-content
+            </div>*@
+
+
+
+        <!-- form start -->
+        <div class="box-body">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Crop Name</label>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(x => x.CropNameComparisonOperator, Model.TextSearchComparisonOperators, "(None)", new { @class = "form-control" })
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.CropName, new { id = "txtCropName", Name = "CropName", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Display Name</label>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(x => x.DisplayNameComparisonOperator, Model.TextSearchComparisonOperators, "(None)", new { @class = "form-control" })
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.DisplayName, new { id = "txtDisplayName", Name = "DisplayName", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Common Name</label>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(x => x.CommonNameComparisonOperator, Model.TextSearchComparisonOperators, "(None)", new { @class = "form-control" })
+                </div>
+                <div class="col-sm-7">
+                    @Html.TextBoxFor(x => x.CropCommonName, new { id = "txtCommonName", Name = "CropCommonName", @class = "form-control" })
+                </div>
+            </div>
+
+            @*<hr />
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Is Crop</label>
+                    <div class="col-sm-6">
+                        <div class="checkbox-inline" style="padding:0px;">
+                            <label class="checkbox-inline" style="padding:0px;">
+                                <input type="checkbox"> Yes
+                            </label>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label class="checkbox-inline">
+                                <input type="checkbox"> No
+                            </label>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label class="checkbox-inline">
+                                <input type="checkbox"> No
+                            </label>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label class="checkbox-inline">
+                                <input type="checkbox"> No
+                            </label>
+                        </div>
+                        <div class="checkbox-inline">
+                            <label class="checkbox-inline">
+                                <input type="checkbox"> No
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-5">
+                                <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Remember me
+                                </label>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+                <hr />*@
+
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit" class="btn btn-danger pull-right" style="margin-right:5px;">Clear Search Criteria</button>
+                <button type="submit" class="btn btn-default pull-right" style="margin-right:5px;">Search</button>
+                @*<button type="submit" class="btn btn-default pull-right" style="margin-right:5px;">Execute AND Search</button>*@
+            </div>
+            <!-- /.box-footer -->
+        </div>
+
+    </div>
+</div>

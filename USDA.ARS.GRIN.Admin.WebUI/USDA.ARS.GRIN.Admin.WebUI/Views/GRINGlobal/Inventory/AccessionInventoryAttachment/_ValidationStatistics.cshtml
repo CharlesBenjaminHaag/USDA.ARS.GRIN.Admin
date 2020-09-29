@@ -1,0 +1,49 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Inventory.ValidationStatisticsViewModel
+<div class="row">
+    <div class="col-md-4">
+        <div class="info-box bg-green">
+            <span class="info-box-icon" style="line-height: 80px;"><img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-thumbs-up.png" style="width:42px; height:42px; margin-top:0px;padding-top:0px;" /></span>
+            <div class="info-box-content">
+                <span class="info-box-number">@Model.Validated</span>
+                <div class="progress">
+                    <div class="progress-bar" style="width: @Model.ValidatedDisplayPercentage"></div>
+                </div>
+                <span class="progress-description">
+                    Passed Validation
+                </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="info-box bg-red">
+            <span class="info-box-icon" style="line-height: 80px;"><img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-thumbs-down.png" style="width:42px; height:42px; margin-top:0px;padding-top:0px;" /></span>
+            <div class="info-box-content">
+                <span class="info-box-number">@Model.Errors</span>
+                <div class="progress">
+                    <div class="progress-bar" style="width: @Model.ErrorsDisplayPercentage"></div>
+                </div>
+                <span class="progress-description">
+                    Failed Validation
+                </span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="info-box bg-yellow">
+            <span class="info-box-icon" style="line-height: 80px;"><img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-question.png" style="width:42px; height:42px; margin-top:0px;padding-top:0px;" /></span>
+            <div class="info-box-content">
+                <span class="info-box-number">@Model.NotValidated</span>
+
+                <div class="progress">
+                    <div class="progress-bar" style="width: @Model.NotValidatedDisplayPercentage"></div>
+                </div>
+                <span class="progress-description">
+                    Not Yet Tested
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+

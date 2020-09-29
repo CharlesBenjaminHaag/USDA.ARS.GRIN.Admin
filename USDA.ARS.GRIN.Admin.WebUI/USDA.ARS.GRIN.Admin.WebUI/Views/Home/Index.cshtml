@@ -1,0 +1,60 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.DashboardViewModel
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Description = "Home Page";
+}
+
+<style>
+    .timeline-inverse:before {
+        content: '';
+        /* position: absolute; */
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        /*background: #ddd;*/
+        background:#ffff;
+        /* left: 31px; */
+        margin: 0;
+        border-radius: 2px;
+    }
+    
+    
+    .timeline-inverse > li > .timeline-item {
+        background: #f0f0f0;
+        /*border: 1px solid #ddd;*/
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    
+    .timeline > li > .timeline-item {
+        -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        border-radius: 3px;
+        margin-top: 0;
+        background: #fff;
+        color: #444;
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 0;
+        position: relative;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-3">
+        @{Html.RenderAction("_Profile", "User");}
+    </div>
+    <div class="col-md-9">
+        @{Html.RenderAction("_Applications", "User");}
+    </div>
+    <div class="col-xs-12 col-md-7">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+     
+    </div>
+    <div class="col-xs-12 col-md-6">
+    </div>
+</div>

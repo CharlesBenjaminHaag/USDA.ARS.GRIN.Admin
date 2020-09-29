@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{79398D0B-C4E0-4949-ABB5-A862F1832189}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>USDA.ARS.GRIN.Admin.Models</RootNamespace>
+    <AssemblyName>USDA.ARS.GRIN.Admin.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Address.cs" />
+    <Compile Include="GRINGlobal\Accession.cs" />
+    <Compile Include="GRINGlobal\AccessionInventoryAttachment.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="CodeValueReferenceItem.cs" />
+    <Compile Include="FileMetaData.cs" />
+    <Compile Include="GRINGlobal\Inventory.cs" />
+    <Compile Include="LoginResultEnum.cs" />
+    <Compile Include="Site.cs" />
+    <Compile Include="Taxonomy\Family.cs" />
+    <Compile Include="Taxonomy\Regulation.cs" />
+    <Compile Include="ResultContainer.cs" />
+    <Compile Include="Taxonomy\CWRMap.cs" />
+    <Compile Include="Group.cs" />
+    <Compile Include="Query.cs" />
+    <Compile Include="QueryCriterion.cs" />
+    <Compile Include="ReferenceItem.cs" />
+    <Compile Include="SearchOperator.cs" />
+    <Compile Include="Taxonomy\CropTrait.cs" />
+    <Compile Include="Taxonomy\Folder.cs" />
+    <Compile Include="Taxonomy\FolderItem.cs" />
+    <Compile Include="Taxonomy\Literature.cs" />
+    <Compile Include="Taxonomy\CropForCWR.cs" />
+    <Compile Include="Taxonomy\Author.cs" />
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="Taxonomy\Citation.cs" />
+    <Compile Include="Taxonomy\CommonName.cs" />
+    <Compile Include="Cooperator.cs" />
+    <Compile Include="Taxonomy\CropWildRelative.cs" />
+    <Compile Include="Taxonomy\Genus.cs" />
+    <Compile Include="Geography.cs" />
+    <Compile Include="GeographyMap.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="IReferencedEntity.cs" />
+    <Compile Include="Taxonomy\ISTAReportRecord.cs" />
+    <Compile Include="Taxonomy\Note.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Taxonomy\Protologue.cs" />
+    <Compile Include="Taxonomy\RegulationMapping.cs" />
+    <Compile Include="Taxonomy\Revision.cs" />
+    <Compile Include="Taxonomy\Species.cs" />
+    <Compile Include="Taxonomy\SummaryReport.cs" />
+    <Compile Include="Taxonomy\SummaryReportRecord.cs" />
+    <Compile Include="Taxonomy\Usage.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserSession.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SiteManagement\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

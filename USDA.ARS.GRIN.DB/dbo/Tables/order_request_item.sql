@@ -1,0 +1,82 @@
+﻿CREATE TABLE [dbo].[order_request_item] (
+    [order_request_item_id]      INT             IDENTITY (1, 1) NOT NULL,
+    [order_request_id]           INT             NOT NULL,
+    [web_order_request_item_id]  INT             NULL,
+    [sequence_number]            INT             NULL,
+    [name]                       NVARCHAR (200)  NULL,
+    [quantity_shipped]           DECIMAL (18, 5) NULL,
+    [quantity_shipped_unit_code] NVARCHAR (20)   NULL,
+    [distribution_form_code]     NVARCHAR (20)   NULL,
+    [status_code]                NVARCHAR (20)   NOT NULL,
+    [status_date]                DATETIME2 (7)   NULL,
+    [inventory_id]               INT             NOT NULL,
+    [external_taxonomy]          NVARCHAR (100)  NULL,
+    [source_cooperator_id]       INT             NULL,
+    [note]                       NVARCHAR (MAX)  NULL,
+    [web_user_note]              NVARCHAR (MAX)  NULL,
+    [created_date]               DATETIME2 (7)   NOT NULL,
+    [created_by]                 INT             NOT NULL,
+    [modified_date]              DATETIME2 (7)   NULL,
+    [modified_by]                INT             NULL,
+    [owned_date]                 DATETIME2 (7)   NOT NULL,
+    [owned_by]                   INT             NOT NULL,
+    CONSTRAINT [PK_order_request_item] PRIMARY KEY CLUSTERED ([order_request_item_id] ASC),
+    CONSTRAINT [fk_ori_created] FOREIGN KEY ([created_by]) REFERENCES [dbo].[cooperator] ([cooperator_id]),
+    CONSTRAINT [fk_ori_i] FOREIGN KEY ([inventory_id]) REFERENCES [dbo].[inventory] ([inventory_id]),
+    CONSTRAINT [fk_ori_modified] FOREIGN KEY ([modified_by]) REFERENCES [dbo].[cooperator] ([cooperator_id]),
+    CONSTRAINT [fk_ori_or] FOREIGN KEY ([order_request_id]) REFERENCES [dbo].[order_request] ([order_request_id]),
+    CONSTRAINT [fk_ori_owned] FOREIGN KEY ([owned_by]) REFERENCES [dbo].[cooperator] ([cooperator_id]),
+    CONSTRAINT [fk_ori_sc] FOREIGN KEY ([source_cooperator_id]) REFERENCES [dbo].[cooperator] ([cooperator_id]),
+    CONSTRAINT [fk_ori_wori] FOREIGN KEY ([web_order_request_item_id]) REFERENCES [dbo].[web_order_request_item] ([web_order_request_item_id])
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_created]
+    ON [dbo].[order_request_item]([created_by] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_i]
+    ON [dbo].[order_request_item]([inventory_id] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_modified]
+    ON [dbo].[order_request_item]([modified_by] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_or]
+    ON [dbo].[order_request_item]([order_request_id] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_owned]
+    ON [dbo].[order_request_item]([owned_by] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_sc]
+    ON [dbo].[order_request_item]([source_cooperator_id] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_ori_item]
+    ON [dbo].[order_request_item]([order_request_id] ASC, [name] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ndx_fk_ori_wori]
+    ON [dbo].[order_request_item]([web_order_request_item_id] ASC);
+
+
+GO
+CREATE STATISTICS [_dta_stat_434100587_1_2]
+    ON [dbo].[order_request_item]([order_request_item_id], [order_request_id]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_434100587_1_11_2]
+    ON [dbo].[order_request_item]([order_request_item_id], [inventory_id], [order_request_id]);
+

@@ -1,0 +1,52 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.GRINGlobalHomeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="box box-primary" style="padding:10px;">
+        <div class="box-header with-border">
+            <h3 class="box-title">Accession Inventory Attachments: Image URL Validation</h3>
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/bars-blk.png">
+                </button>
+            </div>
+            <!-- /.box-tools -->
+        </div>
+        <div class="box-body no-padding">
+            <div class="col-md-12">
+                <div id="section-validation-statistics" style="margin-top: 20px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+        <script type="text/javascript">
+    /*
+     * ==============================================================================================
+     * CHECK/UNCHECK ALL
+     * ==============================================================================================
+     */
+    $(function () {
+
+        $(document).on("click", "[id*='btnCheckAll']", function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+
+        $(document).on("click", "[id*='btnUnCheckAll']", function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+
+    var link = "";
+    link = '@Url.Action("ValidationStatistics","GRINGlobal")';
+    $("#section-validation-statistics").load(link);
+
+        </script>
+

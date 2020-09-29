@@ -1,0 +1,161 @@
+﻿@using WebHelpers.Mvc5
+<aside class="main-sidebar">
+    <section class="sidebar">
+        @* BEGIN Search *@
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        @* END Search *@
+        @* BEGIN Menu *@
+
+
+        @*CROP
+        Crop Map
+        Crop For CWR
+        SPECIES
+        Home
+        GENUS
+        Home
+        FAMILY
+        Home
+        REPORTS
+        ISTA*@
+
+    <ul class="sidebar-menu tree" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="@Url.IsLinkActive("Index", "Home")">
+            <a href="@Url.Action("Index","Home")">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/icon-home.png" />
+                <span>GGTools Home</span>
+            </a>
+        </li>
+        <li class="@Url.IsLinkActive("Index", "Taxonomy")">
+            <a href="@Url.Action("Index","Taxonomy")">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-tree.png" />
+                <span>TurboTaxon Home</span>
+            </a>
+        </li>
+        <li class="header">MANAGE DATA</li>
+        <!-- CROP -->
+        <li class="treeview menu-open">
+            <a href="#">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                <span>TAXONOMY</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block;">
+                <li>
+                    <a href="@Url.Action("CropHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Crop for CWR
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("CWRMapHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />CWR Map
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("SpeciesHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Species
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("GenusHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Genus
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("FamilyHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Family
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- REFERENCE -->
+        <li class="treeview menu-open">
+            <a href="#">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                <span>REFERENCE</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block;">
+                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
+                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <span>Regulation</span>
+                    </a>
+                </li>
+                <li class="@Url.IsLinkActive("RegulationMapHome", "Taxonomy")">
+                    <a href="@Url.Action("RegulationMapHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <span>Regulation Map</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="header">REPORTS</li>
+
+        <!-- REPORTS -->
+        <li class="treeview menu-open">
+            <a href="#">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/th.png" class="toolbar-icon" />
+                <span>SEASONAL</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block;">
+                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
+                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <span>ISTA</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="treeview menu-open">
+            <a href="#">
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                <span>VALIDATION</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: block;">
+                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
+                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <span>Missing Basionyms</span>
+                    </a>
+                </li>
+                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
+                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <span>Missing Subspecies, All</span>
+                    </a>
+                </li>
+                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
+                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <span>Missing Autonyms Varieties</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+        @* END Menu *@
+    </section>
+</aside>

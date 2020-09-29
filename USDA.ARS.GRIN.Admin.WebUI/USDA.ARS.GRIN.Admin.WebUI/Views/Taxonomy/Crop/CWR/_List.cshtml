@@ -1,0 +1,205 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.CropWildRelativeSearchViewModel
+<!-- ============================================================================================== -->
+<!-- SEARCH RESULTS -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px; display:none;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Search Results</h3>
+
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+                @*<input type="text" class="form-control input-sm" placeholder="Search Mail">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>*@
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <div class="mailbox-controls">
+            <!-- Check all button -->
+            <button type="button" class="btn btn-primary btn-sm checkbox-toggle">
+                <img src="~/Content/img/check.png" />
+            </button>
+            <button type="button" class="btn btn-primary btn-sm">
+                <img src="~/Content/img/trash.png" />
+            </button>
+
+            @*<div class="btn-group">
+
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                </div>*@
+            <!-- /.btn-group -->
+
+            <button type="button" class="btn btn-primary btn-sm">
+                <img src="~/Content/img/fa-tree.png" />
+            </button>
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm">
+                    Export
+                </button>
+                @*1-50/200
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                    </div>*@
+                <!-- /.btn-group -->
+            </div>
+            <!-- /.pull-right -->
+        </div>
+        <div class="table-responsive mailbox-messages">
+            <table id="data-list" class="table table-hover table-striped">
+                @*<thead>
+                        <tr>
+                            <th width="5%"></th>
+                            <th>Crop Name</th>
+                            <th>Species Name</th>
+                            <th>Last Modified</th>
+                            <th>Modified By</th>
+                            <th></th>
+                        </tr>
+                    </thead>*@
+                <tbody>
+                    @if (Model.SearchResults.Rows != null)
+                    {
+                        if (Model.SearchResults.Rows.Count > 0)
+                        {
+                            foreach (System.Data.DataRow row in Model.SearchResults.Rows)
+                            {
+                                <tr>
+                                    @foreach (System.Data.DataColumn col in Model.SearchResults.Columns)
+                                    {
+                                        <td>
+                                            @row[col.ColumnName]
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    }
+
+                    @*@if (Model.TaxonomyCropWildRelatives != null)
+                        {
+                            if (Model.TaxonomyCropWildRelatives.Count() > 0)
+                            {
+                                foreach (var result in Model.TaxonomyCropWildRelatives)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" style="position: absolute; opacity: 0;">
+                                        </td>
+
+                                        <td class="mailbox-name"><a href="#">@result.CropName</a></td>
+                                        <td class="mailbox-subject">
+                                            <a href="">SPECIES</a>
+                                        </td>
+                                        <td class="mailbox-name">@result.ModifiedDate.ToShortDateString()</td>
+                                        <td class="mailbox-name">@result.ModifiedByCooperatorID</td>
+                                        <td>
+                                            <a href="@Url.Action("CropWildRelativeEdit", "Taxonomy", new { id = result.ID })" class="btn btn-sm btn-primary pull-right row-edit">
+                                                <img src="~/Content/img/pencil.png" />Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            }*@
+                </tbody>
+            </table>
+            <!-- /.table -->
+        </div>
+        <!-- /.mail-box-messages -->
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer no-padding">
+        <div class="mailbox-controls">
+            <!-- Check all button -->
+            <button type="button" class="btn btn-primary btn-sm checkbox-toggle">
+                <img src="~/Content/img/check.png" />
+            </button>
+            <button type="button" class="btn btn-primary btn-sm">
+                <img src="~/Content/img/trash.png" />
+            </button>
+
+            @*<div class="btn-group">
+
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                </div>*@
+            <!-- /.btn-group -->
+
+            <button type="button" class="btn btn-primary btn-sm">
+                <img src="~/Content/img/refresh.png" />
+            </button>
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm">
+                    Export
+                </button>
+                @*1-50/200
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                    </div>*@
+                <!-- /.btn-group -->
+            </div>
+            <!-- /.pull-right -->
+        </div>
+    </div>
+</div>
+<!-- Page Script -->
+<script>
+    //$(function () {
+    //    //Enable iCheck plugin for checkboxes
+    //    //iCheck for checkbox and radio inputs
+    //    $('.mailbox-messages input[type="checkbox"]').iCheck({
+    //        checkboxClass: 'icheckbox_flat-blue',
+    //        radioClass: 'iradio_flat-blue'
+    //    });
+
+    //    //Enable check and uncheck all functionality
+    //    $(".checkbox-toggle").click(function () {
+    //        var clicks = $(this).data('clicks');
+    //        if (clicks) {
+    //            //Uncheck all checkboxes
+    //            $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+    //            $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+    //        } else {
+    //            //Check all checkboxes
+    //            $(".mailbox-messages input[type='checkbox']").iCheck("check");
+    //            $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+    //        }
+    //        $(this).data("clicks", !clicks);
+    //    });
+
+    //    //Handle starring for glyphicon and font awesome
+    //    $(".mailbox-star").click(function (e) {
+    //        e.preventDefault();
+    //        //detect type
+    //        var $this = $(this).find("a > i");
+    //        var glyph = $this.hasClass("glyphicon");
+    //        var fa = $this.hasClass("fa");
+
+    //        //Switch states
+    //        if (glyph) {
+    //            $this.toggleClass("glyphicon-star");
+    //            $this.toggleClass("glyphicon-star-empty");
+    //        }
+
+    //        if (fa) {
+    //            $this.toggleClass("fa-star");
+    //            $this.toggleClass("fa-star-o");
+    //        }
+    //    });
+    //});
+
+    $('#data-list').DataTable({
+        'paging': true,
+        'lengthChange': false,
+        'searching': false,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+    });
+</script>

@@ -1,0 +1,40 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.UserApplicationsViewModel
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Applications</h3>
+    </div>
+    <!-- /.box-header -->
+
+    <div class="box-body">
+        <ul class="timeline timeline-inverse">
+            @foreach (var application in Model.Applications)
+            { 
+                <li>
+                    @*<i class="fa fa-user bg-aqua"></i>*@
+                    <div class="timeline-item" style="background-color:#ebebeb;">
+                        <span class="time">Version @application.ApplicationCode</span>
+                        <h3 class="timeline-header">@application.Title</h3>
+                        <div class="timeline-body">
+                            @application.Description 
+                        </div>
+                        <div class="timeline-footer">
+                            @if (application.IsAuthorized)
+                            {
+                                <a class="btn btn-success btn-xs" href="@Url.Action("Index", "Home", new { appContext = application.URL })">Launch</a>
+                                <a class="btn btn-warning btn-xs disabled" href="http://arsmdbe33ws1.usda.net:8080/trac/GG/query?component=ARS-GRIN+Site&col=id&col=summary&col=status&col=type&col=priority&col=milestone&col=component&report=46&order=priority">View Trac Tickets</a>
+                            }
+                            else
+                            { 
+                                <a class="btn btn-danger btn-xs" href="mailto:benjamin.haag@usda.gov?subject=GGADmin Application Access&body=Request access to @application.Title">Request Access</a>
+                            }
+                        </div>
+                    </div>
+
+                </li>            
+            }
+        </ul>
+    </div>
+    <!-- /.box-body -->
+</div>
+

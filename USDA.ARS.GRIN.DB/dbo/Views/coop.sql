@@ -1,0 +1,56 @@
+﻿-- drop view coop
+-- go
+
+create view [dbo].[coop] as select 
+cooperator_id as cno,
+current_cooperator_id as validcno,
+site_id,
+last_name as lname,
+title,
+first_name as fname,
+job,
+organization as org,
+organization_abbrev as orgid,
+address_line1 as add1,
+address_line2 as add2,
+address_line3 as add3,
+city,
+postal_index as zip,
+geography_id as geono,
+(select country from geo where geono=c.geography_id) as country,
+(select state from geo where geono=c.geography_id) as state,
+(select st from geo where geono=c.geography_id) as state_code,
+secondary_organization,
+secondary_organization_abbrev,
+secondary_address_line1,
+secondary_address_line2,
+secondary_address_line3,
+secondary_city,
+secondary_postal_index,
+secondary_geography_id,
+primary_phone as phone1,
+secondary_phone as phone2,
+fax,
+email,
+secondary_email,
+status_code as active,
+category_code as cat,
+organization_region_code as arsregion,
+discipline_code as discipline,
+last_name + ', ' + SUBSTRing(first_name,1,1) + '., ' + isnull(organization,'') as coop,
+note as cmt,
+sys_lang_id,
+web_cooperator_id,
+created_date,
+created_by,
+modified_date,
+modified_by,
+owned_date,
+owned_by,
+(select first_name + ' ' + last_name from cooperator d where d.cooperator_id=c.owned_by) as person,
+(select site_short_name from site where site.site_id=c.site_id) as site
+from cooperator c;
+
+
+
+

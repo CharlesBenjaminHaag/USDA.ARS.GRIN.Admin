@@ -1,0 +1,215 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.FolderEditViewModel
+@{
+    ViewBag.Title = "FolderItems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("FolderEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID, new { @name = "hfFolderID" })
+    @Html.HiddenFor(x => x.Category)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="margin-bottom: 0!important;">
+                <h4><i class="fa fa-info"></i> Revisions</h4>
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">Edit Folder</h3>
+            <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-success pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="txtName" class="col-sm-2 control-label">Title</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(x => x.Title, new { @id = "txtTitle", @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtName" class="col-sm-2 control-label">Description</label>
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(x => x.Description, new { @id = "txtDescription", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                <div class="col-sm-10">
+                                    @Html.CheckBoxFor(x => x.IsShared)<label style="margin-left:10px;">Shared</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtNote" class="col-sm-2 control-label">Note</label>
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(x => x.Note, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!-- ============================================================================================== -->
+<!-- FOLDER ITEMS -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Folder Items</h3>
+
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><img src="/Content/img/bars-blk.png"></button>
+        </div>
+    </div>
+    <div id="section-folder-item-container" class="box-body no-padding">
+        @{ Html.RenderAction("FolderItemList", "Taxonomy", new { targetFolderId = Model.ID });}
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer no-padding">
+        <div class="mailbox-controls">
+            <!-- Check all button -->
+            @*<button type="button" class="btn btn-primary btn-sm checkbox-toggle">
+                    <img src="~/Content/img/check.png" />
+                </button>*@
+            <div class="pull-right">
+                <button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-add-to-folder">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add to Folder</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_new_folder" data-toggle="tab" aria-expanded="true">New Folder</a></li>
+                                <li class=""><a href="#tab_select_folder" data-toggle="tab" aria-expanded="false">Saved Folders</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_new_folder">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input type="text" id="txtFolderTitle" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnCreateFolder" class="btn btn-info btn-flat">Create</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_select_folder">
+                                    <div class="alert alert-warning">
+                                        <h4><i class="icon fa fa-warning"></i>Please Note</h4>
+                                        This functionality will be available in the next release.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-success pull-right" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+
+    $('#data-list').DataTable({
+        'paging': true,
+        'lengthChange': false,
+        'searching': false,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+    });
+
+    $(document).on("click", "[id*='btnDelete']", function(){
+        var btnId = $(this).attr('id');
+
+        //DEBUG
+        alert("CONTROL ID " + btnId);
+
+
+        var controlIdString = btnId.split("_")
+        var folderContainerControlId = "#section-folder-item-container";
+        var folderId = controlIdString[1];
+        var folderItemId = controlIdString[2];
+        var url = '@Url.Action("FolderItemDelete", "Taxonomy")';
+
+        $.get(url, { targetFolderId: folderId, itemId: folderItemId })
+        .done(function (response) {
+            $(folderContainerControlId).html(response);
+        });
+    });
+
+    $(function () {
+        $('.check-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+        $('.uncheck-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+
+    $(document).on("click", "[id*='btnDeleteMultiple']", function(){
+        var inputFolderId = 0;
+        var valueArray = [];
+        var url = "";
+
+        $("#section-folder-item-container input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        url = '@Url.Action("FolderItemsDelete", "Taxonomy")';
+
+        //DEBUG
+        alert("URL " + url);
+        alert("VARIABLES ", folderId + ", " + folderItemIdList);
+
+        $.get(url, {folderId: inputFolderId, folderItemIdList: valueArray.toString() })
+            .done(function (response) {
+                $("#section-folder-item-container").html(response);
+        });
+    });
+
+</script>
+

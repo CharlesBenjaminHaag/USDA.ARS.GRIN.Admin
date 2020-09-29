@@ -1,0 +1,395 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.CWRMapEditViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="section-data-list">
+
+    @if (Model.ID > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="callout callout-info" style="vertical-align:middle;">
+                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                    @Html.Raw(Model.RevisionHistoryText)
+                </div>
+            </div>
+        </div>
+    }
+    @using (Html.BeginForm("CWRMapEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+    {
+        @Html.HiddenFor(x => x.ID, new { id = "hfCropMapID", name = "ID" })
+        @Html.HiddenFor(x => x.SpeciesID, new { id = "hfSpeciesID" })
+        @Html.ValidationSummary()
+
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">Crop Map Detail</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <img src="~/Content/img/bars-blk.png" />
+                        @*<i class="fa fa-minus"></i>*@
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="submit" class="btn btn-success pull-right" style="margin-left:5px;" value="Save" />
+                        <a href="@Url.Action("CropEdit", "Taxonomy", new { id = Model.CropID })" class="btn btn-default pull-right">Go to Crop</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Common Name</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(x => x.CommonName, new { @id = "txtCommonName", @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.CommonName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtSpeciesName" class="col-sm-2 control-label">Species Name</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input type="text" id="txtSpeciesName" disabled="" value="@Model.SpeciesName" class="form-control" />
+                                            @Html.HiddenFor(x => x.SpeciesID, new { id = "hfSpeciesID" })
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">...</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Crop</label>
+                                    <div class="col-sm-10">
+                                        @Html.DropDownListFor(x => x.CropID, Model.Crops, "Select a crop", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Genepool Code</label>
+                                    <div class="col-sm-10">
+                                        @Html.DropDownListFor(x => x.GenepoolCode, Model.GenepoolCodes, "Select a genepool code", new { @id="ddlGenepoolCode", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                    <div class="col-sm-10">
+                                        @Html.CheckBoxFor(x => x.IsCrop, new { id = "cbxIsCrop" })<label style="margin-left:10px;">Is Crop</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                    <div class="col-sm-10">
+                                        @Html.CheckBoxFor(x => x.IsGraftStock, new { id = "cbxIsGraftStock" })<label style="margin-left:10px;">Is Graftstock</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                    <div class="col-sm-10">
+                                        @Html.CheckBoxFor(x => x.IsPotential, new { id = "cbxIsPotential" })<label style="margin-left:10px;">Is Potential</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtSpeciesName" class="col-sm-2 control-label">Note</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtCitation" class="col-sm-2 control-label">Citation</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                            @*<select id="ddlSelectCitation" name="CitationID" class="form-control"></select>*@
+                                            <span class="input-group-btn">
+                                                @*<button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-citation-search">...</button>*@
+                                                <button type="button" class="btn btn-success btn-flat disabled" data-toggle="modal" data-target="#modal-add-citation">
+                                                    <img style="width: 10px; height: 10px;" src="/Content/img/fa-plus.png">
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.ID > 0)
+    {
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">Related Traits</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        @*<i class="fa fa-minus"></i>*@
+                        <img src="~/Content/img/bars-blk.png" />
+                    </button>
+                </div>
+            </div>
+            <div id="section-crop-trait-list" class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        @{Html.RenderAction("CropTraits", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropID, cropMapId = Model.ID });}
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<!--
+=====================================================================================
+MODALS
+=====================================================================================
+-->
+<div class="modal fade" id="modal-species-search">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Species Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchSpecies" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchSpecies" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-species-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-note-search">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Note Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchNotes" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchNotes" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-note-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-citation-search">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Citation Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchCitations" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchCitations" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-citation-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('.check-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+        $('.uncheck-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+
+    $('form input').keydown(function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-species-search').modal('hide');
+        $("#txtSpeciesName").val(speciesText);
+        $("#hfSpeciesID").val(ID);
+        LoadCitations(ID);
+    }
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        $("#txtNote").val(noteText);
+    }
+
+    function SelectCitation(id, title) {
+        $('#modal-citation-search').modal('hide');
+        $("#txtCitationTitle").val(title);
+        $("#hfCitationID").val(id);
+    }
+
+    $(document).on("click", "[id*='btnDeleteMultiple']", function(){
+        var valueArray = [];
+        var url = "";
+        var inputCropId = 0;
+        var inputCropMapId = 0;
+        var inputSpeciesId = 0;
+
+        inputCropId = $("#hfCropID").val();
+        inputCropMapId = $("#hfCropMapID").val();
+        inputSpeciesId = $("#hfSpeciesID").val();
+
+        $("#section-crop-trait-list input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        url = '@Url.Action("CropTraitsDelete", "Taxonomy")';
+
+        $.get(url, { speciesId: inputSpeciesId, cropId: inputCropId, cropMapId: inputCropMapId, cropTraitIdList: valueArray.toString() })
+            .done(function (response) {
+                $("#section-crop-trait-list").html(response);
+        });
+    });
+
+    $("#btnSearchSpecies").click(function () {
+        var url = '@Url.Action("FindSpecies","Taxonomy")';
+        var inputSearchString = $("#txtSearchSpecies").val();
+
+        $.post(url, { searchString: inputSearchString })
+            .done(function (response) {
+                $("#section-species-search-results").html(response);
+        });
+    });
+
+    $("#btnSearchNotes").click(function () {
+        var noteContext = "taxonomy_cwr_map";
+        var url = "/Taxonomy/FindNotes/";
+        var inputSearchString = $("#txtSearchNotes").val();
+
+        $.post(url, { searchString: inputSearchString, context: noteContext })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+        });
+    });
+
+    $("#btnSearchCitations").click(function () {
+        var url = "/Taxonomy/FindCitations/";
+        var speciesId = $("#hfSpeciesID").val();
+        var inputSearchString = $("#txtSearchCitations").val();
+
+        $.post(url, { speciesId: speciesId, searchString: inputSearchString })
+            .done(function (response) {
+                $("#section-citation-search-results").html(response);
+        });
+    });
+
+    $('#cbxIsCrop').click(function () {
+        var thisCheck = $(this);
+
+        if ($(this).prop("checked") == true) {
+            $('#ddlGenepoolCode').val(0);
+            $('#ddlGenepoolCode').prop('disabled', true);  
+            $('#cbxIsGraftStock').prop('disabled', true);
+            $("#cbxIsGraftStock").prop("checked", false);
+            $('#cbxIsPotential').prop('disabled', true);
+            $("#cbxIsPotential").prop("checked", false);
+        }
+        else {
+            $('#ddlGenepoolCode').prop('disabled', false);  
+            $('#cbxIsGraftStock').prop('disabled', false);
+            $('#cbxIsPotential').prop('disabled', false);
+        }
+    });
+
+
+    function LoadCitations(speciesId) {
+        var citationsSelect = $('#ddlCitations');
+        citationsSelect.empty();
+        if (speciesId != null && speciesId != '') {
+            $.getJSON('@Url.Action("GetCitations")', { speciesId: speciesId }, function (citations) {
+                if (citations != null && !jQuery.isEmptyObject(citations))
+                {
+                    citationsSelect.append($('<option/>', {
+                        value: null,
+                        text: "Select a citation"
+                    }));
+                    $.each(citations, function (index, citation) {
+                        citationsSelect.append($('<option/>', {
+                            value: citation.ID,
+                            text: citation.Title
+                        }));
+                    });
+                };
+            });
+        }
+    }
+
+</script>
+
+

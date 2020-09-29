@@ -1,0 +1,241 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropTraitEditViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2 style="margin-top:0px;">Crop Edit</h2>*@
+
+<div id="section-data-list">
+
+    @if (Model.ID > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="callout callout-info" style="vertical-align:middle;">
+                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                    @Html.Raw(Model.RevisionHistoryText)
+                </div>
+            </div>
+        </div>
+    }
+    @using (Html.BeginForm("CropTraitEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+    {
+        @Html.HiddenFor(x => x.ID, new { name = "ID" })
+        @Html.HiddenFor(x => x.CropMapID, new { name = "CropMapID" })
+        @Html.HiddenFor(x => x.CropID)
+        @Html.HiddenFor(x => x.SpeciesID)
+        @Html.ValidationSummary()
+
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">Crop Trait</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <img src="~/Content/img/bars-blk.png" />
+                        @*<i class="fa fa-minus"></i>*@
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
+                        <button type="button" onclick="location.href='@Url.Action("CWRMapEdit", "Taxonomy", new { cropId = Model.CropID, cwrMapId = Model.CropMapID })'" class="btn btn-default pull-right" style="margin-right:5px;">Return to Crop Map</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Trait Class Code</label>
+                                    <div class="col-sm-10">
+                                        @Html.DropDownListFor(x => x.TraitClassCode, Model.TraitClassCodes, "Select a trait class code", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                    <div class="col-sm-10">
+                                        @Html.CheckBoxFor(x => x.IsPotential)<label style="margin-left:10px;">Is Potential</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Breeding Type Code</label>
+                                    <div class="col-sm-10">
+                                        @Html.DropDownListFor(x => x.BreedingTypeCode, Model.BreedingTypeCodes, "Select a breeding type code", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Breeding Usage Note</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(x => x.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(x => x.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtSpeciesName" class="col-sm-2 control-label">Note</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtCitation" class="col-sm-2 control-label">Citation</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                            @*<select id="ddlSelectCitation" name="CitationID" class="form-control"></select>*@
+                                            <span class="input-group-btn">
+                                                @*<button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-citation-search">...</button>*@
+                                                <button type="button" class="btn btn-success btn-flat disabled" data-toggle="modal" data-target="#modal-add-citation">
+                                                    <img style="width: 10px; height: 10px;" src="/Content/img/fa-plus.png">
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!--
+=====================================================================================
+MODALS
+=====================================================================================
+-->
+
+<div class="modal fade" id="modal-note-search">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Note Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchNotes" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchNotes" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-note-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal-citation-search">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Citation Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchCitations" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchCitations" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-citation-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+    /* Populate Citation DDL based on the species ID (if page is in update, vs. insert mode) */
+    $(document).ready(function(){
+        var speciesId = $("#hfSpeciesID").val();
+        if (speciesId > 0) {
+            LoadCitations(speciesId);
+            SetCitation();
+        }
+    });
+
+    function SetCitation() {
+        var citationId = $("#hfSelectedCitationID").val();
+        $('#ddlSelectCitation').val(citationId);    
+    }
+
+     $("#btnSearchNotes").click(function () {
+         var noteContext = "taxonomy_cwr_trait";
+        var url = "/Taxonomy/FindNotes/";
+
+        var inputSearchString = $("#txtSearchNotes").val();
+
+        $.post(url, { searchString: inputSearchString, context: noteContext })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+        });
+    });
+
+    $("#btnSearchCitations").click(function () {
+
+        var url = "/Taxonomy/FindCitations/";
+
+        var inputSearchString = $("#txtSearchCitations").val();
+
+        $.post(url, { searchString: inputSearchString })
+            .done(function (response) {
+                $("#section-citation-search-results").html(response);
+        });
+    });
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        $("#txtNote").val(noteText);
+    }
+
+    function SelectCitation(id, title) {
+        $('#modal-citation-search').modal('hide');
+        $("#txtCitationTitle").val(title);
+        $("#hfCitationID").val(id);
+    }
+
+</script>

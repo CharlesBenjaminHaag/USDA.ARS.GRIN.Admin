@@ -1,0 +1,124 @@
+﻿@using System.Web.Optimization
+@using WebHelpers.Mvc5.Enum
+
+<!DOCTYPE html>
+<html>
+<head>
+    @{
+        string mainCssClass = String.Empty;
+        string pageTitle = String.Empty;
+
+        mainCssClass = DisplayManager.GetCurrentSkin(HttpContext.Current.Request.Url.ToString());
+        pageTitle = DisplayManager.GetPageTitle(HttpContext.Current.Request.Url.ToString());
+    }
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        GGTools
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Title))
+        {
+            @ViewBag.Title@: -
+        }
+    </title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="~/Content/css/skins/skin-green.css" />
+    <link rel="stylesheet" href="~/Content/css/skins/skin-black.css" />
+    <link rel="stylesheet" href="~/Content/css/skins/skin-blue.css" />
+    <link rel="stylesheet" href="~/Content/css/skins/skin-purple.css" />
+    <link rel="stylesheet" href="~/Content/css/skins/skin-red.css" />
+    <style>
+        .sidebar-menu img {
+            padding-right: 5px;
+            width: 19px;
+            height: 16px;
+        }
+    </style>
+    @Styles.Render("~/Bundles/css")
+
+    @*<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
+        rel="stylesheet" type='text/css'>*@
+    <!-- DataTables -->
+    @*<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">*@
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    @*<script type="text/javascript" src="https://adminlte.io/themes/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>*@
+    @*<script type="text/javascript" src="https://adminlte.io/themes/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>*@
+</head>
+<body class="@mainCssClass">
+    <div class="wrapper">
+        @{Html.RenderAction("_Header", "Home");}
+        @{Html.RenderAction("_Sidebar", "Home"); }
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    @ViewContext.RouteData.Values["controller"].ToString() -- @ViewContext.RouteData.Values["action"].ToString()
+                    <small>@DisplayManager.GetVersion()</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i>@ViewContext.RouteData.Values["controller"].ToString()</a></li>
+                    <li class="active"> @ViewContext.RouteData.Values["action"].ToString()</li>
+                </ol>
+            </section>
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> @DisplayManager.GetVersion()
+            </div>
+            <strong>Copyright © 2019 <a href="#">ARS-GRIN DBMU</a>.</strong> All rights reserved.
+        </footer>
+        @Html.Partial("_ControlSidebar")
+    </div>
+
+    <script src="@RouteJs.RouteJsHandler.HandlerUrl"></script>
+    <script src="@EnumHandler.HandlerUrl"></script>
+    @Scripts.Render("~/Bundles/js")
+    @Scripts.Render("~/admin-lte/js")
+    @RenderSection("ViewSpecificJavascript", required: false)
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+    $(".menu-item-selector").click(function () {
+
+        event.preventDefault();
+
+        var selectedHref = $(this).attr("href");
+        var selectedHrefTokens = selectedHref.split("-");
+        var controllerName = selectedHrefTokens[0];
+        var actionName = selectedHrefTokens[1];
+        var parameter = "DEBUG";
+        var url = '@Url.Action("actionName", "controllerName")';
+
+        url = url.replace("actionName", actionName);
+        url = url.replace("controllerName", controllerName);
+
+        $.post(url, { urlParameter: parameter })
+            .done(function (response) {
+                $("#section-data-list").html(response);
+
+                $('#data-list').DataTable({
+                    'paging': false,
+                    'lengthChange': false,
+                    'searching': false,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                });
+            });
+    });
+</script>

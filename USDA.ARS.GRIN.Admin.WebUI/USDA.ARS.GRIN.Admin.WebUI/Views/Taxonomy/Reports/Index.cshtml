@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box box-default">
+    <div class="box-header">
+        <h3 class="box-title">Reports</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><img src="/Content/img/bars-blk.png"></button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="report-list" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ISTA</td>
+                            <td>Report prepared each 5 years for ISTA use</td>
+                            <td style="text-align:right;">
+                                <a href="@Url.Action("Detail", "Report")" class="btn btn-default pull-right row-edit">
+                                    <img src="~/Content/img/bars.png" />Configure
+                                </a>
+                                <a href="@Url.Action("Report", "Taxonomy")" class="btn btn-success pull-right row-edit">
+                                    <img src="~/Content/img/pencil.png" />Run
+                                </a>
+
+
+                                @*<span class="input-group-btn float-right">
+                                        <button class="btn btn-success float-right" onclick="location.href='@Url.Action("Detail", "Report")'">Run</button>
+                                    </span>
+                                    <span class="input-group-btn float-right">
+                                        <button class="btn btn-success float-right" onclick="location.href='@Url.Action("Detail", "Report")'">Run</button>
+                                    </span>*@
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ISTA REPORT -->
+<div class="modal fade" id="modal-rpt-ista">
+    <div class="modal-dialog modal-lg" style="width:1250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">ISTA</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                @*<button type="button" id="btn-set-protologue" class="btn btn-primary">Select</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+    $('#report-list').DataTable({
+      'paging'      : false,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+</script>

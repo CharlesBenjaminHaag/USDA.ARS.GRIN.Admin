@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [gg_user]
+    WITH PASSWORD = N'Pqkpt|q?aoJ&vkigcha7PV{rmsFT7_&#$!~<tuqX^{xabasg', SID = 0x258923493FAB99439275E8C612C70009, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

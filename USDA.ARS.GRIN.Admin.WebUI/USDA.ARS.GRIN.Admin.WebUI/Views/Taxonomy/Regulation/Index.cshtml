@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="box box-primary" style="padding:10px;">
+        <div class="box-header with-border">
+            <h3 class="box-title">Regulation</h3>
+
+            <div class="box-tools pull-right">
+                <div class="has-feedback">
+                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <img src="/Content/img/bars-blk.png">
+                </button>
+            </div>
+            <!-- /.box-tools -->
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="background-color:#ebebeb;">
+                        <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">All</a>
+                    </li>
+                     <li class="" style="background-color:#ebebeb;">
+                        <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                            <img src="~/Content/img/fa-search-plus-blue.png" style="width:18px; height:18px;" />
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <!-- ============================================================================================== -->
+                    <!-- MAIN TAB -->
+                    <!-- ============================================================================================== -->
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="box-body">
+                            <div id="section-main">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================================================== -->
+                    <!-- SEARCH TAB -->
+                    <!-- ============================================================================================== -->
+                    <div class="tab-pane" id="tab_3">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-7" style="padding-left:0px;">
+                                            <div class="input-group" style="margin-left:0px;">
+                                                <input type="text" id="txtSearchText" name="SearchText" placeholder="Type search text ..." class="form-control">
+                                                <span class="input-group-btn">
+                                                    <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="section-search-results" class="crop-search-results">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var link = '@Url.Action("AllRegulations", "Taxonomy")';
+        $("#section-main").load(link);
+    });
+    </script>

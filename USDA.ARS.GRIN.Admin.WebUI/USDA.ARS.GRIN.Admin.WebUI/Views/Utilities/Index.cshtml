@@ -1,0 +1,96 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Utilities.IndexViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Utilities</h2>
+
+@*<style>
+    input[type="file"] {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        text-align: left;
+        -webkit-rtl-ordering: left;
+        border: 1px solid #aaaaaa;
+        border-radius: 4px;
+        background-image: -webkit-gradient(linear, left bottom, left top, from(#d2d0d0), to(#f0f0f0));
+        background-image: -moz-linear-gradient(90deg, #d2d0d0 0%, #f0f0f0 100%);
+        width:100%;
+        font-family:Arial;
+        font-weight:bold;
+    }
+</style>*@
+
+
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">URL Validation</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <img src="~/Content/img/bars-blk.png" />
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div>
+                @using (Html.BeginForm("UploadFile", "Utilities", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @*<input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />*@
+                    <div>
+                        @Html.TextBox("file", "", new { type = "file" }) <br />
+
+                        <input type="submit" value="Upload" />
+
+                        @ViewBag.Message
+
+                    </div>
+                }
+            </div>
+            <div class="mailbox-controls">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default btn-sm" onclick="location.href='@Url.Action("Export","Utilities")'">
+                        Export
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mailbox-messages">
+                <!-- TO DO: CONTROL TO START VALIDATION -->
+                @using (Html.BeginForm("Validate", "Utilties", FormMethod.Post, new { id = "frmEdit" }))
+                {
+                    <input type="submit" value="Begin Validation" />
+                }
+
+                <table id="data-list" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Valid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.UrlValidationList != null)
+                        {
+                            if (Model.UrlValidationList.Count > 0)
+                            {
+                                foreach (var result in Model.UrlValidationList)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@result.SourceURL">@result.SourceURL</a>
+                                        </td>
+                                        <td>
+                                            @Html.Raw(DisplayManager.GetBooleanDisplayString(result.IsValid))
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+

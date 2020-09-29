@@ -1,0 +1,39 @@
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.ISTAReportRecord>
+@{
+    ViewBag.Title = "ISTA Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Report: ISTA</title>
+</head>
+<body>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    @*<th></th>*@
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var iSTAReportRecord in Model)
+                { 
+                    <tr>
+                        @*<td><span class="label label-primary">@iSTAReportRecord.NameStatusCode</span></td>*@
+                        <td>@Html.Raw(iSTAReportRecord.DisplayName)</td>
+                        <td>@Html.Raw(iSTAReportRecord.FamilyName)</td>
+                        <td>@Html.Raw(iSTAReportRecord.UPOVCode)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

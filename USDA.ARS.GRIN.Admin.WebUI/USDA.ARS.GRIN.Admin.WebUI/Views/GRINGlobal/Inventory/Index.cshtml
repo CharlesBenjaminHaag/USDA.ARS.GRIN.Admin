@@ -1,0 +1,285 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Inventory.HomeViewModel
+@{
+    ViewBag.Title = "Accession Inventory Attachments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .label {
+        font-size: .9em;
+    }
+
+    #tblSearchCriteria th {
+        padding: 5px;
+        text-align: left;
+    }
+
+    #tblSearchCriteria td {
+        padding: 3px;
+        text-align: left;
+    }
+</style>
+
+<div class="box box-primary" style="padding: 10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Accession Inventory Attachments: Image URL Validation</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <img src="/Content/img/bars-blk.png">
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <div class="nav-tabs-custom">
+            <div id="section-validation-statistics" style="margin-top: 20px;">
+
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_to_validate" id="tab-to-validate" title="NV" class="selector-tab" data-toggle="tab" aria-expanded="true">To Validate</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_validated" id="tab-validated" title="VL" class="selector-tab" data-toggle="tab" aria-expanded="true">Validated</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_errors" id="tab-errors" title="ER" class="selector-tab" data-toggle="tab" aria-expanded="true">Error</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                        <img src="~/Content/img/fa-search-plus-blue.png" style="width:18px; height:18px;" />
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- ============================================================================================== -->
+                <!-- NON-VALIDATED -->
+                <!-- ============================================================================================== -->
+                <div class="tab-pane active" id="tab_to_validate">
+                    <div class="box-body">
+                        <div id="section-to-validate">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================================================== -->
+                <!-- VALIDATED -->
+                <!-- ============================================================================================== -->
+                <div class="tab-pane active" id="tab_validated">
+                    <div class="box-body">
+                        <div id="section-validated">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tab_errors">
+                    <div class="box-body">
+                        <div id="section-errors">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================================================== -->
+                <!-- SEARCH TAB -->
+                <!-- ============================================================================================== -->
+                <div class="tab-pane" id="tab_3">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-11">
+                                <table id="tblSearchCriteria" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Field</th>
+                                            <th>Comparison</th>
+                                            <th><div>Value</div></th>
+                                            <th><div>Operator</div></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Title</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Starts With</option>
+                                                <option>Ends In</option>
+                                                <option>Contains</option>
+                                                <option>Matches</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type search text ..." class="form-control">
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>AND</option>
+                                                <option>OR</option>
+                                            </select>
+                                        </td>
+                                        <td style="width:5%;">
+                                            <input type="button" class="btn btn-default btn-block" value="Add" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Description</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Starts With</option>
+                                                <option>Ends In</option>
+                                                <option>Contains</option>
+                                                <option>Matches</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type search text ..." class="form-control">
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>AND</option>
+                                                <option>OR</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="button" class="btn btn-default btn-block" value="Add" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Code</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>Starts With</option>
+                                                <option>Ends In</option>
+                                                <option>Contains</option>
+                                                <option>Matches</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>KERNELS</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control">
+                                                <option>AND</option>
+                                                <option>OR</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="button" class="btn btn-default btn-block" value="Add" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div style="margin-top:10px;">
+                                    <button id="btnSearch" class="btn btn-primary pull-right">Search</button>
+                                </div>
+                                @*<div class="form-group">
+                                    <div class="col-md-2">
+                                        <label>Attachnent Title</label>
+                                    </div>
+                                    <div class="col-md-7" style="padding-left:0px;">
+                                        <div class="input-group" style="margin-left:0px;">
+                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type search text ..." class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="section-search-results" class="crop-search-results">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Script -->
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        Load("NV");
+        DisableSearch();
+    });
+
+    function DisableSearch() {
+        $('#btnSearch').prop('disabled', true);
+    };
+
+    function Load(validationStatus) {
+        var link = "";
+        var action = "";
+        var section = "";
+        var batchSize = 0;
+
+        var batchSize = $("#ddlBatchSizes").val();
+
+        switch (validationStatus) {
+            case "NV":
+                action = "AccessionInventoryAttachments";
+                section = "#section-to-validate";
+                break;
+            case "VL":
+                action = "ValidatedAccessionInventoryAttachments";
+                section = "#section-validated";
+                break;
+            case "ER":
+                action = "ErrorAccessionInventoryAttachments";
+                section = "#section-errors";
+
+        }
+        link = '@Url.Action("Action", "GRINGlobal")';
+        link = link.replace("Action", action);
+
+        if (batchSize > 0) {
+            link = link + "?batchSize=" + batchSize;
+        }
+        $(section).load(link);
+
+        link = '@Url.Action("ValidationStatistics","GRINGlobal")';
+        $("#section-validation-statistics").load(link);
+
+    };
+
+    $(".selector-tab").click(function () {
+        var id = $(this).attr('id');
+        var status = $(this).attr('title');
+
+        // Clear any checked items.
+        $('.mailbox-messages input:checkbox').prop('checked', false);
+
+        Load(status);
+    });
+
+    @*$("#btnSearch").click(function () {
+        var value = $("#txtCropName").val();
+        var url = '@Url.Action("CropSearch", "Taxonomy")';
+
+        $.get(url, { searchText: value })
+        .done(function (response) {
+            $("#section-search-results").html(response);
+        });
+    });*@
+
+</script>

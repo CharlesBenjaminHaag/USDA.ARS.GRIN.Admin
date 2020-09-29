@@ -1,0 +1,36 @@
+﻿@model USDA.ARS.GRIN.Admin.Models.Taxonomy.Citation
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <i class="fa fa-text-width"></i>
+        <h3 class="box-title">Citation</h3>
+        <button type="button" class="btn btn-primary btn-flat pull-right" data-toggle="modal" data-target="#modal-citation-search">...</button>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+    
+        @if (Model.ID > 0)
+        {
+            <dl>
+                @Html.HiddenFor(x => x.ID)
+                <dt>Title</dt>
+                <dd>@Model.Title</dd>
+                <dt>Literature</dt>
+                <dd>@Model.LiteratureReferenceTitle</dd>
+                <dt>Author</dt>
+                <dd>@Model.AuthorName</dd>
+            </dl>
+        }
+        else
+        { 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="callout callout-warning" style="vertical-align:middle;">
+                        This crop has not yet been cited.
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <!-- /.box-body -->
+</div>

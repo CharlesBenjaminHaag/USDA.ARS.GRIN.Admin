@@ -1,0 +1,321 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.IndexViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--
+==================================================
+REPORTS
+==================================================
+-->
+<h4>My Folders</h4>
+@{Html.RenderAction("FolderList", "Taxonomy");}
+
+
+
+<!--
+==================================================
+DASHBOARD
+==================================================
+-->
+<div class="box box-default">
+    <div class="box-header">
+        <h3 class="box-title">Statistics</h3>
+        <div class="box-tools pull-right">
+            <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>150</h3>
+
+                        <p>New Orders</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>150</h3>
+
+                        <p>New Orders</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-leaf"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>150</h3>
+
+                        <p>New Orders</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+
+
+
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>1492<sup style="font-size: 20px"></sup></h3>
+                        <p>Verified Species (9/2018 to 10/2019)</p>
+
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>53<sup style="font-size: 20px"></sup></h3>
+
+                        <p>Bounce Rate</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+                        <p>Bounce Rate</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>1492<sup style="font-size: 20px"></sup></h3>
+                        <p>Verified Species (9/2018 to 10/2019)</p>
+
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>53<sup style="font-size: 20px"></sup></h3>
+
+                        <p>Bounce Rate</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+                        <p>Bounce Rate</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div>
+        <input type="button" id="btnToggleFamily" class="btn btn-default" value="Toggle FAMILY" />
+        <input type="button" id="btnToggleGenus" class="btn btn-default" value="Toggle GENUS" />
+    </div>*@
+
+@*@foreach (var family in Model.Families)
+    {
+        <div id="my-box-widget" class="box box-default box-solid box-family" style="margin-bottom:5px; padding-bottom:10px; border-bottom:1px; background-color: #d2d6de;">
+            <div class="box-header" style="margin-bottom:0px; padding-bottom:0px; background-color: #d2d6de;">
+                <button type="button" class="btn btn-default" data-widget="collapse">
+                    <h3 class="box-title">@family.Name</h3>
+                </button>
+                <div class="box-tools pull-right">
+                </div>
+                 /.box-tools
+            </div>
+             /.box-header
+            <div class="box-body" style="background-color: #d2d6de;">
+
+                @foreach (var genus in family.Genii)
+                {
+                <div class="box box-default box-solid box-genus" style="margin-bottom:15px; padding-bottom:0px;">
+                    <div class="box-header" style="background-color:#b5bbc8;">
+                        <button type="button" class="btn btn-default" data-widget="collapse">
+                            <h3 class="box-title">@genus.Name</h3>
+                        </button>
+                        <div class="box-tools pull-right">
+                        </div>
+                         /.box-tools
+                    </div>
+                     /.box-header
+                    <div class="box-body" style="background-color:#b5bbc8;">
+
+                    </div>
+                     /.box-body
+                </div>
+                }
+            </div>
+             /.box-body
+        </div>
+    }*@
+
+<div id="section-folder-container">
+
+</div>
+
+<div>
+</div>
+
+<script type="text/javascript">
+
+    $("#btnToggleFamily").click(function (e) {
+        $('.box-family').boxWidget('expand');
+    });
+
+    $("#btnToggleGenus").click(function (e) {
+        $('.box-genus').boxWidget('collapse');
+    });
+
+
+
+
+
+
+    /*
+     * ==============================================================================================
+     * DELETE FOLDER ITEM
+     * ==============================================================================================
+     */
+    $(document).on("click", "[id*='btnDeleteItem']", function () {
+            var btnId = $(this).attr('id');
+            var controlIdString = btnId.split("_");
+            var sectionFolderItemContainerId = "#section-folder-item-container-" + controlIdString[1];
+            var folderId = controlIdString[1];
+            var folderItemId = controlIdString[2];
+
+            //e.preventDefault();
+
+            var url = '@Url.Action("FolderItemDelete", "Taxonomy")';
+
+            //DEBUG
+            alert("URL TO FIRE IS " + url);
+
+
+            $.get(url, { targetFolderId: folderId, itemId: folderItemId })
+            .done(function (response) {
+                $(sectionFolderItemContainerId).html(response);
+            });
+     });
+
+    /*
+     * ==============================================================================================
+     * DELETE MULTIPLE FOLDER ITEMS
+     * ==============================================================================================
+     */
+    $(document).on("click", "[id*='btnDeleteMultiple']", function(){
+        var inputFolderId = 0;
+        var valueArray = [];
+        var sectionFolderContainerId = "section-folder-container-";
+        var btnId = $(this).attr("id");
+
+        inputFolderId = btnId.split("-")[1];
+
+        var sectionFolderItemContainerId = "#section-folder-item-container-" + inputFolderId;
+
+        $("#section-folder-container input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        url = '@Url.Action("FolderItemsDelete", "Taxonomy")';
+
+        $.get(url, {folderId: inputFolderId, folderItemIdList: valueArray.toString() })
+            .done(function (response) {
+                $(sectionFolderItemContainerId).html(response);
+        });
+    });
+
+    /*
+     * ==============================================================================================
+     * CHECK/UNCHECK ALL
+     * ==============================================================================================
+     */
+    $(function () {
+
+        $(document).on("click", "[id*='btnCheckAll']", function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+
+        $(document).on("click", "[id*='btnUnCheckAll']", function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+</script>
+
+

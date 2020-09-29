@@ -1,0 +1,106 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropTraitListViewModel
+
+<div>
+    <div class="mailbox-controls">
+        <button type="button" class="btn btn-success btn-sm check-all-search-results">
+            <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+        </button>
+        <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+            <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;"/>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = 0 })'">
+            <img src="~/Content/img/fa-plus.png" style="width:18px; height:18px;" />
+        </button>
+        <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
+            <img src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive mailbox-messages">
+        <table id="data-list" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Trait Class</th>
+                    <th>Breeding Type</th>
+                    <th>Potential?</th>
+                    <th>Breeding Usage</th>
+                    <th>Created</th>
+                    <th>By</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    if (Model.CropTraits.Count > 0)
+                    {
+                        foreach (var trait in Model.CropTraits)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@trait.ID">
+                                </td>
+                                <td>
+                                    <span class="label label-default">@trait.ID</span>
+                                </td>
+                                <td>
+                                    @trait.TraitClassTitle
+                                </td>
+                                <td>
+                                    @trait.BreedingTypeTitle
+                                </td>
+                                <td>
+                                    @Html.Raw(DisplayManager.GetBooleanDisplayString(trait.IsPotential))
+                                </td>
+                                <td>
+                                    @trait.BreedingUsageNote
+                                </td>
+                                <td>
+                                    @trait.CreatedDate.ToShortDateString()
+                                </td>
+                                <td>
+                                    @trait.CreatedByCooperatorName
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("CropTraitDelete", "Taxonomy", new { cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                        <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;"/>
+                                    </a>
+                                    <a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                        <img class="img-action-button" src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">
+                                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                                    There are no traits associated with this map.
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('.check-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+        $('.uncheck-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+</script>

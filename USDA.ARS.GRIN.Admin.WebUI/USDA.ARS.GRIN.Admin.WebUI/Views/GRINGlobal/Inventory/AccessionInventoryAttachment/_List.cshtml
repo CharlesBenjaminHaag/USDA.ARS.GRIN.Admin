@@ -1,0 +1,150 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Inventory.AccessionInventoryAttachmentListViewModel
+<div>
+    <div class="mailbox-controls">
+        <button type="button" class="btn btn-success btn-sm check-all-search-results">
+            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-check.png" style="width:18px; height:18px;" />
+        </button>
+        <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-check.png" style="width:18px; height:18px;" />
+        </button>
+
+        <label style="margin-left:25px; margin-right:5px;">Batch Size</label>
+        <div class="btn-group">
+            @Html.DropDownListFor(x => x.BatchSize, Model.BatchSizes, new { @id = "ddlBatchSizes", @class = "form-control" })
+        </div>
+
+        <button type="submit" id="btnValidate" class="btn btn-primary btn-sm">
+            Validate Selected Records
+        </button>
+
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
+    </div>
+
+    <!-- "SEARCHING...PLEASE WAIT OVERLAY -->
+    <div id="wait" style="display:none;  background-color: black;  position: fixed;  top: 0; right: 0; bottom: 0; left: 0;  opacity: 0.2; /* also -moz-opacity, etc. */  z-index: 10;">
+        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/giphy.gif" style="position: absolute; top: 50%; left: 50%; width: 300px; height: 300px; margin-top: -250px; /* Half the height */  margin-left: -250px; /* Half the width */" />
+    </div>
+
+    <div class="table-responsive mailbox-messages">
+        @if (Model != null)
+        {
+            if (Model.AccessionInventoryAttachments.Count() > 0)
+            {
+                <table id="data-list" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th width="5%"></th>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Virtual Path</th>
+                            <th>Thumbnail Virtual Path</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var accessionInventoryAttachment in Model.AccessionInventoryAttachments)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@accessionInventoryAttachment.ID">
+                                </td>
+                                <td>
+                                    <span class="label label-default">@accessionInventoryAttachment.ID</span>
+                                </td>
+                                <td>
+                                    @accessionInventoryAttachment.Title
+                                </td>
+                                <td>
+                                    <a href='@accessionInventoryAttachment.VirtualPath'>@accessionInventoryAttachment.VirtualPath</a>
+                                </td>
+                                <td>
+                                    <a href='@accessionInventoryAttachment.ThumbnailVirtualPath'>@accessionInventoryAttachment.ThumbnailVirtualPath</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/info.png" style="margin:0px;" />
+                    Your search returned no matches.
+                </div>
+
+            }
+        }
+        else
+        {
+            <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                Your search returned no matches.
+            </div>
+
+        }
+    </div>
+</div>
+<script type="text/javascript">
+
+    if ($.fn.dataTable.isDataTable('#data-list')) {
+        table = $('#data-list').DataTable();
+    }
+    else {
+        table = $('#data-list').DataTable({
+            'paging': false,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+
+    }
+
+    $(document).ajaxStart(function () {
+        $("#wait").css("display", "block");
+    });
+
+    $(document).ajaxComplete(function () {
+        $("#wait").css("display", "none");
+    });
+
+    $(function () {
+        $('.check-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+        $('.uncheck-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
+        });
+    });
+
+    $('#ddlBatchSizes').on('change', function () {
+        Load("NV");
+    });
+
+    $('#btnValidate').on('click', function () {
+        var valueArray = [];
+        var batchSize = 0;
+
+        $(".active input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        $.ajax({
+            url: '@Url.Action("Validate","GRINGlobal")',
+            type: "GET",
+            data: { values: valueArray.toString() },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                Load("NV");
+            }
+        });
+    });
+</script>

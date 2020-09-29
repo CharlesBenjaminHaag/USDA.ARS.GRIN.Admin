@@ -1,0 +1,54 @@
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.CropTrait>
+<table id="data-list" class="table table-hover table-striped">
+    <thead>
+            <tr>
+                <th width="5%"></th>
+                <th>Trait Class Code</th>
+                <th>Breeding Type Code</th>
+                <th>Ontology Trait Identifier</th>
+                <th>Is Potential</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            if (Model.Count() > 0)
+            {
+                foreach (var result in Model)
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            @result.TraitClassCode
+                        </td>
+                        <td>
+                            @result.BreedingTypeCode
+                        </td>
+                        <td>
+                            @result.OntologyTraitIdentifier
+                        </td>
+                        <td>@result.IsPotential</td>
+                        <td></td>
+                        <td>
+                            <a href="@Url.Action("CropMapTraitEdit", "Taxonomy", new { id = 8 })" class="btn btn-sm btn-primary pull-right row-edit">
+                                <img src="~/Content/img/pencil.png" />Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $('#data-list').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+</script>
