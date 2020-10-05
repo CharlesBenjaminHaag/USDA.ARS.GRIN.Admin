@@ -11,13 +11,19 @@ using WebGrease.Activities;
 
 namespace USDA.ARS.GRIN.Admin.API.Controllers
 {
-    [RoutePrefix("api/species")]
+    [RoutePrefix("api/taxonomy/species")]
     public class SpeciesController : ApiController
     {
         private TaxonomyService _taxonomyService = new TaxonomyService("DEVELOPMENT");
 
+        /// <summary>
+        /// Returns a list of species records.
+        /// </summary>
+        /// <param name="includeBasionyms">Indicates whether or not to include related basionym records.</param>
+        /// <param name="includeSynonyms">Indicates whether or not to include related synonym records.</param>
+        /// <returns></returns>
         [Route]
-        public IHttpActionResult Get(bool includeBasionyms = false)
+        public IHttpActionResult Get(bool includeBasionyms = false, bool includeSynonyms = false)
         {
             IQueryable<Species> speciesList = null;
 

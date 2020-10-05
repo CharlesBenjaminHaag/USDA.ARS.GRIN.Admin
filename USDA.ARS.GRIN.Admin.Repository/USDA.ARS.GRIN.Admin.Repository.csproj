@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="Genesys\GenesysDAO.cs" />
     <Compile Include="GRINGlobal\AccessionDAO.cs" />
     <Compile Include="GRINGlobal\AccessionInventoryAttachmentDAO.cs" />
     <Compile Include="BaseDAO.cs" />

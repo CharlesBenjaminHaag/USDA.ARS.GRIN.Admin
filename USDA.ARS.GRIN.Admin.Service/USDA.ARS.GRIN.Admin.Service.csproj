@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BaseService.cs" />
     <Compile Include="Crypto.cs" />
+    <Compile Include="GenesysService.cs" />
     <Compile Include="GRINGlobalService.cs" />
     <Compile Include="ReportService.cs" />
     <Compile Include="SecurityService.cs" />

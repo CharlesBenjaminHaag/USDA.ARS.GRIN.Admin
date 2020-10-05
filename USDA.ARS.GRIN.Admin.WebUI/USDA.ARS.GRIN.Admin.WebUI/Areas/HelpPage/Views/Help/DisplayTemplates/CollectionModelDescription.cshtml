@@ -1,0 +1,6 @@
+@using USDA.ARS.GRIN.Admin.WebUI.Areas.HelpPage.ModelDescriptions
+@model CollectionModelDescription
+@if (Model.ElementDescription is ComplexTypeModelDescription)
+{
+    @Html.DisplayFor(m => m.ElementDescription)
+}
