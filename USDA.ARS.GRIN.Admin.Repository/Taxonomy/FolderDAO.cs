@@ -122,9 +122,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         if (String.IsNullOrEmpty(folder.Description))
                             cmd.Parameters.AddWithValue("@description", DBNull.Value);
                         else
-                            cmd.Parameters.AddWithValue("@description", folder.Description);
+                            cmd.Parameters.AddWithValue("@description", folder.Description); 
 
-                        cmd.Parameters.AddWithValue("@category", folder.Category);
+0                         cmd.Parameters.AddWithValue("@category", folder.Category);
                         cmd.Parameters.AddWithValue("@created_by", folder.CreatedByCooperatorID);
 
                         SqlParameter retErrorParam = new SqlParameter();
