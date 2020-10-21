@@ -764,7 +764,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.ID = folder.ID;
             viewModel.Title = folder.Title;
             viewModel.Description = folder.Description;
-            viewModel.Category = folder.Category;
+            viewModel.DataSource = folder.DataSource;
             viewModel.Note = folder.Note;
             viewModel.IsShared = folder.IsShared;
             viewModel.ModifiedByCooperatorID = folder.ModifiedByCooperatorID;
@@ -772,7 +772,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View(BASE_PATH +  "Folder/Edit.cshtml", viewModel);
         }
 
-        public JsonResult AddToFolder(int folderId, string folderTitle, string category, string source, string values)
+        public JsonResult AddToFolder(int folderId, string folderTitle, string dataSource, string values)
         {
             Folder folder = new Folder();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -780,21 +780,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             if (folderId == 0)
             {
                 folder.Title = folderTitle;
-                folder.Category = category;
-                folder.Source = source;
+                folder.DataSource = dataSource;
                 folder.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
                 folder.ItemList = values;
-
-                // USE DIFFERENT SQL ACCORDING TO CONTEXT -- SQL WILL BE SAME BASE SQL AS USED IN SEARCH
-                if (source == "taxonomy_cwr_map")
-                {
-                    folder.Category = "CWR Map";
-                }
-                else
-                {
-                    folder.Category = "Crop";
-                }
-
                 folderId = _taxonomyService.AddFolder(folder);
             }
             else
@@ -829,7 +817,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.ID = folder.ID;
             viewModel.Title = folder.Title;
             viewModel.Description = folder.Description;
-            viewModel.Category = folder.Category;
+            viewModel.DataSource = folder.DataSource;
             viewModel.IsShared = folder.IsShared;
             viewModel.Note = folder.Note;
             viewModel.SearchResults = folder.SearchResults;
@@ -855,7 +843,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 folder.ID = viewModel.ID;
                 folder.Title = viewModel.Title;
                 folder.Description = viewModel.Description;
-                folder.Category = viewModel.Category;
+                folder.DataSource = viewModel.DataSource;
                 folder.Note = viewModel.Note;
                 folder.IsShared = viewModel.IsShared;
                 folder.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;

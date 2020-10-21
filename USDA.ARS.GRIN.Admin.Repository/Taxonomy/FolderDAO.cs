@@ -41,8 +41,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 folder.ID = GetInt(reader["taxonomy_folder_id"].ToString());
                                 folder.Title = reader["title"].ToString();
                                 folder.Description = reader["description"].ToString();
-                                folder.Category = reader["category"].ToString();
+                                folder.DataSource = reader["data_source"].ToString();
                                 folder.Note = reader["note"].ToString();
+                                folder.IsShared = ParseBool(reader["is_shared"].ToString());
                                 folder.TotalItems = GetInt(reader["item_count"].ToString());
                                 folders.Add(folder);
                             }
@@ -80,7 +81,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                     folder.ID = GetInt(reader["taxonomy_folder_id"].ToString());
                                     folder.Title = reader["title"].ToString();
                                     folder.Description = reader["description"].ToString();
-                                    folder.Category = reader["category"].ToString();
+                                    folder.DataSource = reader["data_source"].ToString();
                                     folder.Note = reader["note"].ToString();
                                     folder.IsShared = ParseBool(reader["is_shared"].ToString());
                                     folder.CreatedDate = GetDate(reader["created_date"].ToString());
@@ -89,8 +90,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                     folder.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                     folder.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                                     folder.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
-                                    folder.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                                    folder.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                                 }
                             }
                         }
@@ -118,13 +117,18 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@title", folder.Title);
-
                         if (String.IsNullOrEmpty(folder.Description))
                             cmd.Parameters.AddWithValue("@description", DBNull.Value);
                         else
-                            cmd.Parameters.AddWithValue("@description", folder.Description); 
+                            cmd.Parameters.AddWithValue("@description", folder.Description);
+                        cmd.Parameters.AddWithValue("@data_source", GetDataSource(folder.DataSource));
 
-0                         cmd.Parameters.AddWithValue("@category", folder.Category);
+                        if(String.IsNullOrEmpty(folder.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", folder.Note);
+                        
+                        cmd.Parameters.AddWithValue("@is_shared", folder.IsShared);
                         cmd.Parameters.AddWithValue("@created_by", folder.CreatedByCooperatorID);
 
                         SqlParameter retErrorParam = new SqlParameter();
@@ -151,8 +155,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             foreach (var folderItemId in folderItemIdList)
                             {
                                 int convertedFolderItemId = Int32.Parse(folderItemId);
-                                FolderItem folderItem = new FolderItem { FolderID = taxonomyFolderId, ItemID = convertedFolderItemId, CreatedByCooperatorID = folder.CreatedByCooperatorID };
-                                AddFolderItem(folderItem);
+                                FolderItem folderItem = new FolderItem { FolderID = taxonomyFolderId, ItemID = convertedFolderItemId, ItemKey = folder.DataSource, CreatedByCooperatorID = folder.CreatedByCooperatorID };
+                                AddFolderItemMap(folderItem);
                             }
                         }
                     }
@@ -165,6 +169,20 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return returnCode;
         }
+
+        private string GetDataSource(string key)
+        {
+            switch (key)
+            {
+                case "taxonomy_cwr_map":
+                    return "usp_TaxonomyFolderCWRMap_Select";
+                case "taxonomy_cwr_crop":
+                    return "usp_TaxonomyFolderItemsCropForCWR_Select";
+                default:
+                    return "";
+            }
+        }
+
         public DataTable FindFolderItems(int folderId, string category)
         {
             const string COMMAND_TEXT = "usp_TaxonomyFolderItemCropMaps_Select";
@@ -188,11 +206,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return results;
         }
-        public int AddFolderItem(FolderItem folderItem)
+        public int AddFolderItemMap(FolderItem folderItem)
         {
             int returnCode = 0;
             int taxonomyFolderItemMapId = 0;
-            const string COMMAND_TEXT = "usp_FolderItemMap_Insert";
+            const string COMMAND_TEXT = "usp_TaxonomyFolderItemMap_Insert";
            
             try
             {
@@ -206,6 +224,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderItem.FolderID);
                         cmd.Parameters.AddWithValue("@item_id", folderItem.ItemID);
+                        cmd.Parameters.AddWithValue("@item_key", folderItem.ItemKey);
                         cmd.Parameters.AddWithValue("@created_by", folderItem.CreatedByCooperatorID);
 
                         SqlParameter retErrorParam = new SqlParameter();
@@ -249,7 +268,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folder.ID);
                         cmd.Parameters.AddWithValue("@title", folder.Title);
                         cmd.Parameters.AddWithValue("@description", folder.Description);
-                        cmd.Parameters.AddWithValue("@category", folder.Category);
+                        cmd.Parameters.AddWithValue("@category", folder.DataSource);
                         cmd.Parameters.AddWithValue("@note", folder.Note);
                         cmd.Parameters.AddWithValue("is_shared", ConvertBool(folder.IsShared));
                         cmd.Parameters.AddWithValue("modified_by", folder.ModifiedByCooperatorID);

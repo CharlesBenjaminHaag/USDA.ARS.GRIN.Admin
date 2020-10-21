@@ -211,7 +211,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             Folder folder = null;
             folder = _folderDAO.Get(id);
-            folder.FolderItems = _folderDAO.FindFolderItems(id, folder.Category);
+            folder.FolderItems = _folderDAO.FindFolderItems(id, folder.DataSource);
             
             return folder;
         }

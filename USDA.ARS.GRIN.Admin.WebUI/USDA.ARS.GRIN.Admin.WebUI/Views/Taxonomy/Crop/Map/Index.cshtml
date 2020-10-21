@@ -166,9 +166,6 @@
         var value = $("#txtCropName").val();
         var url = '@Url.Action("CWRMapSearch", "Taxonomy")';
 
-        //DEBUG
-        alert(value + ", " + url);
-
         $.get(url, { searchText: value })
         .done(function (response) {
             $("#section-search-results").html(response);
@@ -204,15 +201,15 @@
         $.ajax({
             url: '@Url.Action("AddToFolder","Taxonomy")',
             type: "GET",
-            data: {folderId: 0, folderTitle: title, category: category, source: 'taxonomy_cwr_map', values:valueArray.toString() },
+            data: {folderId: 0, folderTitle: title, dataSource: 'taxonomy_cwr_map', values:valueArray.toString() },
             cache: false,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
-                alert("DEBUG SUCCESS");
+                //alert("DEBUG SUCCESS");
             },
             error: function () {
-                alert("error");
+                //alert("error");
             }
         });
     });

@@ -10,6 +10,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
     {
         public int ID { get; set; }
         public int ItemID { get; set; }
+        public string ItemKey { get; set; }
 
         public int FolderID { get; set; }
         public string Category { get; set; }

@@ -16,8 +16,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
-        public string Source { get; set; }
+        public string DataSource { get; set; }
+        public string Note { get; set; }
         public bool IsShared { get; set; }
         public DataTable SearchResults { get; set; }
     }
