@@ -241,17 +241,12 @@ DASHBOARD
         $('.box-genus').boxWidget('collapse');
     });
 
-
-
-
-
-
     /*
      * ==============================================================================================
      * DELETE FOLDER ITEM
      * ==============================================================================================
      */
-    $(document).on("click", "[id*='btnDeleteItem']", function () {
+    @*$(document).on("click", "[id*='btnDeleteItem']", function () {
             var btnId = $(this).attr('id');
             var controlIdString = btnId.split("_");
             var sectionFolderItemContainerId = "#section-folder-item-container-" + controlIdString[1];
@@ -270,14 +265,14 @@ DASHBOARD
             .done(function (response) {
                 $(sectionFolderItemContainerId).html(response);
             });
-     });
+     });*@
 
     /*
      * ==============================================================================================
      * DELETE MULTIPLE FOLDER ITEMS
      * ==============================================================================================
      */
-    $(document).on("click", "[id*='btnDeleteMultiple']", function(){
+    @*$(document).on("click", "[id*='btnDeleteMultiple']", function(){
         var inputFolderId = 0;
         var valueArray = [];
         var sectionFolderContainerId = "section-folder-container-";
@@ -299,23 +294,23 @@ DASHBOARD
             .done(function (response) {
                 $(sectionFolderItemContainerId).html(response);
         });
-    });
+    });*@
 
     /*
      * ==============================================================================================
      * CHECK/UNCHECK ALL
      * ==============================================================================================
      */
-    $(function () {
+    //$(function () {
 
-        $(document).on("click", "[id*='btnCheckAll']", function () {
-            $('.mailbox-messages input:checkbox').prop('checked', true);
-        });
+    //    $(document).on("click", "[id*='btnCheckAll']", function () {
+    //        $('.mailbox-messages input:checkbox').prop('checked', true);
+    //    });
 
-        $(document).on("click", "[id*='btnUnCheckAll']", function () {
-            $('.mailbox-messages input:checkbox').prop('checked', false);
-        });
-    });
+    //    $(document).on("click", "[id*='btnUnCheckAll']", function () {
+    //        $('.mailbox-messages input:checkbox').prop('checked', false);
+    //    });
+    //});
 </script>
 
 

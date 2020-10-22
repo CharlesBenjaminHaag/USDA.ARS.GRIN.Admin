@@ -7,7 +7,7 @@
 @using (Html.BeginForm("FolderEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID, new { @name = "hfFolderID" })
-    @Html.HiddenFor(x => x.Category)
+    @Html.HiddenFor(x => x.DataSource)
     <div class="row">
         <div class="col-md-12">
             <div class="callout callout-info" style="margin-bottom: 0!important;">
@@ -78,11 +78,13 @@
         <h3 class="box-title">Folder Items</h3>
 
         <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><img src="/Content/img/bars-blk.png"></button>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
     </div>
     <div id="section-folder-item-container" class="box-body no-padding">
-        @{ Html.RenderAction("FolderItemList", "Taxonomy", new { targetFolderId = Model.ID });}
+        @{ Html.RenderAction("FolderItemList", "Taxonomy", new { targetFolderId = Model.ID, dataSource = Model.DataSource });}
     </div>
     <!-- /.box-body -->
     <div class="box-footer no-padding">
@@ -151,21 +153,13 @@
 </div>
 <script type="text/javascript">
 
-    $('#data-list').DataTable({
-        'paging': true,
-        'lengthChange': false,
-        'searching': false,
-        'ordering': true,
-        'info': true,
-        'autoWidth': false
-    });
+    
 
     $(document).on("click", "[id*='btnDelete']", function(){
         var btnId = $(this).attr('id');
 
         //DEBUG
-        alert("CONTROL ID " + btnId);
-
+        //alert("CONTROL ID " + btnId);
 
         var controlIdString = btnId.split("_")
         var folderContainerControlId = "#section-folder-item-container";
@@ -192,6 +186,8 @@
         var inputFolderId = 0;
         var valueArray = [];
         var url = "";
+
+        alert("DEBUG DEL MULT");
 
         $("#section-folder-item-container input:checked").each(function () {
             var id = $(this).attr("id");

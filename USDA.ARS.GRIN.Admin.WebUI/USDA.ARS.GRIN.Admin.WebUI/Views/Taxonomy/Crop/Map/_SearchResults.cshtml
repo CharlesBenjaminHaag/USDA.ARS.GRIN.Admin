@@ -28,7 +28,7 @@
 
             @if (Model.CWRMaps.Count > 0)
             {
-            <table id="data-list-crops" class="table table-hover table-striped">
+            <table id="search-results" class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th width="5%"></th>
@@ -104,16 +104,30 @@
     </div>
 
 
-<script>
-    $(function () {
-        $('.check-all-search-results').on('click', function () {
-            $('.mailbox-messages input:checkbox').prop('checked', true);
-        });
-        $('.uncheck-all-search-results').on('click', function () {
-            $('.mailbox-messages input:checkbox').prop('checked', false);
-        });
-    });
+    <script>
 
-   
+       
+            $('#search-results').DataTable({
+                'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+  
+
+        $(function () {
+            $('.check-all-search-results').on('click', function () {
+                $('.mailbox-messages input:checkbox').prop('checked', true);
+            });
+            $('.uncheck-all-search-results').on('click', function () {
+                $('.mailbox-messages input:checkbox').prop('checked', false);
+            });
+        });
+
+       
+        
+    
 
 </script>

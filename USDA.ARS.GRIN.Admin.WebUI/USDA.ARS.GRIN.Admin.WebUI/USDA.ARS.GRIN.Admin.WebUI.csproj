@@ -292,7 +292,7 @@
     <Content Include="Views\Taxonomy\Crop\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_List.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Map\_List.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_ItemList.cshtml" />
+    <Content Include="Views\Taxonomy\Folder\_CWRMapItemList.cshtml" />
     <Content Include="Views\Utilities\Index.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Map\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\Index.cshtml" />
@@ -309,6 +309,7 @@
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ErrorList.cshtml" />
     <Content Include="Views\User\_Applications.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_List_OLD.cshtml" />
+    <Content Include="Views\Taxonomy\Folder\_CropForCWRItemList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

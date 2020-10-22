@@ -159,6 +159,10 @@
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
             $(displaySection).load(link);
+
+            //DEBUG
+            alert("LOADING " + link);
+
         }
     });
 
@@ -169,16 +173,14 @@
         $.get(url, { searchText: value })
         .done(function (response) {
             $("#section-search-results").html(response);
-        });
-    });
-
-    $("#btnSearch").click(function () {
-        var value = $("#txtCropName").val();
-        var url = '@Url.Action("CWRMapSearch", "Taxonomy")';
-
-        $.get(url, { searchText: value })
-        .done(function (response) {
-            $("#section-search-results").html(response);
+            $('#search-results').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
         });
     });
 

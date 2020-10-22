@@ -1,0 +1,109 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.FolderItemListViewModel
+    <div id="section-folder-item-container" style="margin-top:15px;">
+        <div class="mailbox-controls">
+            <button type="button" id="btnCheckAll" class="btn btn-success btn-sm check-all-search-results">
+                <i class="fa fa-check"></i>
+            </button>
+            <button type="button" id="btnUncheckAll" class="btn btn-danger btn-sm uncheck-all-search-results">
+                <i class="fa fa-check-square"></i>
+            </button>
+            <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i>
+            </button>
+            <div class="pull-right">
+                <button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive mailbox-messages">
+            @if (Model != null)
+            {
+                if (Model.Results.Rows.Count > 0)
+                {
+                    <table id="data-list" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="5%"></th>
+                                <th>ID</th>
+                                <th>Crop Common Name</th>
+                                <th>Added</th>
+                                <th>By</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                if (Model.Results.Rows.Count > 0)
+                                {
+                                    foreach (System.Data.DataRow row in Model.Results.Rows)
+                                    {
+                                        DateTime dtCreatedDate = DateTime.Parse(row["created_date"].ToString());
+                                        string folderItemDeleteControlId = String.Empty;
+
+                                        folderItemDeleteControlId = "btnDeleteItem_" + row["taxonomy_folder_item_id"].ToString();
+
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@row["taxonomy_folder_item_id"]">
+                                            </td>
+                                            <td>
+                                                <span class="label label-default">@row["taxonomy_cwr_map_id"]</span>
+                                            </td>
+                                            <td>
+                                                @row["crop_common_name"]
+                                            </td>
+                                            <td>
+                                                @dtCreatedDate.ToShortDateString() at @dtCreatedDate.ToShortTimeString()
+                                            </td>
+                                            <td>
+                                              
+                                            </td>
+                                            <td>
+                                                <a href="#" id="@folderItemDeleteControlId" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                                    <i class="fa fa-trash"></i> Remove From Folder
+                                                </a>
+                                                <a href="@Url.Action("CwrMapEdit", "Taxonomy", new { id = row["taxonomy_cwr_map_id"] })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                        @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                        There are no items in this folder.
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                    Your search returned no matches.
+                </div>
+
+            }
+        </div>
+    </div>
+    <!-- ************************************************************************************************************************* -->
+    <!-- END FOLDER ITEM LIST -->
+    <!-- ************************************************************************************************************************* -->
+<script>
+    $('#data-list').DataTable({
+        'paging': true,
+        'lengthChange': false,
+        'searching': false,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+    });
+</script>

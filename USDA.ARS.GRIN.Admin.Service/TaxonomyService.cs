@@ -211,7 +211,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             Folder folder = null;
             folder = _folderDAO.Get(id);
-            folder.FolderItems = _folderDAO.FindFolderItems(id, folder.DataSource);
+            //folder.FolderItems = _folderDAO.FindFolderItems(id, folder.DataSource);
             
             return folder;
         }
@@ -231,9 +231,9 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _folderDAO.Delete(id);
         }
 
-        public DataTable GetFolderItems(int folderId, string category)
+        public DataTable GetFolderItems(int folderId, string dataSource)
         {
-            return _folderDAO.FindFolderItems(folderId, category);
+            return _folderDAO.FindFolderItems(folderId, dataSource);
         }
 
         public int DeleteFolderItem(int itemId)

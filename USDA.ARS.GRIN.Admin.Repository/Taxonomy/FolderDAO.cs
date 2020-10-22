@@ -21,7 +21,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public IEnumerable<Folder> Find(int cooperatorId)
         {
-            const string COMMAND_TEXT = "usp_FoldersByUser_Select";
+            const string COMMAND_TEXT = "usp_TaxonomyFoldersByUser_Select";
             List<Folder> folders = new List<Folder>();
 
             try
@@ -63,7 +63,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             Folder folder = null;
             try
             {
-                const string COMMAND_TEXT = "usp_Folder_Select";
+                const string COMMAND_TEXT = "usp_TaxonomyFolder_Select";
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
@@ -106,7 +106,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             int returnCode = 0;
             int taxonomyFolderId = 0;
-            const string COMMAND_TEXT = "usp_Folder_Insert";
+            const string COMMAND_TEXT = "usp_TaxonomyFolder_Insert";
             string[] folderItemIdList;
 
             try
@@ -121,13 +121,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             cmd.Parameters.AddWithValue("@description", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@description", folder.Description);
-                        cmd.Parameters.AddWithValue("@data_source", GetDataSource(folder.DataSource));
-
+                       
                         if(String.IsNullOrEmpty(folder.Note))
                             cmd.Parameters.AddWithValue("@note", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@note", folder.Note);
-                        
+                        cmd.Parameters.AddWithValue("@data_source", GetDataSource(folder.DataSource));
                         cmd.Parameters.AddWithValue("@is_shared", folder.IsShared);
                         cmd.Parameters.AddWithValue("@created_by", folder.CreatedByCooperatorID);
 
@@ -172,37 +171,48 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         private string GetDataSource(string key)
         {
-            switch (key)
-            {
-                case "taxonomy_cwr_map":
-                    return "usp_TaxonomyFolderCWRMap_Select";
-                case "taxonomy_cwr_crop":
-                    return "usp_TaxonomyFolderItemsCropForCWR_Select";
-                default:
+            //switch (key)
+            //{
+            //    //case "taxonomy_cwr_map":
+            //    //    return "usp_TaxonomyFolderCWRMap_Select";
+            //    //case "taxonomy_cwr_crop":
+            //    //    return "usp_TaxonomyFolderItemsCropForCWR_Select";
+            //    //default:
                     return "";
-            }
+            //}
         }
 
-        public DataTable FindFolderItems(int folderId, string category)
+        public DataTable FindFolderItems(int folderId, string dataSource)
         {
-            const string COMMAND_TEXT = "usp_TaxonomyFolderItemCropMaps_Select";
+            //const string COMMAND_TEXT = "usp_TaxonomyFolderItemCropMaps_Select";
+
+            string commandText = String.Empty;
             DataTable results = new DataTable();
             Folder folder = new Folder();
 
-            using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = COMMAND_TEXT;
-                    cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
+            commandText = dataSource;
 
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
                     {
-                        adapter.Fill(results);
+                        cmd.Connection = conn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = commandText;
+                        cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(results);
+                        }
                     }
                 }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
             }
             return results;
         }
@@ -256,7 +266,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
         public int Update(Folder folder)
         {
             int returnCode = 0;
-            const string COMMAND_TEXT = "usp_Folder_Update";
+            const string COMMAND_TEXT = "usp_TaxonomyFolder_Update";
 
             try
             {
@@ -268,7 +278,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folder.ID);
                         cmd.Parameters.AddWithValue("@title", folder.Title);
                         cmd.Parameters.AddWithValue("@description", folder.Description);
-                        cmd.Parameters.AddWithValue("@category", folder.DataSource);
+                        cmd.Parameters.AddWithValue("@data_source", folder.DataSource);
                         cmd.Parameters.AddWithValue("@note", folder.Note);
                         cmd.Parameters.AddWithValue("is_shared", ConvertBool(folder.IsShared));
                         cmd.Parameters.AddWithValue("modified_by", folder.ModifiedByCooperatorID);
@@ -293,7 +303,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
         public int Delete(int folderId)
         {
             int returnCode = 0;
-            const string COMMAND_TEXT = "usp_Folder_Delete";
+            const string COMMAND_TEXT = "usp_TaxonomyFolder_Delete";
 
             try
             {
@@ -322,7 +332,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
         public int RemoveItem(int itemId)
         {
             int returnCode = 0;
-            const string COMMAND_TEXT = "usp_FolderItemMap_Delete";
+            const string COMMAND_TEXT = "usp_TaxonomyFolderItemMap_Delete";
 
             try
             {

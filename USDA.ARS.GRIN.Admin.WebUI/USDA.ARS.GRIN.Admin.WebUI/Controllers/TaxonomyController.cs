@@ -10,6 +10,7 @@ using USDA.ARS.GRIN.Admin.Service;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 using log4net;
+using System.Web.UI.WebControls.WebParts;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
@@ -874,15 +875,25 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return RedirectToAction("Index", "Taxonomy");
         }
 
-        public PartialViewResult FolderItemList(int targetFolderId)
+        public PartialViewResult FolderItemList(int targetFolderId, string dataSource)
         {
+            const string VIEW_ROOT = "~/Views/Taxonomy/Folder/";
             string partialViewName = String.Empty;
             FolderItemListViewModel viewModel = new FolderItemListViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            viewModel.FolderID = targetFolderId;
-            viewModel.Results = _taxonomyService.GetFolderItems(targetFolderId, "");
-            return PartialView("~/Views/Taxonomy/Folder/_ItemList.cshtml", viewModel);
+            try
+            {
+                viewModel.FolderID = targetFolderId;
+                viewModel.Results = _taxonomyService.GetFolderItems(targetFolderId, dataSource);
+
+                partialViewName = GetViewName(dataSource);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + ex.StackTrace);
+            }
+            return PartialView(VIEW_ROOT + partialViewName, viewModel);
         }
 
         public PartialViewResult FolderItemDelete(int targetFolderId, int itemId)
@@ -914,6 +925,19 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.FolderID = folderId;
             viewModel.Results = _taxonomyService.GetFolderItems(folderId, "");
             return PartialView("~/Views/Taxonomy/Folder/_ItemList.cshtml", viewModel);
+        }
+
+        private string GetViewName(string dataSource)
+        {
+            switch (dataSource)
+            {
+                case "usp_TaxonomyFolderCropForCWRItems_Select":
+                    return "_CropForCWRItemList.cshtml";
+                case "usp_TaxonomyFolderCWRMapItems_Select":
+                    return "_CWRMapItemList.cshtml";
+                default:
+                    return String.Empty;
+            }
         }
 
         #endregion
