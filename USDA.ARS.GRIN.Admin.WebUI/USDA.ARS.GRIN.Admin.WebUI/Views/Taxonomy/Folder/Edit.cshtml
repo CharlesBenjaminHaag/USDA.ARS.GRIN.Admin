@@ -29,6 +29,9 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
+                    <button type="button" id="btnFolderDelete" onclick="location.href='@Url.Action("FolderDelete","Taxonomy",new { id = Model.ID })'" class="btn btn-danger pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
                     <button type="submit" class="btn btn-success pull-right" style="margin-right: 5px;">
                         <i class="fa fa-save"></i> Save
                     </button>
@@ -153,26 +156,27 @@
 </div>
 <script type="text/javascript">
 
-    
-
+    //===================================================================================
+    // Delete an invidual item from the folder.
+    //===================================================================================
     $(document).on("click", "[id*='btnDelete']", function(){
         var btnId = $(this).attr('id');
-
-        //DEBUG
-        //alert("CONTROL ID " + btnId);
-
         var controlIdString = btnId.split("_")
         var folderContainerControlId = "#section-folder-item-container";
-        var folderId = controlIdString[1];
-        var folderItemId = controlIdString[2];
+        var folderId = $("#ID").val();
+        var folderItemId = controlIdString[1];
+        var dataSource = $("#DataSource").val();
         var url = '@Url.Action("FolderItemDelete", "Taxonomy")';
 
-        $.get(url, { targetFolderId: folderId, itemId: folderItemId })
+        $.get(url, { targetFolderId: folderId, itemId: folderItemId, dataSource : dataSource })
         .done(function (response) {
             $(folderContainerControlId).html(response);
         });
     });
 
+    //===================================================================================
+    // Check/un-check all items.
+    //===================================================================================
     $(function () {
         $('.check-all-search-results').on('click', function () {
             $('.mailbox-messages input:checkbox').prop('checked', true);
@@ -182,12 +186,17 @@
         });
     });
 
-    $(document).on("click", "[id*='btnDeleteMultiple']", function(){
-        var inputFolderId = 0;
+    //===================================================================================
+    // Delete all checked items.
+    //===================================================================================
+    $(document).on("click", "[id*='btnMultipleDelete']", function(){
+        var folderId = $("#ID").val();
         var valueArray = [];
         var url = "";
+        var dataSource = $("#DataSource").val();
 
-        alert("DEBUG DEL MULT");
+        //DEBUG
+        alert("CLICKED");
 
         $("#section-folder-item-container input:checked").each(function () {
             var id = $(this).attr("id");
@@ -197,11 +206,7 @@
 
         url = '@Url.Action("FolderItemsDelete", "Taxonomy")';
 
-        //DEBUG
-        alert("URL " + url);
-        alert("VARIABLES ", folderId + ", " + folderItemIdList);
-
-        $.get(url, {folderId: inputFolderId, folderItemIdList: valueArray.toString() })
+        $.get(url, {folderId: folderId, folderItemIdList: valueArray.toString(), dataSource: dataSource })
             .done(function (response) {
                 $("#section-folder-item-container").html(response);
         });

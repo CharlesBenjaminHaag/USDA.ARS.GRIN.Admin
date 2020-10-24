@@ -171,26 +171,21 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         private string GetDataSource(string key)
         {
-            //switch (key)
-            //{
-            //    //case "taxonomy_cwr_map":
-            //    //    return "usp_TaxonomyFolderCWRMap_Select";
-            //    //case "taxonomy_cwr_crop":
-            //    //    return "usp_TaxonomyFolderItemsCropForCWR_Select";
-            //    //default:
+            switch (key)
+            {
+                case "taxonomy_cwr_map":
+                    return "usp_TaxonomyFolderCWRMapItems_Select";
+                case "taxonomy_cwr_crop":
+                    return "usp_TaxonomyFolderCropForCWRItems_Select";
+                default:
                     return "";
-            //}
+            }
         }
-
+   
         public DataTable FindFolderItems(int folderId, string dataSource)
         {
-            //const string COMMAND_TEXT = "usp_TaxonomyFolderItemCropMaps_Select";
-
-            string commandText = String.Empty;
             DataTable results = new DataTable();
             Folder folder = new Folder();
-
-            commandText = dataSource;
 
             try
             {
@@ -200,7 +195,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     {
                         cmd.Connection = conn;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = commandText;
+                        cmd.CommandText = dataSource;
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
 
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))

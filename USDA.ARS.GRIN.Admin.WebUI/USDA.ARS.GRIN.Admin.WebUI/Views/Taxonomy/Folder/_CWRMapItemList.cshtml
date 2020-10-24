@@ -7,7 +7,7 @@
             <button type="button" id="btnUncheckAll" class="btn btn-danger btn-sm uncheck-all-search-results">
                 <i class="fa fa-check-square"></i>
             </button>
-            <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
+            <button type="button" id="btnMultipleDelete" class="btn btn-danger btn-sm">
                 <i class="fa fa-trash"></i>
             </button>
             <div class="pull-right">
@@ -99,6 +99,7 @@
     <!-- ************************************************************************************************************************* -->
 <script>
     $('#data-list').DataTable({
+        'destroy': true,
         'paging': true,
         'lengthChange': false,
         'searching': false,

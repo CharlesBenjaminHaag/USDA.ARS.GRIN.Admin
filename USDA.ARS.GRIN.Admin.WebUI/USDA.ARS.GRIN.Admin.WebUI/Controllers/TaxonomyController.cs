@@ -803,9 +803,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult FolderList()
         {
-            TaxonomyService taxonomyService = new TaxonomyService(this.AuthenticatedUserSession.Environment);
-            IEnumerable<Folder> folderList = taxonomyService.GetFolders(AuthenticatedUser.CooperatorID);
-            return PartialView("~/Views/Taxonomy/Folder/_List.cshtml", folderList);
+            IEnumerable<Folder> folderList = null;
+            try 
+            {
+                TaxonomyService taxonomyService = new TaxonomyService(this.AuthenticatedUserSession.Environment);
+                folderList = taxonomyService.GetFolders(AuthenticatedUser.CooperatorID);
+                return PartialView("~/Views/Taxonomy/Folder/_List.cshtml", folderList);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + ex.StackTrace);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
         }
 
         public ActionResult FolderEdit(int id)
@@ -886,18 +895,20 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 viewModel.FolderID = targetFolderId;
                 viewModel.Results = _taxonomyService.GetFolderItems(targetFolderId, dataSource);
-
                 partialViewName = GetViewName(dataSource);
+                return PartialView(VIEW_ROOT + partialViewName, viewModel);
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message + ex.StackTrace);
+                return PartialView("~/Views/Error/_Error.cshtml");
             }
-            return PartialView(VIEW_ROOT + partialViewName, viewModel);
         }
 
-        public PartialViewResult FolderItemDelete(int targetFolderId, int itemId)
+        public PartialViewResult FolderItemDelete(int targetFolderId, int itemId, string dataSource)
         {
+            const string VIEW_ROOT = "~/Views/Taxonomy/Folder/";
+            string partialViewName = String.Empty;
             int retVal = 0;
             FolderItemListViewModel viewModel = new FolderItemListViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -906,25 +917,38 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 retVal = _taxonomyService.DeleteFolderItem(itemId);
                 viewModel.FolderID = targetFolderId;
-                viewModel.Results = _taxonomyService.GetFolderItems(targetFolderId, "");
+                viewModel.Results = _taxonomyService.GetFolderItems(targetFolderId, dataSource);
             }
             catch (Exception ex)
-            { 
-            
+            {
+                log.Error(ex.Message + ex.StackTrace);
             }
-            return PartialView("~/Views/Taxonomy/Folder/_ItemList.cshtml", viewModel);
+
+            partialViewName = GetViewName(dataSource);
+            return PartialView(VIEW_ROOT + partialViewName, viewModel);
         }
 
-        public PartialViewResult FolderItemsDelete(int folderId, string folderItemIdList)
+        public PartialViewResult FolderItemsDelete(int folderId, string folderItemIdList, string dataSource)
         {
+            const string VIEW_ROOT = "~/Views/Taxonomy/Folder/";
+            string partialViewName = String.Empty;
             ResultContainer resultContainer = new ResultContainer();
             FolderItemListViewModel viewModel = new FolderItemListViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            resultContainer = _taxonomyService.DeleteFolderItems(folderItemIdList);
-            viewModel.FolderID = folderId;
-            viewModel.Results = _taxonomyService.GetFolderItems(folderId, "");
-            return PartialView("~/Views/Taxonomy/Folder/_ItemList.cshtml", viewModel);
+            try
+            {
+                resultContainer = _taxonomyService.DeleteFolderItems(folderItemIdList);
+                viewModel.FolderID = folderId;
+                viewModel.Results = _taxonomyService.GetFolderItems(folderId, dataSource);
+                partialViewName = GetViewName(dataSource);
+                return PartialView(VIEW_ROOT + partialViewName, viewModel);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + ex.StackTrace);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
         }
 
         private string GetViewName(string dataSource)
