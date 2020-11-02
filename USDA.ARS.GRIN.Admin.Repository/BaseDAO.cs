@@ -222,7 +222,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
         }
 
-        public IEnumerable<CodeValueReferenceItem> GetCodeValueReferenceItems()
+        public List<CodeValueReferenceItem> GetCodeValueReferenceItems()
         {
             string CacheKey = "CodeValueReferenceItems";
             List<CodeValueReferenceItem> codeValueReferenceItems = new List<CodeValueReferenceItem>();
@@ -237,7 +237,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
                 cache.Add(CacheKey, codeValueReferenceItems, cacheItemPolicy);
             }
-            return codeValueReferenceItems.AsEnumerable();
+            return codeValueReferenceItems;
         }
 
         public List<CodeValueReferenceItem> GetAllCodeValueReferenceItems()

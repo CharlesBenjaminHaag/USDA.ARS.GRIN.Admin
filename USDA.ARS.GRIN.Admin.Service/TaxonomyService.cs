@@ -27,7 +27,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             this._speciesDAO = new SpeciesDAO(context);
             this._cropForCwrDAO = new CropForCwrDAO(context);
             this._folderDAO = new FolderDAO(context);
-            this._referenceDAO = new ReferenceDAO();
+            this._referenceDAO = new ReferenceDAO(context);
             this._regulationDAO = new RegulationDAO();
         }
 
@@ -194,7 +194,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _referenceDAO.FindCitations(searchString);
         }
 
-        public IEnumerable<Citation> FindCitations(int speciesId)
+        public List<Citation> FindCitations(int speciesId)
         {
             return _referenceDAO.FindCitations(speciesId);
         }
@@ -260,9 +260,9 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region Reference
 
-        public IEnumerable<CodeValueReferenceItem> GetGenePoolCodes()
+        public List<CodeValueReferenceItem> GetGenePoolCodes()
         {
-           return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_GENEPOOL").AsEnumerable();
+           return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_GENEPOOL").ToList();
         }
         public IEnumerable<CodeValueReferenceItem> GetTraitClassCodes()
         {

@@ -15,13 +15,15 @@ namespace USDA.ARS.GRIN.Admin.Repository
     public class ReferenceDAO : BaseDAO
     {
         protected DataContext _dataContext = null;
-      
+
+        public ReferenceDAO(string context)
+        {
+            _context = context;
+        }
+
         public List<ReferenceItem> GenePoolCodes()
         {
             List<ReferenceItem> genepoolCodes = new List<ReferenceItem>();
-
-
-
             return genepoolCodes;
         }
 
@@ -213,7 +215,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return citations.AsEnumerable();
         }
 
-        public IEnumerable<Citation> FindCitations(int speciesId)
+        public List<Citation> FindCitations(int speciesId)
         {
             List<Citation> citations = new List<Citation>();
 
@@ -243,7 +245,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             {
                 throw ex;
             }
-            return citations.AsEnumerable();
+            return citations;
         }
 
         public IEnumerable<ReferenceItem> FindReferenceItems(string searchString)

@@ -13,6 +13,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI
     public class MvcApplication : HttpApplication
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         protected void Application_Start()
         {
@@ -34,6 +35,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI
         {
             var exception = Server.GetLastError();
             Log.Error(exception, "Unhandled application exception");
+            log.Error(exception.Message + exception.StackTrace);
 
             var httpContext = ((HttpApplication)sender).Context;
             httpContext.Response.Clear();

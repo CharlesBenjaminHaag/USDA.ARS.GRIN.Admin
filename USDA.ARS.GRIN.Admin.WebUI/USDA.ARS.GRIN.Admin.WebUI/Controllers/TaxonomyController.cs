@@ -18,7 +18,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
     public class TaxonomyController : BaseController
     {
         const string BASE_PATH = "~/Views/Taxonomy/";
-
+ 
         //protected override void OnActionExecuted(ActionExecutedContext ctx)
         //{
         //    base.OnActionExecuted(ctx);
@@ -29,7 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public TaxonomyController()
         {
-            
+            //this._taxonomyService = new TaxonomyService(this.AuthenticatedUserSession.Environment);
         }
 
         public UserSession GetUserSession()
@@ -291,16 +291,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult CWRMapEdit(int cropId, int cwrMapId = 0)
         {
-            CWRMapEditViewModel viewModel = new CWRMapEditViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            CWRMapEditViewModel viewModel = null;
+           
             try
             {
                 if (cwrMapId > 0)
                 {
                     TempData["context"] = "Edit CWR Map";
 
-                    CWRMap cwrMap = _taxonomyService.GetCWRMap(cwrMapId);
+                    CWRMap cwrMap = taxonomyService.GetCWRMap(cwrMapId);
+
+                    viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR(), taxonomyService.FindCitations(cwrMap.SpeciesID));
                     viewModel.ID = cwrMap.ID;
                     viewModel.CropID = cwrMap.CropID;
                     viewModel.SpeciesID = cwrMap.SpeciesID;
@@ -318,10 +320,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.ModifiedDate = cwrMap.ModifiedDate;
                     viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
                     viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
-                    viewModel.LoadCitations(viewModel.SpeciesID);
                 }
                 else
                 {
+                    viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
                     viewModel.CropID = cropId;
                     TempData["context"] = "Add CWR Map";
                 }

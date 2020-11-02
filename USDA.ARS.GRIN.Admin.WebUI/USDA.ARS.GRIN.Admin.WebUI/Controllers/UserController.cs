@@ -56,7 +56,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (AuthenticationException aex)
             {
-                log.Error(aex.Message);
+                log.Error(aex.Message + resultContainer.ResultDescription);
                 viewModel.Status = resultContainer.ResultCode;
                 viewModel.ErrorMessage = resultContainer.GetUserFriendlyDescription(resultContainer.ResultCode);
                 return View("~/Views/User/Login.cshtml", viewModel);

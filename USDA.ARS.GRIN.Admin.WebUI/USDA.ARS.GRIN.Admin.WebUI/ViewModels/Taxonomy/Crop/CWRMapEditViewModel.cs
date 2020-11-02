@@ -15,6 +15,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
     {
         //private TaxonomyService _taxonomyService = new TaxonomyService();
         private Citation _citation = new Citation();
+        private IEnumerable<Citation> _citations;
         private IEnumerable<CodeValueReferenceItem> _genepoolCodes;
         private List<CropForCWR> _taxonomyCrops;
       
@@ -56,10 +57,26 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
             get { return new SelectList(_genepoolCodes, "CodeValue", "CodeValue"); }
         }
 
-        public CWRMapEditViewModel()
+        public IEnumerable<SelectListItem> Citations
         {
-            //_genepoolCodes = _taxonomyService.GetGenePoolCodes();
-            //_taxonomyCrops = _taxonomyService.GetCropsForCWR();
+            get { return new SelectList(_citations, "ID", "CitationTitle"); }
+        }
+
+        public CWRMapEditViewModel()
+        { }
+
+        public CWRMapEditViewModel(List<CodeValueReferenceItem> genePoolCodes, List<CropForCWR> cropsForCwr, List<Citation> citations)
+        {
+            _genepoolCodes = genePoolCodes;
+            _taxonomyCrops = cropsForCwr;
+            _citations = citations;
+        }
+
+        public CWRMapEditViewModel(List<CodeValueReferenceItem> genePoolCodes, List<CropForCWR> cropsForCwr)
+        {
+            _genepoolCodes = genePoolCodes;
+            _taxonomyCrops = cropsForCwr;
+            _citations = new List<Citation>();
         }
     }
 }

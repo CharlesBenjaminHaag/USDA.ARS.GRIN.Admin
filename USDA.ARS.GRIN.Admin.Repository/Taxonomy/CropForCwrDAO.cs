@@ -12,7 +12,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class CropForCwrDAO : BaseDAO, IRepository<CropForCWR>
     {
-        private string _context;
+        //private string _context;
         public CropForCwrDAO(string context)
         {
             _context = context;

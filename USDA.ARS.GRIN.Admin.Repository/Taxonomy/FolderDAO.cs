@@ -12,8 +12,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class FolderDAO : BaseDAO
     {
-        private string _context;
-
         public FolderDAO(string contextName)
         {
             _context = contextName;
