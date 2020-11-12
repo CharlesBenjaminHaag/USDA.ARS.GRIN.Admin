@@ -42,4 +42,98 @@ UPDATE sys_application SET sys_group_id = (SELECT sys_group_id FROM sys_group WH
 -- ===================================================================================================================
 -- SET DEFAULT ROLES
 -- ===================================================================================================================
-	
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	2888,
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	2887,
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	2889,
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	2891,
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	2892,
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+
+
+
+
