@@ -12,33 +12,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class CropForCwrDAO : BaseDAO, IRepository<CropForCWR>
     {
-        //private string _context;
         public CropForCwrDAO(string context)
         {
             _context = context;
         }
-       
-        protected string GetConnectionStringKey()
-        {
-            switch (_context)
-            {
-                case "LOCAL":
-                    return "DataManagerLocal";
-                case "PRODCOPY":
-                    return "DataManagerProdCopy";
-                case "DEVELOPMENT":
-                    return "DataManagerDev";
-                case "TEST":
-                    return "DataManagerTest";
-                case "TRAINING":
-                    return "DataManagerTraining";
-                case "PRODUCTION":
-                    return "DataManagerProd";
-                default:
-                    return "";
-            }
-        }
-
+    
         #region Crop for CWR
 
         public List<CropForCWR> FindCropsForCwr(Query searchObject)
@@ -1454,13 +1432,34 @@ namespace USDA.ARS.GRIN.Admin.Repository
             searchSyntax = searchOperators.Where(x => x.Code == searchOperatorCode).First().SearchOperatorSyntax.Replace(":search_criterion", searchCriterion);
             return searchSyntax;
         }
+             
 
-        int IRepository<CropForCWR>.AddREFACTOR(CropForCWR entity)
+        int IRepository<CropForCWR>.Update(CropForCWR entity)
         {
             throw new NotImplementedException();
         }
 
-        int IRepository<CropForCWR>.Update(CropForCWR entity)
+        public int Add(CropForCWR entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CropForCWR Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<CropForCWR> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<CropForCWR> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<CropForCWR> Search(string searchString)
         {
             throw new NotImplementedException();
         }

@@ -31,6 +31,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        public UserSession GetUserSession()
+        {
+            UserSession userSession = null;
+
+            try
+            {
+                if (Session["USER_SESSION"] != null)
+                {
+                    userSession = Session["USER_SESSION"] as UserSession;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + "|" + ex.StackTrace);
+            }
+            return userSession;
+        }
+
         public UserSession AuthenticatedUserSession
         {
             get

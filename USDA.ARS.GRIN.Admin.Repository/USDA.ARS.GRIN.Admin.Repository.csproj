@@ -55,6 +55,9 @@
     <Compile Include="GRINGlobal\AccessionDAO.cs" />
     <Compile Include="GRINGlobal\AccessionInventoryAttachmentDAO.cs" />
     <Compile Include="BaseDAO.cs" />
+    <Compile Include="GRINGlobal\CooperatorDAO.cs" />
+    <Compile Include="GRINGlobal\OrderRequestDAO.cs" />
+    <Compile Include="GRINGlobal\WebOrderRequestDAO.cs" />
     <Compile Include="Taxonomy\FamilyDAO.cs" />
     <Compile Include="Taxonomy\FolderDAO.cs" />
     <Compile Include="Taxonomy\CropForCwrDAO.cs" />
@@ -68,7 +71,6 @@
     <Compile Include="Taxonomy\ReportDAO.cs" />
     <Compile Include="Taxonomy\SpeciesDAO.cs" />
     <Compile Include="Taxonomy\SpeciesRepository.cs" />
-    <Compile Include="SqlRepository.cs" />
     <Compile Include="UserDAO.cs" />
   </ItemGroup>
   <ItemGroup>

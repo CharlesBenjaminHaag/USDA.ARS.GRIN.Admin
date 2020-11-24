@@ -272,5 +272,25 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return userGroups;
         }
+
+        public int Add(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<User> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<User> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<User> IRepository<User>.Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -212,5 +212,25 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             throw new NotImplementedException();
         }
+
+        public int Add(AccessionInventoryAttachment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<AccessionInventoryAttachment> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<AccessionInventoryAttachment> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<AccessionInventoryAttachment> Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

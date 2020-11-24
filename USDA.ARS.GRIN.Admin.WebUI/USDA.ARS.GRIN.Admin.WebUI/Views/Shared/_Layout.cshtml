@@ -63,7 +63,8 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    @ViewContext.RouteData.Values["controller"].ToString() -- @ViewContext.RouteData.Values["action"].ToString()
+                    @TempData["context"]
+                    @*@ViewContext.RouteData.Values["controller"].ToString() -- @ViewContext.RouteData.Values["action"].ToString()*@
                     <small>@DisplayManager.GetVersion()</small>
                 </h1>
                 <ol class="breadcrumb">

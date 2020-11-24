@@ -264,19 +264,19 @@
     <Content Include="Views\Taxonomy\Reports\Detail.cshtml" />
     <Content Include="Views\AccountManagement\Index.cshtml" />
     <Content Include="Views\Taxonomy\Crop\List.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Map\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CWRMap\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\_List.cshtml" />
     <Content Include="Views\Taxonomy\Species\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\CWR\Index.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\CWR\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CropForCWR\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CropForCWR\Edit.cshtml" />
     <Content Include="Views\SiteManagement\PVP\Index.cshtml" />
     <Content Include="Views\SiteManagement\CGC\Index.cshtml" />
     <Content Include="Views\SiteManagement\CGC\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_MySearches.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_MyNotes.cshtml" />
     <Content Include="Views\User\List.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\CWR\_List.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Map\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CropForCWR\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CWRMap\Index.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_SearchCriteria.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_Detail.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_CropMapTraits.cshtml" />
@@ -291,10 +291,10 @@
     <Content Include="Views\Taxonomy\Crop\Search.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_List.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Map\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CWRMap\_List.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_CWRMapItemList.cshtml" />
     <Content Include="Views\Utilities\Index.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Map\_SearchResults.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CWRMap\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\Index.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\_List.cshtml" />
     <Content Include="Views\GRINGlobal\Accession\Index.cshtml" />
@@ -310,6 +310,9 @@
     <Content Include="Views\User\_Applications.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_CropForCWRItemList.cshtml" />
     <Content Include="Views\Error\_Error.cshtml" />
+    <Content Include="Views\GRINGlobal\Order\Index.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\Index.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\_List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -351,10 +354,12 @@
     <Compile Include="Controllers\AccountManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GRINGlobalController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\SiteManagementController.cs" />
     <Compile Include="Controllers\TaxonomyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
+    <Compile Include="Controllers\WebOrderController.cs" />
     <Compile Include="DisplayManager.cs" />
     <Compile Include="ExcelUtility.cs" />
     <Compile Include="GrinGlobalAuthenticationFilter.cs" />
@@ -368,11 +373,11 @@
     <Compile Include="UserNotFoundException.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\Accession\HomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\GRINGlobalHomeViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\Inventory\AccessionInventoryAttachmentListViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\Inventory\HomeViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\Inventory\ValidationStatisticsViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\AccessionInventoryAttachmentListViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\HomeViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\ValidationStatisticsViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CWRMapHomeViewModel.cs" />

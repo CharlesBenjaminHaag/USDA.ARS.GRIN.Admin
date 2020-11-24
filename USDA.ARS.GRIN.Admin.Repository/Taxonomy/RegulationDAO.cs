@@ -11,6 +11,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class RegulationDAO : BaseDAO, IRepository<Regulation>
     {
+        public int Add(Regulation entity)
+        {
+            throw new NotImplementedException();
+        }
 
         public int AddREFACTOR(Regulation entity)
         {
@@ -58,7 +62,27 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return taxonomyRegulations.AsQueryable();
         }
 
+        public Regulation Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Remove(Regulation entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Regulation> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Regulation> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Regulation> Search(string searchString)
         {
             throw new NotImplementedException();
         }

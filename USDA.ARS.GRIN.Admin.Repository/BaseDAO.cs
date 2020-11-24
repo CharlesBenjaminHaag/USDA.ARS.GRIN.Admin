@@ -146,6 +146,32 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return searchSyntax;
         }
 
+        protected string GetWhereClause(Query searchObject)
+        {
+            StringBuilder sqlWhereClause = new StringBuilder();
+
+            foreach (var searchCriterion in searchObject.QueryCriteria)
+            {
+                searchCriterion.SearchSyntax = GetSearchSyntax(searchCriterion.SearchOperatorCode, searchCriterion.FieldValue);
+                if (sqlWhereClause.Length == 0)
+                {
+                    sqlWhereClause.Append(" WHERE ");
+                }
+                else
+                {
+                    if (sqlWhereClause.Length > 0)
+                    {
+                        sqlWhereClause.Append(" OR ");
+                    }
+                }
+
+                searchCriterion.FieldName = GetDatabaseFieldName(searchCriterion.FieldName);
+                sqlWhereClause.Append(searchCriterion.FieldName);
+                sqlWhereClause.Append(" ");
+                sqlWhereClause.Append(searchCriterion.SearchSyntax);
+            }
+            return sqlWhereClause.ToString();
+        }
 
         public string UnBool(bool boolValue)
         {

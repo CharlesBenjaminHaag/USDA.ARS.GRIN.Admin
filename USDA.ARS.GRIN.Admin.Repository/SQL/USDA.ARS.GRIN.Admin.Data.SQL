@@ -1,5 +1,16 @@
 USE [gringlobal]
 
+DELETE FROM 
+	sys_group_user_map
+WHERE
+	sys_group_id IN
+	(SELECT sys_group_id FROM sys_group
+	 WHERE group_tag LIKE 'GGTOOLS%')
+GO
+
+DELETE FROM sys_group
+WHERE
+	group_tag LIKE 'GGTOOLS%'
 INSERT INTO sys_group
 	(group_tag,is_enabled,created_date,created_by,owned_date, owned_by)
 VALUES
@@ -23,25 +34,64 @@ VALUES
 INSERT INTO sys_group
 	(group_tag,is_enabled,created_date,created_by,owned_date, owned_by)
 VALUES
-	('GGTOOLS_DATAMANAGER','Y',GETDATE(),48,GETDATE(),48)
+	('GGTOOLS_ORDERS','Y',GETDATE(),48,GETDATE(),48)
+GO
 
+DELETE FROM 
+	sys_application
+WHERE
+	code LIKE 'GGTOOLS%'
+
+INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_ACCOUNTS', N'GGTools Account Manager', N'Manage GRIN-Global users and roles, reset passwords, and assign and reassign GRIN-Global records', N'accountmanagement', N'purple', N'fa-users.png')
 GO
-INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (10, N'GGTOOLS_ACCOUNTS', N'GGTools Account Manager', N'Manage GRIN-Global users and roles, reset passwords, and assign and reassign GRIN-Global records', N'accountmanagement', N'purple', N'fa-users.png')
+INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_TAXONOMY', N'GGTools Taxonomy Editor', N'Create and edit taxonomical data, and run diagnostic reports', N'taxonomy', N'green', N'fa-tree.png')
 GO
-INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (11, N'GGTOOLS_TAXONOMY', N'GGTools Taxonomy Editor', N'Create and edit taxonomical data, and run diagnostic reports', N'taxonomy', N'green', N'fa-tree.png')
+INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_SITE', N'ARS-GRIN Site Manager', N'Manage ARS-GRIN site content', N'sitemanagenemt', N'red', N'fa-television.png')
 GO
-INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (12, N'GGTOOLS_SITE', N'ARS-GRIN Site Manager', N'Manage ARS-GRIN site content', N'sitemanagenemt', N'red', N'fa-television.png')
+INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_GRINGLOBAL', N'GGTools GRIN-Global Admin', N'GRINGlobal data-management utilities', N'gringlobal', N'blue', N'gglogo.gif')
 GO
-INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (13, N'GGTOOLS_GRINGLOBAL', N'GGTools GRIN-Global Admin', N'GRINGlobal data-management utilities', N'gringlobal', N'blue', N'gglogo.gif')
-GO
-INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (14, N'GGTOOLS_DATAMANAGER', N'GGTools GRIN-Global Data Manager', N'Supports the review and editing of GRIN-Global reference data.', N'datamanagement', N'black', N'cog.png')
+INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_ORDERS', N'GRIN-Global NRR Review Tool', N'Enables curators to review and approve, or reject, web orders that have been flagged as potential Non-Research Requests (NRR)Supports the review and editing of GRIN-Global reference data.', N'orders', N'black', N'cog.png')
 GO
 
 UPDATE sys_application SET sys_group_id = (SELECT sys_group_id FROM sys_group WHERE group_tag = sys_application.code)
 
+-- VERIFY
+SELECT * 
+FROM 
+	sys_group
+WHERE 
+	group_tag LIKE 'GGTOOLS%'
+
+SELECT *
+FROM
+	sys_group_user_map
+WHERE
+	sys_group_id IN
+	(SELECT sys_group_id 
+	 FROM 
+		sys_group
+	 WHERE 
+		group_tag 
+	 LIKE 'GGTOOLS%')
+
+SELECT *
+FROM
+	sys_application
+WHERE
+	code LIKE 'GGTOOLS%'
+
+
+
 -- ===================================================================================================================
 -- SET DEFAULT ROLES
 -- ===================================================================================================================
+DELETE FROM 
+	sys_group_user_map
+WHERE
+	sys_group_id IN
+	(SELECT sys_group_id FROM sys_group
+	 WHERE group_tag LIKE 'GGTOOLS%')
+
 INSERT INTO sys_group_user_map
 (
 	 sys_group_id,
@@ -53,7 +103,7 @@ INSERT INTO sys_group_user_map
 )
 VALUES
 (
-	2888,
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ACCOUNTS'),
 	488,
 	GETDATE(),
 	48,
@@ -72,61 +122,7 @@ INSERT INTO sys_group_user_map
 )
 VALUES
 (
-	2887,
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	2889,
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	2891,
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	2892,
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_TAXONOMY'),
 	488,
 	GETDATE(),
 	48,
@@ -134,6 +130,62 @@ VALUES
 	48
 )
 
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_SITE'),
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_GRINGLOBAL'),
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
+	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
 
 
 

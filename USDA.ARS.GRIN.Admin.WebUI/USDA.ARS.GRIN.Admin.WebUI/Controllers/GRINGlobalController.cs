@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
 using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
-using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Accession;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Inventory;
 using USDA.ARS.GRIN.Utilities;
 using System.ComponentModel;
@@ -115,7 +115,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/GRINGlobal/Inventory/AccessionInventoryAttachment/_ValidationStatistics.cshtml", viewModel);
         }
 
-
         public void Tester()
         {
             List<string> names = new List<string>() {
@@ -141,5 +140,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 string DEBUG = TextUtility.ToProperCase(name);
             }
         }
+
+        #region Order
+
+        public ActionResult OrdersHome()
+        {
+            TempData["context"] = "NRR Review";
+            return View("~/Views/GRINGlobal/Order/Index.cshtml");
+        }
+
+        #endregion
     }
 }

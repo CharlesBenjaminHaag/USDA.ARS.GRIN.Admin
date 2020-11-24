@@ -225,6 +225,31 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             return 0;
         }
+
+        public int Add(Species entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Species Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Species> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Species> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Species> Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

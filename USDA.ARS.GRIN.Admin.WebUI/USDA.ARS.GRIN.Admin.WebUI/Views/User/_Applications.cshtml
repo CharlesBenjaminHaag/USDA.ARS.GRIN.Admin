@@ -12,17 +12,25 @@
             { 
                 <li>
                     @*<i class="fa fa-user bg-aqua"></i>*@
-                    <div class="timeline-item" style="background-color:#ebebeb;">
-                        <span class="time">Version @application.ApplicationCode</span>
-                        <h3 class="timeline-header">@application.Title</h3>
+                    <div class="timeline-item" >
+                        <span class="time">
+
+                            <span class="label label-default" style="display:inline-block; font-size: 12px; margin-bottom: .3em;"><a href="" style="color:white;">Version 1.0.0</a></span>
+
+                            @*Version @application.ApplicationCode*@
+
+
+                        </span>
+                        
+                        <h3 class="timeline-header" style="background-color:#ebebeb;">@application.Title</h3>
                         <div class="timeline-body">
                             @application.Description 
                         </div>
                         <div class="timeline-footer">
                             @if (application.IsAuthorized)
                             {
-                                <a class="btn btn-success btn-xs" href="@Url.Action("Index", "Home", new { appContext = application.URL })">Launch</a>
-                                <a class="btn btn-warning btn-xs disabled" href="http://arsmdbe33ws1.usda.net:8080/trac/GG/query?component=ARS-GRIN+Site&col=id&col=summary&col=status&col=type&col=priority&col=milestone&col=component&report=46&order=priority">View Trac Tickets</a>
+                                <a class="btn btn-success btn-xs" href="@Url.Action("Index", "Home", new { appContext = application.URL })">Launch Application</a>
+                                @*<a class="btn btn-warning btn-xs disabled" href="http://arsmdbe33ws1.usda.net:8080/trac/GG/query?component=ARS-GRIN+Site&col=id&col=summary&col=status&col=type&col=priority&col=milestone&col=component&report=46&order=priority">View Trac Tickets</a>*@
                             }
                             else
                             { 

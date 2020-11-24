@@ -43,7 +43,7 @@
             }*@
         <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Log in using your <strong>GRIN-Global Admin</strong> user name and password.</p>
+        @*<p class="login-box-msg">Log in using your <strong>GRIN-Global Admin</strong> user name and password.</p>*@
 
         <form action="@Url.Action("Login","User")" method="post">
             @if (!String.IsNullOrEmpty(Model.Status) && Model.Status != USDA.ARS.GRIN.Admin.Service.LoginResult.SUCCESS.ToString())
@@ -64,7 +64,7 @@
             </div>
             <div class="form-group has-feedback">
                 <select name="environment" class="form-control">
-                    @*<option value="LOCAL">Local</option>*@
+                    <option value="LOCAL">Local</option>
                     @*<option value="PRODCOPY">Prod-Copy</option>*@
                     <option value="DEVELOPMENT">Development</option>
                     @*<option value="TEST">Test</option>*@
@@ -74,7 +74,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-8">
-
+                    <button class="btn btn-success btn-block btn-flat">Request New Account</button>
                 </div>
 
                 <div class="col-xs-4">
@@ -82,8 +82,7 @@
                 </div>
 
             </div>
-</form>
-
+    </form>
         @*<div class="social-auth-links text-center">
             <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
                 <i class="fa fa-facebook"></i> Sign in using

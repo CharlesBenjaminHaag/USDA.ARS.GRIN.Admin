@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Taxonomy.Models;
 
 namespace USDA.ARS.GRIN.Admin.Repository
@@ -45,6 +46,21 @@ namespace USDA.ARS.GRIN.Admin.Repository
         public IQueryable<T> FindAll()
         {
             return null;
+        }
+
+        public int Add(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<T> Search(Query query)
+        {
+            throw new NotImplementedException();
         }
     }
 }

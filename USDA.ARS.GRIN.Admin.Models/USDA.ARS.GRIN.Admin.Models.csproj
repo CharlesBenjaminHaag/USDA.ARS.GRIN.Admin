@@ -49,7 +49,13 @@
     <Compile Include="Application.cs" />
     <Compile Include="CodeValueReferenceItem.cs" />
     <Compile Include="FileMetaData.cs" />
+    <Compile Include="GRINGlobal\Cooperator.cs" />
     <Compile Include="GRINGlobal\Inventory.cs" />
+    <Compile Include="GRINGlobal\OrderRequest.cs" />
+    <Compile Include="GRINGlobal\Person.cs" />
+    <Compile Include="GRINGlobal\WebOrderRequest.cs" />
+    <Compile Include="GRINGlobal\WebCooperator.cs" />
+    <Compile Include="GRINGlobal\WebOrderRequestItem.cs" />
     <Compile Include="LoginResultEnum.cs" />
     <Compile Include="Site.cs" />
     <Compile Include="Taxonomy\Family.cs" />

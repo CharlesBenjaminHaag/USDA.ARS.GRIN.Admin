@@ -120,5 +120,30 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             throw new NotImplementedException();
         }
+
+        public int Add(Accession entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Accession Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Accession> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Accession> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Accession> Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -29,10 +29,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         return RedirectToAction("Index", "SiteManagement");
                     case "accountmanagement":
                         return RedirectToAction("Index", "AccountManagement");
-                    case "utilities":
-                        return RedirectToAction("Index", "Utilities");
                     case "gringlobal":
                         return RedirectToAction("Index", "GRINGlobal");
+                    case "weborder":
+                        return RedirectToAction("Index", "WebOrder");
                     default:
                         break;
                 }

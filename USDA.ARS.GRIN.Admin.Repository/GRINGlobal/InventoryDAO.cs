@@ -11,12 +11,37 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class InventoryDAO : BaseDAO, IRepository<Inventory>
     {
+        public int Add(Inventory entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public int AddREFACTOR(Inventory entity)
         {
             throw new NotImplementedException();
         }
 
+        public Inventory Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Remove(Inventory entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Inventory> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Inventory> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Inventory> Search(string searchString)
         {
             throw new NotImplementedException();
         }

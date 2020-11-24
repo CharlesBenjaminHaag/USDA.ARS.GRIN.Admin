@@ -136,5 +136,30 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
         {
             throw new NotImplementedException();
         }
+
+        public int Add(Genus entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Genus Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Genus> Search(Query query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Genus> Search(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Genus> Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
