@@ -145,13 +145,12 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequestItem.Accession.Descriptor = reader["accession_text"].ToString();
                                 webOrderRequestItem.StatusCode = reader["status_code"].ToString();
                                 webOrderRequestItem.Site.ID = GetInt(reader["site_id"].ToString());
+                                webOrderRequestItem.Site.LongName = reader["site_long_name"].ToString();
                                 webOrderRequestItem.QuantityShipped = GetInt(reader["quantity_shipped"].ToString());
                                 webOrderRequestItem.UnitShipped = reader["unit_of_shipped"].ToString();
                                 webOrderRequestItem.DistributionForm = reader["distribution_form"].ToString();
                                 webOrderRequestItem.Species.ID = GetInt(reader["taxonomy_species_id"].ToString());
                                 webOrderRequestItem.Species.Name = reader["species_name"].ToString();
-                                //NOTE ACCESSION URL    
-                                //https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=
                                 webOrderRequestItems.Add(webOrderRequestItem);
                             }
                         }

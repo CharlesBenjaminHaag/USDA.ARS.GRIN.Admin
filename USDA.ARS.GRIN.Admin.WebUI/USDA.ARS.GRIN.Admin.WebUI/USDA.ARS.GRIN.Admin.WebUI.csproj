@@ -313,7 +313,6 @@
     <Content Include="Views\GRINGlobal\Order\Index.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Index.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\_List.cshtml" />
-    <Content Include="Views\GRINGlobal\WebOrder\_ItemList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,8 +12,8 @@
             bodyId = "collapse" + webOrderRequest.ID;
 
             <div class="panel box box-default no-border">
-                <div class="box-header with-border">
-                    <h4 class="box-title">
+                <div class="box-header with-border" style="background-color:#d2d6de;">
+                    <h4 class="box-title" style="font-weight:bold;">
                         <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
                             @webOrderRequest.ID (@webOrderRequest.OrderDate.ToShortDateString())
                         </a>
@@ -85,7 +85,7 @@
                         </div>
 
                         <!-- ORDER ITEMS -->
-                        <table class="table table-striped">
+                        <table class="table table-striped ggtools">
                             <thead>
                                 <tr>
                                     <th>Seq.</th>
@@ -102,10 +102,12 @@
                                 {
                                 <tr>
                                     <td>@webOrderRequestItem.SequenceNumber</td>
-                                    <td>@webOrderRequestItem.Accession.Descriptor</td>
-                                    <td>@webOrderRequestItem.Species.Name</td>
+                                    <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                    <td>
+                                        <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                    </td>
                                     <td>@webOrderRequestItem.StatusCode</td>
-                                    <td>@webOrderRequestItem.Site.ID</td>
+                                    <td>@webOrderRequestItem.Site.LongName</td>
                                     <td>@webOrderRequestItem.QuantityShipped</td>
                                     <td>@webOrderRequestItem.DistributionForm</td>
                                 </tr>
@@ -158,4 +160,6 @@
         </div>*@
     </div>
 
-
+<script>
+    $('.ggtools').DataTable();
+</script>
