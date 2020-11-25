@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
 {
-    public class Accession
+    public class Accession : BaseModel
     {
+        public int ID { get; set; }
+        public string Descriptor { get; set; }
     }
 }

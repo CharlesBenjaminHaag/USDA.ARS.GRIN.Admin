@@ -19,6 +19,15 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
-     
+        <div id="section-data">
+
+        </div> 
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var link = '@Url.Action("_List", "WebOrder")';
+        $("#section-data").load(link);
+    });
+</script>

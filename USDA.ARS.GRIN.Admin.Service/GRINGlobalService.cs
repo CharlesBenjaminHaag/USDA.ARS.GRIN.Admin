@@ -5,16 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
 using USDA.ARS.GRIN.Admin.Repository;
+using USDA.ARS.GRIN.Admin.Repository.GRINGlobal;
 
 namespace USDA.ARS.GRIN.Admin.Service
 {
     public class GRINGlobalService : BaseService
     {
         protected AccessionInventoryAttachmentDAO _accessionInventoryAttachmentDAO = null;
+        protected WebOrderRequestDAO _webOrderRequestDAO = null;
 
         public GRINGlobalService(string context)
         {
            _accessionInventoryAttachmentDAO = new AccessionInventoryAttachmentDAO(context);
+            _webOrderRequestDAO = new WebOrderRequestDAO(context);   
         }
 
         public AccessionInventoryAttachment GetAccessionInventoryAttachment(int id)
@@ -32,6 +35,11 @@ namespace USDA.ARS.GRIN.Admin.Service
         public void AddValidationRecord(int accessionInventoryAttachId, bool imageUrlIsValid, bool thumbnailImageUrlIsValid)
         {
             _accessionInventoryAttachmentDAO.AddValidation(accessionInventoryAttachId, imageUrlIsValid, thumbnailImageUrlIsValid);
+        }
+
+        public IQueryable<WebOrderRequest> GetWebOrderRequests(string statusCode)
+        {
+            return _webOrderRequestDAO.Search(statusCode);
         }
 
         public Dictionary<string, int> GetValidationCounts()

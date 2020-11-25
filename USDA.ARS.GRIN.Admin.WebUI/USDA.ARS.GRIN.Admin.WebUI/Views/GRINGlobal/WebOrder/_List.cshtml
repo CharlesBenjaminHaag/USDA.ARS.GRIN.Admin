@@ -1,24 +1,115 @@
-﻿@model List<USDA.ARS.GRIN.Admin.Models.GRINGlobal.WebOrderRequest>
+﻿@model IQueryable<USDA.ARS.GRIN.Admin.Models.GRINGlobal.WebOrderRequest>
 
     <div class="box-group" id="accordion">
+        @{ 
+            string headerHrefId = String.Empty;
+            string bodyId = String.Empty;
+        }
+
         @foreach (var webOrderRequest in Model)
         {
+            headerHrefId = "#collapse" + webOrderRequest.ID;
+            bodyId = "collapse" + webOrderRequest.ID;
+
             <div class="panel box box-default no-border">
-                <div class="box-header with-border" style="background-color:#dfdfdf;">
+                <div class="box-header with-border">
                     <h4 class="box-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="">
-                            @webOrderRequest.ID
+                        <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
+                            @webOrderRequest.ID (@webOrderRequest.OrderDate.ToShortDateString())
                         </a>
                     </h4>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true" style="">
+                <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                     <div class="box-body">
+
+                        <!-- WEB COOPERATOR -->
+                        <h5>Cooperator</h5>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" readonly class="form-control form-control-static" value="@webOrderRequest.WebCooperator.LastName" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" readonly class="form-control form-control-static" value="@webOrderRequest.WebCooperator.FirstName" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <div class="input-group">
+                                        <input type="text" readonly class="form-control form-control-static" value="@webOrderRequest.WebCooperator.EmailAddress">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-info btn-flat">Look Up...</button>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Organization</label>
+                                    <input type="text" readonly class="form-control form-control-static" value="" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ORDER SUMMARY -->
+                        <h5>Order Summary</h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Intended Use</label>
+                                    <textarea class="form-control" rows="3" readonly value="@webOrderRequest.IntendedUseNote">@webOrderRequest.IntendedUseNote</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Special Instruction</label>
+                                    <textarea class="form-control" rows="3" readonly value="@webOrderRequest.SpecialInstruction">@webOrderRequest.SpecialInstruction</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Note</label>
+                                    <textarea class="form-control" rows="3" readonly value="@webOrderRequest.Note">@webOrderRequest.Note</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ORDER ITEMS -->
                         <table class="table table-striped">
                             <thead>
-
+                                <tr>
+                                    <th>Seq.</th>
+                                    <th>Accession</th>
+                                    <th>Species</th>
+                                    <th>Status</th>
+                                    <th>Site</th>
+                                    <th>Qty. Shipped</th>
+                                    <th>Distribution Form</th>
+                                </tr>
                             </thead>
                             <tbody>
-
+                                @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
+                                {
+                                <tr>
+                                    <td>@webOrderRequestItem.SequenceNumber</td>
+                                    <td>@webOrderRequestItem.Accession.Descriptor</td>
+                                    <td>@webOrderRequestItem.Species.Name</td>
+                                    <td>@webOrderRequestItem.StatusCode</td>
+                                    <td>@webOrderRequestItem.Site.ID</td>
+                                    <td>@webOrderRequestItem.QuantityShipped</td>
+                                    <td>@webOrderRequestItem.DistributionForm</td>
+                                </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -66,5 +157,5 @@
             </div>
         </div>*@
     </div>
-}
+
 
