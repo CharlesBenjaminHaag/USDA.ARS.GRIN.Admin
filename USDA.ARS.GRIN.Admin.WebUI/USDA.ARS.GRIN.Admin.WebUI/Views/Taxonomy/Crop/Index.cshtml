@@ -193,7 +193,7 @@
         $.ajax({
             url: '@Url.Action("AddToFolder","Taxonomy")',
             type: "GET",
-            data: {folderId: 0, folderTitle: title, category: category, source: 'taxonomy_cwr_crop', values:valueArray.toString() },
+            data: {folderId: 0, folderTitle: title, dataSource: 'taxonomy_cwr_crop', values:valueArray.toString() },
             cache: false,
             contentType: "application/json; charset=utf-8",
             dataType: "json",

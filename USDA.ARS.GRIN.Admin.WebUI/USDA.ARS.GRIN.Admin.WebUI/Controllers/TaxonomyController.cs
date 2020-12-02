@@ -9,7 +9,7 @@ using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 using USDA.ARS.GRIN.Admin.Service;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
-using log4net;
+using NLog;
 using System.Web.UI.WebControls.WebParts;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
@@ -18,7 +18,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
     public class TaxonomyController : BaseController
     {
         const string BASE_PATH = "~/Views/Taxonomy/";
- 
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         //protected override void OnActionExecuted(ActionExecutedContext ctx)
         //{
         //    base.OnActionExecuted(ctx);
@@ -36,7 +37,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, "Error Occurred");
                 return RedirectToAction("InternalServerError", "Error");
             }
             return View("~/Views/Taxonomy/Index.cshtml", viewModel);
@@ -791,7 +792,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, "Error");
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }

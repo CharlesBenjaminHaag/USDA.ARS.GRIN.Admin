@@ -92,6 +92,7 @@
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Data.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.StoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Tables.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Views.SQL" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -22,6 +22,28 @@
                 <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                     <div class="box-body">
 
+                        <div class="mailbox-controls">
+                            
+                            <button type="button" class="btn btn-success btn-sm check-all-search-results">
+                                <i class="fa fa-thumbs-up"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+                                <i class="fa fa-thumbs-down"></i>
+                            </button>
+                            @*<button type="button" class="btn btn-primary btn-sm" onclick="">
+                                <i class="fa fa-thumbs-up"></i>
+                            </button>*@
+                            @*<button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
+                                <i class="fa fa-trash-o"></i>
+                            </button>*@
+                            <div class="pull-right">
+                                @*<button type="button" disabled class="btn btn-default btn-sm">
+                                    Export
+                                </button>*@
+                            </div>
+                        </div>
+
+
                         <!-- WEB COOPERATOR -->
                         <h5>Cooperator</h5>
                         <div class="row">
@@ -100,17 +122,17 @@
                             <tbody>
                                 @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
                                 {
-                                <tr>
-                                    <td>@webOrderRequestItem.SequenceNumber</td>
-                                    <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                    <td>
-                                        <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                    </td>
-                                    <td>@webOrderRequestItem.StatusCode</td>
-                                    <td>@webOrderRequestItem.Site.LongName</td>
-                                    <td>@webOrderRequestItem.QuantityShipped</td>
-                                    <td>@webOrderRequestItem.DistributionForm</td>
-                                </tr>
+                                    <tr>
+                                        <td>@webOrderRequestItem.SequenceNumber</td>
+                                        <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                        <td>
+                                            <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                        </td>
+                                        <td>@webOrderRequestItem.StatusCode</td>
+                                        <td>@webOrderRequestItem.Site.LongName</td>
+                                        <td>@webOrderRequestItem.QuantityShipped</td>
+                                        <td>@webOrderRequestItem.DistributionForm</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>

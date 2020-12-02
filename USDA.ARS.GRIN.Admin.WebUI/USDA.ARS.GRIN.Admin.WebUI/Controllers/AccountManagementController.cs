@@ -10,6 +10,7 @@ using USDA.ARS.GRIN.Admin.Service;
 using DocumentFormat.OpenXml.Wordprocessing;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.Models;
+using NLog;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
@@ -17,6 +18,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
     {
         UserService _userService = null;
         SmtpService _smtpService = new SmtpService();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public UserSession GetUserSession()
         {
@@ -31,7 +33,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + "|" + ex.StackTrace);
+                Log.Error(ex, ex.Message);
             }
             return userSession;
         }
@@ -45,10 +47,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public PartialViewResult ActiveUsers()
         {
             UserListViewModel viewModel = new UserListViewModel();
+            try
+            {
 
-            _userService = new UserService(this.GetUserSession().Environment);
-            viewModel.Users = _userService.GetActiveUsers();
-            return PartialView("~/Views/AccountManagement/User/_List.cshtml", viewModel);
+                _userService = new UserService(this.GetUserSession().Environment);
+                viewModel.Users = _userService.GetActiveUsers();
+                return PartialView("~/Views/AccountManagement/User/_List.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Error/_Error.cshtml");
+            }
         }
 
         private string GetCurrentDomainPath()

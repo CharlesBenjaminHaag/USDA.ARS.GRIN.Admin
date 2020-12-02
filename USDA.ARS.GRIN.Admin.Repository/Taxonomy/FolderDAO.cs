@@ -152,7 +152,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             foreach (var folderItemId in folderItemIdList)
                             {
                                 int convertedFolderItemId = Int32.Parse(folderItemId);
-                                FolderItem folderItem = new FolderItem { FolderID = taxonomyFolderId, ItemID = convertedFolderItemId, ItemKey = folder.DataSource, CreatedByCooperatorID = folder.CreatedByCooperatorID };
+                                FolderItem folderItem = new FolderItem { FolderID = taxonomyFolderId, ItemID = convertedFolderItemId, DataSource = folder.DataSource, CreatedByCooperatorID = folder.CreatedByCooperatorID };
                                 AddFolderItemMap(folderItem);
                             }
                         }
@@ -227,7 +227,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderItem.FolderID);
                         cmd.Parameters.AddWithValue("@item_id", folderItem.ItemID);
-                        cmd.Parameters.AddWithValue("@item_key", folderItem.ItemKey);
+                        cmd.Parameters.AddWithValue("@data_source", folderItem.DataSource);
                         cmd.Parameters.AddWithValue("@created_by", folderItem.CreatedByCooperatorID);
 
                         SqlParameter retErrorParam = new SqlParameter();
