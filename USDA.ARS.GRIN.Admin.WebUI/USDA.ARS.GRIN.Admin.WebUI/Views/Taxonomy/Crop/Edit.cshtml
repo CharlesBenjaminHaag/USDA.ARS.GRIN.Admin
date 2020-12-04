@@ -16,14 +16,13 @@
     <div class="row">
         <div class="col-md-12">
             <div class="callout callout-info" style="vertical-align:middle;">
-                @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
                 @Html.Raw(Model.RevisionHistoryText)
             </div>
         </div>
     </div>
 }
 
-@using (Html.BeginForm("CropEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+@using (Html.BeginForm("CropForCWREdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID, new { id = "hfCropID", name = "ID" })
     @Html.ValidationSummary()
@@ -31,18 +30,16 @@
 
     <div class="box box-default">
         <div class="box-header">
-            <h3 class="box-title">Crop Detail</h3>
+            <h3 class="box-title">Detail</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <img src="~/Content/img/bars-blk.png" />
-                    @*<i class="fa fa-minus"></i>*@
+                    <i class="fa fa-minus"></i>
                 </button>
             </div>
         </div>
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
-                    @*@Html.ActionLink("<< Back", null, null, null, new { @class="btn btn-default pull-right", href = Request.UrlReferrer })*@
                     <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
                 </div>
             </div>
@@ -83,8 +80,7 @@
             <h3 class="box-title">CWR Maps</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    @*<i class="fa fa-minus"></i>*@
-                    <img src="~/Content/img/bars-blk.png" />
+                    <i class="fa fa-minus"></i>
                 </button>
             </div>
         </div>

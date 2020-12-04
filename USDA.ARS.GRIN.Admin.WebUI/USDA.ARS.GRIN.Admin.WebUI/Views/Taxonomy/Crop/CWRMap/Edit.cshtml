@@ -25,11 +25,10 @@
 
         <div class="box box-default">
             <div class="box-header">
-                <h3 class="box-title">Crop Map Detail</h3>
+                <h3 class="box-title">Detail</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <img src="~/Content/img/bars-blk.png" />
-                        @*<i class="fa fa-minus"></i>*@
+                        <i class="fa fa-minus"></i>
                     </button>
                 </div>
             </div>
@@ -37,7 +36,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="submit" class="btn btn-success pull-right" style="margin-left:5px;" value="Save" />
-                        <a href="@Url.Action("CropEdit", "Taxonomy", new { id = Model.CropID })" class="btn btn-default pull-right">Go to Crop</a>
+                        <a href="@Url.Action("CropForCWREdit", "Taxonomy", new { id = Model.CropID })" class="btn btn-default pull-right">Go to Crop</a>
                     </div>
                 </div>
                 <div class="row">
@@ -128,7 +127,7 @@
         </div>
     }
 
-    @*@if (Model.ID > 0)
+    @if (Model.ID > 0)
     {
         <div class="box box-default">
             <div class="box-header">
@@ -136,7 +135,6 @@
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
-                        <img src="~/Content/img/bars-blk.png" />
                     </button>
                 </div>
             </div>
@@ -148,7 +146,7 @@
                 </div>
             </div>
         </div>
-    }*@
+    }
 </div>
 
 

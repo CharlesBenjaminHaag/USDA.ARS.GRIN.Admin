@@ -2,18 +2,14 @@
 
 <div style="margin-top:15px;">
     <div class="mailbox-controls">
-
-        <button type="button" class="btn btn-default btn-sm"></button>
-
-
         <button type="button" class="btn btn-success btn-sm check-all-search-results">
-            <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+            <i class="fa fa-check"></i>
         </button>
         <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
-            <img src="~/Content/img/fa-check.png" style="width:18px; height:18px;" />
+            <i class="fa fa-check-square"></i>
         </button>
         <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CWRMapEdit", "Taxonomy", new { cropId = Model.CropID })'">
-            <img src="~/Content/img/fa-plus.png" style="width:18px; height:18px;" />
+            <i class="fa fa-plus"></i>
         </button>
         <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
             <i class="fa fa-trash-o"></i>
@@ -44,75 +40,70 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model.SearchResults != null)
+                @if (Model.CWRMaps != null)
                 {
-                    if (Model.SearchResults.Rows.Count > 0)
+                    if (Model.CWRMaps.Count > 0)
                     {
-                        foreach (System.Data.DataRow row in Model.SearchResults.Rows)
+                        foreach (var cwrMap in Model.CWRMaps)
                         {
-                            DateTime dtCreatedDate = DateTime.Parse(row["created_date"].ToString());
-                            DateTime dtModifiedDate = DateTime.MinValue;
-
-                            if (row["modified_date"] != DBNull.Value)
-                            {
-                                dtModifiedDate = DateTime.Parse(row["modified_date"].ToString());
-                            }
-                        <tr>
-                    <td>
-                        <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@row["taxonomy_cwr_map_id"]">
-                    </td>
-                    <td>
-                        <span class="label label-default">@row["taxonomy_cwr_map_id"]</span>
-                    </td>
-                    <td>
-                        @row["crop_common_name"]
-                    </td>
-                    <td>
-                        @Html.Raw(DisplayManager.GetDisplayString(@row["is_crop"].ToString()))
-                    </td>
-                    <td>
-                        @Html.Raw(DisplayManager.GetDisplayString(@row["is_graftstock"].ToString()))
-                    </td>
-                    <td>
-                        @Html.Raw(DisplayManager.GetDisplayString(@row["is_potential"].ToString()))
-                    </td>
-                    <td>
-                        @row["genepool_code"]
-                    </td>
-                    <td>
-                        @dtCreatedDate.ToShortDateString()
-                    </td>
-                    <td>
-                        @row["created_by_name"]
-                    </td>
-                    <td>
-                        @if (dtModifiedDate != DateTime.MinValue)
-                        {
-                            @dtModifiedDate.ToShortDateString()
-                        }
-                    </td>
-                    <td>
-                        @row["modified_by_name"]
-                    </td>
-                    <td>
-                        <a href="@Url.Action("CwrMapDelete", "Taxonomy", new { cropId = Model.CropID, cropMapid = row["taxonomy_cwr_map_id"] })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                            <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
-                        </a>
-                        <a href="@Url.Action("CwrMapEdit", "Taxonomy", new {cropId = Model.CropID, cwrMapId = row["taxonomy_cwr_map_id"] })" class="btn btn-primary btn-sm pull-right row-edit">
-                            <img class="img-action-button" src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
-                        </a>
-                    </td>
-                    <td>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@cwrMap.ID">
+                                </td>
+                                <td>
+                                    <span class="label label-default">@cwrMap.ID</span>
+                                </td>
+                                <td>
+                                    @cwrMap.CommonName
+                                </td>
+                                <td>
+                                    @Html.Raw(DisplayManager.GetDisplayString(cwrMap.IsCrop.ToString()))
+                                </td>
+                                <td>
+                                    @Html.Raw(DisplayManager.GetDisplayString(cwrMap.IsGraftStock.ToString()))
+                                </td>
+                                <td>
+                                    @Html.Raw(DisplayManager.GetDisplayString(cwrMap.IsPotential.ToString()))
+                                </td>
+                                <td>
+                                    @cwrMap.GenepoolCode
+                                </td>
+                                <td>
+                                    @cwrMap.CreatedDate.ToShortDateString()
+                                </td>
+                                <td>
+                                    @cwrMap.CreatedByCooperatorName
+                                </td>
+                                <td>
+                                    @if (cwrMap.ModifiedDate != DateTime.MinValue)
+                                    {
+                                        @cwrMap.ModifiedDate.ToShortDateString()
+                                    }
+                                </td>
+                                <td>
+                                    @cwrMap.ModifiedByCooperatorName
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("CwrMapDelete", "Taxonomy", new { cropId = Model.CropID, cropMapid = cwrMap.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                    <a href="@Url.Action("CwrMapEdit", "Taxonomy", new {cropId = Model.CropID, cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
                         
-                    </td>
-                </tr>
+                                </td>
+                            </tr>
                         }
                     }
                     else
                     { 
                         <tr>
                             <td colspan="12">
-                                No records found.
+                                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                                    No records found.
+                                </div>
                             </td>
                         </tr>
                     }

@@ -6,117 +6,21 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using USDA.ARS.GRIN.Admin.Models;
-
+using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class SpeciesDAO : BaseDAO, IRepository<Species>
     {
         private string _context;
+        protected ReferenceDAO _referenceDAO = null;
+
         public SpeciesDAO(string context)
         {
             _context = context;
+            _referenceDAO = new ReferenceDAO(context);
         }
-        public int AddREFACTOR(Species species)
-        {
-            int returnCode = 0;
-            String commandText = "usp_InsertSpecies";
-
-            try
-            {
-                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = cn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = commandText;
-
-                    species.ModifiedDate = DateTime.Now;
-                    species.NameVerifiedDate = DateTime.Now;
-                    species.OwnedDate = DateTime.Now;
-
-                    if (species.CurrentTaxonomySpeciesID == 0)
-                        cmd.Parameters.AddWithValue("@current_taxonomy_species_id", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@current_taxonomy_species_id", species.CurrentTaxonomySpeciesID);
-
-                    cmd.Parameters.AddWithValue("@nomen_number", species.NomenNumber);
-                    cmd.Parameters.AddWithValue("@is_specific_hybrid", species.IsSpecificHybrid);
-                    cmd.Parameters.AddWithValue("@species_name", species.SpeciesName);
-
-                    if (species.Authority == null)
-                        cmd.Parameters.AddWithValue("@species_authority", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@species_authority", species.Authority);
-
-                    cmd.Parameters.AddWithValue("@is_subspecific_hybrid", species.IsSubSpecificHybrid);
-                    cmd.Parameters.AddWithValue("@is_varietal_hybrid", species.IsVarietalHybrid);
-                    cmd.Parameters.AddWithValue("@is_subvarietal_hybrid", species.IsSubVarietalHybrid);
-                    cmd.Parameters.AddWithValue("@is_forma_hybrid", species.IsFormaHybrid);
-                    cmd.Parameters.AddWithValue("@taxonomy_genus_id", species.GenusID);
-
-                    cmd.Parameters.AddWithValue("@is_name_pending", species.IsNamePending);
-
-                    if (species.SynonymCode == null)
-                        cmd.Parameters.AddWithValue("@synonym_code", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@synonym_code", species.SynonymCode);
-
-                    cmd.Parameters.AddWithValue("@verifier_cooperator_id", species.VerifierCooperatorID);
-                    cmd.Parameters.AddWithValue("@name_verified_date", species.NameVerifiedDate);
-
-                    if (species.Name == null)
-                        cmd.Parameters.AddWithValue("@name", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@name", species.Name);
-
-                    if (species.NameAuthority == null)
-                        cmd.Parameters.AddWithValue("@name_authority", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@name_authority", species.NameAuthority);
-
-                    if (species.Protologue == null)
-                        cmd.Parameters.AddWithValue("@protologue", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@protologue", species.Protologue);
-
-                    if (species.ProtologueVirtualPath == null)
-                        cmd.Parameters.AddWithValue("@protologue_virtual_path", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@protologue_virtual_path", species.ProtologueVirtualPath);
-
-                    if (species.Note == null)
-                        cmd.Parameters.AddWithValue("@note", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@note", species.Note);
-
-                    if (species.AlternateName == null)
-                        cmd.Parameters.AddWithValue("@alternate_name", DBNull.Value);
-                    else
-                        cmd.Parameters.AddWithValue("@alternate_name", species.AlternateName);
-
-                    cmd.Parameters.AddWithValue("@created_by", species.CreatedByCooperatorID);
-
-                    SqlParameter retParam = new SqlParameter();
-                    retParam.SqlDbType = System.Data.SqlDbType.Int;
-                    retParam.ParameterName = "@new_taxonomy_species_id";
-                    retParam.Direction = System.Data.ParameterDirection.Output;
-                    retParam.Value = 0;
-                    cmd.Parameters.Add(retParam);
-                    cmd.ExecuteNonQuery();
-
-                    returnCode = Int32.Parse(cmd.Parameters["@new_taxonomy_species_id"].Value.ToString());
-                    return returnCode;
-
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return returnCode;
-        }
-
+        
         public IQueryable<Species> FindSpecies(string searchExpression)
         {
             const string COMMAND_TEXT = "usp_TaxonomySpecies_Search";
@@ -131,7 +35,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = COMMAND_TEXT;
                     cmd.Parameters.AddWithValue("search_string", searchExpression);
-
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -139,9 +42,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw e;
+                throw ex;
             }
             return speciesList.AsQueryable();
         }
@@ -233,7 +136,50 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public Species Get(int id)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_TaxonomySpecies_Select";
+            Species species = null;
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", id);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                species = new Species();
+                                species.ID = GetInt(reader["taxonomy_species_id"].ToString());
+                                species.NomenNumber = GetInt(reader["nomen_number"].ToString());
+                                species.IsSpecificHybrid = ParseBool(reader["is_specific_hybrid"].ToString());
+                                species.SpeciesName = reader["species_name"].ToString();
+                                species.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
+                                species.Authority = reader["species_authority"].ToString();
+                                species.NameAuthority = reader["name_authority"].ToString();
+                                species.IsSubSpecificHybrid = ParseBool(reader["is_subspecific_hybrid"].ToString());
+                                species.SubSpeciesName = reader["subspecies_name"].ToString();
+                                species.IsVarietalHybrid = ParseBool(reader["is_varietal_hybrid"].ToString());
+                                species.Protologue = reader["protologue"].ToString();
+                                species.AccessionCount = GetInt(reader["accession_count"].ToString());
+                                species.Citations = _referenceDAO.GetCitations(species.ID);
+                                species.CommonNames = _referenceDAO.GetCommonNames(species.ID);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return species;
         }
 
         public IQueryable<Species> Search(Query query)
@@ -248,7 +194,111 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public IQueryable<Species> Search(string searchString)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_TaxonomySpecies_Search";
+            List<Species> speciesList = new List<Species>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@search_string", searchString);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {       
+                                Species species = new Species();
+                                species.ID = GetInt(reader["taxonomy_species_id"].ToString());
+                                species.NomenNumber = GetInt(reader["nomen_number"].ToString());
+                                species.IsSpecificHybrid = ParseBool(reader["is_specific_hybrid"].ToString());
+                                species.SpeciesName = reader["species_name"].ToString();
+                                species.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
+                                species.Authority = reader["species_authority"].ToString();
+                                species.NameAuthority = reader["name_authority"].ToString();
+                                species.IsSubSpecificHybrid = ParseBool(reader["is_subspecific_hybrid"].ToString());
+                                species.SubSpeciesName = reader["subspecies_name"].ToString();
+                                species.IsVarietalHybrid = ParseBool(reader["is_varietal_hybrid"].ToString());
+                                species.Protologue = reader["protologue"].ToString();
+
+
+
+
+
+                                species.AccessionCount = GetInt(reader["accession_count"].ToString());
+
+                                //                               taxonomy_species_id,
+                                //   current_taxonomy_species_id,
+                                //   nomen_number,
+                                //   is_specific_hybrid,
+                                //   species_name,
+                                //   species_authority,
+                                //   is_subspecific_hybrid,
+                                //   subspecies_name,
+                                //   subspecies_authority,
+                                //   is_varietal_hybrid,
+                                //   variety_name,
+                                //   variety_authority,
+                                //   is_subvarietal_hybrid,
+                                //   subvariety_name,
+                                //   subvariety_authority,
+                                //   is_forma_hybrid,
+                                //   forma_rank_type,
+                                //   forma_name,
+                                //   forma_authority,
+                                //   taxonomy_genus_id,
+                                //   priority1_site_id,
+                                //   priority2_site_id,
+                                //   curator1_cooperator_id,
+                                //   curator2_cooperator_id,
+                                //   restriction_code,
+                                //   life_form_code,
+                                //   common_fertilization_code,
+                                //   is_name_pending,
+                                //   synonym_code,
+                                //   verifier_cooperator_id,
+                                //   name_verified_date,
+                                //   name,
+                                //   name_authority,
+                                //   protologue,
+                                //   protologue_virtual_path,
+                                //   note,
+                                //   site_note,
+                                //   alternate_name,
+                                //   created_date,
+                                //created_by,
+                                //(SELECT first_name + '' '' + last_name FROM cooperator where cooperator_id = ts.created_by) AS created_by_name,
+                                //   modified_date,
+                                //   modified_by,
+                                //(SELECT first_name + '' '' + last_name FROM cooperator where cooperator_id = ts.modified_by) AS modified_by_name,
+                                //   owned_date,
+                                //   owned_by,
+                                //(SELECT first_name + '' '' + last_name FROM cooperator where cooperator_id = ts.owned_by) AS owned_by_name
+                                speciesList.Add(species);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return speciesList.AsQueryable();
+        }
+        public IQueryable<Species> FindUserSpecies(int cooperatorId)
+        {
+            return Search("WHERE created_by = " + cooperatorId);
+        }
+
+        public IQueryable<Species> FindRecentSpecies()
+        {
+            return Search("WHERE created_date > DATEADD(MONTH, -1, GETDATE())");
         }
     }
 

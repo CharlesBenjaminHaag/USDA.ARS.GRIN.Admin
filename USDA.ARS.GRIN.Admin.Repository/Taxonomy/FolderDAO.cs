@@ -271,7 +271,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folder.ID);
                         cmd.Parameters.AddWithValue("@title", folder.Title);
                         cmd.Parameters.AddWithValue("@description", folder.Description);
-                        cmd.Parameters.AddWithValue("@data_source", folder.DataSource);
                         cmd.Parameters.AddWithValue("@note", folder.Note);
                         cmd.Parameters.AddWithValue("is_shared", ConvertBool(folder.IsShared));
                         cmd.Parameters.AddWithValue("modified_by", folder.ModifiedByCooperatorID);

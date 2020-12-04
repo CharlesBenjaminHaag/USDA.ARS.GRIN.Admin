@@ -68,7 +68,12 @@
                         <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Species
                     </a>
                 </li>
-                <li>
+                <!--
+                *********************************************************************************************
+                TODO: ADD IN 1.2.0
+                *********************************************************************************************
+                -->
+                @*<li>
                     <a href="@Url.Action("GenusHome", "Taxonomy")">
                         <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Genus
                     </a>
@@ -77,9 +82,9 @@
                     <a href="@Url.Action("FamilyHome", "Taxonomy")">
                         <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Family
                     </a>
+                </li>*@
+                    </ul>
                 </li>
-            </ul>
-        </li>
 
         <!-- REFERENCE -->
         <li class="treeview menu-open">
@@ -126,7 +131,9 @@
                 </li>
             </ul>
         </li>
-        <li class="treeview menu-open">
+
+        <!-- VALIDATION -->
+        @*<li class="treeview menu-open">
             <a href="#">
                 <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
                 <span>VALIDATION</span>
@@ -154,7 +161,7 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li>*@
     </ul>
         @* END Menu *@
     </section>

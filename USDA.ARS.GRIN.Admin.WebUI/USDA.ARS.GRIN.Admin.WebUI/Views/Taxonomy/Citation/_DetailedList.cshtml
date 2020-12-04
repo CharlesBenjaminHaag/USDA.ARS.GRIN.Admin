@@ -1,8 +1,8 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropTraitListViewModel
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Citation>
 
 <div>
     <div class="mailbox-controls">
-        <button type="button" class="btn btn-success btn-sm check-all-search-results">
+        @*<button type="button" class="btn btn-success btn-sm check-all-search-results">
             <i class="fa fa-check"></i>
         </button>
         <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
@@ -13,7 +13,7 @@
         </button>
         <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
             <i class="fa fa-trash"></i>
-        </button>
+        </button>*@
         <div class="pull-right">
             <button type="button" disabled class="btn btn-default btn-sm">
                 Export
@@ -26,54 +26,35 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Trait Class</th>
-                    <th>Breeding Type</th>
-                    <th>Potential?</th>
-                    <th>Breeding Usage</th>
-                    <th>Created</th>
-                    <th>By</th>
+                    <th>Title</th>
+                    <th>Literature</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model != null)
                 {
-                    if (Model.CropTraits.Count > 0)
+                    if (Model.Count > 0)
                     {
-                        foreach (var trait in Model.CropTraits)
+                        foreach (var citation in Model)
                         {
                             <tr>
                                 <td>
-                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@trait.ID">
+                                    <span class="label label-default">@citation.ID</span>
                                 </td>
                                 <td>
-                                    <span class="label label-default">@trait.ID</span>
+                                    @Html.Raw(citation.Title)
                                 </td>
                                 <td>
-                                    @trait.TraitClassTitle
+                                    @citation.CitationLiterature.ReferenceTitle
                                 </td>
                                 <td>
-                                    @trait.BreedingTypeTitle
-                                </td>
-                                <td>
-                                    @Html.Raw(DisplayManager.GetBooleanDisplayString(trait.IsPotential))
-                                </td>
-                                <td>
-                                    @trait.BreedingUsageNote
-                                </td>
-                                <td>
-                                    @trait.CreatedDate.ToShortDateString()
-                                </td>
-                                <td>
-                                    @trait.CreatedByCooperatorName
-                                </td>
-                                <td>
-                                    <a href="@Url.Action("CropTraitDelete", "Taxonomy", new { cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                                        <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;"/>
-                                    </a>
-                                    <a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                    @*<a href="@Url.Action("SpeciesCitationDelete", "Taxonomy", new { cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                        <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+                                    </a>*@
+                                    @*<a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                                         <img class="img-action-button" src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
-                                    </a>
+                                    </a>*@
                                 </td>
                             </tr>
                         }
@@ -83,8 +64,7 @@
                         <tr>
                             <td colspan="8">
                                 <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
-                                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
-                                    There are no traits associated with this map.
+                                    There are no citations associated with this species.
                                 </div>
                             </td>
                         </tr>
@@ -104,3 +84,4 @@
         });
     });
 </script>
+

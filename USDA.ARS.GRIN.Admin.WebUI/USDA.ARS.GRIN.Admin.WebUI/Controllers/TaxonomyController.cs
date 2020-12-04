@@ -11,28 +11,23 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 using NLog;
 using System.Web.UI.WebControls.WebParts;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
+    [RoutePrefix("taxonomy")]
     [GrinGlobalAuthentication]
     public class TaxonomyController : BaseController
     {
         const string BASE_PATH = "~/Views/Taxonomy/";
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        //protected override void OnActionExecuted(ActionExecutedContext ctx)
-        //{
-        //    base.OnActionExecuted(ctx);
-        //    UserSession userSession = this.GetUserSession();
-        //    //this.AuthenticatedUser = userSession.AuthenticatedUser;
-        //    //this.AuthenticatedUserSession = userSession;
-        //}
-
         public ActionResult Index()
         {
             IndexViewModel viewModel = null; 
             try
-            { 
+            {
+                TempData["context"] = "Taxonomy Home";
                 viewModel = new IndexViewModel();
             }
             catch (Exception ex)
@@ -68,16 +63,47 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         #endregion Reports
 
         #region Species
+
+        public ActionResult SpeciesHome()
+        {
+            SpeciesHomeViewModel viewModel = new SpeciesHomeViewModel();
+
+            try
+            {
+                TempData["context"] = "Species";
+                return View(BASE_PATH + "Species/Index.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Species Controller");
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        public PartialViewResult RecentSpecies()
+        {
+            SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            viewModel.Species = _taxonomyService.FindRecentSpecies();
+            return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
+        }
+
+        public PartialViewResult UserSpecies()
+        {
+            SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            viewModel.Species = _taxonomyService.FindUserSpecies(this.AuthenticatedUser.CooperatorID);
+            return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
+        }
+
         public ActionResult FindSpecies(string searchString)
         {
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             try
             {
-                log.Info("SEARCH SPECIES: " + searchString);
                 IQueryable<Species> speciesList = new List<Species>().AsQueryable();
                 speciesList = _taxonomyService.FindSpecies(searchString);
-                log.Info("SPECIES FOUND: " + speciesList.Count());
                 return PartialView("~/Views/Taxonomy/Species/_List.cshtml", speciesList);
             }
             catch (Exception ex)
@@ -92,19 +118,120 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View();
         }
                 
-        public ActionResult SpeciesEdit()
+        public ActionResult SpeciesEdit(int id)
         {
-            return View();
+            Species species = null;
+            SpeciesEditViewModel viewModel = null;
+
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                if (id > 0)
+                {
+                    TempData["context"] = "Edit Species";
+                    species = _taxonomyService.GetSpecies(id);
+                    viewModel = new SpeciesEditViewModel();
+                    viewModel.ID = species.ID;
+                    viewModel.SpeciesName = species.SpeciesName;
+                    viewModel.Name = species.Name;
+                    viewModel.NameAuthority = species.NameAuthority;
+                    viewModel.GenusID = species.GenusID;
+                    viewModel.GenusName = species.GenusName;
+                    viewModel.Authority = species.Authority;
+                    viewModel.Protologue = species.Protologue;
+                    // TODO
+
+                    viewModel.Citations = species.Citations;
+                    viewModel.CommonNames = species.CommonNames;
+                    viewModel.Usages = species.Usages;
+                    viewModel.RegulationMappings = species.RegulationMappings;
+                }
+                else
+                {
+                    TempData["context"] = "Add Species";
+                    viewModel = new SpeciesEditViewModel();                
+                }
+            }
+            catch (Exception ex)
+            {
+                viewModel = new SpeciesEditViewModel();
+            }
+            return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
+
+
+            //TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            //CWRMapEditViewModel viewModel = null;
+
+            //try
+            //{
+            //    if (cwrMapId > 0)
+            //    {
+            //        TempData["context"] = "Edit CWR Map";
+
+            //        CWRMap cwrMap = taxonomyService.GetCWRMap(cwrMapId);
+
+            //        viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR(), taxonomyService.FindCitations(cwrMap.SpeciesID));
+            //        viewModel.ID = cwrMap.ID;
+            //        viewModel.CropID = cwrMap.CropID;
+            //        viewModel.SpeciesID = cwrMap.SpeciesID;
+            //        viewModel.SpeciesName = cwrMap.SpeciesName;
+            //        viewModel.CommonName = cwrMap.CommonName;
+            //        viewModel.GenepoolCode = cwrMap.GenepoolCode;
+            //        viewModel.IsCrop = cwrMap.IsCrop;
+            //        viewModel.IsGraftStock = cwrMap.IsGraftStock;
+            //        viewModel.IsPotential = cwrMap.IsPotential;
+            //        viewModel.Note = cwrMap.Note;
+            //        viewModel.CitationID = cwrMap.CitationID;
+            //        viewModel.CreatedDate = cwrMap.CreatedDate;
+            //        viewModel.CreatedByCooperatorID = cwrMap.CreatedByCooperatorID;
+            //        viewModel.CreatedByCooperatorName = cwrMap.CreatedByCooperatorName;
+            //        viewModel.ModifiedDate = cwrMap.ModifiedDate;
+            //        viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
+            //        viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
+            //    }
+            //    else
+            //    {
+            //        viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
+            //        viewModel.CropID = cropId;
+            //        TempData["context"] = "Add CWR Map";
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    log.Error(ex.Message + ex.StackTrace);
+            //    return RedirectToAction("InternalServerError", "Error");
+            //}
+            //return View("~/Views/Taxonomy/Crop/CWRMap/Edit.cshtml", viewModel);
+
+
+
         }
         [HttpPost]
-        public ActionResult SpeciesEdit(SpeciesEditViewModel speciesEditViewModel)
+        public ActionResult SpeciesEdit(SpeciesEditViewModel viewModel)
         {
-            return View();
+            // TODO
+            return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
         }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult SpeciesSearch(string searchText)
+        {
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            List<Species> species = new List<Species>();
+            SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
+
+            viewModel.SearchData.QueryCriteria.Add(new QueryCriterion { FieldName = "SpeciesName", FieldValue = searchText, SearchOperatorCode = "CNT" });
+            viewModel.Species = _taxonomyService.FindSpecies(searchText);
+            return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
+        }
+
         #endregion Species
 
         #region Crop for CWR
 
+        [Route("CropForCWR/Home")]
         public ActionResult CropHome()
         {
             CropHomeViewModel viewModel = new CropHomeViewModel();
@@ -143,12 +270,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.CropsForCWR = _taxonomyService.FindCropsForCWR("WHERE crop_name LIKE '%" + searchText + "%'");
             return PartialView("~/Views/Taxonomy/Crop/_SearchResults.cshtml", viewModel);
         }
-
-        public ActionResult CropEdit(int id = 0)
+       
+        public ActionResult CropForCWREdit(int id = 0)
         {
             CropEditViewModel viewModel = new CropEditViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
 
             try
             {
@@ -181,7 +307,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CropEdit(CropEditViewModel viewModel)
+        public ActionResult CropForCWREdit(CropEditViewModel viewModel)
         {
             CropForCWR crop = new CropForCWR();
             ResultContainer resultContainer = new ResultContainer();
@@ -215,16 +341,60 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     return View("~/Views/Taxonomy/Crop/Edit.cshtml", viewModel);
                 }
                 crop.ID = resultContainer.EntityID;
-
+                return RedirectToAction("CropForCWREdit", "Taxonomy", new { id = viewModel.ID });
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message + ex.StackTrace);
                 return RedirectToAction("InternalServerError", "Error");
-
             }
-            return RedirectToAction("CropEdit", "Taxonomy", new { id = crop.ID });
         }
+
+        //[HttpPost]
+        //public ActionResult CropEdit(CropEditViewModel viewModel)
+        //{
+        //    CropForCWR crop = new CropForCWR();
+        //    ResultContainer resultContainer = new ResultContainer();
+        //    TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View("~/Views/Taxonomy/Crop/Edit.cshtml", viewModel);
+        //    }
+
+        //    try
+        //    {
+        //        crop.ID = viewModel.ID;
+        //        crop.CropName = viewModel.CropName;
+        //        crop.Note = viewModel.Note;
+
+        //        if (viewModel.ID > 0)
+        //        {
+        //            crop.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
+        //            resultContainer = _taxonomyService.UpdateCropForCWR(crop);
+        //        }
+        //        else
+        //        {
+        //            crop.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
+        //            resultContainer = _taxonomyService.AddCropForCWR(crop);
+        //        }
+
+        //        if (resultContainer.ResultCode == "2601")
+        //        {
+        //            viewModel.ErrorMessage = "The crop name must be unique.";
+        //            return View("~/Views/Taxonomy/Crop/Edit.cshtml", viewModel);
+        //        }
+        //        crop.ID = resultContainer.EntityID;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error(ex.Message + ex.StackTrace);
+        //        return RedirectToAction("InternalServerError", "Error");
+
+        //    }
+        //    return RedirectToAction("CropEdit", "Taxonomy", new { id = crop.ID });
+        //}
 
         #endregion
 
@@ -233,7 +403,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult CWRMapHome()
         {
             CWRMapHomeViewModel viewModel = new CWRMapHomeViewModel();
-            return View("~/Views/Taxonomy/Crop/Map/Index.cshtml", viewModel);
+            return View("~/Views/Taxonomy/Crop/CWRMap/Index.cshtml", viewModel);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -243,7 +413,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             viewModel.CWRMaps = _taxonomyService.FindRecentCWRMaps();
-            return PartialView("~/Views/Taxonomy/Crop/Map/_SearchResults.cshtml", viewModel);
+            return PartialView("~/Views/Taxonomy/Crop/CWRMap/_SearchResults.cshtml", viewModel);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -252,8 +422,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             CWRMapSearchViewModel viewModel = new CWRMapSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            viewModel.CWRMaps = _taxonomyService.FindUserCWRMaps(AuthenticatedUser.CooperatorID);
-            return PartialView("~/Views/Taxonomy/Crop/Map/_SearchResults.cshtml", viewModel);
+            try
+            {
+                viewModel.CWRMaps = _taxonomyService.FindUserCWRMaps(AuthenticatedUser.CooperatorID);
+                return PartialView("~/Views/Taxonomy/Crop/CWRMap/_SearchResults.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("~/Views/Error/_Error.cshtml", viewModel);
+            }
         }
 
         //[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -311,7 +488,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 log.Error(ex.Message + ex.StackTrace);
                 return RedirectToAction("InternalServerError", "Error");
             }
-            return View("~/Views/Taxonomy/Crop/Map/Edit.cshtml", viewModel);
+            return View("~/Views/Taxonomy/Crop/CWRMap/Edit.cshtml", viewModel);
         }
 
         [HttpPost]
@@ -369,22 +546,27 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             List<CropForCWR> crops = new List<CropForCWR>();
             CWRMapSearchViewModel viewModel = new CWRMapSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-            //viewModel.SearchData.QueryCriteria.Add(new QueryCriterion { FieldName = "CropCommonName", FieldValue = searchText, SearchOperatorCode = "CNT" });
             viewModel.CWRMaps = _taxonomyService.FindCWRMaps("WHERE crop_common_name LIKE '%" + searchText + "%'");
-            return PartialView("~/Views/Taxonomy/Crop/Map/_SearchResults.cshtml", viewModel);
+            return PartialView("~/Views/Taxonomy/Crop/CWRMap/_SearchResults.cshtml", viewModel);
         }
 
-        //public ActionResult CWRMapList(int cropId)
-        //{
-        //    CWRMapSearchViewModel viewModel = new CWRMapSearchViewModel();
-        //    viewModel.CropID = cropId;
-        //    viewModel.SearchData.QueryCriteria.Add(new QueryCriterion { FieldName = "TaxonomyCWRCropID", FieldValue = cropId.ToString(), SearchOperatorCode = "EQL" });
-            
-        //    viewModel.SearchResults = _taxonomyService.FindCWRMaps(viewModel.SearchData);
-            
-        //    return PartialView("~/Views/Taxonomy/Crop/Map/_List.cshtml", viewModel);
-        //}
+        public ActionResult CWRMapList(int cropId)
+        {
+            CWRMapSearchViewModel viewModel = new CWRMapSearchViewModel();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                viewModel.CropID = cropId;
+                viewModel.CWRMaps = taxonomyService.GetCWRMaps(cropId);
+                return PartialView("~/Views/Taxonomy/Crop/CWRMap/_List.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error");
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
 
         //[HttpPost]
         //public ActionResult CWRMapSearch(CWRMapSearchViewModel viewModel)
@@ -399,7 +581,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         //    return View("~/Views/Taxonomy/Crop/Map/Index.cshtml", viewModel);
         //}
-      
+
         public ActionResult CWRMapDelete(int cropId, int cropMapId)
         {
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);

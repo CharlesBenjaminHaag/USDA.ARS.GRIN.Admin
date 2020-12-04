@@ -1,0 +1,91 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesSearchViewModel
+    
+
+    
+
+    <div class="box-body no-padding" style="margin-top:15px;">
+        <div class="mailbox-controls">
+            <button type="button" class="btn btn-success btn-sm check-all-search-results">
+                <i class="fa fa-check"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+                <i class="fa fa-check-circle-o"></i>
+            </button>
+            <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
+                <i class="fa fa-folder"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropForCWREdit", "Taxonomy")'">
+                <i class="fa fa-plus"></i>
+            </button>
+            <div class="pull-right">
+                <button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive mailbox-messages">
+            @if (Model.Species.Count() > 0)
+            {
+                <table id="search-results" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Accepted?</th>
+                            <th>Authority</th>
+                            <th>Name Authority</th>
+                            <th>Protologue</th>
+                            <th>Accessions</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var species in Model.Species)
+                        { 
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@species.ID">
+                            </td>
+                            <td>
+                                <span class="label label-default">@species.ID</span>
+                            </td>
+                            <td>@species.SpeciesName</td>
+                            <td>@Html.Raw(DisplayManager.GetDisplayString(@species.IsAcceptedName.ToString()))</td>
+                            <td>@species.Authority</td>
+                            <td>@species.NameAuthority</td>
+                            <td>@species.Protologue</td>
+                            <td>
+                                @if (species.AccessionCount > 0)
+                                {
+                                    <span class="label label-success">@species.AccessionCount</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = species.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                    Your search returned no matches.
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+
+
+
+
+            

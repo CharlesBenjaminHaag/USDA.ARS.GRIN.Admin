@@ -215,7 +215,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return citations.AsEnumerable();
         }
 
-        public List<Citation> FindCitations(int speciesId)
+        public List<Citation> GetCitations(int speciesId)
         {
             List<Citation> citations = new List<Citation>();
 
@@ -235,7 +235,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         {
                             while (reader.Read())
                             {
-                                citations.Add(new Citation { ID = Int32.Parse(reader["citation_id"].ToString()), Title = reader["citation_text"].ToString() });
+                                Citation citation = new Citation();
+                                citation.ID = Int32.Parse(reader["citation_id"].ToString());
+                                citation.Title = reader["citation_text"].ToString();
+                                citation.CitationLiterature = new Literature { ID = GetInt(reader["literature_id"].ToString()), ReferenceTitle = reader["reference_title"].ToString() };
+                                citations.Add(citation);
                             }
                         }
                     }
@@ -301,6 +305,56 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return protologues;
         }
 
+        public IEnumerable<CommonName> GetCommonNames(int speciesId)
+        {
+            List<CommonName> commonNames = new List<CommonName>();
+
+            try
+            {
+                String commandText = "usp_TaxonomyCommonNames_Select";
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", speciesId);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                CommonName commonName = new CommonName();
+                                commonName.ID = GetInt(reader["taxonomy_common_name_id"].ToString());
+                                commonName.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                commonName.LanguageDescription = reader["language_description"].ToString();
+                                commonName.Name = reader["name"].ToString();
+                                commonName.SimplifiedName = reader["simplified_name"].ToString();
+                                commonName.AlternateTranscription = reader["alternate_transcription"].ToString();
+
+                                //,[]
+                                //,[citation_id]
+                                //,[note]
+                                //,[created_date]
+                                //,[created_by]
+                                //,[modified_date]
+                                //,[modified_by]
+                                //,[owned_date]
+                                //,[owned_by]
+                                commonNames.Add(commonName);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return commonNames;
+        }
+
         private List<Protologue> GetProtologues()
         {
             String commandText = "usp_GetProtologues";
@@ -325,7 +379,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return protologues;
         }
 
-        
         public string UnBool(bool boolValue)
         {
             if (boolValue)

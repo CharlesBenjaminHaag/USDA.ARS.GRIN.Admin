@@ -15,7 +15,7 @@
             @*<button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropSearch", "Taxonomy")'">
                 <img src="~/Content/img/fa-search-plus.png" style="width:18px; height:18px;" />
             </button>*@
-            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropEdit", "Taxonomy")'">
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropForCWREdit", "Taxonomy")'">
                 <i class="fa fa-plus"></i>
             </button>
             <div class="pull-right">
@@ -77,8 +77,8 @@
                                             }
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("CropEdit", "Taxonomy", new { id = crop.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                                Edit
+                                            <a href="@Url.Action("CropForCWREdit", "Taxonomy", new { id = crop.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>

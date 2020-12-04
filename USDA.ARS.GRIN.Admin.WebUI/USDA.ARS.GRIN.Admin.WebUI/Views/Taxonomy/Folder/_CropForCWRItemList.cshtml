@@ -91,10 +91,10 @@
                                             </td>
                                             <td>
                                                 <a href="#" id="@folderItemDeleteControlId" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                                                    <img src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+                                                    <i class="fa fa-trash"></i>
                                                 </a>
-                                                <a href="@Url.Action("CropEdit", "Taxonomy", new { id = row["taxonomy_cwr_crop_id"] })" class="btn btn-primary btn-sm pull-right row-edit">
-                                                    <img src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
+                                                <a href="@Url.Action("CropForCWREdit", "Taxonomy", new { id = row["taxonomy_cwr_crop_id"] })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                    <i class="fa fa-edit"></i>
                                                 </a>
                                             </td>
                                         </tr>

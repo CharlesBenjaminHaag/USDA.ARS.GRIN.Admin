@@ -33,9 +33,24 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region Species
 
+        public Species GetSpecies(int id)
+        {
+            return _speciesDAO.Get(id);
+        }
+
         public IQueryable<Species> FindSpecies(string searchString)
         {
-            return _speciesDAO.FindSpecies(searchString);
+            return _speciesDAO.Search(searchString);
+        }
+
+        public IQueryable<Species> FindUserSpecies(int cooperatorId)
+        {
+            return _speciesDAO.FindUserSpecies(cooperatorId);
+        }
+
+        public IQueryable<Species> FindRecentSpecies()
+        {
+            return _speciesDAO.FindRecentSpecies();
         }
 
         #endregion Species
@@ -79,6 +94,11 @@ namespace USDA.ARS.GRIN.Admin.Service
         #endregion 
 
         #region CWR Map
+
+        public List<CWRMap> GetCWRMaps(int cropForCwrId)
+        {
+            return _cropForCwrDAO.FindCWRMaps(cropForCwrId);
+        }
 
         public List<CWRMap> FindCWRMaps(string sqlWhereClause)
         {
@@ -196,7 +216,7 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public List<Citation> FindCitations(int speciesId)
         {
-            return _referenceDAO.FindCitations(speciesId);
+            return _referenceDAO.GetCitations(speciesId);
         }
 
         #endregion

@@ -388,6 +388,67 @@ namespace USDA.ARS.GRIN.Admin.Repository
         #endregion
 
         #region CWR Map
+
+
+        public List<CWRMap> FindCWRMaps(int cropForCwrId)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCwrMapsByCrop_Select";
+            List<CWRMap> cwrMapList = new List<CWRMap>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_cwr_crop_id ", cropForCwrId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CWRMap cwrMap = new CWRMap();
+                                cwrMap.ID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
+                                cwrMap.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                cwrMap.SpeciesName = reader["species_name"].ToString();
+                                cwrMap.CropID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                cwrMap.CommonName = reader["crop_common_name"].ToString();
+                                cwrMap.IsCrop = ParseBool(reader["is_crop"].ToString());
+                                cwrMap.GenepoolCode = reader["genepool_code"].ToString();
+                                cwrMap.IsGraftStock = ParseBool(reader["is_graftstock"].ToString());
+                                cwrMap.IsPotential = ParseBool(reader["is_potential"].ToString());
+                                cwrMap.CitationID = GetInt(reader["citation_id"].ToString());
+
+                                if (reader["note"] != DBNull.Value)
+                                {
+                                    cwrMap.Note = reader["note"].ToString();
+                                }
+
+                                cwrMap.CreatedDate = GetDate(reader["created_date"].ToString());
+                                cwrMap.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                cwrMap.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                cwrMap.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                cwrMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                cwrMap.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                cwrMap.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                cwrMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                cwrMapList.Add(cwrMap);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return cwrMapList;
+        }
+        
         public List<CWRMap> FindCWRMaps(string sqlWhereClause)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCwrMaps_Search";

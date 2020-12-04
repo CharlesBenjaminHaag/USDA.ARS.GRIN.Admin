@@ -6,16 +6,16 @@ using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Caching;
 using USDA.ARS.GRIN.Admin.Models;
+using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 using USDA.ARS.GRIN.Admin.Service;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CropTraitEditViewModel : BaseViewModel
     {
-        //protected TaxonomyService _taxonomyService = new TaxonomyService();
-
         private IEnumerable<CodeValueReferenceItem> _traitClassCodes;
         private IEnumerable<CodeValueReferenceItem> _breedingTypeCodes;
+        private IEnumerable<Citation> _citations;
 
         public int ID { get; set; }
         public int CropMapID { get; set; }
@@ -37,6 +37,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public IEnumerable<SelectListItem> BreedingTypeCodes
         {
             get { return new SelectList(_breedingTypeCodes, "CodeValue", "Title"); }
+        }
+
+        public IEnumerable<SelectListItem> Citations
+        {
+            get { return new SelectList(_citations, "ID", "CitationTitle"); }
         }
 
         public CropTraitEditViewModel()
