@@ -1,0 +1,162 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropTraitHomeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box-header" style="background-color:#007f44; color:white; margin-bottom:20px;">
+            <h3 class="box-title">Crop Traits</h3>
+            <div class="box-tools pull-right">
+
+            </div>
+        </div>
+
+        @foreach (var trait in Model.CropTraits)
+        {
+            <div class="col-md-6">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h4>@trait.BreedingTypeTitle</h4>
+                        <p>DR</p>
+
+                    </div>
+
+                    <a href="#" class="small-box-footer">
+
+                        <input type="checkbox" value="TEST" />
+                    </a>
+
+                </div>
+            </div>
+        }
+
+
+       
+        
+       
+       
+       
+       
+
+
+
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-success btn-block btn-lg" style="margin-top:100px;">
+            <i class="fa fa-chain"></i>
+
+        </button>
+        <button class="btn btn-danger btn-block btn-lg">
+            <i class="fa fa-chain-broken"></i>
+        </button>
+    </div>
+    <div class="col-md-4">
+
+        <div class="box-header" style="background-color:#007f44; color:white; margin-bottom:20px;">
+            <h3 class="box-title">Crop Maps</h3>
+            <div class="box-tools pull-right">
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="small-box bg-blue-active">
+                <div class="inner">
+                    <h4>Abelmoschus angulosus</h4>
+                    <p>Tertiary</p>
+
+                </div>
+
+                <a href="#" class="small-box-footer">
+
+                    <input type="checkbox" value="TEST" />
+                </a>
+
+            </div>
+
+            <div class="small-box bg-blue-active">
+                <div class="inner">
+                    <h4>Abelmoschus crinitus</h4>
+                    <p>Tertiary</p>
+
+                </div>
+
+                <a href="#" class="small-box-footer">
+
+                    <input type="checkbox" value="TEST" />
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:30px;">
+    <div class="col-md-12">
+        <div class="box box-primary" style="padding:10px;">
+            <div class="box-header with-border">
+                <h3 class="box-title">Mapped Traits</h3>
+
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                        @*<input type="text" class="form-control input-sm" placeholder="Search Mail">
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>*@
+                    </div>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="mailbox-controls">
+                    <!-- Check all button -->
+                    @*<button type="button" class="btn btn-primary btn-sm checkbox-toggle">
+                        <img src="~/Content/img/check.png" />
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm">
+                        <img src="~/Content/img/trash.png" />
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm">
+                        <img src="~/Content/img/fa-tree.png" />
+                    </button>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-sm">
+                            Export
+                        </button>
+                         /.btn-group 
+                    </div>*@
+                    <!-- /.pull-right -->
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <table id="data-list" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th width="5%"></th>
+                                <th>Crop Name</th>
+                                <th>Species Name</th>
+                                <th>Last Modified</th>
+                                <th>Modified By</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+
+                           
+                        </tbody>
+                    </table>
+                    <!-- /.table -->
+                </div>
+                <!-- /.mail-box-messages -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer no-padding">
+             
+            </div>
+        </div>
+    </div>
+</div>
+
+

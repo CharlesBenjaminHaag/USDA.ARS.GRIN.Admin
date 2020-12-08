@@ -145,39 +145,72 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return iSTAReportRecords;
         }
 
-        public SummaryReport GetAnnualReport()
+        public SummaryReport GetFiscalYearSummary()
         {
-            String commandText = "usp_GetISTAReportRecords";
-            SummaryReport summaryReport = null;
-           
+            const string COMMAND_TEXT = "usp_TaxonomyFiscalYearTotals_Select";
+            SummaryReport summaryReport = new SummaryReport();
+
             try
             {
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                summaryReport.Title = "FY 2020 Annual Totals";
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    using (SqlCommand cmd = new SqlCommand())
                     {
+                        cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        //cmd.Parameters.AddWithValue("@search_string", searchString);
-                        using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
+                        cmd.CommandText = COMMAND_TEXT;
 
-                                }
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                summaryReport.SummaryReportRecords.Add(new SummaryReportRecord { Title = reader["category"].ToString(), Total = GetInt(reader["fiscal_year_total"].ToString()) });
                             }
                         }
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-
-
+                throw ex;
             }
             return summaryReport;
         }
+
+        //public SummaryReport GetAnnualReport()
+        //{
+        //    String commandText = "usp_GetISTAReportRecords";
+        //    SummaryReport summaryReport = null;
+           
+        //    try
+        //    {
+        //        using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+        //        {
+        //            using (SqlCommand cmd = new SqlCommand(commandText, conn))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+        //                //cmd.Parameters.AddWithValue("@search_string", searchString);
+        //                using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+        //                {
+        //                    if (reader.HasRows)
+        //                    {
+        //                        while (reader.Read())
+        //                        {
+
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+
+
+        //    }
+        //    return summaryReport;
+        //}
 
         private List<ISTAReportRecord> GetRelatedSpecies(int speciesId, string nameStatus)
         {
@@ -213,5 +246,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             { }
             return iSTAReportRecords;
         }
+
+       
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="GRINGlobal\WebOrderRequestItem.cs" />
     <Compile Include="LoginResultEnum.cs" />
     <Compile Include="Site.cs" />
+    <Compile Include="Taxonomy\Accession.cs" />
     <Compile Include="Taxonomy\Family.cs" />
     <Compile Include="Taxonomy\Regulation.cs" />
     <Compile Include="ResultContainer.cs" />

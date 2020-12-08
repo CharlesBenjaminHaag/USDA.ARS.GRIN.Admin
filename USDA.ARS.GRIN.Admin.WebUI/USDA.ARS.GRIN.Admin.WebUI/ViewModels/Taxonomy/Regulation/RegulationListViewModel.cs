@@ -13,20 +13,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class RegulationListViewModel : BaseSearchViewModel
     {
-        //protected TaxonomyService _taxonomyService = new TaxonomyService();
-        private IQueryable<Regulation> _regulations;
-
-        public IQueryable<Regulation> Regulations 
-        { 
-            get
-            {
-                return this._regulations;
-            }      
-        }
+        
+        public IQueryable<Regulation> Regulations { get; set; }
 
         public RegulationListViewModel()
         {
-           // this._regulations = _taxonomyService.GetRegulations();
+            this.Regulations = new List<Regulation>().AsQueryable();
         }
     }
 }

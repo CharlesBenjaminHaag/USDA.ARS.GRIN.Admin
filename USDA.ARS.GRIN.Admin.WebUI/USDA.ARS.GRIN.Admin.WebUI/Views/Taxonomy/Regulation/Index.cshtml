@@ -1,69 +1,81 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.RegulationHomeViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="box box-primary" style="padding:10px;">
-        <div class="box-header with-border">
-            <h3 class="box-title">Regulation</h3>
-
-            <div class="box-tools pull-right">
-                <div class="has-feedback">
-                </div>
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <img src="/Content/img/bars-blk.png">
-                </button>
+<!-- ============================================================================================== -->
+<!-- TABBED VIEW -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Regulations</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
             </div>
-            <!-- /.box-tools -->
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
-        <!-- /.box-header -->
-        <div class="box-body no-padding">
-            <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                    <li class="active" style="background-color:#ebebeb;">
-                        <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">All</a>
-                    </li>
-                     <li class="" style="background-color:#ebebeb;">
-                        <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
-                            <img src="~/Content/img/fa-search-plus-blue.png" style="width:18px; height:18px;" />
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <!-- ============================================================================================== -->
-                    <!-- MAIN TAB -->
-                    <!-- ============================================================================================== -->
-                    <div class="tab-pane active" id="tab_1">
-                        <div class="box-body">
-                            <div id="section-main">
-                            </div>
+    </div>
+    <div class="box-body no-padding">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_1" id="tab-my-records" title="UserRegulations" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_2" id="tab-recently-added" title="RecentRegulations" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Added</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- ============================================================================================== -->
+                <!-- MY-RECORDS TAB -->
+                <!-- ============================================================================================== -->
+                <div class="tab-pane active" id="tab_1">
+                    <div class="box-body">
+                        <div id="section-my-records">
                         </div>
                     </div>
+                </div>
 
-                    <!-- ============================================================================================== -->
-                    <!-- SEARCH TAB -->
-                    <!-- ============================================================================================== -->
-                    <div class="tab-pane" id="tab_3">
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-md-7" style="padding-left:0px;">
-                                            <div class="input-group" style="margin-left:0px;">
-                                                <input type="text" id="txtSearchText" name="SearchText" placeholder="Type search text ..." class="form-control">
-                                                <span class="input-group-btn">
-                                                    <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
-                                                </span>
-                                            </div>
+                <!-- ============================================================================================== -->
+                <!-- RECENTLY-ADDED TAB -->
+                <!-- ============================================================================================== -->
+                <div class="tab-pane" id="tab_2">
+                    <div class="box-body">
+                        <div id="section-recently-added">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================================================== -->
+                <!-- SEARCH TAB -->
+                <!-- ============================================================================================== -->
+                <div class="tab-pane" id="tab_3">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-7" style="padding-left:0px;">
+                                        <div class="input-group" style="margin-left:0px;">
+                                            <input type="text" id="txtName" name="SearchText" placeholder="Type all or part of the regulation text ..." class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div id="section-search-results" class="crop-search-results">
-                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="section-search-results" class="crop-search-results">
                                 </div>
                             </div>
                         </div>
@@ -72,10 +84,46 @@
             </div>
         </div>
     </div>
+</div>
 
-    <script type="text/javascript">
+<!-- Page Script -->
+<script type="text/javascript">
     $(document).ready(function(){
-        var link = '@Url.Action("AllRegulations", "Taxonomy")';
-        $("#section-main").load(link);
+        var link = '@Url.Action("UserRegulations", "Taxonomy")';
+        $("#section-my-records").load(link);
     });
-    </script>
+
+    $(".selector-tab").click(function () {
+        var id = $(this).attr('id');
+        var action = $(this).attr('title');
+        var link = '@Url.Action("Action", "Taxonomy")';
+        var displaySection = '';
+
+        $('.mailbox-messages input:checkbox').prop('checked', false);
+
+        if (action != '') {
+            displaySection = "#" + id.replace("tab", "section");
+            link = link.replace("Action", action);
+            $(displaySection).load(link);
+        }
+    });
+
+    $("#btnSearch").click(function () {
+        var value = $("#txtName").val();
+        var url = '@Url.Action("RegulationSearch", "Taxonomy")';
+
+        $.get(url, { searchText: value })
+            .done(function (response) {
+            $("#section-search-results").html(response);
+            $('#search-results').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+        });
+    });
+</script>

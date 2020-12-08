@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
 {
-    public class Species : IEntity
+    public class Species : BaseModel
     {
         public int ID { get; set; }
         public int CurrentTaxonomySpeciesID { get; set; }
@@ -43,17 +43,14 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
 
         public string AlternateName { get; set; }
         public int AccessionCount { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int CreatedByCooperatorID { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public int ModifiedByCooperatorID { get; set; }
-        public DateTime OwnedDate { get; set; }
-        public int OwnedByCooperatorID { get; set; }
-
+       
         public List<Citation> Citations { get; set; }
         public IEnumerable<CommonName> CommonNames { get; set; }
         public List<Geography> Geographies { get; set; }
         public List<RegulationMapping> RegulationMappings { get; set; }
         public List<Usage> Usages { get; set; }
+        public List<Accession> Accessions { get; set; }
+
+        public List<Species> RelatedSpecies { get; set; }
     }
 }

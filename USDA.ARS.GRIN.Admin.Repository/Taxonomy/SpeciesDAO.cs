@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.Taxonomy;
+using System.CodeDom;
 
 namespace USDA.ARS.GRIN.Admin.Repository
 {
@@ -21,7 +22,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             _referenceDAO = new ReferenceDAO(context);
         }
         
-        public IQueryable<Species> FindSpecies(string searchExpression)
+        public IQueryable<Species> Find(string searchExpression)
         {
             const string COMMAND_TEXT = "usp_TaxonomySpecies_Search";
             List<Species> speciesList = new List<Species>();
@@ -124,14 +125,214 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return 0;
         }
 
-        public int Update(Species entity)
+        public ResultContainer Update(Species entity)
         {
-            return 0;
+            const string COMMAND_TEXT = "usp_TaxonomySpecies_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", entity.ID);
+
+                        if (entity.CurrentTaxonomySpeciesID == 0)
+                            cmd.Parameters.AddWithValue("@current_taxonomy_species_id", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@current_taxonomy_species_id", entity.CurrentTaxonomySpeciesID);
+                        
+                        cmd.Parameters.AddWithValue("@is_specific_hybrid", entity.IsSpecificHybrid);
+                        cmd.Parameters.AddWithValue("@species_name", entity.SpeciesName);
+                        cmd.Parameters.AddWithValue("@species_authority", "TODO");
+                        cmd.Parameters.AddWithValue("@is_subspecific_hybrid", entity.IsSubSpecificHybrid);
+                        cmd.Parameters.AddWithValue("@is_varietal_hybrid", entity.IsVarietalHybrid);
+                        
+                        if (String.IsNullOrEmpty(entity.VarietyName))
+                            cmd.Parameters.AddWithValue("@variety_name", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@variety_name", entity.VarietyName);
+
+                        if (String.IsNullOrEmpty(entity.VarietyAuthority))
+                            cmd.Parameters.AddWithValue("@variety_authority", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@variety_authority", entity.VarietyAuthority);
+                        
+                        cmd.Parameters.AddWithValue("@is_subvarietal_hybrid", entity.IsSubVarietalHybrid);
+                        cmd.Parameters.AddWithValue("@subvariety_name", String.IsNullOrEmpty(entity.SubVarietyName) ? "" : entity.SubVarietyName);
+                        cmd.Parameters.AddWithValue("@subvariety_authority", String.IsNullOrEmpty(entity.SubVarietyAuthority) ? "" : entity.SubVarietyAuthority);
+                        cmd.Parameters.AddWithValue("@is_forma_hybrid", entity.IsFormaHybrid);
+                        cmd.Parameters.AddWithValue("@taxonomy_genus_id", entity.GenusID);
+                        cmd.Parameters.AddWithValue("@life_form_code", "TODO");
+                        cmd.Parameters.AddWithValue("@is_name_pending", entity.IsNamePending);
+                        cmd.Parameters.AddWithValue("@synonym_code", String.IsNullOrEmpty(entity.SynonymCode) ? "" : entity.SynonymCode);
+                      
+                        if (entity.NameVerifiedDate == DateTime.MinValue)
+                        {
+                            cmd.Parameters.AddWithValue("@name_verified_date", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@name_verified_date", entity.NameVerifiedDate);
+                        }
+
+                        cmd.Parameters.AddWithValue("@name", entity.Name);
+
+                        cmd.Parameters.AddWithValue("@name_authority", String.IsNullOrEmpty(entity.NameAuthority) ? "" : entity.NameAuthority);
+                        cmd.Parameters.AddWithValue("@protologue", String.IsNullOrEmpty(entity.Protologue) ? "" : entity.Protologue);
+                        cmd.Parameters.AddWithValue("@protologue_virtual_path", String.IsNullOrEmpty(entity.ProtologueVirtualPath) ? "" : entity.ProtologueVirtualPath);
+
+                        if (String.IsNullOrEmpty(entity.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", entity.Note);
+
+                        cmd.Parameters.AddWithValue("@modified_by", entity.ModifiedByCooperatorID);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+                        cmd.ExecuteNonQuery();
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultContainer.ResultCode))
+                        {
+                            if (Int32.Parse(resultContainer.ResultCode) > 0)
+                            {
+                                throw new Exception(resultContainer.ResultCode);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                switch (ex.Errors[0].Number)
+                {
+                    case 547: // Foreign Key violation
+                        string s = ex.Message;
+                        s = s.Substring(s.IndexOf("column "));
+                        string[] array = s.Split('.');
+                        s = array[0].Substring(array[0].IndexOf('\''));
+                        break;
+                }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
         }
 
-        public int Add(Species entity)
+        public ResultContainer Add(Species entity)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_TaxonomySpecies_Insert";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        if (entity.CurrentTaxonomySpeciesID == 0)
+                            cmd.Parameters.AddWithValue("@current_taxonomy_species_id", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@current_taxonomy_species_id", entity.CurrentTaxonomySpeciesID);
+
+                        cmd.Parameters.AddWithValue("@is_specific_hybrid", entity.IsSpecificHybrid);
+                        cmd.Parameters.AddWithValue("@species_name", entity.SpeciesName);
+                        cmd.Parameters.AddWithValue("@species_authority", "TODO");
+                        cmd.Parameters.AddWithValue("@is_subspecific_hybrid", entity.IsSubSpecificHybrid);
+                        cmd.Parameters.AddWithValue("@is_varietal_hybrid", entity.IsVarietalHybrid);
+
+                        if (String.IsNullOrEmpty(entity.VarietyName))
+                            cmd.Parameters.AddWithValue("@variety_name", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@variety_name", entity.VarietyName);
+
+                        if (String.IsNullOrEmpty(entity.VarietyAuthority))
+                            cmd.Parameters.AddWithValue("@variety_authority", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@variety_authority", entity.VarietyAuthority);
+
+                        cmd.Parameters.AddWithValue("@is_subvarietal_hybrid", entity.IsSubVarietalHybrid);
+                        cmd.Parameters.AddWithValue("@subvariety_name", String.IsNullOrEmpty(entity.SubVarietyName) ? "" : entity.SubVarietyName);
+                        cmd.Parameters.AddWithValue("@subvariety_authority", String.IsNullOrEmpty(entity.SubVarietyAuthority) ? "" : entity.SubVarietyAuthority);
+                        cmd.Parameters.AddWithValue("@is_forma_hybrid", entity.IsFormaHybrid); 
+                        cmd.Parameters.AddWithValue("@taxonomy_genus_id", entity.GenusID);
+                        cmd.Parameters.AddWithValue("@life_form_code", "TODO");
+                        cmd.Parameters.AddWithValue("@is_name_pending", entity.IsNamePending);
+                        cmd.Parameters.AddWithValue("@synonym_code", String.IsNullOrEmpty(entity.SynonymCode) ? "" : entity.SynonymCode);
+
+                        if (entity.NameVerifiedDate == DateTime.MinValue)
+                        {
+                            cmd.Parameters.AddWithValue("@name_verified_date", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@name_verified_date", entity.NameVerifiedDate);
+                        }
+
+                        // TO DO: LOGIC TO CREATE NAME
+                        entity.Name = entity.GenusName + " " + entity.SpeciesName;
+
+                        cmd.Parameters.AddWithValue("@name", entity.Name);
+                        cmd.Parameters.AddWithValue("@name_authority", String.IsNullOrEmpty(entity.NameAuthority) ? "" : entity.NameAuthority);
+                       
+                        
+                        cmd.Parameters.AddWithValue("@protologue", String.IsNullOrEmpty(entity.Protologue) ? "" : entity.Protologue);
+                        cmd.Parameters.AddWithValue("@protologue_virtual_path", String.IsNullOrEmpty(entity.ProtologueVirtualPath) ? "" : entity.ProtologueVirtualPath);
+
+                        if (String.IsNullOrEmpty(entity.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", entity.Note);
+
+                        cmd.Parameters.AddWithValue("@created_by", entity.CreatedByCooperatorID);
+
+                        SqlParameter retParam = new SqlParameter();
+                        retParam.SqlDbType = System.Data.SqlDbType.Int;
+                        retParam.ParameterName = "@out_taxonomy_species_id";
+                        retParam.Direction = System.Data.ParameterDirection.Output;
+                        retParam.Value = 0;
+                        cmd.Parameters.Add(retParam);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        string resultString = cmd.Parameters["@out_taxonomy_species_id"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultString))
+                        {
+                            resultContainer.EntityID = Int32.Parse(resultString);
+                        }
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
         }
 
         public Species Get(int id)
@@ -157,19 +358,35 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             {
                                 species = new Species();
                                 species.ID = GetInt(reader["taxonomy_species_id"].ToString());
+                                species.CurrentTaxonomySpeciesID = GetInt(reader["current_taxonomy_species_id"].ToString());
                                 species.NomenNumber = GetInt(reader["nomen_number"].ToString());
                                 species.IsSpecificHybrid = ParseBool(reader["is_specific_hybrid"].ToString());
                                 species.SpeciesName = reader["species_name"].ToString();
+                                species.Name = reader["name"].ToString();
                                 species.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
                                 species.Authority = reader["species_authority"].ToString();
-                                species.NameAuthority = reader["name_authority"].ToString();
                                 species.IsSubSpecificHybrid = ParseBool(reader["is_subspecific_hybrid"].ToString());
                                 species.SubSpeciesName = reader["subspecies_name"].ToString();
+                                species.SubSpeciesAuthority = reader["subspecies_authority"].ToString();
                                 species.IsVarietalHybrid = ParseBool(reader["is_varietal_hybrid"].ToString());
+                                species.VarietyName = reader["variety_name"].ToString();
+                                species.VarietyAuthority = reader["variety_authority"].ToString();
+                                species.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
+                                species.GenusName = reader["genus_name"].ToString();
+                                species.SynonymCode = reader["synonym_code"].ToString();
                                 species.Protologue = reader["protologue"].ToString();
+                                species.NameAuthority = reader["name_authority"].ToString();
+                                species.Note = reader["note"].ToString();
+                                species.CreatedDate = GetDate(reader["created_date"].ToString());
+                                species.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                species.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                species.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                species.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                species.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                                 species.AccessionCount = GetInt(reader["accession_count"].ToString());
                                 species.Citations = _referenceDAO.GetCitations(species.ID);
                                 species.CommonNames = _referenceDAO.GetCommonNames(species.ID);
+                                species.Accessions = GetSpeciesAccessions(species.ID);
                             }
                         }
                     }
@@ -299,6 +516,54 @@ namespace USDA.ARS.GRIN.Admin.Repository
         public IQueryable<Species> FindRecentSpecies()
         {
             return Search("WHERE created_date > DATEADD(MONTH, -1, GETDATE())");
+        }
+
+        public List<Accession> GetSpeciesAccessions(int id)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyAccessionsBySpecies_Select";
+            List<Accession> accessions = new List<Accession>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", id);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Accession accession = new Accession();
+                                accession.ID = GetInt(reader["accession_id"].ToString());
+                                accession.Name = reader["accession_text"].ToString();
+                                accessions.Add(accession); 
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return accessions;
+
+        }
+
+        int IRepository<Species>.Add(Species entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IRepository<Species>.Update(Species entity)
+        {
+            throw new NotImplementedException();
         }
     }
 

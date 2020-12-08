@@ -130,6 +130,11 @@ VALUES
 	48
 )
 
+
+
+
+
+
 INSERT INTO sys_group_user_map
 (
 	 sys_group_id,

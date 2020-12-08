@@ -60,6 +60,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return RedirectToAction("InternalServerError", "Error", new { loginStatus = LoginStatusEnum.ERROR });
             }
         }
+
+        public PartialViewResult FiscalYearSummary()
+        {
+            SummaryReport summaryReport = null;
+
+            try
+            {
+                TaxonomyService taxonomyService = new TaxonomyService(this.AuthenticatedUserSession.Environment);
+                summaryReport = taxonomyService.FiscalYearSummary();
+                return PartialView("~/Views/Taxonomy/Reports/_FiscalYearSummary.cshtml", summaryReport);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error");
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
         #endregion Reports
 
         #region Species
@@ -96,6 +114,25 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
         }
 
+        public ActionResult FindGenus(string searchString)
+        {
+            IQueryable<Genus> genusList = null;
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                genusList = new List<Genus>().AsQueryable();
+                genusList = _taxonomyService.FindGenus(searchString);
+                return PartialView("~/Views/Taxonomy/Genus/_List.cshtml", genusList);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + ex.StackTrace);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+
         public ActionResult FindSpecies(string searchString)
         {
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -118,7 +155,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View();
         }
                 
-        public ActionResult SpeciesEdit(int id)
+        public ActionResult SpeciesEdit(int id = 0)
         {
             Species species = null;
             SpeciesEditViewModel viewModel = null;
@@ -133,19 +170,40 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     species = _taxonomyService.GetSpecies(id);
                     viewModel = new SpeciesEditViewModel();
                     viewModel.ID = species.ID;
+                    viewModel.CurrentTaxonomySpeciesID = species.CurrentTaxonomySpeciesID;
+                    viewModel.NomenNumber = species.NomenNumber;
+                    viewModel.IsSpecificHybrid = species.IsSpecificHybrid;
                     viewModel.SpeciesName = species.SpeciesName;
                     viewModel.Name = species.Name;
+                    viewModel.IsAcceptedName = species.IsAcceptedName;
+                    viewModel.Authority = species.Authority;
+                    viewModel.IsSubSpecificHybrid = species.IsSubSpecificHybrid;
+                    viewModel.SubSpeciesName = species.SubSpeciesName;
+                    viewModel.SubSpeciesAuthority = species.SubSpeciesAuthority;
+                    viewModel.IsVarietalHybrid = species.IsVarietalHybrid;
+                    viewModel.VarietyName = species.VarietyName;
+                    viewModel.VarietyAuthority = species.VarietyAuthority;
+
+                    viewModel.GenusID = species.GenusID;
+                    viewModel.GenusName = species.GenusName;
+
+                    viewModel.Protologue = species.Protologue;
+
                     viewModel.NameAuthority = species.NameAuthority;
                     viewModel.GenusID = species.GenusID;
                     viewModel.GenusName = species.GenusName;
                     viewModel.Authority = species.Authority;
-                    viewModel.Protologue = species.Protologue;
-                    // TODO
-
+                    viewModel.CreatedDate = species.CreatedDate;
+                    viewModel.CreatedByCooperatorID = species.CreatedByCooperatorID;
+                    viewModel.CreatedByCooperatorName = species.CreatedByCooperatorName;
+                    viewModel.ModifiedDate = species.ModifiedDate;
+                    viewModel.ModifiedByCooperatorID = species.ModifiedByCooperatorID;
+                    viewModel.ModifiedByCooperatorName = species.ModifiedByCooperatorName;
+                    viewModel.Note = species.Note;
                     viewModel.Citations = species.Citations;
                     viewModel.CommonNames = species.CommonNames;
-                    viewModel.Usages = species.Usages;
-                    viewModel.RegulationMappings = species.RegulationMappings;
+                    //viewModel.Usages = species.Usages;
+                    //viewModel.RegulationMappings = species.RegulationMappings;
                 }
                 else
                 {
@@ -155,63 +213,63 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                viewModel = new SpeciesEditViewModel();
+                Log.Error(ex, ex.Message + ex.StackTrace);
+                return RedirectToAction("InternalServerError", "Error");
             }
             return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
-
-
-            //TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            //CWRMapEditViewModel viewModel = null;
-
-            //try
-            //{
-            //    if (cwrMapId > 0)
-            //    {
-            //        TempData["context"] = "Edit CWR Map";
-
-            //        CWRMap cwrMap = taxonomyService.GetCWRMap(cwrMapId);
-
-            //        viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR(), taxonomyService.FindCitations(cwrMap.SpeciesID));
-            //        viewModel.ID = cwrMap.ID;
-            //        viewModel.CropID = cwrMap.CropID;
-            //        viewModel.SpeciesID = cwrMap.SpeciesID;
-            //        viewModel.SpeciesName = cwrMap.SpeciesName;
-            //        viewModel.CommonName = cwrMap.CommonName;
-            //        viewModel.GenepoolCode = cwrMap.GenepoolCode;
-            //        viewModel.IsCrop = cwrMap.IsCrop;
-            //        viewModel.IsGraftStock = cwrMap.IsGraftStock;
-            //        viewModel.IsPotential = cwrMap.IsPotential;
-            //        viewModel.Note = cwrMap.Note;
-            //        viewModel.CitationID = cwrMap.CitationID;
-            //        viewModel.CreatedDate = cwrMap.CreatedDate;
-            //        viewModel.CreatedByCooperatorID = cwrMap.CreatedByCooperatorID;
-            //        viewModel.CreatedByCooperatorName = cwrMap.CreatedByCooperatorName;
-            //        viewModel.ModifiedDate = cwrMap.ModifiedDate;
-            //        viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
-            //        viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
-            //    }
-            //    else
-            //    {
-            //        viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
-            //        viewModel.CropID = cropId;
-            //        TempData["context"] = "Add CWR Map";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    log.Error(ex.Message + ex.StackTrace);
-            //    return RedirectToAction("InternalServerError", "Error");
-            //}
-            //return View("~/Views/Taxonomy/Crop/CWRMap/Edit.cshtml", viewModel);
-
-
-
         }
         [HttpPost]
         public ActionResult SpeciesEdit(SpeciesEditViewModel viewModel)
         {
-            // TODO
-            return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
+            Species species= new Species();
+            ResultContainer resultContainer = new ResultContainer();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
+            }
+
+            try
+            {
+                species.ID = viewModel.ID;
+                species.SpeciesName = viewModel.SpeciesName;
+                species.Name = viewModel.Name;
+                species.GenusID = viewModel.GenusID;
+                species.GenusName = viewModel.GenusName;
+                species.Protologue = viewModel.Protologue;
+                species.Authority = viewModel.Authority;
+                species.IsSpecificHybrid = viewModel.IsSpecificHybrid;
+                species.IsSubSpecificHybrid = viewModel.IsSubSpecificHybrid;
+                species.IsVarietalHybrid = viewModel.IsVarietalHybrid;
+                species.IsSubVarietalHybrid = viewModel.IsSubVarietalHybrid;
+                species.Note = viewModel.Note;
+
+                if (viewModel.ID > 0)
+                {
+                    species.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    resultContainer = _taxonomyService.UpdateSpecies(species);
+                }
+                else
+                {
+                    species.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    resultContainer = _taxonomyService.AddSpecies(species);
+                    viewModel.ID = resultContainer.EntityID;
+                }
+
+                if (resultContainer.ResultCode == "2601")
+                {
+                    viewModel.ErrorMessage = "The species name must be unique.";
+                    return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
+                }
+                
+                return RedirectToAction("SpeciesEdit", "Taxonomy", new { id = viewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message + ex.StackTrace);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -475,6 +533,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.ModifiedDate = cwrMap.ModifiedDate;
                     viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
                     viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
+
+                    
+
                 }
                 else
                 {
@@ -604,6 +665,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         #endregion
 
         #region CWR Trait
+
+        public ActionResult CropTraitHome()
+        {
+            CropTraitHomeViewModel viewModel = new CropTraitHomeViewModel();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            TempData["context"] = "Crop Trait Mapper";
+
+            viewModel.CWRMaps = taxonomyService.GetCWRMaps(1);
+            viewModel.CropTraits = taxonomyService.GetCropMapTraits(1);
+            
+            return View("~/Views/Taxonomy/Crop/Trait/Index.cshtml", viewModel);
+        }
 
         public ActionResult CropTraits(int speciesId, int cropId, int cropMapId)
         {
@@ -932,7 +1005,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.IsShared = folder.IsShared;
             viewModel.ModifiedByCooperatorID = folder.ModifiedByCooperatorID;
             viewModel.SearchResults = folder.SearchResults;
-            return View(BASE_PATH +  "Folder/Edit.cshtml", viewModel);
+            return View(BASE_PATH + "Folder/Edit.cshtml", viewModel);
         }
 
         public JsonResult AddToFolder(int folderId, string folderTitle, string dataSource, string values)
@@ -952,7 +1025,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 string[] valueList = values.Split(',');
                 foreach (var id in valueList)
-                { 
+                {
                     // TO DO: ADD EACH ITEM TO FOLDER
                 }
             }
@@ -984,6 +1057,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             FolderEditViewModel viewModel = new FolderEditViewModel();
             Folder folder = new Folder();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            TempData["context"] = "Edit Folder";
 
             folder = _taxonomyService.GetFolder(id);
             viewModel.ID = folder.ID;
@@ -1132,15 +1206,53 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult RegulationHome()
         {
-            RegulationListViewModel viewModel = new RegulationListViewModel();
-
+            RegulationHomeViewModel viewModel = new RegulationHomeViewModel();
             return View("~/Views/Taxonomy/Regulation/Index.cshtml", viewModel);
         }
 
+        public ActionResult RegulationEdit(int id)
+        {
+            //TODO
+            return View("~/Views/Taxonomy/Regulation/Edit.cshtml");
+        }
+        public ActionResult RegulationEdit(RegulationEditViewModel viewModel)
+        {
+            //TODO
+            return View("~/Views/Taxonomy/Regulation/Edit.cshtml");
+        }
+
+
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public PartialViewResult AllRegulations()
+        public PartialViewResult UserRegulations()
         {
             RegulationListViewModel viewModel = new RegulationListViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                viewModel.Regulations = _taxonomyService.FindUserRegulations(AuthenticatedUser.CooperatorID);
+            }
+            catch (Exception ex)
+            { 
+            
+            }
+            return PartialView("~/Views/Taxonomy/Regulation/_List.cshtml", viewModel);
+        }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public PartialViewResult RecentRegulations()
+        {
+            RegulationListViewModel viewModel = new RegulationListViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                viewModel.Regulations = _taxonomyService.FindRecentRegulations();
+            }
+            catch (Exception ex)
+            {
+
+            }
             return PartialView("~/Views/Taxonomy/Regulation/_List.cshtml", viewModel);
         }
 

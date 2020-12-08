@@ -270,8 +270,25 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folder.ID);
                         cmd.Parameters.AddWithValue("@title", folder.Title);
-                        cmd.Parameters.AddWithValue("@description", folder.Description);
-                        cmd.Parameters.AddWithValue("@note", folder.Note);
+
+                        if (String.IsNullOrEmpty(folder.Description))
+                        {
+                            cmd.Parameters.AddWithValue("@description", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@description", folder.Description);
+                        }
+
+                        if (String.IsNullOrEmpty(folder.Note))
+                        {
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@note", folder.Note);
+                        }
+                        
                         cmd.Parameters.AddWithValue("is_shared", ConvertBool(folder.IsShared));
                         cmd.Parameters.AddWithValue("modified_by", folder.ModifiedByCooperatorID);
 

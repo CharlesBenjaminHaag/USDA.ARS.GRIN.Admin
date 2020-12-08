@@ -19,7 +19,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
             get; set;
         }
 
-
+        public string ErrorMessage { get; set; }
         public int AuthenticatedUserCooperatorID { get; set; }
         [AllowHtml]
         public string Note { get; set; }

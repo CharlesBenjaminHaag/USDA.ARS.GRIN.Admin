@@ -14,22 +14,35 @@ namespace USDA.ARS.GRIN.Admin.Service
     public class TaxonomyService : BaseService
     {
         protected FamilyDAO _familyDAO = null;
+        protected GenusDAO _genusDAO = null;
         protected SpeciesDAO _speciesDAO = null;
         protected CropForCwrDAO _cropForCwrDAO = null;
         protected FolderDAO _folderDAO = null;
         protected ReferenceDAO _referenceDAO = null;
         protected RegulationDAO _regulationDAO = null;
+        protected ReportDAO _reportDAO = null;
 
         public TaxonomyService(string context)
         {
             // TODO: REFACTOR 
             this._familyDAO = new FamilyDAO(context);
+            this._genusDAO = new GenusDAO(context);
             this._speciesDAO = new SpeciesDAO(context);
             this._cropForCwrDAO = new CropForCwrDAO(context);
             this._folderDAO = new FolderDAO(context);
             this._referenceDAO = new ReferenceDAO(context);
-            this._regulationDAO = new RegulationDAO();
+            this._regulationDAO = new RegulationDAO(context);
+            this._reportDAO = new ReportDAO(context);
         }
+
+        #region Genus
+
+        public IQueryable<Genus> FindGenus(string searchString)
+        {
+            return _genusDAO.Find(searchString);
+        }
+
+        #endregion
 
         #region Species
 
@@ -51,6 +64,20 @@ namespace USDA.ARS.GRIN.Admin.Service
         public IQueryable<Species> FindRecentSpecies()
         {
             return _speciesDAO.FindRecentSpecies();
+        }
+
+        public ResultContainer AddSpecies(Species species)
+        {
+            return _speciesDAO.Add(species);
+        }
+        public ResultContainer UpdateSpecies(Species species)
+        {
+            return _speciesDAO.Update(species);
+        }
+
+        public List<Accession> GetAccessions(int speciesId)
+        {
+            return _speciesDAO.GetSpeciesAccessions(speciesId);
         }
 
         #endregion Species
@@ -270,11 +297,14 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region Regulation
 
-        public IQueryable<Regulation> GetRegulations()
+        public IQueryable<Regulation> FindUserRegulations(int cooperatorId)
         {
-            return _regulationDAO.FindAll();
+            return _regulationDAO.FindUserRegulations(cooperatorId);
         }
-
+        public IQueryable<Regulation> FindRecentRegulations()
+        {
+            return _regulationDAO.FindRecentRegulations();
+        }
 
         #endregion
 
@@ -299,5 +329,14 @@ namespace USDA.ARS.GRIN.Admin.Service
         }
 
         #endregion Reference
+
+        #region Reports
+
+        public SummaryReport FiscalYearSummary()
+        {
+            return _reportDAO.GetFiscalYearSummary();
+        }
+
+        #endregion Reports
     }
 }

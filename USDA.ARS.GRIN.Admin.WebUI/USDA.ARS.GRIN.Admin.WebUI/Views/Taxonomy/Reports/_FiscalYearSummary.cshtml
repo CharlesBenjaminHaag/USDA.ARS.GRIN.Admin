@@ -1,0 +1,40 @@
+﻿@model USDA.ARS.GRIN.Admin.Models.Taxonomy.SummaryReport
+
+<div class="box box-default">
+    <div class="box-header">
+        <h3 class="box-title">@Model.Title</h3>
+        <div class="box-tools pull-right">
+            <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            @foreach (var summaryReportItem in Model.SummaryReportRecords)
+            {
+                <div class="col-md-3">
+                    <div class="small-box bg-green-active">
+                        <div class="inner">
+                            <h3>@summaryReportItem.Total</h3>
+                            <p>@summaryReportItem.Title</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">
+                            More info <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+

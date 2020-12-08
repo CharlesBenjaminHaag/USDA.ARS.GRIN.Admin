@@ -17,69 +17,35 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
         {
             _context = context;
         }
-        public IQueryable<Family> Find(Query query = null)
+
+        public IQueryable<Genus> Find(string searchExpression)
         {
-            const string COMMAND_TEXT = "usp_Taxonomy_Search";
-            StringBuilder sqlWhereClause = new StringBuilder();
-            List<Family> familyList = new List<Family>();
+            const string COMMAND_TEXT = "usp_TaxonomyGenii_Search";
+            List<Genus> genusList = new List<Genus>();
 
-            //try
-            //{
-            //    if (query != null)
-            //    {
-            //        foreach (var searchCriterion in query.QueryCriteria)
-            //        {
-            //            searchCriterion.SearchSyntax = GetSearchSyntax(searchCriterion.SearchOperatorCode, searchCriterion.FieldValue);
-            //            if (sqlWhereClause.Length == 0)
-            //            {
-            //                sqlWhereClause.Append(" WHERE ");
-            //            }
-            //            else
-            //            {
-            //                if (sqlWhereClause.Length > 0)
-            //                {
-            //                    sqlWhereClause.Append(" OR ");
-            //                }
-            //            }
-
-            //            searchCriterion.FieldName = GetDatabaseFieldName(searchCriterion.FieldName);
-            //            sqlWhereClause.Append(searchCriterion.FieldName);
-            //            sqlWhereClause.Append(" ");
-            //            sqlWhereClause.Append(searchCriterion.SearchSyntax);
-            //        }
-            //    }
-
-            //    using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-            //    {
-            //        using (SqlCommand cmd = new SqlCommand())
-            //        {
-            //            cmd.Connection = cn;
-            //            cmd.CommandType = CommandType.StoredProcedure;
-            //            cmd.CommandText = COMMAND_TEXT;
-
-            //            if (sqlWhereClause.Length > 0)
-            //            {
-            //                cmd.Parameters.AddWithValue("@sql_where_clause", sqlWhereClause);
-            //            }
-            //            using (SqlDataReader reader = cmd.ExecuteReader())
-            //            {
-            //                while (reader.Read())
-            //                {
-            //                    Family family = new Family();
-            //                    family.Name = reader["family_name"].ToString();
-            //                    family.Genii =
-            //                    familyList.Add(family);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    throw e;
-            //}
-            return familyList.AsQueryable();
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+                    cmd.Parameters.AddWithValue("search_string", searchExpression);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        genusList.Add(new Genus { ID = GetInt(reader["taxonomy_genus_id"].ToString()), Name = reader["genus_name"].ToString() });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return genusList.AsQueryable();
         }
+
 
         public IQueryable<Genus> Find(int familyId)
         {

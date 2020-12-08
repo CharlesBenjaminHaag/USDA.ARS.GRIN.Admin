@@ -1,0 +1,21 @@
+﻿@model IQueryable<USDA.ARS.GRIN.Admin.Models.Taxonomy.Genus>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genus in Model)
+        {
+            <tr>
+                <td><span class="label label-default">@genus.ID</span></td>
+                <td>@genus.Name</td>
+                <td><button id="btnAuthor1" value="@genus.Name" class="btn btn-primary btn-small proto" onclick="SelectGenus(@genus.ID, this.value);return false;">Select</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+

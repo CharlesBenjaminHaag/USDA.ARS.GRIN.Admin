@@ -332,16 +332,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 commonName.Name = reader["name"].ToString();
                                 commonName.SimplifiedName = reader["simplified_name"].ToString();
                                 commonName.AlternateTranscription = reader["alternate_transcription"].ToString();
-
-                                //,[]
-                                //,[citation_id]
-                                //,[note]
-                                //,[created_date]
-                                //,[created_by]
-                                //,[modified_date]
-                                //,[modified_by]
-                                //,[owned_date]
-                                //,[owned_by]
                                 commonNames.Add(commonName);
                             }
                         }

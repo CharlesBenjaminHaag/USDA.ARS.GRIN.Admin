@@ -6,7 +6,8 @@ using System.Web.Mvc;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
-using log4net;
+//using log4net;
+using NLog;
 using System.Security.Authentication;
 using DocumentFormat.OpenXml.Office2010.PowerPoint;
 
@@ -15,7 +16,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
     public class UserController : BaseController
     {
         SecurityService _securityService = null;
-        
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public UserController()
         {
@@ -56,14 +57,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (AuthenticationException aex)
             {
-                log.Error(aex.Message + resultContainer.ResultDescription);
+                Log.Error(aex, aex.Message + resultContainer.ResultDescription);
                 viewModel.Status = resultContainer.ResultCode;
                 viewModel.ErrorMessage = resultContainer.GetUserFriendlyDescription(resultContainer.ResultCode);
                 return View("~/Views/User/Login.cshtml", viewModel);
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ", " + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("Login", "User", new { loginStatus = LoginStatusEnum.ERROR });
             }
             return RedirectToAction("Index", "Home", new { loginStatus = LoginResult.SUCCESS.ToString(), Area = "" });

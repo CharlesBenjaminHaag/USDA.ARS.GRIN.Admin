@@ -53,7 +53,7 @@
                 @Model.ErrorMessage
             </div>
             }
-
+            <label>Log in using your GRIN-Global Curator Tool user name and password.</label>
             <div class="form-group has-feedback">
                 <input type="text" name="userName" class="form-control" placeholder="User name">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -64,17 +64,17 @@
             </div>
             <div class="form-group has-feedback">
                 <select name="environment" class="form-control">
-                    <option value="LOCAL">Local</option>
+                    @*<option value="LOCAL">Local</option>*@
                     @*<option value="PRODCOPY">Prod-Copy</option>*@
                     <option value="DEVELOPMENT">Development</option>
                     @*<option value="TEST">Test</option>*@
-                    <option value="TRAINING">Training</option>
-                    <option value="PRODUCTION">Production</option>
+                    @*<option value="TRAINING">Training</option>
+                    <option value="PRODUCTION">Production</option>*@
                 </select>
             </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <button class="btn btn-success btn-block btn-flat">Request New Account</button>
+                    <button disabled="" class="btn btn-success btn-block btn-flat">Request New Account</button>
                 </div>
 
                 <div class="col-xs-4">

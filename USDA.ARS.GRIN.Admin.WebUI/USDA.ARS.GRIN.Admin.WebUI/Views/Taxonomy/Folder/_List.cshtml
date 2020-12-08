@@ -16,8 +16,14 @@ else
             <div class="info-box">
                 <span class="info-box-icon bg-gray"><i class="fa fa-folder-open"></i></span>
                 <div class="info-box-content" style="padding-bottom:1px;">
-                    <span class="info-box-text">@folder.Title</span>
+                    <span class="info-box-text" style="font-weight:bold;">@folder.Title</span>
+                    @*@if (folder.IsShared)
+                    {
+                        <span class="badge" style="margin-left:2px;">SHARED</span>
+                    }*@
+                    <span class="info-box-text" style="font-style:italic; font-size:.98em;">@folder.Description</span>
                     <a href="@Url.Action("FolderEdit","Taxonomy", new { id = folder.ID })"><span class="info-box-number">@folder.TotalItems<small> items</small></span></a>
+
                 </div>
                 <!-- /.info-box-content -->
             </div>

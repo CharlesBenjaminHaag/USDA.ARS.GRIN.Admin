@@ -321,6 +321,10 @@
     <Content Include="Views\Taxonomy\Shared\_UsageList.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_RegulationList.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_DetailedList.cshtml" />
+    <Content Include="Views\Taxonomy\Genus\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Reports\_FiscalYearSummary.cshtml" />
+    <Content Include="Views\Taxonomy\Regulation\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\Trait\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -388,6 +392,7 @@
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Crop\CropTraitHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CWRMapHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropTraitListViewModel.cs" />
@@ -401,6 +406,8 @@
     <Compile Include="ViewModels\AccountManagement\LoginViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderItemListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Regulation\RegulationEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\SearchComparisonOperatorViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
@@ -548,7 +555,7 @@
     <Folder Include="ViewModels\Taxonomy\Citation\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
     <Folder Include="Views\AccountManagement\Cooperator\" />
-    <Folder Include="Views\Regulation\" />
+    <Folder Include="Views\Taxonomy\Home\" />
     <Folder Include="Views\Utilities\_UPLOADS\" />
   </ItemGroup>
   <ItemGroup>

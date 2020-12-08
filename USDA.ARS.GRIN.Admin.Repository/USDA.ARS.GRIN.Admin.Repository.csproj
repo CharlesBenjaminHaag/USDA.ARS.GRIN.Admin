@@ -58,6 +58,7 @@
     <Compile Include="GRINGlobal\CooperatorDAO.cs" />
     <Compile Include="GRINGlobal\OrderRequestDAO.cs" />
     <Compile Include="GRINGlobal\WebOrderRequestDAO.cs" />
+    <Compile Include="Taxonomy\AccessionDAO.cs" />
     <Compile Include="Taxonomy\FamilyDAO.cs" />
     <Compile Include="Taxonomy\FolderDAO.cs" />
     <Compile Include="Taxonomy\CropForCwrDAO.cs" />
@@ -89,11 +90,12 @@
     <Folder Include="SiteManagement\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Data.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.StoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysData.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysStoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Tables.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Views.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Views.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysViews.SQL" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
