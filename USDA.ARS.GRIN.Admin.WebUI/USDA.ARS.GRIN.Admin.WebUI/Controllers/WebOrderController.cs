@@ -45,5 +45,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
+
+        public ActionResult Approve(int webOrderRequestId)
+        {
+
+
+            return RedirectToAction("_List");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
+            WebOrderRequest webOrderRequest = null;
+            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+
+            //webOrderRequest = service.GetWebOrderRequests
+
+
+            return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
+        {
+            return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
+        }
     }
 }

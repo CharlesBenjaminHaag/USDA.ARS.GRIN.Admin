@@ -21,13 +21,64 @@
     <div class="box-body no-padding">
         <div id="section-data">
 
-        </div> 
+        </div>
     </div>
 </div>
+
+<!----modal starts here--->
+<div id="modal" class="modal modal-success fade" role='dialog'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Approve Web Order</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <p>Here the description starts here........</p>
+                <input type="hidden" id="hidden-approved-web-order-request-id" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-approve-order" class="btn btn-outline" data-dismiss="modal">Continue</button>
+                <button type="button" id="btn-cancel-order" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal ends here--->
 
 <script type="text/javascript">
     $(document).ready(function(){
         var link = '@Url.Action("_List", "WebOrder")';
         $("#section-data").load(link);
     });
+
+    $(document).on("click", ".open-modal", function () {
+
+        var id = $(this).attr('id');
+        var webOrderRequestId = id.replace('btn-approve-', '');
+        var x = new Date();
+
+        var myHeading = "<p>Approve Web Order " + webOrderRequestId + "</p>";
+        $("#hidden-approved-web-order-request-id").val(webOrderRequestId);
+        //$("#modal-body").html(myHeading + x);
+        $('#modal').modal('show');
+    });
+
+    $("#btn-approve-order").click(function () {
+        var webOrderRequestId = $("#hidden-approved-web-order-request-id").val();
+
+        //DEBUG
+        //alert("ID " + webOrderRequestId);
+
+        var link = '@Url.Action("Approve", "WebOrder", new { webOrderRequestId = -1 })';
+        link = link.replace("-1", webOrderRequestId);
+        $("#section-data").load(link);
+
+        //$.post(url, { searchString: inputSearchString })
+        //    .done(function (response) {
+        //        $("#section-species-search-results").html(response);
+        //});
+    });
+
+
 </script>

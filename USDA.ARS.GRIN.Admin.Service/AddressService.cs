@@ -1,32 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace USDA.ARS.GRIN.Admin.Models
+namespace USDA.ARS.GRIN.Admin.Service
 {
-    public class Address
+    public class AddressService
     {
-        public string Type { get; set; }
-        public string PersonFullName { get; set; }
-        public string OrganizationName { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string AddressLine3 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZIP { get; set; }
-
-        public string GetFormattedAddress()
-        {
-            return ParseAddress(PersonFullName, OrganizationName, AddressLine1, AddressLine2, AddressLine3, "", "", City, "United States", ZIP, "", true);
-        }
-
-        public string ParseAddress(string personName, string Organisation, string address1, string address2, string address3, string address4, string address5, string town, string county, string postcode, string country, bool returnhtml)
+        public string ParseAddress(string CustomerName, string Organisation, string address1, string address2, string address3, string address4, string address5, string town, string county, string postcode, string country, bool returnhtml)
         {
             // create postal address object with address info
-            PostalAddress deladdress = new PostalAddress(PersonFullName, Organisation, address1, address2, address3, address4, address5, town, county, postcode, country);
+            PostalAddress deladdress = new PostalAddress(CustomerName, Organisation, address1, address2, address3, address4, address5, town, county, postcode, country);
 
             // select formatting mode from country name
             int switchmode = 0;
@@ -748,19 +732,19 @@ namespace USDA.ARS.GRIN.Admin.Models
             {
                 sb.Append(deladdress.Address5 + Environment.NewLine);
             }
-
+           
 
             if (deladdress.Town.ToString().Trim().Length > 0)
             {
-                sb.Append(deladdress.Town.ToUpper() + " ");
+                sb.Append(deladdress.Town.ToUpper() + " " );
             }
             if (deladdress.County.ToString().Trim().Length > 0)
             {
-                sb.Append(deladdress.County.ToUpper() + " ");
+                sb.Append(deladdress.County.ToUpper() + " " );
             }
             if (deladdress.Postcode.ToString().Trim().Length > 0)
             {
-                sb.Append(deladdress.Postcode.ToUpper() + " ");
+                sb.Append(deladdress.Postcode.ToUpper() + " " );
             }
             sb.Append(Environment.NewLine + deladdress.Country.ToUpper().ToString());
 
@@ -828,9 +812,41 @@ namespace USDA.ARS.GRIN.Admin.Models
             }
             else
             {
-                return sb.ToString();
+                 return sb.ToString();
             }
 
+        }
+
+    }
+
+    public class PostalAddress
+    {
+        // PostalAddress object getters and setters
+        public string CustomerName { get; set; }
+        public string Organisation { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string Address3 { get; set; }
+        public string Address4 { get; set; }
+        public string Address5 { get; set; }
+        public string Town { get; set; }
+        public string County { get; set; }
+        public string Postcode { get; set; }
+        public string Country { get; set; }
+
+        public PostalAddress(string customername, string organisation, string address1, string address2, string address3, string address4, string address5, string town, string county, string postcode, string country)
+        {
+            CustomerName = customername;
+            Organisation = organisation;
+            Address1 = address1;
+            Address2 = address2;
+            Address3 = address3;
+            Address4 = address4;
+            Address5 = address5;
+            Town = town;
+            County = county;
+            Postcode = postcode;
+            Country = country;
         }
     }
 }

@@ -325,6 +325,7 @@
     <Content Include="Views\Taxonomy\Reports\_FiscalYearSummary.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Trait\Index.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -389,6 +390,7 @@
     <Compile Include="ViewModels\GRINGlobal\AccessionInventoryAttachmentListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\HomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\ValidationStatisticsViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestEditViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropHomeViewModel.cs" />

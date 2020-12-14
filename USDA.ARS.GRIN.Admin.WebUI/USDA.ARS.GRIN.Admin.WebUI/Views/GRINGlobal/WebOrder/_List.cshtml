@@ -1,185 +1,129 @@
 ﻿@model IQueryable<USDA.ARS.GRIN.Admin.Models.GRINGlobal.WebOrderRequest>
 
     <div class="box-group" id="accordion">
-        @{ 
+        @{
             string headerHrefId = String.Empty;
             string bodyId = String.Empty;
         }
 
-        @foreach (var webOrderRequest in Model)
+        @if (Model.Count() > 0)
         {
-            headerHrefId = "#collapse" + webOrderRequest.ID;
-            bodyId = "collapse" + webOrderRequest.ID;
+            foreach (var webOrderRequest in Model)
+            {
+                headerHrefId = "#collapse" + webOrderRequest.ID;
+                bodyId = "collapse" + webOrderRequest.ID;
 
-            <div class="panel box box-default no-border">
-                <div class="box-header with-border" style="background-color:#d2d6de;">
-                    <h4 class="box-title" style="font-weight:bold;">
-                        <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
-                            @webOrderRequest.ID (@webOrderRequest.OrderDate.ToShortDateString())
-                        </a>
-                    </h4>
-                </div>
-                <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                    <div class="box-body">
-
-                        <div class="mailbox-controls">
+                <div class="panel box box-default no-border">
+                    <div class="box-header with-border" style="background-color:#d2d6de;">
+                        <h4 class="box-title" style="font-weight:bold;">
+                            <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
+                                @webOrderRequest.ID (@webOrderRequest.OrderDate.ToShortDateString())
+                            </a>
                             
-                            <button type="button" class="btn btn-success btn-sm check-all-search-results">
-                                <i class="fa fa-thumbs-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
-                                <i class="fa fa-thumbs-down"></i>
-                            </button>
-                            @*<button type="button" class="btn btn-primary btn-sm" onclick="">
-                                <i class="fa fa-thumbs-up"></i>
-                            </button>*@
-                            @*<button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
-                                <i class="fa fa-trash-o"></i>
-                            </button>*@
-                            <div class="pull-right">
-                                @*<button type="button" disabled class="btn btn-default btn-sm">
-                                    Export
-                                </button>*@
-                            </div>
-                        </div>
+                            <span class="label label-danger">Locked by Reisinger, Marty: 12/10/2020 12:00 PM</span>
 
+                        </h4>
+                    </div>
+                    <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                        <div class="box-body">
+                            <div class="mailbox-controls">
+                                @*<button type="button" id="btn-approve-@webOrderRequest.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
+                <i class="fa fa-thumbs-up"></i>
+            </button>
+            <a href="@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })" class="btn btn-danger btn-sm uncheck-all-search-results">
+                <i class="fa fa-thumbs-down"></i>
+            </a>*@
 
-                        <!-- WEB COOPERATOR -->
-                        <h5>Cooperator</h5>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Last Name</label>
-                                    <input type="text" readonly class="form-control form-control-static" value="@webOrderRequest.WebCooperator.LastName" />
+                                @*<button type="button" class="btn btn-primary btn-sm" onclick="">
+                <i class="fa fa-thumbs-up"></i>
+            </button>*@
+                                @*<button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash-o"></i>
+            </button>*@
+                                <div class="pull-right">
+                                    @*<button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>*@
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>First Name</label>
-                                    <input type="text" readonly class="form-control form-control-static" value="@webOrderRequest.WebCooperator.FirstName" />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h5><strong>Address</strong></h5>
+                                    @Html.Raw(webOrderRequest.WebCooperator.PrimaryAddress.GetFormattedAddress())
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="nav-tabs-custom">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="#tab_1" data-toggle="tab">Intended Use Note</a></li>
+                                            <li><a href="#tab_2" data-toggle="tab">Special Instructions</a></li>
+                                            <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
+                                            
+                                            <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab_1">
+                                                <p class="text-muted well well-sm no-shadow">
+                                                    @webOrderRequest.IntendedUseNote
+                                                </p>
+                                            </div>
+                                            <div class="tab-pane" id="tab_2">
+                                                <p class="text-muted well well-sm no-shadow">
+                                                    @webOrderRequest.SpecialInstruction
+                                                </p>
+                                            </div>
+                                            <div class="tab-pane" id="tab_3">
+                                                <p class="text-muted well well-sm no-shadow">
+                                                    @webOrderRequest.Note
+                                                </p>
+                                            </div>
+                                            </div>
+                                       </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <div class="input-group">
-                                        <input type="text" readonly class="form-control form-control-static" value="@webOrderRequest.WebCooperator.EmailAddress">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-info btn-flat">Look Up...</button>
-                                        </span>
-                                    </div>
 
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Organization</label>
-                                    <input type="text" readonly class="form-control form-control-static" value="" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER SUMMARY -->
-                        <h5>Order Summary</h5>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Intended Use</label>
-                                    <textarea class="form-control" rows="3" readonly value="@webOrderRequest.IntendedUseNote">@webOrderRequest.IntendedUseNote</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Special Instruction</label>
-                                    <textarea class="form-control" rows="3" readonly value="@webOrderRequest.SpecialInstruction">@webOrderRequest.SpecialInstruction</textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Note</label>
-                                    <textarea class="form-control" rows="3" readonly value="@webOrderRequest.Note">@webOrderRequest.Note</textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ORDER ITEMS -->
-                        <table class="table table-striped ggtools">
-                            <thead>
-                                <tr>
-                                    <th>Seq.</th>
-                                    <th>Accession</th>
-                                    <th>Species</th>
-                                    <th>Status</th>
-                                    <th>Site</th>
-                                    <th>Qty. Shipped</th>
-                                    <th>Distribution Form</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
-                                {
+                            <!-- ORDER ITEMS -->
+                            <table class="table table-striped ggtools">
+                                <thead>
                                     <tr>
-                                        <td>@webOrderRequestItem.SequenceNumber</td>
-                                        <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                        <td>
-                                            <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                        </td>
-                                        <td>@webOrderRequestItem.StatusCode</td>
-                                        <td>@webOrderRequestItem.Site.LongName</td>
-                                        <td>@webOrderRequestItem.QuantityShipped</td>
-                                        <td>@webOrderRequestItem.DistributionForm</td>
+                                        <th>Seq.</th>
+                                        <th>Accession</th>
+                                        <th>Species</th>
+                                        <th>Status</th>
+                                        <th>Site</th>
+                                        <th>Qty. Shipped</th>
+                                        <th>Distribution Form</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
+                                    {
+                                        <tr>
+                                            <td>@webOrderRequestItem.SequenceNumber</td>
+                                            <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                            <td>
+                                                <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                            </td>
+                                            <td>@webOrderRequestItem.StatusCode</td>
+                                            <td>@webOrderRequestItem.Site.LongName</td>
+                                            <td>@webOrderRequestItem.QuantityShipped</td>
+                                            <td>@webOrderRequestItem.DistributionForm</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                There are no potential non-research requests (NRR) for your review.
             </div>
         }
-        @*<div class="panel box box-default no-border">
-            <div class="box-header with-border" style="background-color:#ebebeb;">
-                <h4 class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false">
-                        Web Order Request 10001
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="box-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                    wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                    eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                    assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                    labore sustainable VHS.
-                </div>
-            </div>
-        </div>
-        <div class="panel box box-default no-border">
-            <div class="box-header" style="background-color:#ebebeb; border-color:#ebebeb; border:none;">
-                <h4 class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed" aria-expanded="false">
-                        Web Order Request 10002
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                <div class="box-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                    wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                    eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                    assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                    farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                    labore sustainable VHS.
-                </div>
-            </div>
-        </div>*@
     </div>
 
 <script>

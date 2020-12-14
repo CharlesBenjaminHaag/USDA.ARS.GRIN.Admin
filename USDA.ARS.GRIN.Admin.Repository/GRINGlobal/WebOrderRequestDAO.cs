@@ -29,7 +29,56 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public WebOrderRequest Get(int id)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_WebOrderRequest_Select";
+            WebOrderRequest webOrderRequest = new WebOrderRequest();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@web_order_request_id", id);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                webOrderRequest = new WebOrderRequest();
+                                webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
+                                webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
+                                webOrderRequest.WebCooperator.LastName = reader["last_name"].ToString();
+                                webOrderRequest.WebCooperator.FirstName = reader["first_name"].ToString();
+                                webOrderRequest.WebCooperator.EmailAddress = reader["email"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.PersonFullName = reader["full_name"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.OrganizationName = reader["organization"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine1 = reader["address_line1"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine2 = reader["address_line2"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine3 = reader["address_line3"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.City = reader["city"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.State = "STATE";
+                                webOrderRequest.WebCooperator.PrimaryAddress.ZIP = reader["postal_index"].ToString();
+                                webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
+                                webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
+                                webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();
+                                webOrderRequest.Note = reader["note"].ToString();
+                                webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return webOrderRequest;
         }
 
         public int Remove(WebOrderRequest entity)
@@ -97,7 +146,15 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebCooperator.LastName = reader["last_name"].ToString();
                                 webOrderRequest.WebCooperator.FirstName = reader["first_name"].ToString();
                                 webOrderRequest.WebCooperator.EmailAddress = reader["email"].ToString();
-                                
+                                webOrderRequest.WebCooperator.PrimaryAddress.PersonFullName = reader["full_name"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.OrganizationName = reader["organization"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine1 = reader["address_line1"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine2 = reader["address_line2"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine3 = reader["address_line3"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.City = reader["city"].ToString();
+                                webOrderRequest.WebCooperator.PrimaryAddress.State = "STATE";
+                                webOrderRequest.WebCooperator.PrimaryAddress.ZIP = reader["postal_index"].ToString();
+
                                 webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
                                 webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
                                 webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();
@@ -165,7 +222,54 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequestItems.AsQueryable();
         }
 
-        public int Update(WebOrderRequest entity)
+        public ResultContainer Update(WebOrderRequest entity)
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequest_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@web_order_request_id", entity.ID);
+                        cmd.Parameters.AddWithValue("@status_code", entity.StatusCode);
+
+                        if (String.IsNullOrEmpty(entity.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", entity.Note);
+
+                        cmd.Parameters.AddWithValue("@modified_by", entity.ModifiedByCooperatorID);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        resultContainer.EntityID = entity.ID;
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+           
+        }
+
+        int IRepository<WebOrderRequest>.Update(WebOrderRequest entity)
         {
             throw new NotImplementedException();
         }

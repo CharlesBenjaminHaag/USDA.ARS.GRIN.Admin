@@ -15,30 +15,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             dashboardViewModel.AuthenticatedUser = this.AuthenticatedUser;
             string destinationView = "Index.cshtml";
 
-            if (String.IsNullOrEmpty(appContext))
+            if (!String.IsNullOrEmpty(appContext))
             {
-                // DEFAULT DBMU ADMIN VIEW
+                return RedirectToAction("Index", appContext);
             }
             else
             {
-                switch (appContext)
-                {
-                    case "taxonomy":
-                        return RedirectToAction("Index", "Taxonomy");
-                    case "sitemanagement":
-                        return RedirectToAction("Index", "SiteManagement");
-                    case "accountmanagement":
-                        return RedirectToAction("Index", "AccountManagement");
-                    case "gringlobal":
-                        return RedirectToAction("Index", "GRINGlobal");
-                    case "weborder":
-                        return RedirectToAction("Index", "WebOrder");
-                    default:
-                        break;
-                }
-            
+
+                return View(dashboardViewModel);
             }
-            return View(dashboardViewModel);
         }
 
         public ActionResult _Header()

@@ -1,0 +1,48 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.WebOrderRequestEditViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
+{
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">Deny Web Order Request</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="callout callout-info" style="vertical-align:middle;">
+                        WEB ORDER DETAIL HERE
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:20px;">
+                    <input type="submit" class="btn btn-success pull-right" style="margin-left:5px;" value="Save" />
+                    <a href="@Url.Action("Index", "WebOrder", new { id = Model.ID })" class="btn btn-default pull-right">Return to  Home Page</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="txtName" class="col-sm-2 control-label">Email Text</label>
+                    <div class="col-md-12">
+                        <textarea class="form-control" rows="25">
+                        Dear NAME,
+                        We are unable to process your request for one or more of the following reasons:
+                        (BOILERPLATE TEXT HERE)                    
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

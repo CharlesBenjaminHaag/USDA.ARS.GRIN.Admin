@@ -50,7 +50,7 @@ INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_co
 GO
 INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_GRINGLOBAL', N'GGTools GRIN-Global Admin', N'GRINGlobal data-management utilities', N'gringlobal', N'blue', N'gglogo.gif')
 GO
-INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_ORDERS', N'GRIN-Global NRR Review Tool', N'Enables curators to review and approve, or reject, web orders that have been flagged as potential Non-Research Requests (NRR)Supports the review and editing of GRIN-Global reference data.', N'orders', N'black', N'cog.png')
+INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_ORDERS', N'GRIN-Global NRR Review Tool', N'Enables curators to review and approve, or reject, web orders that have been flagged as potential Non-Research Requests (NRR)Supports the review and editing of GRIN-Global reference data.', N'weborder', N'black', N'cog.png')
 GO
 
 UPDATE sys_application SET sys_group_id = (SELECT sys_group_id FROM sys_group WHERE group_tag = sys_application.code)
@@ -186,6 +186,44 @@ VALUES
 (
 	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
 	488,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
+	204,
+	GETDATE(),
+	48,
+	GETDATE(),
+	48
+)
+
+INSERT INTO sys_group_user_map
+(
+	 sys_group_id,
+	 sys_user_id,
+	 created_date,
+	 created_by,
+	 owned_date,
+	 owned_by
+)
+VALUES
+(
+	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
+	44,
 	GETDATE(),
 	48,
 	GETDATE(),

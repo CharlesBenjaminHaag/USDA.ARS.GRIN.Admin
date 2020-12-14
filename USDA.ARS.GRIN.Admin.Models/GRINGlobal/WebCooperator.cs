@@ -17,5 +17,10 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
         public string SecondaryPhoneNumber { get; set; }
         public Address PrimaryAddress { get; set; }
         public bool IsActive { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public WebCooperator()
+        {
+            PrimaryAddress = new Address();
+        }
     }
 }
