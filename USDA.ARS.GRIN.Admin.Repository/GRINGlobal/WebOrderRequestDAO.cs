@@ -238,14 +238,13 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         cmd.CommandText = COMMAND_TEXT;
 
                         cmd.Parameters.AddWithValue("@web_order_request_id", entity.ID);
+                        cmd.Parameters.AddWithValue("@web_cooperator_id", entity.WebCooperator.ID);
                         cmd.Parameters.AddWithValue("@status_code", entity.StatusCode);
 
                         if (String.IsNullOrEmpty(entity.Note))
                             cmd.Parameters.AddWithValue("@note", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@note", entity.Note);
-
-                        cmd.Parameters.AddWithValue("@modified_by", entity.ModifiedByCooperatorID);
 
                         SqlParameter errorParam = new SqlParameter();
                         errorParam.SqlDbType = System.Data.SqlDbType.Int;

@@ -31,12 +31,12 @@
                     <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                         <div class="box-body">
                             <div class="mailbox-controls">
-                                <button type="button" id="btn-approve-@webOrderRequest.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
+                                <button type="button" id="btnApprove-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
                                     <i class="fa fa-thumbs-up"></i>
                                 </button>
-                                <a href="@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })" class="btn btn-danger btn-sm uncheck-all-search-results">
+                                <button type="button" id="btnDeny-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-danger btn-sm check-all-search-results open-modal">
                                     <i class="fa fa-thumbs-down"></i>
-                                </a>
+                                </button>
                                 <a href="@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })" class="btn btn-default btn-sm uncheck-all-search-results">
                                     <i class="fa fa-book"></i>&nbsp;Review
                                 </a>

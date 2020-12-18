@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
 using USDA.ARS.GRIN.Admin.Service;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal;
@@ -46,11 +47,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult Approve(int webOrderRequestId)
+        public PartialViewResult Update(int webOrderRequestId, int webCooperatorId, string statusCode, string actionNote)
         {
+            ResultContainer resultContainer = null;
+            WebOrderRequest webOrderRequest = new WebOrderRequest();
+            IQueryable<WebOrderRequest> webOrderRequests = null;
+            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
+            webOrderRequest.ID = webOrderRequestId;
+            
+            webOrderRequest.StatusCode = statusCode;
+            
+            webOrderRequest.Note = actionNote;
+            webOrderRequest.WebCooperator.ID = webCooperatorId;
 
-            return RedirectToAction("_List");
+            resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
+            webOrderRequests = service.GetWebOrderRequests("REVIEW");
+            return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
+
         }
 
         public ActionResult Edit(int id)
