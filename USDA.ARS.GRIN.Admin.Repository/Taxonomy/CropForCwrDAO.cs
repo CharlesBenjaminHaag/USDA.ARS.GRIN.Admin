@@ -1109,7 +1109,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
         public DataTable FindCropWildRelatives(Query searchObject)
         {
             const string COMMAND_TEXT = "usp_GetSearchResults";
-            string sqlStatement = "SELECT [taxonomy_cwr_id], ts.taxonomy_species_id, ts.name ,[crop_name],[display_name]     ,[crop_common_name]     ,[is_crop]      ,[genepool_code]      ,[is_graftstock_genepool]      ,[trait_class_code]      ,[is_potential]      ,[breeding_type_code]      ,[breeding_usage]      ,[ontology_trait_identifier]      ,[citation_id]      ,tc.note      ,tc.created_date      ,tc.created_by      ,tc.modified_date      ,tc.modified_by      ,tc.owned_date      ,tc.owned_by    FROM        [gringlobal].[dbo].[taxonomy_cwr] tc JOIN taxonomy_species ts  ON  tc.taxonomy_species_id = ts.taxonomy_species_id";
+            string sqlStatement = "SELECT [taxonomy_cwr_id], ts.taxonomy_species_id, ts.name ,[crop_name],[display_name]     ,[crop_common_name]     ,[is_crop]      ,[genepool_code]      ,[is_graftstock_genepool]      ,[trait_class_code]      ,[is_potential]      ,[breeding_type_code]      ,[breeding_usage]      ,[ontology_trait_identifier]      ,[citation_id]      ,tc.note      ,tc.created_date      ,tc.created_by      ,tc.modified_date      ,tc.modified_by      ,tc.owned_date      ,tc.owned_by    FROM        [$(DatabaseName)].[taxonomy_cwr] tc JOIN taxonomy_species ts  ON  tc.taxonomy_species_id = ts.taxonomy_species_id";
             StringBuilder sqlWhereClause = new StringBuilder();
             List<CropWildRelative> taxonomyCropWildRelatives = new List<CropWildRelative>();
             DataTable searchResults = new DataTable();

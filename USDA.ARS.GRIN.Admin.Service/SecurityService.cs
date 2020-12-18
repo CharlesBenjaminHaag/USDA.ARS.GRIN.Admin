@@ -10,15 +10,18 @@ using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Repository;
 using System.Security.Authentication;
 
+
 namespace USDA.ARS.GRIN.Admin.Service
 {
     public class SecurityService
     {
         protected UserDAO _userDAO;
+        protected SmtpService _smtpService;
 
         public SecurityService(string context)
         {
             _userDAO = new UserDAO(context);
+            _smtpService = new SmtpService();
         }
 
         public string GenerateRandomPassword(int length)

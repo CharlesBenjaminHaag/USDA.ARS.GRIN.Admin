@@ -6,8 +6,8 @@
     <Name>USDA.ARS.GRIN.DB</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{015dec4d-7791-42dc-a649-62c07e675f3c}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <ProjectGuid>{f1b40cf7-c2c1-4fd1-9e8c-5c93cc8d3f2f}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -23,6 +23,65 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <AnsiNulls>False</AnsiNulls>
+    <QuotedIdentifier>False</QuotedIdentifier>
+    <QueryStoreCaptureMode>All</QueryStoreCaptureMode>
+    <QueryStoreDesiredState>Off</QueryStoreDesiredState>
+    <QueryStoreFlushInterval>900</QueryStoreFlushInterval>
+    <QueryStoreStatsInterval>60</QueryStoreStatsInterval>
+    <QueryStoreMaxPlansPerQuery>200</QueryStoreMaxPlansPerQuery>
+    <QueryStoreStaleQueryThreshold>30</QueryStoreStaleQueryThreshold>
+    <QueryStoreMaxStorageSize>100</QueryStoreMaxStorageSize>
+    <DbScopedConfigLegacyCardinalityEstimation>Off</DbScopedConfigLegacyCardinalityEstimation>
+    <DbScopedConfigMaxDOP>0</DbScopedConfigMaxDOP>
+    <DbScopedConfigParameterSniffing>On</DbScopedConfigParameterSniffing>
+    <DbScopedConfigOptimizerHotfixes>Off</DbScopedConfigOptimizerHotfixes>
+    <DelayedDurability>DISABLED</DelayedDurability>
+    <AutoCreateStatisticsIncremental>False</AutoCreateStatisticsIncremental>
+    <MemoryOptimizedElevateToSnapshot>False</MemoryOptimizedElevateToSnapshot>
+    <Containment>None</Containment>
+    <IsNestedTriggersOn>True</IsNestedTriggersOn>
+    <IsTransformNoiseWordsOn>False</IsTransformNoiseWordsOn>
+    <TwoDigitYearCutoff>2049</TwoDigitYearCutoff>
+    <NonTransactedFileStreamAccess>OFF</NonTransactedFileStreamAccess>
+    <TargetRecoveryTimePeriod>0</TargetRecoveryTimePeriod>
+    <TargetRecoveryTimeUnit>SECONDS</TargetRecoveryTimeUnit>
+    <IsChangeTrackingOn>False</IsChangeTrackingOn>
+    <IsChangeTrackingAutoCleanupOn>True</IsChangeTrackingAutoCleanupOn>
+    <ChangeTrackingRetentionPeriod>2</ChangeTrackingRetentionPeriod>
+    <ChangeTrackingRetentionUnit>Days</ChangeTrackingRetentionUnit>
+    <IsEncryptionOn>False</IsEncryptionOn>
+    <IsBrokerPriorityHonored>False</IsBrokerPriorityHonored>
+    <Trustworthy>False</Trustworthy>
+    <AutoUpdateStatisticsAsynchronously>False</AutoUpdateStatisticsAsynchronously>
+    <PageVerify>CHECKSUM</PageVerify>
+    <ServiceBrokerOption>DisableBroker</ServiceBrokerOption>
+    <DateCorrelationOptimizationOn>False</DateCorrelationOptimizationOn>
+    <Parameterization>SIMPLE</Parameterization>
+    <AllowSnapshotIsolation>False</AllowSnapshotIsolation>
+    <ReadCommittedSnapshot>False</ReadCommittedSnapshot>
+    <VardecimalStorageFormatOn>True</VardecimalStorageFormatOn>
+    <SupplementalLoggingOn>False</SupplementalLoggingOn>
+    <CompatibilityMode>130</CompatibilityMode>
+    <AnsiNullDefault>False</AnsiNullDefault>
+    <AnsiPadding>False</AnsiPadding>
+    <AnsiWarnings>False</AnsiWarnings>
+    <ArithAbort>False</ArithAbort>
+    <ConcatNullYieldsNull>False</ConcatNullYieldsNull>
+    <NumericRoundAbort>False</NumericRoundAbort>
+    <RecursiveTriggersEnabled>False</RecursiveTriggersEnabled>
+    <DatabaseChaining>False</DatabaseChaining>
+    <DatabaseState>ONLINE</DatabaseState>
+    <CloseCursorOnCommitEnabled>False</CloseCursorOnCommitEnabled>
+    <DefaultCursor>GLOBAL</DefaultCursor>
+    <AutoClose>False</AutoClose>
+    <AutoCreateStatistics>True</AutoCreateStatistics>
+    <AutoShrink>False</AutoShrink>
+    <AutoUpdateStatistics>True</AutoUpdateStatistics>
+    <TornPageDetection>False</TornPageDetection>
+    <DatabaseAccess>MULTI_USER</DatabaseAccess>
+    <Recovery>FULL</Recovery>
+    <EnableFullTextSearch>False</EnableFullTextSearch>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -67,384 +126,1610 @@
     <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\accession_action.sql" />
-    <Build Include="dbo\Tables\taxonomy_noxious.sql" />
-    <Build Include="dbo\Tables\taxonomy_folder.sql" />
-    <Build Include="dbo\Tables\inventory_viability_rule_map.sql" />
-    <Build Include="dbo\Tables\accession_inv_annotation.sql" />
-    <Build Include="dbo\Tables\taxonomy_folder_item_map.sql" />
-    <Build Include="dbo\Tables\taxonomy_use.sql" />
-    <Build Include="dbo\Tables\crop_germplasm_committee.sql" />
-    <Build Include="dbo\Tables\method.sql" />
-    <Build Include="dbo\Tables\taxonomy_cwr_priority.sql" />
-    <Build Include="dbo\Tables\w6_site_inventory.sql" />
-    <Build Include="dbo\Tables\crop_germplasm_committee_crop_descriptor.sql" />
-    <Build Include="dbo\Tables\method_map.sql" />
-    <Build Include="dbo\Tables\web_cooperator.sql" />
-    <Build Include="dbo\Tables\crop_germplasm_committee_document.sql" />
-    <Build Include="dbo\Tables\sys_application.sql" />
-    <Build Include="dbo\Tables\name_group.sql" />
-    <Build Include="dbo\Tables\web_help.sql" />
-    <Build Include="dbo\Tables\crop_germplasm_committee_meeting.sql" />
-    <Build Include="dbo\Tables\accession_inv_group_map.sql" />
-    <Build Include="dbo\Tables\nc7_site_inventory.sql" />
-    <Build Include="dbo\Tables\web_order_request.sql" />
-    <Build Include="dbo\Tables\accession_inv_name.sql" />
-    <Build Include="dbo\Tables\accession_inv_group.sql" />
-    <Build Include="dbo\Tables\ne9_site_inventory.sql" />
-    <Build Include="dbo\Tables\web_order_request_action.sql" />
-    <Build Include="dbo\Tables\accession_inv_voucher.sql" />
-    <Build Include="dbo\Tables\web_order_request_address.sql" />
-    <Build Include="dbo\Tables\sys_search_operator.sql" />
-    <Build Include="dbo\Tables\opgc_site_inventory.sql" />
-    <Build Include="dbo\Tables\accession_ipr.sql" />
-    <Build Include="dbo\Tables\web_order_request_attach.sql" />
-    <Build Include="dbo\Tables\order_request.sql" />
-    <Build Include="dbo\Tables\accession_pedigree.sql" />
-    <Build Include="dbo\Tables\web_order_request_item.sql" />
-    <Build Include="dbo\Tables\order_request_action.sql" />
-    <Build Include="dbo\Tables\accession_quarantine.sql" />
-    <Build Include="dbo\Tables\order_request_item_action.sql" />
-    <Build Include="dbo\Tables\taxonomy_common_name.sql" />
-    <Build Include="dbo\Tables\web_user.sql" />
-    <Build Include="dbo\Tables\order_request_attach.sql" />
-    <Build Include="dbo\Tables\web_user_cart.sql" />
-    <Build Include="dbo\Tables\web_user_cart_item.sql" />
-    <Build Include="dbo\Tables\order_request_item.sql" />
-    <Build Include="dbo\Tables\accession_source_map.sql" />
-    <Build Include="dbo\Tables\web_user_preference.sql" />
-    <Build Include="dbo\Tables\pvp_applicant.sql" />
-    <Build Include="dbo\Tables\order_request_phyto_log.sql" />
-    <Build Include="dbo\Tables\app_resource.sql" />
-    <Build Include="dbo\Tables\taxonomy_cwr_crop.sql" />
-    <Build Include="dbo\Tables\web_user_shipping_address.sql" />
-    <Build Include="dbo\Tables\parl_site_inventory.sql" />
-    <Build Include="dbo\Tables\app_setting.sql" />
-    <Build Include="dbo\Tables\region.sql" />
-    <Build Include="dbo\Tables\app_user_gui_setting.sql" />
-    <Build Include="dbo\Tables\site.sql" />
-    <Build Include="dbo\Tables\s9_site_inventory.sql" />
-    <Build Include="dbo\Tables\taxonomy_cwr_map.sql" />
-    <Build Include="dbo\Tables\app_user_item_list.sql" />
-    <Build Include="dbo\Tables\pvpo_import.sql" />
-    <Build Include="dbo\Tables\source_desc_observation.sql" />
-    <Build Include="dbo\Tables\code_value.sql" />
-    <Build Include="dbo\Tables\pvp_application_status.sql" />
-    <Build Include="dbo\Tables\source_descriptor.sql" />
-    <Build Include="dbo\Tables\code_value_lang.sql" />
-    <Build Include="dbo\Tables\PVPO_IMPORT_ERRORS.sql" />
-    <Build Include="dbo\Tables\source_descriptor_code.sql" />
-    <Build Include="dbo\Tables\taxonomy_cwr_trait.sql" />
-    <Build Include="dbo\Tables\cooperator.sql" />
-    <Build Include="dbo\Tables\pvp_common_name.sql" />
-    <Build Include="dbo\Tables\rhy.sql" />
-    <Build Include="dbo\Tables\source_descriptor_code_lang.sql" />
-    <Build Include="dbo\Tables\cooperator_group.sql" />
-    <Build Include="dbo\Tables\literature.sql" />
-    <Build Include="dbo\Tables\pvp_application.sql" />
-    <Build Include="dbo\Tables\source_descriptor_lang.sql" />
-    <Build Include="dbo\Tables\cooperator_map.sql" />
-    <Build Include="dbo\Tables\taxonomy_species.sql" />
-    <Build Include="dbo\Tables\sys_database.sql" />
-    <Build Include="dbo\Tables\crop.sql" />
-    <Build Include="dbo\Tables\taxonomy_regulation.sql" />
-    <Build Include="dbo\Tables\sys_database_migration.sql" />
-    <Build Include="dbo\Tables\crop_attach.sql" />
-    <Build Include="dbo\Tables\taxonomy_cwr.sql" />
-    <Build Include="dbo\Tables\sys_database_migration_lang.sql" />
-    <Build Include="dbo\Tables\crop_trait.sql" />
-    <Build Include="dbo\Tables\sys_datatrigger.sql" />
-    <Build Include="dbo\Tables\taxonomy_regulation_map.sql" />
-    <Build Include="dbo\Tables\crop_trait_attach.sql" />
-    <Build Include="dbo\Tables\sys_datatrigger_lang.sql" />
-    <Build Include="dbo\Tables\sys_dataview.sql" />
-    <Build Include="dbo\Tables\crop_trait_code.sql" />
-    <Build Include="dbo\Tables\plant_inventory.sql" />
-    <Build Include="dbo\Tables\nssl_site_inventory.sql" />
-    <Build Include="dbo\Tables\sys_dataview_field.sql" />
-    <Build Include="dbo\Tables\crop_trait_code_attach.sql" />
-    <Build Include="dbo\Tables\plant_inventory_index.sql" />
-    <Build Include="dbo\Tables\sys_dataview_field_lang.sql" />
-    <Build Include="dbo\Tables\plant_immigrant_index.sql" />
-    <Build Include="dbo\Tables\crop_trait_code_lang.sql" />
-    <Build Include="dbo\Tables\sys_dataview_lang.sql" />
-    <Build Include="dbo\Tables\crop_trait_lang.sql" />
-    <Build Include="dbo\Tables\sys_dataview_param.sql" />
-    <Build Include="dbo\Tables\crop_trait_observation.sql" />
-    <Build Include="dbo\Tables\sys_dataview_sql.sql" />
-    <Build Include="dbo\Tables\crop_trait_observation_data.sql" />
-    <Build Include="dbo\Tables\sys_file.sql" />
-    <Build Include="dbo\Tables\email.sql" />
-    <Build Include="dbo\Tables\sys_file_group.sql" />
-    <Build Include="dbo\Tables\email_attach.sql" />
-    <Build Include="dbo\Tables\sys_file_group_map.sql" />
-    <Build Include="dbo\Tables\exploration.sql" />
-    <Build Include="dbo\Tables\sys_file_lang.sql" />
-    <Build Include="dbo\Tables\exploration_map.sql" />
-    <Build Include="dbo\Tables\sys_group.sql" />
-    <Build Include="dbo\Tables\feedback.sql" />
-    <Build Include="dbo\Tables\sys_group_lang.sql" />
-    <Build Include="dbo\Tables\feedback_attach.sql" />
-    <Build Include="dbo\Tables\sys_group_permission_map.sql" />
-    <Build Include="dbo\Tables\citation.sql" />
-    <Build Include="dbo\Tables\feedback_form.sql" />
-    <Build Include="dbo\Tables\sys_group_user_map.sql" />
-    <Build Include="dbo\Tables\feedback_form_field.sql" />
-    <Build Include="dbo\Tables\sys_index.sql" />
-    <Build Include="dbo\Tables\feedback_form_trait.sql" />
-    <Build Include="dbo\Tables\sys_index_field.sql" />
-    <Build Include="dbo\Tables\inventory_viability.sql" />
-    <Build Include="dbo\Tables\feedback_inventory.sql" />
-    <Build Include="dbo\Tables\THUMBNAIL_URLS_FOR_MARK.sql" />
-    <Build Include="dbo\Tables\taxonomy_ista_seed.sql" />
-    <Build Include="dbo\Tables\sys_lang.sql" />
-    <Build Include="dbo\Tables\feedback_report.sql" />
-    <Build Include="dbo\Tables\taxonomy_cultivar.sql" />
-    <Build Include="dbo\Tables\taxonomy_ref_upov_crop.sql" />
-    <Build Include="dbo\Tables\sys_permission.sql" />
-    <Build Include="dbo\Tables\feedback_report_attach.sql" />
-    <Build Include="dbo\Tables\taxonomy_cultivar_group.sql" />
-    <Build Include="dbo\Tables\taxonomy_upov_crop_map.sql" />
-    <Build Include="dbo\Tables\sys_permission_field.sql" />
-    <Build Include="dbo\Tables\feedback_result.sql" />
-    <Build Include="dbo\Tables\sys_permission_lang.sql" />
-    <Build Include="dbo\Tables\inventory_viability_data.sql" />
-    <Build Include="dbo\Tables\feedback_result_attach.sql" />
-    <Build Include="dbo\Tables\sys_search_autofield.sql" />
-    <Build Include="dbo\Tables\inventory_action.sql" />
-    <Build Include="dbo\Tables\feedback_result_field.sql" />
-    <Build Include="dbo\Tables\inventory_quality_status.sql" />
-    <Build Include="dbo\Tables\geography.sql" />
-    <Build Include="dbo\Tables\sys_search_resolver.sql" />
-    <Build Include="dbo\Tables\feedback_result_group.sql" />
-    <Build Include="dbo\Tables\sys_table.sql" />
-    <Build Include="dbo\Tables\feedback_result_trait_obs.sql" />
-    <Build Include="dbo\Tables\sys_table_field.sql" />
-    <Build Include="dbo\Tables\genetic_annotation.sql" />
-    <Build Include="dbo\Tables\sys_table_field_lang.sql" />
-    <Build Include="dbo\Tables\inventory_viability_rule.sql" />
-    <Build Include="dbo\Tables\genetic_marker.sql" />
-    <Build Include="dbo\Tables\sys_table_lang.sql" />
-    <Build Include="dbo\Tables\accession_inv_group_attach.sql" />
-    <Build Include="dbo\Tables\genetic_observation.sql" />
-    <Build Include="dbo\Tables\sys_table_relationship.sql" />
-    <Build Include="dbo\Tables\genetic_observation_data.sql" />
-    <Build Include="dbo\Tables\sys_user.sql" />
-    <Build Include="dbo\Tables\geneva_site_inventory.sql" />
-    <Build Include="dbo\Tables\accession_inv_attach.sql" />
-    <Build Include="dbo\Tables\sys_user_permission_map.sql" />
-    <Build Include="dbo\Tables\method_attach.sql" />
-    <Build Include="dbo\Tables\accession_inv_attach_validation.sql" />
-    <Build Include="dbo\Tables\accession.sql" />
-    <Build Include="dbo\Tables\taxonomy_alt_family_map.sql" />
-    <Build Include="dbo\Tables\geography_region_map.sql" />
-    <Build Include="dbo\Tables\taxonomy_attach.sql" />
-    <Build Include="dbo\Tables\accession_source.sql" />
-    <Build Include="dbo\Tables\gspi_site_inventory.sql" />
-    <Build Include="dbo\Tables\taxonomy_author.sql" />
-    <Build Include="dbo\Tables\inventory.sql" />
-    <Build Include="dbo\Tables\taxonomy_crop_map.sql" />
-    <Build Include="dbo\Tables\inventory_maint_policy.sql" />
-    <Build Include="dbo\Tables\taxonomy_family.sql" />
-    <Build Include="dbo\Tables\taxonomy_genus.sql" />
-    <Build Include="dbo\Tables\taxonomy_geography_map.sql" />
-    <Build Include="dbo\Views\genetic_annotation_view.sql" />
-    <Build Include="dbo\Views\taxtorc.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_crop_cwr.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_secondary_tu.sql" />
-    <Build Include="dbo\Views\mbr.sql" />
-    <Build Include="dbo\Views\im.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_tertiary_tu.sql" />
-    <Build Include="dbo\Views\mcpd.sql" />
-    <Build Include="dbo\Views\oi.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_quaternary_tu.sql" />
-    <Build Include="dbo\Views\ipr.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_progenitor_tu.sql" />
-    <Build Include="dbo\Views\vc_inventory.sql">
-      <QuotedIdentifier>Off</QuotedIdentifier>
+    <Build Include="dbo\Tables\accession_action_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Views\taxgeo_cooperator_view.sql" />
-    <Build Include="dbo\Views\taxgeo_site_qs_view.sql" />
-    <Build Include="dbo\Views\inventory_viability_final2.sql" />
-    <Build Include="dbo\Views\inventory_viability_final_view.sql" />
-    <Build Include="dbo\Views\code.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_alt_family_map_view.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_author_view.sql" />
-    <Build Include="dbo\Views\genetic_marker_view.sql" />
-    <Build Include="dbo\Views\vw_taxonomy_trait_classes.sql" />
-    <Build Include="dbo\Views\accession_export.sql" />
-    <Build Include="dbo\Views\taxgeo_cooperator2_view.sql" />
-    <Build Include="dbo\Views\web_order_request_view.sql" />
-    <Build Include="dbo\Views\taxgeo_site_view.sql" />
-    <Build Include="dbo\Views\tax.sql" />
-    <Build Include="dbo\Views\s9ivall.sql" />
-    <Build Include="dbo\Views\curators.sql" />
-    <Build Include="dbo\Views\an.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_common_name_view.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_family_view.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_genus_view.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_geography_map_view.sql" />
-    <Build Include="dbo\Views\acit.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_noxious_view.sql" />
-    <Build Include="dbo\Views\smbr.sql" />
-    <Build Include="dbo\Views\vw_pvp_applications_by_expiration.sql" />
-    <Build Include="dbo\Views\taxgeo_geography_view.sql" />
-    <Build Include="dbo\Views\taxgeo_literature_view.sql" />
-    <Build Include="dbo\Views\taxgeo_region_view.sql" />
-    <Build Include="dbo\Views\hordeum_1.sql" />
-    <Build Include="dbo\Views\taxgeo_species_view.sql" />
-    <Build Include="dbo\Views\order_request_item_view.sql" />
-    <Build Include="dbo\Views\dsc.sql" />
-    <Build Include="dbo\Views\accession_flag.sql" />
-    <Build Include="dbo\Views\ob.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_crop_cm.sql" />
-    <Build Include="dbo\Views\cd.sql" />
-    <Build Include="dbo\Views\taxgeo_taxonomy_use_view.sql" />
-    <Build Include="dbo\Views\order_request_view.sql" />
-    <Build Include="dbo\Views\crop_trait_observation_view.sql" />
-    <Build Include="dbo\Views\topname.sql" />
-    <Build Include="dbo\Views\iv.sql" />
-    <Build Include="dbo\Views\al.sql" />
-    <Build Include="dbo\Views\taxgeo_geography_region_map_view.sql" />
-    <Build Include="dbo\Views\iact.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_tertiary_cwr.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_quaternary_cwr.sql" />
-    <Build Include="dbo\Views\vw_accession_inventory_attachments_by_validation.sql" />
-    <Build Include="dbo\Views\oact.sql" />
-    <Build Include="dbo\Views\src.sql" />
-    <Build Include="dbo\Views\web_qry_order_items.sql" />
-    <Build Include="dbo\Views\web_order_request_item_view.sql" />
-    <Build Include="dbo\Views\accession_quarantine_view.sql" />
-    <Build Include="dbo\Views\initial_and_last_germinations_view.sql" />
-    <Build Include="dbo\Views\web_qry_orders.sql" />
-    <Build Include="dbo\Views\s9_cucumis.sql" />
-    <Build Include="dbo\Views\geo.sql" />
-    <Build Include="dbo\Views\accession_view.sql" />
-    <Build Include="dbo\Views\sys_table_field_view.sql" />
-    <Build Include="dbo\Views\vw_taxonomy_genepools.sql" />
-    <Build Include="dbo\Views\cooperator_view.sql" />
-    <Build Include="dbo\Views\coop.sql" />
-    <Build Include="dbo\Views\vw_pvp_application_accession_map.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_progenitor_cwr.sql" />
-    <Build Include="dbo\Views\vw_accession_ipr.sql" />
-    <Build Include="dbo\Views\ord.sql" />
-    <Build Include="dbo\Views\inventory_view.sql" />
-    <Build Include="dbo\Views\vw_sys_table_fields.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_primary_tu.sql" />
-    <Build Include="dbo\Views\taxgeo_citation_view.sql" />
-    <Build Include="dbo\Views\geography_view.sql" />
-    <Build Include="dbo\Views\acc.sql" />
-    <Build Include="dbo\Views\via_final.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_primary_cwr.sql" />
-    <Build Include="dbo\Views\vw_table_fields.sql" />
-    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_secondary_cwr.sql" />
-    <Build Include="dbo\Views\vou.sql" />
-    <Build Include="dbo\Views\vw_taxonomy_genepool_codes.sql" />
-    <Build Include="dbo\Views\vw_taxonomy_breeding_types.sql" />
-    <Build Include="Storage\gringlobalftsc.sql" />
-    <Build Include="FullTextIndexes.sql" />
-    <Build Include="Security\gg_user.sql" />
-    <Build Include="Security\gg_user_1.sql" />
-    <Build Include="Security\gg_search.sql" />
-    <Build Include="Security\gg_search_1.sql" />
-    <Build Include="Security\gg_admin.sql" />
-    <Build Include="Security\RoleMemberships.sql" />
-    <Build Include="dbo\Functions\get_obs_by_acid2.sql" />
-    <Build Include="dbo\Functions\get_images.sql" />
-    <Build Include="dbo\Functions\get_avstat2.sql" />
-    <Build Include="dbo\Functions\get_nssl_seed_clone.sql" />
-    <Build Include="dbo\Functions\get_coop_address.sql" />
-    <Build Include="dbo\Functions\fn_ts_taxon.sql" />
-    <Build Include="dbo\Functions\get_obs_by_acid.sql" />
-    <Build Include="dbo\Functions\createInsertSP.sql" />
-    <Build Include="dbo\Functions\get_avstat.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Search.sql" />
-    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttachValidationCounts_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_AccessionInventoryAttachments_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_User_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Applications_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_SysGroup_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulations_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_SearchOperators_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TableFieldName_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByUser_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByMonth_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByWeek_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Folder_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByCrop_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_FolderItemMap_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMapsByCrop_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_FoldersByUser_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_FolderItemMaps_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Folder_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttach_Search.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Search.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMaps_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplication_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_CodeValues_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsAvailable_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByApplicationStatus_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByCommonName_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByExpiration_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByScientificName_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPApplicationStatuses_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPCommonNames_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_GetCropsBySite.sql" />
-    <Build Include="dbo\Stored Procedures\usp_GetSpeciesList.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPExpirationPeriods_Select.sql" />
-    <Build Include="dbo\Stored Procedures\LP_CGC_GET_CROP_DESCRIPTORS.sql" />
-    <Build Include="dbo\Stored Procedures\LP_CGC_GET_DETAIL.sql" />
-    <Build Include="dbo\Stored Procedures\usp_PVPSearch.sql" />
-    <Build Include="dbo\Stored Procedures\LP_CGC_GET_DOCUMENTS.sql" />
-    <Build Include="dbo\Stored Procedures\LP_CGC_GET_LIST.sql" />
-    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_GET_DETAIL.sql" />
-    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_GET_HOST_PLANT_LIST.sql" />
-    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_SEARCH.sql" />
-    <Build Include="dbo\Stored Procedures\LP_SEARCH_RHIZOBIUM.sql" />
-    <Build Include="dbo\Stored Procedures\LP_SEARCH_RHYZOBIUM.sql" />
-    <Build Include="dbo\Stored Procedures\usp_ActiveUsers_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Code_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Cooperator_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_CropGermplasmCommitteeDocument_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_InventoryOwner_Update.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Regulation_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Regulations_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_SysUser_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Folder_Update.sql" />
-    <Build Include="dbo\Stored Procedures\usp_WebCooperator_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_WebUser_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMaps_Search.sql" />
-    <Build Include="dbo\Stored Procedures\usp_SearchSpecies.sql" />
-    <Build Include="dbo\Stored Procedures\usp_FolderItemMap_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderItemCropMaps_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomySpecies_Search.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTraits_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Citation_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttach_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Update.sql" />
-    <Build Include="dbo\Stored Procedures\usp_AccessionInvAttachValidation_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Folder_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_Citation_Search.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Update.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_CitationsBySpecies_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Update.sql" />
-    <Build Include="dbo\Stored Procedures\update_iv_owner.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationMap_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationMap_Update.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Update.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Select.sql" />
-    <Build Include="dbo\Stored Procedures\usp_CropTrait_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Delete.sql" />
-    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Select.sql" />
+    <Build Include="dbo\Tables\taxonomy_noxious_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvpo_import_oct.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_viability_rule_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_annotation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_search_operator_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_use_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_germplasm_committee_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\method_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_cwr_priority_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\w6_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_germplasm_committee_crop_descriptor_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\method_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_cooperator_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_germplasm_committee_document_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\name_group_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_help_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_germplasm_committee_meeting_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_group_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\nc7_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_order_request_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_name_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_group_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\ne9_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_application_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_order_request_action_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_voucher_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_order_request_address_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\opgc_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_ipr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_order_request_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\order_request_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_pedigree_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_order_request_item_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\order_request_action_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_quarantine_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\order_request_item_action_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_common_name_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_user_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\order_request_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_user_cart_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_user_cart_item_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\order_request_item_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_source_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_user_preference_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\order_request_phyto_log_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\app_resource_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_cwr_crop_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\web_user_shipping_address_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\parl_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\app_setting_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\region_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\app_user_gui_setting_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\site_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvp_status.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\s9_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_cwr_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\app_user_item_list_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\source_desc_observation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\code_value_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\source_descriptor_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\code_value_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\source_descriptor_code_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_cwr_trait_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\cooperator_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\rhy_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\source_descriptor_code_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\cooperator_group_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\literature_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\source_descriptor_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\cooperator_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_species_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_database_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_regulation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_database_migration_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_database_migration_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_datatrigger_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_regulation_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_datatrigger_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_dataview_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_code_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\plant_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\nssl_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_dataview_field_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_code_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\plant_inventory_index_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_dataview_field_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\plant_immigrant_index_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_code_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_dataview_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_dataview_param_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_observation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_dataview_sql_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\crop_trait_observation_data_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_file_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\email_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_file_group_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\email_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_file_group_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\exploration_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_file_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\exploration_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_group_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_group_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_group_permission_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\citation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_form_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_group_user_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_form_field_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_index_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_form_trait_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_index_field_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_viability_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_ista_seed_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_report_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_ref_upov_crop_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_permission_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_report_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_upov_crop_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_permission_field_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_result_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_permission_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_viability_data_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_result_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_search_autofield_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_action_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_result_field_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_quality_status_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\geography_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_search_resolver_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_result_group_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_table_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\feedback_result_trait_obs_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_table_field_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\genetic_annotation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvp_applicant_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_table_field_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_folder_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_viability_rule_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\genetic_marker_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvp_application_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_table_lang_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_group_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_folder_item_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\genetic_observation_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvp_application_status_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_table_relationship_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\improvement_level_mcpd_code_map.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\genetic_observation_data_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvp_common_name_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_user_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\geneva_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\pvpo_import_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_inv_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\sys_user_permission_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\method_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_alt_family_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\geography_region_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_attach_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\accession_source_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\gspi_site_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_author_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_crop_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\inventory_maint_policy_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_family_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_genus_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\taxonomy_geography_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\dsc_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\genetic_annotation_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\genetic_marker_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\geography_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\iact_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cooperator_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cooperator2_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_crop_cm_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_crop_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_primary_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_author_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_common_name_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_family_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_genus_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_geography_map_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_noxious_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\ord_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\web_qry_order_items_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\cd_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\code_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\crop_trait_observation_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_sys_application.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_sys_table_fields_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_table_fields_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\cooperator_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\curators_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\oi_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\acc_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\s9_cucumis_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\hordeum_1_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\smbr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\initial_and_last_germinations_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\inventory_viability_final_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\inventory_viability_final2_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_primary_tu_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_progenitor_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_progenitor_tu_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_quaternary_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_quaternary_tu_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_taxonomy_trait_classes_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\web_order_request_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_secondary_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_secondary_tu_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_tertiary_cwr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_nrr_orders.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_pvp_application_accession_map_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_pvp_applications_by_expiration_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_citation_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_literature_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\order_request_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\mbr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\oact_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\order_request_item_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_geography_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_region_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_site_qs_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_taxonomy_breeding_types_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_taxonomy_genepool_codes_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_taxonomy_genepools_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_use_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxtorc_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vc_inventory_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Views\via_final_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vou_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\vw_accession_ipr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\acit_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\al_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\an_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\topname_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\accession_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\mcpd_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_site_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_species_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_taxonomy_alt_family_map_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\accession_export_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\accession_flag_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\accession_quarantine_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\s9ivall_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\sys_table_field_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\tax_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\web_order_request_item_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\web_qry_orders_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\ob_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\inventory_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\ipr_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\iv_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_cwr_validation_genetic_tertiary_tu_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\taxgeo_geography_region_map_view_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\geo_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\coop_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\im_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Views\src_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Storage\gringlobalftsc_1.sql" />
+    <Build Include="FullTextIndexes_1.sql" />
+    <Build Include="FullTextIndexes_2.sql" />
+    <Build Include="FullTextIndexes_3.sql" />
+    <Build Include="FullTextIndexes_4.sql" />
+    <Build Include="FullTextIndexes_5.sql" />
+    <Build Include="FullTextIndexes_6.sql" />
+    <Build Include="FullTextIndexes_7.sql" />
+    <Build Include="Security\gg_user_2.sql" />
+    <Build Include="Security\gg_user_3.sql" />
+    <Build Include="Security\gg_search_2.sql" />
+    <Build Include="Security\gg_search_3.sql" />
+    <Build Include="Security\gg_admin_1.sql" />
+    <Build Include="Security\RoleMemberships_1.sql" />
+    <Build Include="Security\RoleMemberships_2.sql" />
+    <Build Include="Security\RoleMemberships_3.sql" />
+    <Build Include="dbo\Functions\get_obs_by_acid2_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\get_images_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\get_avstat2_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\get_nssl_seed_clone_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\get_coop_address_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\fn_ts_taxon_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\get_obs_by_acid_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Functions\get_avstat_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxnonomyGeniiSelect.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCommonNames_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Delete_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrop_Update_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Delete_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Search_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCrops_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByMonth_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByUser_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrCropsByWeek_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Delete_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMap_Update_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMaps_Delete_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMaps_Search_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrMapsByCrop_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyTraitTypes_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Delete_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyAccessionsBySpecies_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpeciesRelatedSpecies_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTrait_Update_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyCwrTraits_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebOrderRequest_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFamilies_Search.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebOrderRequest_Update.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFamilies_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebOrderRequestItem_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFiscalYearTotals_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebOrderRequestItems_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolder_Delete.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebOrderRequests_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolder_Insert.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebOrderRequestsByStatus_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolder_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolder_Update.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderCropForCWRItems_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderItemCropMaps_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderItemMap_Delete.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderItemMap_Insert.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFolderItemMaps_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyFoldersByUser_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyGenii_Search.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyGenii_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulation_Update_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationMap_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationMap_Update_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulations_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpecies_Insert.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CropGermplasmCommitteeDocument_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpecies_Search_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_GenesysExport_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpecies_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpecies_Update.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomySpeciesByName_Search.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_ActiveUsers_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_CROP_DESCRIPTORS_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulationsByWeek_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Applications_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_DETAIL_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TaxonomyRegulations_Search.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Cooperator_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_DOCUMENTS_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_SearchOperators_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_CGC_GET_LIST_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_SysGroup_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_PVP_GET_APPLICATION_STATUS_LIST.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_SysUser_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_PVP_GET_CROP_LIST.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Citation_Search_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_SysUser_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_PVP_GET_DETAIL.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Citation_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_SysUserGroups_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_PVP_GET_GRIN_GLOBAL_ACCESSION.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CitationsBySpecies_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_TableFieldName_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_PVP_SEARCH.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_User_Search.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_PVP_SEARCH_AVAILABLE.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CodeValues_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_User_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_GET_DETAIL_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_UserApplications_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_GET_HOST_PLANT_LIST_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebCooperator_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CGCCommittees_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_RHIZOBIUM_SEARCH_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_WebUser_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CGCDocument_Delete.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_SEARCH_RHIZOBIUM_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CGCDocument_Insert.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\LP_SEARCH_RHYZOBIUM_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CGCDocument_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_GetCropsBySite_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CGCDocument_Update.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_GetSpeciesList_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_CGCDocuments_Select.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplication_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsAvailable_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByApplicationStatus_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByCommonName_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByCrop_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByExpiration_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationsByScientificName_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPApplicationStatuses_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPCommonNames_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPExpirationPeriods_Select_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_PVPSearch_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_Code_Insert_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\update_iv_owner_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Stored Procedures\usp_InventoryOwner_Update_1.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Security\Permissions.sql" />
+    <Build Include="dbo.sql" />
   </ItemGroup>
 </Project>

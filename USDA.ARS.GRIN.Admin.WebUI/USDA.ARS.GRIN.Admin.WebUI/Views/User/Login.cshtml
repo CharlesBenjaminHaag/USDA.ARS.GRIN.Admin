@@ -34,72 +34,131 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>GGTools</b>@DisplayManager.GetVersion()</a>
+            <a href="../../index2.html"><b>GGTools</b>@DisplayManager.GetVersion() Login</a>
         </div>
-
-        @*@if (Model.Status == LoginStatusEnum.ERROR)
-            {
-                @Html.Partial("~/Views/User/_LoginError.cshtml")
-            }*@
         <!-- /.login-logo -->
-    <div class="login-box-body">
-        @*<p class="login-box-msg">Log in using your <strong>GRIN-Global Admin</strong> user name and password.</p>*@
 
-        <form action="@Url.Action("Login","User")" method="post">
-            @if (!String.IsNullOrEmpty(Model.Status) && Model.Status != USDA.ARS.GRIN.Admin.Service.LoginResult.SUCCESS.ToString())
-            { 
-            <div class="alert alert-danger">
-                <h4 style="margin-bottom:0px; margin-top:0px; padding-bottom:0px; padding-top:0px;">Login Error</h4>
-                @Model.ErrorMessage
-            </div>
+        @{
+            string loginTabCSSClass = String.Empty;
+            string loginNavCSSClass = String.Empty;
+            string passwordResetTabCSSClass = String.Empty;
+            string passwordResetNavCSSClass = String.Empty;
+
+            if (Model.Action == "PasswordReset")
+            {
+                loginTabCSSClass = "tab-pane";
+                passwordResetNavCSSClass = "active";
+                passwordResetTabCSSClass = "tab-pane active";
             }
-            <label>Log in using your GRIN-Global Curator Tool user name and password.</label>
-            <div class="form-group has-feedback">
-                <input type="text" name="userName" class="form-control" placeholder="User name">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            else
+            {
+                loginTabCSSClass = "tab-pane active";
+                loginNavCSSClass = "active";
+                passwordResetTabCSSClass = "tab-pane";
+            }
+        }
+
+        <div class="login-box-body">
+            <div id="btn-container" style="margin-bottom:20px;">
+                <button class="btn btn-default btn-block btn-sm btn-flat" data-toggle="modal" data-target="#modal-release-notes">
+                    Release @DisplayManager.GetVersion() Notes
+                </button>
             </div>
-            <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="Password">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <select name="environment" class="form-control">
-                    @*<option value="LOCAL">Local</option>*@
-                    @*<option value="PRODCOPY">Prod-Copy</option>*@
-                    <option value="DEVELOPMENT">Development</option>
-                    @*<option value="TEST">Test</option>*@
-                    @*<option value="TRAINING">Training</option>
-                    <option value="PRODUCTION">Production</option>*@
-                </select>
-            </div>
+
+            @*<p class="login-box-msg">Log in using your <strong>GRIN-Global Admin</strong> user name and password.</p>*@
+            @if (!String.IsNullOrEmpty(Model.Status) && Model.Status != USDA.ARS.GRIN.Admin.Service.LoginResult.SUCCESS.ToString())
+            {
+                <div class="alert alert-danger">
+                    <h4 style="margin-bottom:0px; margin-top:0px; padding-bottom:0px; padding-top:0px;">Login Error</h4>
+                    @Model.ErrorMessage
+                </div>
+            }
+            <form action="@Url.Action("Login","User")" method="post">
+                <label>Select Server</label>
+                <div class="form-group has-feedback">
+                    <select name="environment" class="form-control">
+                        @*<option value="LOCAL">Local</option>*@
+                        @*<option value="PRODCOPY">Prod-Copy</option>*@
+                        <option value="DEVELOPMENT">Development</option>
+                        @*<option value="TEST">Test</option>*@
+                        @*<option value="TRAINING">Training</option>
+                            <option value="PRODUCTION">Production</option>*@
+                    </select>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="userName" class="form-control" placeholder="User name">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-7">
+                        <button type="button" class="btn btn-default btn-block btn-flat">
+                            Reset Password
+                        </button>
+                    </div>
+                    <div class="col-xs-5">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                </div>
+            </form>
             <div class="row">
-                <div class="col-xs-8">
-                    <button disabled="" class="btn btn-success btn-block btn-flat">Request New Account</button>
+                <div class="col-xs-12" style="margin-top:20px;">
+                    <a href="">I would like to request a new Curator account.</a>
+                    @*<button disabled="" class="btn btn-primary btn-block btn-flat pull-right">Request New Account</button>*@
                 </div>
-
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                </div>
-
             </div>
-    </form>
-        @*<div class="social-auth-links text-center">
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                <i class="fa fa-facebook"></i> Sign in using
-                Facebook
-            </a>
-            <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                <i class="fa fa-google-plus"></i> Sign in using
-                Google+
-            </a>
-        </div>*@
-
-        <!-- TODO: INCLUDE BY VERSION 1.0.5 -->
-        @*<a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Request access</a>*@
-
-    </div>
+        </div>
         <!-- /.login-box-body -->
+    </div>
+
+
+    <div class="modal fade" id="modal-release-notes">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Release Notes</h4>
+                </div>
+                <div class="modal-body">
+
+                    <h4>
+                        Revisions
+                    </h4>
+                    <ul>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-81'>NDI-81</a>] -         Add Visibility Status to Folder Table and Related Objects
+                        </li>
+                    </ul>
+
+                    <h4>
+                        Bugs
+                    </h4>
+                    <ul>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-8'>NDI-8</a>] -         Cannot Batch-Delete Folder Items
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-10'>NDI-10</a>] -         Cannot Delete Individual Folder Items
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-11'>NDI-11</a>] -         Crop Map Home Page Throws Error On Load
+                        </li>
+                    </ul>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
 
 
@@ -111,13 +170,13 @@
     <!-- iCheck -->
     @*<script src="../../plugins/iCheck/icheck.min.js"></script>*@
     <script>
-      //$(function () {
-      //  $('input').iCheck({
-      //    checkboxClass: 'icheckbox_square-blue',
-      //    radioClass: 'iradio_square-blue',
-      //    increaseArea: '20%' /* optional */
-      //  });
-      //});
+          //$(function () {
+          //  $('input').iCheck({
+          //    checkboxClass: 'icheckbox_square-blue',
+          //    radioClass: 'iradio_square-blue',
+          //    increaseArea: '20%' /* optional */
+          //  });
+          //});
     </script>
 </body>
 </html>

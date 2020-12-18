@@ -326,6 +326,9 @@
     <Content Include="Views\Taxonomy\Regulation\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Trait\Index.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Edit.cshtml" />
+    <Content Include="Views\User\_Confirmation.cshtml" />
+    <Content Include="Views\User\PasswordReset.cshtml" />
+    <Content Include="Views\User\AccountRequest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,41 @@
+﻿
+
+;
+
+create view [cooperator_view] as select 
+cooperator_id ,
+current_cooperator_id ,
+(select site_short_name from site where site.site_id=c.site_id) as site_short_name,
+last_name,
+title,
+first_name,
+job,
+organization ,
+organization_abbrev,
+address_line1,
+address_line2 ,
+address_line3,
+city,
+postal_index,
+(select country from geo where geono=c.geography_id) as country,
+(select state from geo where geono=c.geography_id) as state,
+(select st from geo where geono=c.geography_id) as state_code,primary_phone,
+secondary_phone ,
+fax,
+email,
+secondary_email,
+status_code,
+category_code,
+organization_region_code,
+discipline_code,
+COALESCE(c.last_name,'') + ', ' + COALESCE(c.first_name,'') + ', ' + COALESCE(c.organization,'') as name,
+c.note as cmt,
+sys_lang_id,
+web_cooperator_id,
+c.created_date,
+c.created_by,
+c.modified_date,
+c.modified_by,
+c.owned_date,
+c.owned_by
+from cooperator c

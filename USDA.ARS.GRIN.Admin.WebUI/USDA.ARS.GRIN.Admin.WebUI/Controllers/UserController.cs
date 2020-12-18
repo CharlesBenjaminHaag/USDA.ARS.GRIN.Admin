@@ -77,6 +77,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [HttpPost]
+        public ActionResult PasswordReset(LoginViewModel viewModel)
+        {
+            _securityService = new SecurityService(viewModel.Environment);
+            string password = String.Empty;
+
+            password = _securityService.GenerateRandomPassword(8);
+            viewModel.Message = "Your password has been set to " + password + ".";
+            return View("~/Views/User/Login.cshtml", viewModel);
+        }
+
+        [HttpPost]
         public ActionResult Edit(UserViewModel userViewModel)
         {
             return View(userViewModel);

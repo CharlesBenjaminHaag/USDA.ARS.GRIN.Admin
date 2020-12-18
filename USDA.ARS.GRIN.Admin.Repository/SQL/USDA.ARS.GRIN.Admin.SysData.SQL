@@ -1,5 +1,22 @@
 USE [gringlobal]
 
+DELETE FROM code_value
+WHERE value LIKE 'NRR%'
+
+INSERT INTO code_value
+(group_name, value, created_by, created_date, owned_by, owned_date)
+VALUES ('ORDER_REQUEST_ACTION','NRR_REVIEW',48,GETDATE(),48,GETDATE())
+
+INSERT INTO code_value
+(group_name, value, created_by, created_date, owned_by, owned_date)
+VALUES ('ORDER_REQUEST_ACTION','NRR_APPROVE',48,GETDATE(),48,GETDATE())
+
+INSERT INTO code_value
+(group_name, value, created_by, created_date, owned_by, owned_date)
+VALUES ('ORDER_REQUEST_ACTION','NRR_REJECT',48,GETDATE(),48,GETDATE())
+
+
+
 DELETE FROM 
 	sys_group_user_map
 WHERE
