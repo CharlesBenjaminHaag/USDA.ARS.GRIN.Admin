@@ -38,6 +38,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             _accessionInventoryAttachmentDAO.AddValidation(accessionInventoryAttachId, imageUrlIsValid, thumbnailImageUrlIsValid);
         }
 
+        public WebOrderRequest GetWebOrderRequest(int id)
+        {
+            return _webOrderRequestDAO.Get(id);   
+        }
+
         public IQueryable<WebOrderRequest> GetWebOrderRequests(string statusCode)
         {
             return _webOrderRequestDAO.Search(statusCode);

@@ -8,7 +8,7 @@
 {
     <div class="box box-default">
         <div class="box-header">
-            <h3 class="box-title">Deny Web Order Request</h3>
+            <h3 class="box-title">Cooperators</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -18,9 +18,7 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="callout callout-info" style="vertical-align:middle;">
-                        WEB ORDER DETAIL HERE
-                    </div>
+
                 </div>
             </div>
             <div class="row">
@@ -30,19 +28,101 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="form-group">
-                    <label for="txtName" class="col-sm-2 control-label">Email Text</label>
-                    <div class="col-md-12">
-                        <textarea class="form-control" rows="25">
-                        Dear NAME,
-                        We are unable to process your request for one or more of the following reasons:
-                        (BOILERPLATE TEXT HERE)                    
-                        </textarea>
+            @*<div class="row">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Email Text</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="25">
+                            Dear NAME,
+                            We are unable to process your request for one or more of the following reasons:
+                            (BOILERPLATE TEXT HERE)
+                            </textarea>
+                        </div>
                     </div>
-                </div>
+                </div>*@
+        </div>
+    </div>
+
+    <!-- WEB COOPERATOR -->
+    <h5>Cooperator</h5>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" readonly class="form-control form-control-static" value="@Model.WebCooperator.LastName" />
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" readonly class="form-control form-control-static" value="@Model.WebCooperator.FirstName" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-group">
+                    <input type="text" readonly class="form-control form-control-static" value="@Model.WebCooperator.EmailAddress">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-info btn-flat">Look Up...</button>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Organization</label>
+                <input type="text" readonly class="form-control form-control-static" value="" />
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">Request Notes</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-md-2">
+                    <h5><strong>Address</strong></h5>
+                    @Html.Raw(webOrderRequest.WebCooperator.PrimaryAddress.GetFormattedAddress())
+                </div>
+                <div class="col-md-10">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_1" data-toggle="tab">Intended Use Note</a></li>
+                            <li><a href="#tab_2" data-toggle="tab">Special Instructions</a></li>
+                            <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
+
+                            <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
+                                <p class="text-muted well well-sm no-shadow">
+                                    @webOrderRequest.IntendedUseNote
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="tab_2">
+                                <p class="text-muted well well-sm no-shadow">
+                                    @webOrderRequest.SpecialInstruction
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="tab_3">
+                                <p class="text-muted well well-sm no-shadow">
+                                    @webOrderRequest.Note
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
     </div>
 }
 

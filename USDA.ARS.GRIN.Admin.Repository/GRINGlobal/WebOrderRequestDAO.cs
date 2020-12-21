@@ -49,18 +49,33 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                             {
                                 webOrderRequest = new WebOrderRequest();
                                 webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
-                                webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
-                                webOrderRequest.WebCooperator.LastName = reader["last_name"].ToString();
-                                webOrderRequest.WebCooperator.FirstName = reader["first_name"].ToString();
-                                webOrderRequest.WebCooperator.EmailAddress = reader["email"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.PersonFullName = reader["full_name"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.OrganizationName = reader["organization"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine1 = reader["address_line1"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine2 = reader["address_line2"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.AddressLine3 = reader["address_line3"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.City = reader["city"].ToString();
-                                webOrderRequest.WebCooperator.PrimaryAddress.State = "STATE";
-                                webOrderRequest.WebCooperator.PrimaryAddress.ZIP = reader["postal_index"].ToString();
+
+                                Cooperator cooperator = new Cooperator();
+                                cooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
+                                cooperator.Type = 2;
+                                cooperator.FirstName = reader["web_cooperator_first_name"].ToString();
+                                cooperator.LastName = reader["web_cooperator_last_name"].ToString();
+
+                                //TODO
+
+                                webOrderRequest.Coooperators.Add(cooperator);
+
+                                //webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
+                                //webOrderRequest.WebCooperator.LastName = reader["last_name"].ToString();
+                                //webOrderRequest.WebCooperator.FirstName = reader["first_name"].ToString();
+                                //webOrderRequest.WebCooperator.EmailAddress = reader["email"].ToString();
+
+                                //webOrderRequest.WebCooperator.PrimaryAddress.PersonFullName = reader["full_name"].ToString();
+                                //webOrderRequest.WebCooperator.PrimaryAddress.OrganizationName = reader["organization"].ToString();
+                                //webOrderRequest.WebCooperator.PrimaryAddress.AddressLine1 = reader["address_line1"].ToString();
+                                //webOrderRequest.WebCooperator.PrimaryAddress.AddressLine2 = reader["address_line2"].ToString();
+                                //webOrderRequest.WebCooperator.PrimaryAddress.AddressLine3 = reader["address_line3"].ToString();
+                                //webOrderRequest.WebCooperator.PrimaryAddress.City = reader["city"].ToString();
+                                //webOrderRequest.WebCooperator.PrimaryAddress.State = "STATE";
+                                //webOrderRequest.WebCooperator.PrimaryAddress.ZIP = reader["postal_index"].ToString();
+
+                                //webOrderRequest.Cooperator.ID = GetInt()
+
                                 webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
                                 webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
                                 webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();

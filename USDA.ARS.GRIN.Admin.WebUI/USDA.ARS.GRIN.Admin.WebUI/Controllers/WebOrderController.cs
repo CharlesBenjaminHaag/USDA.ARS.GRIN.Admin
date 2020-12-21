@@ -37,7 +37,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                webOrderRequests = service.GetWebOrderRequests("REVIEW");
+                webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
                 return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
             }
             catch (Exception ex)
@@ -62,18 +62,19 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             webOrderRequest.WebCooperator.ID = webCooperatorId;
 
             resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
-            webOrderRequests = service.GetWebOrderRequests("REVIEW");
+            webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
             return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
 
         }
 
         public ActionResult Edit(int id)
         {
+            TempData["context"] = "Review Web Order Request";
+
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
             WebOrderRequest webOrderRequest = null;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-
-            //webOrderRequest = service.GetWebOrderRequests
+            
 
 
             return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);

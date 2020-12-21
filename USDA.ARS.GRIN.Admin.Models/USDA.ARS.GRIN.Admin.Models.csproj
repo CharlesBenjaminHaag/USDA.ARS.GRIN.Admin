@@ -50,6 +50,7 @@
     <Compile Include="CodeValueReferenceItem.cs" />
     <Compile Include="FileMetaData.cs" />
     <Compile Include="GRINGlobal\Cooperator.cs" />
+    <Compile Include="GRINGlobal\CooperatorTypeEnum.cs" />
     <Compile Include="GRINGlobal\Inventory.cs" />
     <Compile Include="GRINGlobal\OrderRequest.cs" />
     <Compile Include="GRINGlobal\Person.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="BaseModel.cs" />
     <Compile Include="Taxonomy\Citation.cs" />
     <Compile Include="Taxonomy\CommonName.cs" />
-    <Compile Include="Cooperator.cs" />
     <Compile Include="Taxonomy\CropWildRelative.cs" />
     <Compile Include="Taxonomy\Genus.cs" />
     <Compile Include="Geography.cs" />

@@ -22,15 +22,18 @@
                 <div class="panel box box-default no-border">
                     <div class="box-header with-border">
                         <h4 class="box-title" style="font-weight:bold;">
+                            <i class="fa fa-lock" style="color:red;"></i>
                             <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
                                 @webOrderRequest.ID : @webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName (@webOrderRequest.OrderDate.ToShortDateString())
                             </a>
-                            <span class="label label-danger" style="margin-left:10px;">Locked by Reisinger, Marty: 12/10/2020 12:00 PM</span>
                         </h4>
                     </div>
                     <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                         <div class="box-body">
                             <div class="mailbox-controls">
+                                
+                                <span class="label label-danger" style="margin-left:10px; font-size:1em;">Locked by Reisinger, Marty: 12/10/2020 12:00 PM</span>
+                                
                                 <button type="button" id="btnApprove-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
                                     <i class="fa fa-thumbs-up"></i>
                                 </button>
@@ -67,71 +70,36 @@
                                     </table>
                                 </div>
                             </div>
-                            @*<div class="row">
-                                <div class="col-md-2">
-                                    <h5><strong>Address</strong></h5>
-                                    @Html.Raw(webOrderRequest.WebCooperator.PrimaryAddress.GetFormattedAddress())
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="nav-tabs-custom">
-                                        <ul class="nav nav-tabs">
-                                            <li class="active"><a href="#tab_1" data-toggle="tab">Intended Use Note</a></li>
-                                            <li><a href="#tab_2" data-toggle="tab">Special Instructions</a></li>
-                                            <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
-
-                                            <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div class="tab-pane active" id="tab_1">
-                                                <p class="text-muted well well-sm no-shadow">
-                                                    @webOrderRequest.IntendedUseNote
-                                                </p>
-                                            </div>
-                                            <div class="tab-pane" id="tab_2">
-                                                <p class="text-muted well well-sm no-shadow">
-                                                    @webOrderRequest.SpecialInstruction
-                                                </p>
-                                            </div>
-                                            <div class="tab-pane" id="tab_3">
-                                                <p class="text-muted well well-sm no-shadow">
-                                                    @webOrderRequest.Note
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
-
-                                <!-- ORDER ITEMS -->
-                                <table class="table table-striped ggtools">
-                                    <thead>
+                            <!-- ORDER ITEMS -->
+                            <table class="table table-striped ggtools">
+                                <thead>
+                                    <tr>
+                                        <th>Seq.</th>
+                                        <th>Accession</th>
+                                        <th>Species</th>
+                                        <th>Status</th>
+                                        <th>Site</th>
+                                        <th>Qty. Shipped</th>
+                                        <th>Distribution Form</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
+                                    {
                                         <tr>
-                                            <th>Seq.</th>
-                                            <th>Accession</th>
-                                            <th>Species</th>
-                                            <th>Status</th>
-                                            <th>Site</th>
-                                            <th>Qty. Shipped</th>
-                                            <th>Distribution Form</th>
+                                            <td>@webOrderRequestItem.SequenceNumber</td>
+                                            <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                            <td>
+                                                <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                            </td>
+                                            <td>@webOrderRequestItem.StatusCode</td>
+                                            <td>@webOrderRequestItem.Site.LongName</td>
+                                            <td>@webOrderRequestItem.QuantityShipped</td>
+                                            <td>@webOrderRequestItem.DistributionForm</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
-                                        {
-                                            <tr>
-                                                <td>@webOrderRequestItem.SequenceNumber</td>
-                                                <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                                <td>
-                                                    <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                                </td>
-                                                <td>@webOrderRequestItem.StatusCode</td>
-                                                <td>@webOrderRequestItem.Site.LongName</td>
-                                                <td>@webOrderRequestItem.QuantityShipped</td>
-                                                <td>@webOrderRequestItem.DistributionForm</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

@@ -60,8 +60,14 @@
                 <h4 class="modal-title">Deny Web Order <span id="web-order-request-id"></span></h4>
             </div>
             <div class="modal-body" id="modal-body">
-                <h5>This will flag this order and its requestor as NRR.</h5>
-                <textarea id="txtRejectionNote" class="form-control" rows="5">
+                <h5>This will flag this order and its requestor as NRR. Below is the email that the system will send to the requestor.</h5>
+                <textarea id="txtDenyNote" class="form-control" rows="15">
+                   Dear << NAME >>
+                   We are unable to process your request for the following reasons:
+                   [] REASON 1
+                   [] REASON 2
+                   Skeptically Yours,
+                   The USDA
                 </textarea>
             </div>
             <div class="modal-footer">
@@ -76,9 +82,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var link = '@Url.Action("_List", "WebOrder")';
-
-        alert("DEBUG " + link);
-
         $("#section-data").load(link);
     });
 
@@ -105,27 +108,33 @@
     });
 
     $("#btn-deny-order").click(function () {
-        Update("Deny");
+        Update("NRR_DENY");
     });
 
     $("#btn-approve-order").click(function () {
-        Update("Approve");
+        Update("NRR_APPROVE");
     });
 
     function Update(status)
     {
         var webOrderRequestId = $("#hidden-web-order-request-id").val();
         var webCooperatorId = $("#hidden-web-cooperator-id").val();
-        var approvalNote = $("#txtApprovalNote").val();
+        var note = '';
+
+        if (status == 'NRR_APPROVE') {
+            note = $("#txtApprovalNote").val();
+        }
+        else {
+            note = $("#txtDenyNote").val();
+        }
 
         $.ajax(
             {
                 type: 'POST',
                 url: '/WebOrder/Update',
-                data: { webOrderRequestId: webOrderRequestId, webCooperatorId: webCooperatorId, statusCode: status, actionNote: approvalNote },
+                data: { webOrderRequestId: webOrderRequestId, webCooperatorId: webCooperatorId, statusCode: status, actionNote: note },
                 success:
                     function (response) {
-                        //alert("DEBUG WORKED");
                         $("#section-data").html(response);
                     },
                 error:
