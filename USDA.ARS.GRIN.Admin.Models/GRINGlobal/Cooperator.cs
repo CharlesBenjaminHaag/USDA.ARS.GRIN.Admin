@@ -13,9 +13,16 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Organization { get; set; }
         public string EmailAddress { get; set; }
         public string PrimaryPhoneNumber { get; set; }
         public string SecondaryPhoneNumber { get; set; }
         public bool IsActive { get; set; }
+        public Address Address { get; set; }
+
+        public Cooperator()
+        {
+            Address = new Address();
+        }
     }
 }

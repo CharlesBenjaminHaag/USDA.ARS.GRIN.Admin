@@ -55,12 +55,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
             webOrderRequest.ID = webOrderRequestId;
-            
+            webOrderRequest.WebCooperatorID = webCooperatorId;
             webOrderRequest.StatusCode = statusCode;
-            
             webOrderRequest.Note = actionNote;
-            webOrderRequest.WebCooperator.ID = webCooperatorId;
-
+           
             resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
             webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
             return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
@@ -69,15 +67,29 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult Edit(int id)
         {
-            TempData["context"] = "Review Web Order Request";
+            TempData["context"] = "Review Web Order Request #" + id;
 
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
             WebOrderRequest webOrderRequest = null;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-            
 
-
-            return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
+            try
+            {
+                webOrderRequest = service.GetWebOrderRequest(id);
+                viewModel.ID = webOrderRequest.ID;
+                viewModel.OrderDate = webOrderRequest.OrderDate;
+                viewModel.IntendedUseCode = webOrderRequest.IntendedUseCode;
+                viewModel.IntendedUseNote = webOrderRequest.IntendedUseNote;
+                viewModel.Note = webOrderRequest.Note;
+                viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
+                viewModel.Cooperator = webOrderRequest.Cooperators.Where(x => x.Type == 1).FirstOrDefault();
+                viewModel.WebCooperator = webOrderRequest.Cooperators.Where(x => x.Type == 2).FirstOrDefault();
+                return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("~/Views/Error/_Error.cshtml");
+            }
         }
 
         [HttpPost]
