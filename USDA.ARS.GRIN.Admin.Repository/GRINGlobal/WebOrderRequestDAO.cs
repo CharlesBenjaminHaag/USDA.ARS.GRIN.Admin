@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
+using System.Net;
 
 namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 {
@@ -97,6 +98,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.Note = reader["note"].ToString();
                                 webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequest.WebOrderRequestActions = SearchActions(webOrderRequest.ID);
                                 
                             }
                         }
@@ -253,6 +255,50 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             }
             return webOrderRequestItems.AsQueryable();
         }
+
+        public IQueryable<WebOrderRequestAction> SearchActions(int webOrderRequestId)
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequestActions_Select";
+            List<WebOrderRequestAction> webOrderRequestActions = new List<WebOrderRequestAction>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@web_order_request_id", webOrderRequestId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                WebOrderRequestAction webOrderRequestAction = new WebOrderRequestAction();
+                                webOrderRequestAction.ID = GetInt(reader["web_order_request_action_id"].ToString());
+                                webOrderRequestAction.WebOrderRequestID = webOrderRequestId;
+                                webOrderRequestAction.ActionCode = reader["action_code"].ToString();
+                                webOrderRequestAction.ActionDateTime = GetDate(reader["action_date"].ToString());
+                                webOrderRequestAction.ActionDate = GetDate(reader["action_date_converted"].ToString());
+                                webOrderRequestAction.Note = reader["note"].ToString();
+                                webOrderRequestAction.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                webOrderRequestAction.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                webOrderRequestActions.Add(webOrderRequestAction);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return webOrderRequestActions.AsQueryable();
+        }
+
 
         public ResultContainer Update(WebOrderRequest entity)
         {

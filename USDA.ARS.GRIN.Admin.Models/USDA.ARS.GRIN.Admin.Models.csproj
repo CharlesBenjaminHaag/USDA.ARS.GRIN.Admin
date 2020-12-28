@@ -49,6 +49,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="CodeValueReferenceItem.cs" />
     <Compile Include="FileMetaData.cs" />
+    <Compile Include="GRINGlobal\WebOrderRequestAction.cs" />
     <Compile Include="GRINGlobal\Cooperator.cs" />
     <Compile Include="GRINGlobal\CooperatorTypeEnum.cs" />
     <Compile Include="GRINGlobal\Inventory.cs" />

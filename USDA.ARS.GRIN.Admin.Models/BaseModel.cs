@@ -8,6 +8,7 @@ namespace USDA.ARS.GRIN.Admin.Models
 {
     public abstract class BaseModel
     {
+        public int ID { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedByCooperatorID { get; set; }
         public string CreatedByCooperatorName { get; set; }
@@ -17,5 +18,6 @@ namespace USDA.ARS.GRIN.Admin.Models
         public int OwnedByCooperatorID { get; set; }
         public string OwnedByCooperatorName { get; set; }
         public DateTime OwnedDate { get; set; }
+        public string Note { get; set; }
     }
 }

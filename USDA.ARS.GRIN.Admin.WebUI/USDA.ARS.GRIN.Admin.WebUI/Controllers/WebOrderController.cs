@@ -84,6 +84,33 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
                 viewModel.Cooperator = webOrderRequest.Cooperators.Where(x => x.Type == 1).FirstOrDefault();
                 viewModel.WebCooperator = webOrderRequest.Cooperators.Where(x => x.Type == 2).FirstOrDefault();
+                viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;
+
+                // EXTRACT GROUPED DATA
+                var queryWebOrderRequestDates =
+                    from action in webOrderRequest.WebOrderRequestActions
+                    group action by action.ActionDate into webOrderRequestActionGroup
+                    orderby webOrderRequestActionGroup.Key descending
+                    select webOrderRequestActionGroup;
+
+                foreach (var group in queryWebOrderRequestDates)
+                {
+                    string DEBUG = DateTime.Parse(group.Key.ToString()).ToShortDateString();
+
+                    WebOrderRequestActionGroupViewModel webOrderRequestActionGroupViewModel = new WebOrderRequestActionGroupViewModel();
+                    webOrderRequestActionGroupViewModel.ActionDate = DateTime.Parse(group.Key.ToString());
+                    foreach (var subGroup in group)
+                    {
+                        WebOrderRequestAction webOrderRequestAction = new WebOrderRequestAction();
+                        webOrderRequestAction.ID = subGroup.ID;
+                        webOrderRequestAction.ActionCode = subGroup.ActionCode;
+                        webOrderRequestAction.Note = subGroup.Note;
+                        webOrderRequestAction.ActionDate = subGroup.ActionDateTime;
+                        webOrderRequestAction.CreatedByCooperatorName = subGroup.CreatedByCooperatorName;
+                        webOrderRequestActionGroupViewModel.WebOrderRequestActions.Add(webOrderRequestAction);
+                    }
+                    viewModel.WebOrderRequestActionGroupViewModels.Add(webOrderRequestActionGroupViewModel);
+                }
                 return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
             }
             catch (Exception ex)

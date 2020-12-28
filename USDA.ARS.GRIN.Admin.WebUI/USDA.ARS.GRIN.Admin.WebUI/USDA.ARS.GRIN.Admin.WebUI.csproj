@@ -393,6 +393,7 @@
     <Compile Include="ViewModels\GRINGlobal\AccessionInventoryAttachmentListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\HomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\ValidationStatisticsViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestActionGroupViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestEditViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropEditViewModel.cs" />

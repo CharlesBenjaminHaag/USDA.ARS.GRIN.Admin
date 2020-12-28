@@ -22,12 +22,14 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
 		public List<Address> Addresses { get; set; }
 		
 		public IEnumerable<WebOrderRequestItem> WebOrderRequestItems { get; set; }
+		public IEnumerable<WebOrderRequestAction> WebOrderRequestActions { get; set; }
 
 		public WebOrderRequest()
 		{
 			WebCooperator = new Cooperator();
 			Cooperators = new List<Cooperator>();
 			WebOrderRequestItems = new List<WebOrderRequestItem>().AsEnumerable();
+			WebOrderRequestActions = new List<WebOrderRequestAction>().AsEnumerable();
 		}
 	}
 }

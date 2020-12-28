@@ -12,184 +12,299 @@
             <a href="@Url.Action("Index", "WebOrder", new { id = Model.ID })" class="btn btn-default pull-right">Return to  Home Page</a>
         </div>
     </div>
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title">Cooperators</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Address 1</th>
-                        <th>Address 2</th>
-                        <th>Address 3</th>
-                        <th>City</th>
-                        <th>State</th>
-                        <th>Postal Code</th>
-                        <th>Created</th>
-                        <th>Last Modified</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Web</td>
-                        <td>@Model.WebCooperator.ID</td>
-                        <td>@Model.WebCooperator.Title</td>
-                        <td>@Model.WebCooperator.FirstName</td>
-                        <td>@Model.WebCooperator.LastName</td>
-                        <td>@Model.WebCooperator.Address.AddressLine1</td>
-                        <td>@Model.WebCooperator.Address.AddressLine2</td>
-                        <td>@Model.WebCooperator.Address.AddressLine3</td>
-                        <td>@Model.WebCooperator.Address.City</td>
-                        <td>@Model.WebCooperator.Address.State</td>
-                        <td>@Model.WebCooperator.Address.ZIP</td>
-                        <td>@Model.WebCooperator.CreatedDate</td>
-                        <td>@Model.WebCooperator.ModifiedDate</td>
-                    </tr>
-                    @if (Model.Cooperator.ID > 0)
-                    { 
-                <tr>
-                    <td>Cooperator</td>
-                    <td>@Model.Cooperator.ID</td>
-                    <td>@Model.Cooperator.Title</td>
-                    <td>@Model.Cooperator.FirstName</td>
-                    <td>@Model.Cooperator.LastName</td>
-                    <td>@Model.Cooperator.Address.AddressLine1</td>
-                    <td>@Model.Cooperator.Address.AddressLine2</td>
-                    <td>@Model.Cooperator.Address.AddressLine3</td>
-                    <td>@Model.Cooperator.Address.City</td>
-                    <td>@Model.Cooperator.Address.State</td>
-                    <td>@Model.Cooperator.Address.ZIP</td>
-                    <td>@Model.Cooperator.CreatedDate</td>
-                    <td>@Model.Cooperator.ModifiedDate</td>
-                </tr>
-                }
-                </tbody>
-            </table>
 
-
-            @*<div class="row">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Email Text</label>
-                        <div class="col-md-12">
-                            <textarea class="form-control" rows="25">
-                            Dear NAME,
-                            We are unable to process your request for one or more of the following reasons:
-                            (BOILERPLATE TEXT HERE)
-                            </textarea>
-                        </div>
-                    </div>
-                </div>*@
-        </div>
-    </div>
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title">Request Notes</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body">
-            <label>Intended Use</label>
-            <p class="text-muted well well-sm no-shadow">
-                @Model.IntendedUseNote
-            </p>
-            <label>Special Instruction</label>
-            <p class="text-muted well well-sm no-shadow">
-                @Model.SpecialInstruction
-            </p>
-            <label>Note</label>
-            <p class="text-muted well well-sm no-shadow">
-                @Model.Note
-            </p>
-        </div>
-
-
-
-
-        @*<div class="row">
-                <div class="col-md-2">
-                    <h5><strong>Address</strong></h5>
-                    @Html.Raw(webOrderRequest.WebCooperator.PrimaryAddress.GetFormattedAddress())
-                </div>
-                <div class="col-md-10">
-                    <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab_1" data-toggle="tab">Intended Use Note</a></li>
-                            <li><a href="#tab_2" data-toggle="tab">Special Instructions</a></li>
-                            <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
-
-                            <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tab_1">
-                                <p class="text-muted well well-sm no-shadow">
-                                    @webOrderRequest.IntendedUseNote
-                                </p>
-                            </div>
-                            <div class="tab-pane" id="tab_2">
-                                <p class="text-muted well well-sm no-shadow">
-                                    @webOrderRequest.SpecialInstruction
-                                </p>
-                            </div>
-                            <div class="tab-pane" id="tab_3">
-                                <p class="text-muted well well-sm no-shadow">
-                                    @webOrderRequest.Note
-                                </p>
-                            </div>
-                        </div>
+    <ul class="nav nav-tabs">
+        <li class="active" style="background-color:#ebebeb;">
+            <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">Detail</a>
+        </li>
+        <li class="" style="background-color:#ebebeb;">
+            <a href="#tab_2" id="tab-timeline" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">Timeline</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Cooperators</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
                     </div>
                 </div>
-            </div>*@
-    </div>
-    <div class="box box-default">
-        <div class="box-header">
+                <div class="box-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Address 1</th>
+                                <th>Address 2</th>
+                                <th>Address 3</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Postal Code</th>
+                                <th>Created</th>
+                                <th>Last Modified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Web</td>
+                                <td>@Model.WebCooperator.ID</td>
+                                <td>@Model.WebCooperator.Title</td>
+                                <td>@Model.WebCooperator.FirstName</td>
+                                <td>@Model.WebCooperator.LastName</td>
+                                <td>@Model.WebCooperator.Address.AddressLine1</td>
+                                <td>@Model.WebCooperator.Address.AddressLine2</td>
+                                <td>@Model.WebCooperator.Address.AddressLine3</td>
+                                <td>@Model.WebCooperator.Address.City</td>
+                                <td>@Model.WebCooperator.Address.State</td>
+                                <td>@Model.WebCooperator.Address.ZIP</td>
+                                <td>@Model.WebCooperator.CreatedDate</td>
+                                <td>@Model.WebCooperator.ModifiedDate</td>
+                            </tr>
+                            @if (Model.Cooperator.ID > 0)
+                            {
+                                <tr>
+                                    <td>Cooperator</td>
+                                    <td>@Model.Cooperator.ID</td>
+                                    <td>@Model.Cooperator.Title</td>
+                                    <td>@Model.Cooperator.FirstName</td>
+                                    <td>@Model.Cooperator.LastName</td>
+                                    <td>@Model.Cooperator.Address.AddressLine1</td>
+                                    <td>@Model.Cooperator.Address.AddressLine2</td>
+                                    <td>@Model.Cooperator.Address.AddressLine3</td>
+                                    <td>@Model.Cooperator.Address.City</td>
+                                    <td>@Model.Cooperator.Address.State</td>
+                                    <td>@Model.Cooperator.Address.ZIP</td>
+                                    <td>@Model.Cooperator.CreatedDate</td>
+                                    <td>@Model.Cooperator.ModifiedDate</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
+
+                    @*<div class="row">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Email Text</label>
+                            <div class="col-md-12">
+                                <textarea class="form-control" rows="25">
+                                Dear NAME,
+                                We are unable to process your request for one or more of the following reasons:
+                                (BOILERPLATE TEXT HERE)
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Request Notes</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <label>Intended Use</label>
+                    <p class="text-muted well well-sm no-shadow">
+                        @Model.IntendedUseNote
+                    </p>
+                    <label>Special Instruction</label>
+                    <p class="text-muted well well-sm no-shadow">
+                        @Model.SpecialInstruction
+                    </p>
+                    <label>Note</label>
+                    <p class="text-muted well well-sm no-shadow">
+                        @Model.Note
+                    </p>
+                </div>
+            </div>
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Request Items</h3>
+                </div>
+                <div class="box-body">
+                    <!-- ORDER ITEMS -->
+                    <table class="table table-striped ggtools">
+                        <thead>
+                            <tr>
+                                <th>Seq.</th>
+                                <th>Accession</th>
+                                <th>Species</th>
+                                <th>Status</th>
+                                <th>Site</th>
+                                <th>Qty. Shipped</th>
+                                <th>Distribution Form</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var webOrderRequestItem in Model.WebOrderRequestItems)
+                            {
+                                <tr>
+                                    <td>@webOrderRequestItem.SequenceNumber</td>
+                                    <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                    <td>
+                                        <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                    </td>
+                                    <td>@webOrderRequestItem.StatusCode</td>
+                                    <td>@webOrderRequestItem.Site.LongName</td>
+                                    <td>@webOrderRequestItem.QuantityShipped</td>
+                                    <td>@webOrderRequestItem.DistributionForm</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="box-body">
-            <!-- ORDER ITEMS -->
-            <table class="table table-striped ggtools">
-                <thead>
-                    <tr>
-                        <th>Seq.</th>
-                        <th>Accession</th>
-                        <th>Species</th>
-                        <th>Status</th>
-                        <th>Site</th>
-                        <th>Qty. Shipped</th>
-                        <th>Distribution Form</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @*@foreach (var webOrderRequestItem in Model.wet.WebOrderRequestItems)
+        <div class="tab-pane" id="tab_2">
+            <br />
+            <ul class="timeline timeline-inverse">
+                @foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
+                {
+                    <li class="time-label">
+                        <span class="bg-blue">
+                            @webOrderRequestActionGroup.ActionDate.ToShortDateString()
+                        </span>
+                    </li>
+
+                    foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
                     {
-                        <tr>
-                            <td>@webOrderRequestItem.SequenceNumber</td>
-                            <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                            <td>
-                                <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                            </td>
-                            <td>@webOrderRequestItem.StatusCode</td>
-                            <td>@webOrderRequestItem.Site.LongName</td>
-                            <td>@webOrderRequestItem.QuantityShipped</td>
-                            <td>@webOrderRequestItem.DistributionForm</td>
-                        </tr>
-                    }*@
-                </tbody>
-            </table>
+                        <!-- timeline item -->
+            <li>
+
+                <!--TO DO: SET ICON AND COLOR BASED ON STATUS-->
+                <!--
+                CANCEL       fa-trash          bg-red
+                NRR_FLAGGED  fa-flag           bg-red
+                NRR_REVIEW   fa-eye            bg-yellow
+                NRR_APPROVE  fa-thumbs-up      bg-green
+                NRR_REJECT   fa-thumbs-down    bg-red
+
+                DEFAULT      fa-info           bg-aqua           
+                -->
+
+                <i class="fa fa-thumbs-up bg-blue-light"></i>
+
+                <div class="timeline-item">
+                    <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
+
+                    <h3 class="timeline-header"><a href="#">@webOrderRequestAction.CreatedByCooperatorName</a> logged <strong>@webOrderRequestAction.ActionCode</strong> action</h3>
+
+                    <div class="timeline-body">
+                        @webOrderRequestAction.Note
+                    </div>
+                    @*<div class="timeline-footer">
+                <a class="btn btn-primary btn-xs">Read more</a>
+                <a class="btn btn-danger btn-xs">Delete</a>
+            </div>*@
+                </div>
+            </li>
+                        <!-- END timeline item -->
+                    }
+                }
+
+
+                 @*timeline time label 
+                <li class="time-label">
+                    <span class="bg-black">
+                        10 Feb. 2014 12:30 PM
+                    </span>
+                </li>
+                 /.timeline-label 
+                 timeline item 
+                <li>
+                    <i class="fa fa-envelope bg-blue"></i>
+
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                        <div class="timeline-body">
+                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                            quora plaxo ideeli hulu weebly balihoo...
+                        </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-xs">Read more</a>
+                            <a class="btn btn-danger btn-xs">Delete</a>
+                        </div>
+                    </div>
+                </li>
+                 END timeline item 
+                 timeline item 
+                <li>
+                    <i class="fa fa-user bg-aqua"></i>
+
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+
+                        <h3 class="timeline-header no-border">
+                            <a href="#">Sarah Young</a> accepted your friend request
+                        </h3>
+                    </div>
+                </li>
+                 END timeline item 
+                 timeline item 
+                <li>
+                    <i class="fa fa-comments bg-yellow"></i>
+
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+
+                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                        <div class="timeline-body">
+                            Take me to your leader!
+                            Switzerland is small and neutral!
+                            We are more like Germany, ambitious and misunderstood!
+                        </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                        </div>
+                    </div>
+                </li>
+                 END timeline item 
+                 timeline time label 
+                <li class="time-label">
+                    <span class="bg-green">
+                        3 Jan. 2014
+                    </span>
+                </li>
+                 /.timeline-label 
+                 timeline item 
+                <li>
+                    <i class="fa fa-lock bg-purple"></i>
+
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
+
+                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                        <div class="timeline-body">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                        </div>
+                    </div>
+                </li>*@
+                  
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
         </div>
-    </div>
+    </div> <!-- tab-content -->
 }
 
