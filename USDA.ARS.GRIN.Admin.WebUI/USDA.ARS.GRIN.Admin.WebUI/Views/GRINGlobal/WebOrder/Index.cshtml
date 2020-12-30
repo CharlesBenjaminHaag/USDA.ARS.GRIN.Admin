@@ -5,10 +5,13 @@
 }
 
 <style>
+
     #web-order-request-id {
-        font-weight:bold;
+        font-weight: bold;
     }
+   
 </style>
+
 
 <div class="box box-primary" style="padding:10px;">
     <div class="box-header with-border">
@@ -26,8 +29,13 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
-        <div id="section-data">
 
+       
+
+        <div id="section-data">
+            <div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
         </div>
     </div>
 </div>
@@ -80,9 +88,35 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function(){
+
+    $(document).on({
+        ajaxStart: function () {
+            $("body").addClass("loading");
+        },
+        ajaxStop: function () {
+            $("body").removeClass("loading");
+        }
+    });
+
+    $(document).ready(function () {
         var link = '@Url.Action("_List", "WebOrder")';
-        $("#section-data").load(link);
+        //$("#section-data").load(link);
+
+        $.ajax(
+            {
+                type: 'POST',
+                url: '/WebOrder/_List',
+                //data: { webOrderRequestId: webOrderRequestId, webCooperatorId: webCooperatorId, statusCode: status, actionNote: note },
+                success:
+                    function (response) {
+                        $("#section-data").html(response);
+                    },
+                error:
+                    function (response) {
+                        alert("Error: " + response);
+                    }
+            });
+
     });
 
     $(document).on("click", ".open-modal", function () {
@@ -141,7 +175,7 @@
                     function (response) {
                         alert("Error: " + response);
                     }
-            });  
+            });
     }
 
 </script>

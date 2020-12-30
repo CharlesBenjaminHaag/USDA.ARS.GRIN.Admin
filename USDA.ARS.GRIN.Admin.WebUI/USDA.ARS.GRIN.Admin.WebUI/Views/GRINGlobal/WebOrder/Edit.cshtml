@@ -12,20 +12,11 @@
             <a href="@Url.Action("Index", "WebOrder", new { id = Model.ID })" class="btn btn-default pull-right">Return to  Home Page</a>
         </div>
     </div>
-
-    <ul class="nav nav-tabs">
-        <li class="active" style="background-color:#ebebeb;">
-            <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">Detail</a>
-        </li>
-        <li class="" style="background-color:#ebebeb;">
-            <a href="#tab_2" id="tab-timeline" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">Timeline</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab_1">
-            <div class="box box-default">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Cooperators</h3>
+                    <h3 class="box-title">Timeline</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>
@@ -33,278 +24,529 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Address 1</th>
-                                <th>Address 2</th>
-                                <th>Address 3</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Postal Code</th>
-                                <th>Created</th>
-                                <th>Last Modified</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Web</td>
-                                <td>@Model.WebCooperator.ID</td>
-                                <td>@Model.WebCooperator.Title</td>
-                                <td>@Model.WebCooperator.FirstName</td>
-                                <td>@Model.WebCooperator.LastName</td>
-                                <td>@Model.WebCooperator.Address.AddressLine1</td>
-                                <td>@Model.WebCooperator.Address.AddressLine2</td>
-                                <td>@Model.WebCooperator.Address.AddressLine3</td>
-                                <td>@Model.WebCooperator.Address.City</td>
-                                <td>@Model.WebCooperator.Address.State</td>
-                                <td>@Model.WebCooperator.Address.ZIP</td>
-                                <td>@Model.WebCooperator.CreatedDate</td>
-                                <td>@Model.WebCooperator.ModifiedDate</td>
-                            </tr>
-                            @if (Model.Cooperator.ID > 0)
+                    <ul class="timeline timeline-inverse">
+                        <li class="time-label">
+                            <span class="bg-blue">
+                                @DateTime.Now.ToShortDateString()
+                            </span>
+                        </li>
+                        <li>
+                            <i class="fa fa-thumbs-up bg-blue-light"></i>
+
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o"></i>@DateTime.Now.ToShortTimeString()</span>
+
+                                <h3 class="timeline-header"><a href="#">Haag, Benjamin</a><br />
+                                logged <strong>TEST</strong> action</h3>
+
+                                <div class="timeline-body">
+                                    This is the note words words words
+                                </div>
+                                @*<div class="timeline-footer">
+                    <a class="btn btn-primary btn-xs">Read more</a>
+                    <a class="btn btn-danger btn-xs">Delete</a>
+                </div>*@
+                            </div>
+                        </li>
+
+                        @if (Model.WebOrderRequestActionGroupViewModels.Count() > 0)
+                        {
+                            foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
                             {
-                                <tr>
-                                    <td>Cooperator</td>
-                                    <td>@Model.Cooperator.ID</td>
-                                    <td>@Model.Cooperator.Title</td>
-                                    <td>@Model.Cooperator.FirstName</td>
-                                    <td>@Model.Cooperator.LastName</td>
-                                    <td>@Model.Cooperator.Address.AddressLine1</td>
-                                    <td>@Model.Cooperator.Address.AddressLine2</td>
-                                    <td>@Model.Cooperator.Address.AddressLine3</td>
-                                    <td>@Model.Cooperator.Address.City</td>
-                                    <td>@Model.Cooperator.Address.State</td>
-                                    <td>@Model.Cooperator.Address.ZIP</td>
-                                    <td>@Model.Cooperator.CreatedDate</td>
-                                    <td>@Model.Cooperator.ModifiedDate</td>
-                                </tr>
+                                <li class="time-label">
+                                    <span class="bg-blue">
+                                        @webOrderRequestActionGroup.ActionDate.ToShortDateString()
+                                    </span>
+                                </li>
+
+                                foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
+                                {
+                                    <!-- timeline item -->
+                                    <li>
+                                        <!--TO DO: SET ICON AND COLOR BASED ON STATUS-->
+                                        <!--
+                                        CANCEL       fa-trash          bg-red
+                                        NRR_FLAGGED  fa-flag           bg-red
+                                        NRR_REVIEW   fa-eye            bg-yellow
+                                        NRR_APPROVE  fa-thumbs-up      bg-green
+                                        NRR_REJECT   fa-thumbs-down    bg-red
+
+                                        DEFAULT      fa-info           bg-aqua
+                                        -->
+
+                                        <i class="fa fa-thumbs-up bg-blue-light"></i>
+
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
+
+                                        <h3 class="timeline-header"><a href="#">@webOrderRequestAction.CreatedByCooperatorName</a> logged <strong>@webOrderRequestAction.ActionCode</strong> action</h3>
+
+                                        <div class="timeline-body">
+                                            @webOrderRequestAction.Note
+                                        </div>
+                                        @*<div class="timeline-footer">
+                                            <a class="btn btn-primary btn-xs">Read more</a>
+                                            <a class="btn btn-danger btn-xs">Delete</a>
+                                        </div>*@
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                                }
                             }
-                        </tbody>
-                    </table>
+                        }
 
+                        @*timeline time label
+        <li class="time-label">
+            <span class="bg-black">
+                10 Feb. 2014 12:30 PM
+            </span>
+        </li>
+         /.timeline-label
+         timeline item
+        <li>
+            <i class="fa fa-envelope bg-blue"></i>
 
-                    @*<div class="row">
-                        <div class="form-group">
-                            <label for="txtName" class="col-sm-2 control-label">Email Text</label>
-                            <div class="col-md-12">
-                                <textarea class="form-control" rows="25">
-                                Dear NAME,
-                                We are unable to process your request for one or more of the following reasons:
-                                (BOILERPLATE TEXT HERE)
-                                </textarea>
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+                <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                <div class="timeline-body">
+                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                    weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                    quora plaxo ideeli hulu weebly balihoo...
+                </div>
+                <div class="timeline-footer">
+                    <a class="btn btn-primary btn-xs">Read more</a>
+                    <a class="btn btn-danger btn-xs">Delete</a>
+                </div>
+            </div>
+        </li>
+         END timeline item
+         timeline item
+        <li>
+            <i class="fa fa-user bg-aqua"></i>
+
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+
+                <h3 class="timeline-header no-border">
+                    <a href="#">Sarah Young</a> accepted your friend request
+                </h3>
+            </div>
+        </li>
+         END timeline item
+         timeline item
+        <li>
+            <i class="fa fa-comments bg-yellow"></i>
+
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+
+                <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                <div class="timeline-body">
+                    Take me to your leader!
+                    Switzerland is small and neutral!
+                    We are more like Germany, ambitious and misunderstood!
+                </div>
+                <div class="timeline-footer">
+                    <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                </div>
+            </div>
+        </li>
+         END timeline item
+         timeline time label
+        <li class="time-label">
+            <span class="bg-green">
+                3 Jan. 2014
+            </span>
+        </li>
+         /.timeline-label
+         timeline item
+        <li>
+            <i class="fa fa-lock bg-purple"></i>
+
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
+
+                <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                <div class="timeline-body">
+                    <img src="http://placehold.it/150x100" alt="..." class="margin">
+                    <img src="http://placehold.it/150x100" alt="..." class="margin">
+                    <img src="http://placehold.it/150x100" alt="..." class="margin">
+                    <img src="http://placehold.it/150x100" alt="..." class="margin">
+                </div>
+            </div>
+        </li>*@
+
+                        <li>
+                            <i class="fa fa-clock-o bg-gray"></i>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            <div class="box box-default direct-chat direct-chat-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">NPGS Notes</h3>
+
+                    <div class="box-tools pull-right">
+                        <span data-toggle="tooltip" title="" class="badge bg-yellow" data-original-title="3 New Messages">3</span>
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        @*<button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contacts">
+                            <i class="fa fa-comments"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                            <i class="fa fa-times"></i>
+                        </button>*@
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages">
+                        <!-- Message. Default to the left -->
+                        <div class="direct-chat-msg">
+                            <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name pull-left">Marty Reisinger</span>
+                                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+                            </div>
+                            <!-- /.direct-chat-info -->
+                            <img class="direct-chat-img" src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/user-default.png" alt="message user image">
+                            <!-- /.direct-chat-img -->
+                            <div class="direct-chat-text">
+                                Is this template really for free? That's unbelievable!
+                            </div>
+                            <!-- /.direct-chat-text -->
+                        </div>
+                        <!-- /.direct-chat-msg -->
+                        <!-- Message to the right -->
+                        @*<div class="direct-chat-msg right">
+                            <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name pull-right">Sarah Bullock</span>
+                                <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+                            </div>
+                             /.direct-chat-info 
+                            <img class="direct-chat-img" src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/user-default.png" alt="message user image">
+                             /.direct-chat-img 
+                            <div class="direct-chat-text">
+                                You better believe it!
+                            </div>
+                             /.direct-chat-text 
+                        </div>*@
+                        <!-- /.direct-chat-msg -->
+                        <!-- Message. Default to the left -->
+                        <div class="direct-chat-msg">
+                            <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name pull-left">Harold Bockelman</span>
+                                <span class="direct-chat-timestamp pull-right">23 Jan 5:37 pm</span>
+                            </div>
+                            <!-- /.direct-chat-info -->
+                            <img class="direct-chat-img" src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/user-default.png" alt="message user image">
+                            <!-- /.direct-chat-img -->
+                            <div class="direct-chat-text">
+                                Working with AdminLTE on a great new app! Wanna join?
+                            </div>
+                            <!-- /.direct-chat-text -->
+                        </div>
+                        <!-- /.direct-chat-msg -->
+                        <!-- Message to the right -->
+                        <div class="direct-chat-msg right">
+                            <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name pull-right">Sarah Bullock</span>
+                                <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                            </div>
+                            <!-- /.direct-chat-info -->
+                            <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">
+                            <!-- /.direct-chat-img -->
+                            <div class="direct-chat-text">
+                                I would love to.
+                            </div>
+                            <!-- /.direct-chat-text -->
+                        </div>
+                        <!-- /.direct-chat-msg -->
+
+                    </div>
+                    <!--/.direct-chat-messages-->
+                    <!-- Contacts are loaded here -->
+                    <div class="direct-chat-contacts">
+                        <ul class="contacts-list">
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="dist/img/user1-128x128.jpg" alt="User Image">
+
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            Count Dracula
+                                            <small class="contacts-list-date pull-right">2/28/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">How have you been? I was...</span>
+                                    </div>
+                                    <!-- /.contacts-list-info -->
+                                </a>
+                            </li>
+                            <!-- End Contact Item -->
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="dist/img/user7-128x128.jpg" alt="User Image">
+
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            Sarah Doe
+                                            <small class="contacts-list-date pull-right">2/23/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">I will be waiting for...</span>
+                                    </div>
+                                    <!-- /.contacts-list-info -->
+                                </a>
+                            </li>
+                            <!-- End Contact Item -->
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="dist/img/user3-128x128.jpg" alt="User Image">
+
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            Nadia Jolie
+                                            <small class="contacts-list-date pull-right">2/20/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">I'll call you back at...</span>
+                                    </div>
+                                    <!-- /.contacts-list-info -->
+                                </a>
+                            </li>
+                            <!-- End Contact Item -->
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="dist/img/user5-128x128.jpg" alt="User Image">
+
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            Nora S. Vans
+                                            <small class="contacts-list-date pull-right">2/10/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">Where is your new...</span>
+                                    </div>
+                                    <!-- /.contacts-list-info -->
+                                </a>
+                            </li>
+                            <!-- End Contact Item -->
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="dist/img/user6-128x128.jpg" alt="User Image">
+
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            John K.
+                                            <small class="contacts-list-date pull-right">1/27/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">Can I take a look at...</span>
+                                    </div>
+                                    <!-- /.contacts-list-info -->
+                                </a>
+                            </li>
+                            <!-- End Contact Item -->
+                            <li>
+                                <a href="#">
+                                    <img class="contacts-list-img" src="dist/img/user8-128x128.jpg" alt="User Image">
+
+                                    <div class="contacts-list-info">
+                                        <span class="contacts-list-name">
+                                            Kenneth M.
+                                            <small class="contacts-list-date pull-right">1/4/2015</small>
+                                        </span>
+                                        <span class="contacts-list-msg">Never mind I found...</span>
+                                    </div>
+                                    <!-- /.contacts-list-info -->
+                                </a>
+                            </li>
+                            <!-- End Contact Item -->
+                        </ul>
+                        <!-- /.contatcts-list -->
+                    </div>
+                    <!-- /.direct-chat-pane -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <form action="#" method="post">
+                        <div class="input-group">
+                            <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-flat">Add Note</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+        </div>
+        <div class="col-md-9">
+            @*<ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">Detail</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_2" id="tab-timeline" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">Timeline</a>
+                </li>
+            </ul>*@
+            @*<div class="tab-content">*@
+                @*<div class="tab-pane active" id="tab_1">*@
+                    <div class="box box-default">
+                        <div class="box-header">
+                            <h3 class="box-title">Cooperators</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
                             </div>
                         </div>
-                    </div>*@
-                </div>
-            </div>
-            <div class="box box-default">
-                <div class="box-header">
-                    <h3 class="box-title">Request Notes</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
+                        <div class="box-body">
+
+
+
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>Address 3</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>Postal Code</th>
+                                        <th>Created</th>
+                                        <th>Last Modified</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Web</td>
+                                        <td>@Model.WebCooperator.ID</td>
+                                        <td>@Model.WebCooperator.Title</td>
+                                        <td>@Model.WebCooperator.FirstName</td>
+                                        <td>@Model.WebCooperator.LastName</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine1</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine2</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine3</td>
+                                        <td>@Model.WebCooperator.Address.City</td>
+                                        <td>@Model.WebCooperator.Address.State</td>
+                                        <td>@Model.WebCooperator.Address.ZIP</td>
+                                        <td>@Model.WebCooperator.CreatedDate</td>
+                                        <td>@Model.WebCooperator.ModifiedDate</td>
+                                    </tr>
+                                    @if (Model.Cooperator != null)
+                                    {
+                                        <tr>
+                                            <td>Cooperator</td>
+                                            <td>@Model.Cooperator.ID</td>
+                                            <td>@Model.Cooperator.Title</td>
+                                            <td>@Model.Cooperator.FirstName</td>
+                                            <td>@Model.Cooperator.LastName</td>
+                                            <td>@Model.Cooperator.Address.AddressLine1</td>
+                                            <td>@Model.Cooperator.Address.AddressLine2</td>
+                                            <td>@Model.Cooperator.Address.AddressLine3</td>
+                                            <td>@Model.Cooperator.Address.City</td>
+                                            <td>@Model.Cooperator.Address.State</td>
+                                            <td>@Model.Cooperator.Address.ZIP</td>
+                                            <td>@Model.Cooperator.CreatedDate</td>
+                                            <td>@Model.Cooperator.ModifiedDate</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+
+                            @*<div class="row">
+                            <div class="form-group">
+                                <label for="txtName" class="col-sm-2 control-label">Email Text</label>
+                                <div class="col-md-12">
+                                    <textarea class="form-control" rows="25">
+                                    Dear NAME,
+                                    We are unable to process your request for one or more of the following reasons:
+                                    (BOILERPLATE TEXT HERE)
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>*@
+                        </div>
                     </div>
-                </div>
-                <div class="box-body">
-                    <label>Intended Use</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.IntendedUseNote
-                    </p>
-                    <label>Special Instruction</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.SpecialInstruction
-                    </p>
-                    <label>Note</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.Note
-                    </p>
-                </div>
-            </div>
-            <div class="box box-default">
-                <div class="box-header">
-                    <h3 class="box-title">Request Items</h3>
-                </div>
-                <div class="box-body">
-                    <!-- ORDER ITEMS -->
-                    <table class="table table-striped ggtools">
-                        <thead>
-                            <tr>
-                                <th>Seq.</th>
-                                <th>Accession</th>
-                                <th>Species</th>
-                                <th>Status</th>
-                                <th>Site</th>
-                                <th>Qty. Shipped</th>
-                                <th>Distribution Form</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var webOrderRequestItem in Model.WebOrderRequestItems)
-                            {
-                                <tr>
-                                    <td>@webOrderRequestItem.SequenceNumber</td>
-                                    <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                    <td>
-                                        <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                    </td>
-                                    <td>@webOrderRequestItem.StatusCode</td>
-                                    <td>@webOrderRequestItem.Site.LongName</td>
-                                    <td>@webOrderRequestItem.QuantityShipped</td>
-                                    <td>@webOrderRequestItem.DistributionForm</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                    <div class="box box-default">
+                        <div class="box-header">
+                            <h3 class="box-title">Request Notes</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <label>Intended Use</label>
+                            <p class="text-muted well well-sm no-shadow">
+                                @Model.IntendedUseNote
+                            </p>
+                            <label>Special Instruction</label>
+                            <p class="text-muted well well-sm no-shadow">
+                                @Model.SpecialInstruction
+                            </p>
+                            <label>Note</label>
+                            <p class="text-muted well well-sm no-shadow">
+                                @Model.Note
+                            </p>
+                        </div>
+                    </div>
+                    <div class="box box-default">
+                        <div class="box-header">
+                            <h3 class="box-title">Request Items</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- ORDER ITEMS -->
+                            <table class="table table-striped ggtools">
+                                <thead>
+                                    <tr>
+                                        <th>Seq.</th>
+                                        <th>Accession</th>
+                                        <th>Species</th>
+                                        <th>Status</th>
+                                        <th>Site</th>
+                                        <th>Qty. Shipped</th>
+                                        <th>Distribution Form</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var webOrderRequestItem in Model.WebOrderRequestItems)
+                                    {
+                                        <tr>
+                                            <td>@webOrderRequestItem.SequenceNumber</td>
+                                            <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                            <td>
+                                                <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                            </td>
+                                            <td>@webOrderRequestItem.StatusCode</td>
+                                            <td>@webOrderRequestItem.Site.LongName</td>
+                                            <td>@webOrderRequestItem.QuantityShipped</td>
+                                            <td>@webOrderRequestItem.DistributionForm</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @*</div>*@
+                @*<div class="tab-pane" id="tab_2">
+                    <br />
+
+                </div>*@
+            @*</div>*@ <!-- tab-content -->
         </div>
-        <div class="tab-pane" id="tab_2">
-            <br />
-            <ul class="timeline timeline-inverse">
-                @foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
-                {
-                    <li class="time-label">
-                        <span class="bg-blue">
-                            @webOrderRequestActionGroup.ActionDate.ToShortDateString()
-                        </span>
-                    </li>
-
-                    foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
-                    {
-                        <!-- timeline item -->
-            <li>
-
-                <!--TO DO: SET ICON AND COLOR BASED ON STATUS-->
-                <!--
-                CANCEL       fa-trash          bg-red
-                NRR_FLAGGED  fa-flag           bg-red
-                NRR_REVIEW   fa-eye            bg-yellow
-                NRR_APPROVE  fa-thumbs-up      bg-green
-                NRR_REJECT   fa-thumbs-down    bg-red
-
-                DEFAULT      fa-info           bg-aqua           
-                -->
-
-                <i class="fa fa-thumbs-up bg-blue-light"></i>
-
-                <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
-
-                    <h3 class="timeline-header"><a href="#">@webOrderRequestAction.CreatedByCooperatorName</a> logged <strong>@webOrderRequestAction.ActionCode</strong> action</h3>
-
-                    <div class="timeline-body">
-                        @webOrderRequestAction.Note
-                    </div>
-                    @*<div class="timeline-footer">
-                <a class="btn btn-primary btn-xs">Read more</a>
-                <a class="btn btn-danger btn-xs">Delete</a>
-            </div>*@
-                </div>
-            </li>
-                        <!-- END timeline item -->
-                    }
-                }
-
-
-                 @*timeline time label 
-                <li class="time-label">
-                    <span class="bg-black">
-                        10 Feb. 2014 12:30 PM
-                    </span>
-                </li>
-                 /.timeline-label 
-                 timeline item 
-                <li>
-                    <i class="fa fa-envelope bg-blue"></i>
-
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-
-                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                        <div class="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
-                        </div>
-                        <div class="timeline-footer">
-                            <a class="btn btn-primary btn-xs">Read more</a>
-                            <a class="btn btn-danger btn-xs">Delete</a>
-                        </div>
-                    </div>
-                </li>
-                 END timeline item 
-                 timeline item 
-                <li>
-                    <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                        <h3 class="timeline-header no-border">
-                            <a href="#">Sarah Young</a> accepted your friend request
-                        </h3>
-                    </div>
-                </li>
-                 END timeline item 
-                 timeline item 
-                <li>
-                    <i class="fa fa-comments bg-yellow"></i>
-
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                        <div class="timeline-body">
-                            Take me to your leader!
-                            Switzerland is small and neutral!
-                            We are more like Germany, ambitious and misunderstood!
-                        </div>
-                        <div class="timeline-footer">
-                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                        </div>
-                    </div>
-                </li>
-                 END timeline item 
-                 timeline time label 
-                <li class="time-label">
-                    <span class="bg-green">
-                        3 Jan. 2014
-                    </span>
-                </li>
-                 /.timeline-label 
-                 timeline item 
-                <li>
-                    <i class="fa fa-lock bg-purple"></i>
-
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                        <div class="timeline-body">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        </div>
-                    </div>
-                </li>*@
-                  
-                <li>
-                    <i class="fa fa-clock-o bg-gray"></i>
-                </li>
-            </ul>
-        </div>
-    </div> <!-- tab-content -->
+    </div>
 }
 
