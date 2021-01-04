@@ -113,6 +113,57 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequest;
         }
 
+        public ResultContainer Update(WebOrderRequest entity)
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequest_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@web_order_request_id", entity.ID);
+                        cmd.Parameters.AddWithValue("@web_cooperator_id", entity.WebCooperatorID);
+                        cmd.Parameters.AddWithValue("@status_code", entity.StatusCode);
+
+                        if (String.IsNullOrEmpty(entity.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", entity.Note);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        resultContainer.EntityID = entity.ID;
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+
+        }
+
+        int IRepository<WebOrderRequest>.Update(WebOrderRequest entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Remove(WebOrderRequest entity)
         {
             throw new NotImplementedException();
@@ -174,6 +225,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                             {
                                 WebOrderRequest webOrderRequest = new WebOrderRequest();
                                 webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
+                                webOrderRequest.IsLocked = ParseBool(reader["is_locked"].ToString());
                                 webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
                                 webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
@@ -208,6 +260,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             }
             return webOrderRequests.AsQueryable();
         }
+
+        #region Web Order Request Items
 
         public IQueryable<WebOrderRequestItem> SearchItems(int webOrderRequestId)
         {
@@ -256,6 +310,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequestItems.AsQueryable();
         }
 
+        #endregion
+
+        #region Web Order Request Actions
         public IQueryable<WebOrderRequestAction> SearchActions(int webOrderRequestId)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestActions_Select";
@@ -299,10 +356,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequestActions.AsQueryable();
         }
 
-
-        public ResultContainer Update(WebOrderRequest entity)
+        public ResultContainer AddAction(WebOrderRequestAction entity)
         {
-            const string COMMAND_TEXT = "usp_WebOrderRequest_Update";
+            const string COMMAND_TEXT = "usp_WebOrderRequestAction_Insert";
             ResultContainer resultContainer = new ResultContainer();
 
             try
@@ -314,10 +370,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
-
-                        cmd.Parameters.AddWithValue("@web_order_request_id", entity.ID);
-                        cmd.Parameters.AddWithValue("@web_cooperator_id", entity.WebCooperatorID);
-                        cmd.Parameters.AddWithValue("@status_code", entity.StatusCode);
+                        cmd.Parameters.AddWithValue("@web_order_request_id", entity.WebOrderRequestID);
+                        cmd.Parameters.AddWithValue("@action_code", entity.ActionCode);
+                        cmd.Parameters.AddWithValue("@created_by", entity.CreatedByCooperatorID);
 
                         if (String.IsNullOrEmpty(entity.Note))
                             cmd.Parameters.AddWithValue("@note", DBNull.Value);
@@ -343,12 +398,10 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                 throw ex;
             }
             return resultContainer;
-           
-        }
 
-        int IRepository<WebOrderRequest>.Update(WebOrderRequest entity)
-        {
-            throw new NotImplementedException();
         }
+        #endregion
+
+        
     }
 }

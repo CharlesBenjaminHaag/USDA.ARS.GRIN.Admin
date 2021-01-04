@@ -10,6 +10,7 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
 	public class WebOrderRequest : BaseModel, IEntity
 	{
 		public int ID { get; set; }
+		public bool IsLocked { get; set; }
 		public int WebCooperatorID { get; set; }
 		public DateTime OrderDate { get; set; }
 		public string IntendedUseCode { get; set; }

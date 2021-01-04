@@ -23,7 +23,11 @@
                     <div class="box-header with-border">
                         
                         <h4 class="box-title" style="font-weight:bold;">
-                            <i class="fa fa-lock" style="color:red;"></i>
+
+                            @if (webOrderRequest.IsLocked)
+                            {
+                                <i class="fa fa-lock" style="color:red;"></i>
+                            }
                             <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
                                 @webOrderRequest.ID : @webOrderRequest.WebCooperator.FirstName, @webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName (@webOrderRequest.OrderDate.ToShortDateString())
                             </a>

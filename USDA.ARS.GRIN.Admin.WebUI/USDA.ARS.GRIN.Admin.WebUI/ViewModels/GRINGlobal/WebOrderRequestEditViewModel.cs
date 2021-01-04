@@ -9,6 +9,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
 {
     public class WebOrderRequestEditViewModel : BaseViewModel
     {
+        public string Action { get; set; }
         public int ID { get; set; }
         public int WebCooperatorID { get; set; }
         public DateTime OrderDate { get; set; }

@@ -65,16 +65,26 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         }
 
+        public ActionResult SetStatus(string statusCode)
+        {
+            WebOrderRequestEditViewModel viewModel = null;
+            //TO DO
+            return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
+        }
+
         public ActionResult Edit(int id)
         {
             TempData["context"] = "Review Web Order Request #" + id;
-
+            ResultContainer resultContainer = null;
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
             WebOrderRequest webOrderRequest = null;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
             try
             {
+                // Create a "review began" action record, which will be used to lock it for editing.
+                resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW_BEGUN", CreatedByCooperatorID = 1 });
+
                 webOrderRequest = service.GetWebOrderRequest(id);
                 viewModel.ID = webOrderRequest.ID;
                 viewModel.OrderDate = webOrderRequest.OrderDate;
@@ -122,6 +132,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
         {
+            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            ResultContainer resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = "NRR_ACCEPTED", CreatedByCooperatorID = 1 });
+
             return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
         }
     }

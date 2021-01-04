@@ -48,6 +48,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _webOrderRequestDAO.Search(statusCode);
         }
 
+        public ResultContainer AddWebOrderRequestAction(WebOrderRequestAction webOrderRequestAction)
+        {
+            return _webOrderRequestDAO.AddAction(webOrderRequestAction);
+        }
+
         public ResultContainer UpdateWebOrderRequest(WebOrderRequest webOrderRequest)
         {
             return _webOrderRequestDAO.Update(webOrderRequest);
