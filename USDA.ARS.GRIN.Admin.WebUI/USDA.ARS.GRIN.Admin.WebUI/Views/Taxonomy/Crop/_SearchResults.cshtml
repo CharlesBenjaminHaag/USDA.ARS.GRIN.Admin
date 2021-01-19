@@ -49,6 +49,12 @@
                             {
                                 foreach (var crop in Model.CropsForCWR)
                                 {
+                                    string modifiedDateString = String.Empty;
+                                    if (crop.ModifiedDate != DateTime.MinValue)
+                                    {
+                                        modifiedDateString = crop.ModifiedDate.ToShortDateString();
+                                    }
+
                                     <tr>
                                         <td>
                                             <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@crop.ID">
@@ -66,9 +72,10 @@
                                             @crop.CreatedByCooperatorName
                                         </td>
                                         <td>
-                                            @crop.ModifiedDate.ToShortDateString()
+                                            @modifiedDateString
                                         </td>
                                         <td>
+                                            @crop.ModifiedByCooperatorName
                                         </td>
                                         <td style="text-align:center;">
                                             @if (@crop.CropWildRelativeCount > 0)

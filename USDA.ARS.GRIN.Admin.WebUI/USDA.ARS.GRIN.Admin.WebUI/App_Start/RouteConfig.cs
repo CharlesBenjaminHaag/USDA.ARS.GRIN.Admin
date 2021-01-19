@@ -9,6 +9,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapMvcAttributeRoutes();
+
+        //    routes.MapRoute(
+        //    "Taxonomy",    // Route name
+        //    "taxonomy/{controller}/{action}",// URL with parameters
+        //    new
+        //    {
+        //        controller = "Species",
+        //        action =
+        //            "Home"
+        //    }  // Parameter defaults
+        //);
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

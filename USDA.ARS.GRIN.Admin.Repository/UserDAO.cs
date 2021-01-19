@@ -42,6 +42,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             user.UserName = reader["user_name"].ToString();
                             user.Password = reader["password"].ToString();
                             user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
+                            user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
                             user.FirstName = reader["first_name"].ToString();
                             user.LastName = reader["last_name"].ToString();
                             user.Email = reader["email"].ToString();
@@ -102,6 +103,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 user.UserName = reader["user_name"].ToString();
                                 user.Password = reader["password"].ToString();
                                 user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
+                                user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
                                 user.FirstName = reader["first_name"].ToString();
                                 user.LastName = reader["last_name"].ToString();
                                 user.Email = reader["email"].ToString();

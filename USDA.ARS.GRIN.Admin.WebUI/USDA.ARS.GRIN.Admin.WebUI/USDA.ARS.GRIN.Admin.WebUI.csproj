@@ -268,7 +268,7 @@
     <Content Include="Views\Taxonomy\Crop\CWRMap\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\_List.cshtml" />
     <Content Include="Views\Taxonomy\Species\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\CropForCWR\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CropForCWR\Index_OLD.cshtml" />
     <Content Include="Views\Taxonomy\Crop\CropForCWR\Edit.cshtml" />
     <Content Include="Views\SiteManagement\PVP\Index.cshtml" />
     <Content Include="Views\SiteManagement\CGC\Index.cshtml" />
@@ -287,7 +287,7 @@
     <Content Include="Views\Taxonomy\Citation\_List.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_UserSearchList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Crop\CropForCWR\Index.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Search.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_SearchResults.cshtml" />
@@ -369,14 +369,17 @@
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Controllers\AccountManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Taxonomy\CropForCWRController.cs" />
     <Compile Include="Controllers\GRINGlobalController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\SiteManagementController.cs" />
+    <Compile Include="Controllers\Taxonomy\CWRMapController.cs" />
+    <Compile Include="Controllers\Taxonomy\SpeciesController.cs" />
     <Compile Include="Controllers\TaxonomyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Controllers\WebOrderController.cs" />
-    <Compile Include="DisplayManager.cs" />
+    <Compile Include="DisplayHelper.cs" />
     <Compile Include="ExcelUtility.cs" />
     <Compile Include="GrinGlobalAuthenticationFilter.cs" />
     <Compile Include="LoginResultEnum.cs" />
@@ -551,6 +554,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\AccountManagement\" />
+    <Folder Include="Controllers\Error\" />
+    <Folder Include="Controllers\GRINGlobal\" />
+    <Folder Include="Controllers\Home\" />
+    <Folder Include="Controllers\SiteManagement\" />
     <Folder Include="Logs\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\AccountManagement\User\" />
@@ -561,6 +569,8 @@
     <Folder Include="ViewModels\Taxonomy\Citation\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
     <Folder Include="Views\AccountManagement\Cooperator\" />
+    <Folder Include="Views\Taxonomy\CropForCWR\" />
+    <Folder Include="Views\Taxonomy\CWRMap\" />
     <Folder Include="Views\Taxonomy\Home\" />
     <Folder Include="Views\Utilities\_UPLOADS\" />
   </ItemGroup>

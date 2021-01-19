@@ -1,0 +1,462 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.CropWildRelativeSearchViewModel
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- SEARCH-->
+@using (Html.BeginForm("CropWildRelativeSearch", "Taxonomy", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom:10px;">
+            <button type="button" onclick="location.href='@Url.Action("CropWildRelativeEdit", "Taxonomy")'" class="btn btn-primary" style="margin-right:5px;">Add New Crop Wild Relative</button>
+        </div>
+    </div>
+
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Search</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <!-- /.box-header -->
+            @*<div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Tab 1</a></li>
+                        <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Tab 2</a></li>
+                        <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Tab 3</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Dropdown <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                        <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">
+                            <b>How to use:</b>
+
+                            <p>
+                                Exactly like the original bootstrap tabs except you should use
+                                the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.
+                            </p>
+                            A wonderful serenity has taken possession of my entire soul,
+                            like these sweet mornings of spring which I enjoy with my whole heart.
+                            I am alone, and feel the charm of existence in this spot,
+                            which was created for the bliss of souls like mine. I am so happy,
+                            my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
+                            that I neglect my talents. I should be incapable of drawing a single stroke
+                            at the present moment; and yet I feel that I never was a greater artist than now.
+                        </div>
+                         /.tab-pane
+                        <div class="tab-pane" id="tab_2">
+                            The European languages are members of the same family. Their separate existence is a myth.
+                            For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+                            in their grammar, their pronunciation and their most common words. Everyone realizes why a
+                            new common language would be desirable: one could refuse to pay expensive translators. To
+                            achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+                            words. If several languages coalesce, the grammar of the resulting language is more simple
+                            and regular than that of the individual languages.
+                        </div>
+                         /.tab-pane
+                        <div class="tab-pane" id="tab_3">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                            It has survived not only five centuries, but also the leap into electronic typesetting,
+                            remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                            like Aldus PageMaker including versions of Lorem Ipsum.
+                        </div>
+                         /.tab-pane
+                    </div>
+                     /.tab-content
+                </div>*@
+
+
+
+            <!-- form start -->
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Crop Name</label>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(x => x.CropNameComparisonOperator, Model.TextSearchComparisonOperators, "(None)", new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(x => x.CropName, new { id = "txtCropName", Name = "CropName", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Display Name</label>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(x => x.DisplayNameComparisonOperator, Model.TextSearchComparisonOperators, "(None)", new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(x => x.DisplayName, new { id = "txtDisplayName", Name = "DisplayName", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Common Name</label>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(x => x.CommonNameComparisonOperator, Model.TextSearchComparisonOperators, "(None)", new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-7">
+                        @Html.TextBoxFor(x => x.CropCommonName, new { id = "txtCommonName", Name = "CropCommonName", @class = "form-control" })
+                    </div>
+                </div>
+
+                @*<hr />
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Is Crop</label>
+                        <div class="col-sm-6">
+                            <div class="checkbox-inline" style="padding:0px;">
+                                <label class="checkbox-inline" style="padding:0px;">
+                                    <input type="checkbox"> Yes
+                                </label>
+                            </div>
+                            <div class="checkbox-inline">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"> No
+                                </label>
+                            </div>
+                            <div class="checkbox-inline">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"> No
+                                </label>
+                            </div>
+                            <div class="checkbox-inline">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"> No
+                                </label>
+                            </div>
+                            <div class="checkbox-inline">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"> No
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                                <div class="col-sm-5">
+                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> Remember me
+                                    </label>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                    <hr />*@
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-danger pull-right" style="margin-right:5px;">Clear Search Criteria</button>
+                    <button type="submit" class="btn btn-default pull-right" style="margin-right:5px;">Search</button>
+                    @*<button type="submit" class="btn btn-default pull-right" style="margin-right:5px;">Execute AND Search</button>*@
+                </div>
+                <!-- /.box-footer -->
+            </div>
+
+        </div>
+    </div>
+}
+
+<!-- ============================================================================================== -->
+<!-- SEARCH RESULTS -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Search Results</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">\
+                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                    You currently have no folders.
+                </div>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <div class="mailbox-controls">
+            <!-- Check all button -->
+            <button type="button" class="btn btn-primary btn-sm checkbox-toggle">
+                <img src="~/Content/img/check.png" />
+            </button>
+            <button type="button" id="btnAddToFolder" class="btn btn-primary btn-sm">
+                <img src="~/Content/img/folder-open.png" style="width:18px; height:18px;" />
+            </button>
+
+           
+
+
+            <div class="pull-right">
+                <button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>
+                @*1-50/200
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                    </div>*@
+                <!-- /.btn-group -->
+            </div>
+            <!-- /.pull-right -->
+        </div>
+        <div class="table-responsive mailbox-messages">
+            <table id="data-list" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th width="5%"></th>
+                        <th>Crop Name</th>
+                        <th>DisplayName</th>
+                        <th>Common Name</th>
+                        <th>Last Modified</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.SearchResults != null)
+                    {
+                        if (Model.SearchResults.Rows.Count > 0)
+                        {
+                            foreach (System.Data.DataRow row in Model.SearchResults.Rows)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="@row["taxonomy_cwr_id"]" class="list-checkbox" style="position: absolute; opacity: 0;">
+                                    </td>
+                                    <td>
+                                        @row["crop_name"]
+                                    </td>
+                                    <td>
+                                        @row["display_name"]
+                                    </td>
+                                    <td>
+                                        @row["crop_common_name"]
+                                    </td>
+                                    <td>
+                                        @row["modified_date"].ToString()
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("CropWildRelativeEdit", "Taxonomy", new { id = row["taxonomy_cwr_id"] })" class="btn btn-default pull-right row-edit">
+                                            <img src="~/Content/img/bars.png" />Edit
+                                        </a>
+                                    </td>
+
+                                    @*@foreach (System.Data.DataColumn col in Model.SearchResults.Columns)
+                                        {
+                                            <td>
+                                                @row[col.ColumnName]
+                                            </td>
+                                        }*@
+                                </tr>
+                            }
+                        }
+                    }
+
+                    @*@if (Model.TaxonomyCropWildRelatives != null)
+                        {
+                            if (Model.TaxonomyCropWildRelatives.Count() > 0)
+                            {
+                                foreach (var result in Model.TaxonomyCropWildRelatives)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" style="position: absolute; opacity: 0;">
+                                        </td>
+
+                                        <td class="mailbox-name"><a href="#">@result.CropName</a></td>
+                                        <td class="mailbox-subject">
+                                            <a href="">SPECIES</a>
+                                        </td>
+                                        <td class="mailbox-name">@result.ModifiedDate.ToShortDateString()</td>
+                                        <td class="mailbox-name">@result.ModifiedByCooperatorID</td>
+                                        <td>
+                                            <a href="@Url.Action("CropWildRelativeEdit", "Taxonomy", new { id = result.ID })" class="btn btn-sm btn-primary pull-right row-edit">
+                                                <img src="~/Content/img/pencil.png" />Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            }*@
+                </tbody>
+            </table>
+            <!-- /.table -->
+        </div>
+        <!-- /.mail-box-messages -->
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer no-padding">
+        <div class="mailbox-controls">
+            <!-- Check all button -->
+            <button type="button" class="btn btn-primary btn-sm checkbox-toggle">
+                <img src="~/Content/img/check.png" />
+            </button>
+            <button type="button" id="btnAddToFolder" class="btn btn-primary btn-sm">
+                <img src="~/Content/img/folder-open.png" style="width:18px; height:18px;" />
+            </button>
+
+            <div class="pull-right">
+                <button type="button" disabled class="btn btn-default btn-sm">
+                    Export
+                </button>
+                @*1-50/200
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                    </div>*@
+                <!-- /.btn-group -->
+            </div>
+            <!-- /.pull-right -->
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-add-to-folder">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add to Folder</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchSpecies" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchSpecies" class="btn btn-info btn-flat">Folder Name</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td>Folder 1</td>
+                            </tr>
+                            <tr>
+                                <td>Folder 2</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success pull-right" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+<!-- Page Script -->
+<script>
+    $(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('.mailbox-messages input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+
+        $("#btnAddToFolder").click(function () {
+             var valueArray = [];
+
+            $("input:checked").each(function () {
+                var id = $(this).attr("id");
+                valueArray.push(id);
+            });
+
+             $.ajax({
+                    url: '@Url.Action("AddToFolder","Taxonomy")',
+                    type: "GET",
+                    data: {folderId: 9, values:valueArray.toString() },
+                    cache: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                    }
+                });
+            //alert("DEBUG: ADD TO FOLDER " + valueArray.toString());
+        });
+
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+            var clicks = $(this).data('clicks');
+            if (clicks) {
+                //Uncheck all checkboxes
+                $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+            } else {
+                //Check all checkboxes
+                $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+            }
+            $(this).data("clicks", !clicks);
+        });
+
+        //Handle starring for glyphicon and font awesome
+        $(".mailbox-star").click(function (e) {
+            e.preventDefault();
+            //detect type
+            var $this = $(this).find("a > i");
+            var glyph = $this.hasClass("glyphicon");
+            var fa = $this.hasClass("fa");
+
+            //Switch states
+            if (glyph) {
+                $this.toggleClass("glyphicon-star");
+                $this.toggleClass("glyphicon-star-empty");
+            }
+
+            if (fa) {
+                $this.toggleClass("fa-star");
+                $this.toggleClass("fa-star-o");
+            }
+        });
+    });
+
+    $('#data-list').DataTable({
+        'paging': true,
+        'lengthChange': false,
+        'searching': false,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+    });
+</script>
+

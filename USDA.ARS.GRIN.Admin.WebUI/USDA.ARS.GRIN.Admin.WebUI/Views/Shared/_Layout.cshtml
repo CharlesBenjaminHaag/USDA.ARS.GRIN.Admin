@@ -8,8 +8,8 @@
         string mainCssClass = String.Empty;
         string pageTitle = String.Empty;
 
-        mainCssClass = DisplayManager.GetCurrentSkin(HttpContext.Current.Request.Url.ToString());
-        pageTitle = DisplayManager.GetPageTitle(HttpContext.Current.Request.Url.ToString());
+        mainCssClass = DisplayHelper.GetCurrentSkin(HttpContext.Current.Request.Url.ToString());
+        pageTitle = DisplayHelper.GetPageTitle(HttpContext.Current.Request.Url.ToString());
     }
 
     <meta charset="utf-8">
@@ -65,7 +65,7 @@
                 <h1>
                     @TempData["context"]
                     @*@ViewContext.RouteData.Values["controller"].ToString() -- @ViewContext.RouteData.Values["action"].ToString()*@
-                    <small>@DisplayManager.GetVersion()</small>
+                    <small>@DisplayHelper.GetVersion()</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i>@ViewContext.RouteData.Values["controller"].ToString()</a></li>
@@ -78,7 +78,7 @@
         </div>
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>Version</b> @DisplayManager.GetVersion()
+                <b>Version</b> @DisplayHelper.GetVersion()
             </div>
             <strong>Copyright © 2019 <a href="#">ARS-GRIN DBMU</a>.</strong> All rights reserved.
         </footer>
@@ -90,12 +90,33 @@
     @Scripts.Render("~/Bundles/js")
     @Scripts.Render("~/admin-lte/js")
     @RenderSection("ViewSpecificJavascript", required: false)
+    <script src="//cdn.jsdelivr.net/jquery.dirtyforms/2.0.0/jquery.dirtyforms.min.js" type="text/javascript"></script>
     @*<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>*@
 </body>
 </html>
 
 
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        var timeoutId;
+
+        $('form input, form textarea').on('input propertychange change', function () {
+            console.log('Textarea Change');
+
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function () {
+                // Runs 1 second (1000 ms) after the last change
+                saveToDB();
+            }, 1000);
+        });
+
+        function saveToDB() {
+            console.log('Saving to the db');
+            //$('#status-holder').html('<span class=label label-default>SAVING CHANGES...</span>');
+            $("#frmEdit").submit();
+        }
+    });
 
     $(".menu-item-selector").click(function () {
 

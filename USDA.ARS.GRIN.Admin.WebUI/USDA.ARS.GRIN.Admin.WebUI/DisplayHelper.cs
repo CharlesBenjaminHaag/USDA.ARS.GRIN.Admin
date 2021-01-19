@@ -8,7 +8,7 @@ using USDA.ARS.GRIN.Admin.Models;
 
 namespace USDA.ARS.GRIN.Admin.WebUI
 {
-    public class DisplayManager
+    public class DisplayHelper
     {
         public static string GetCurrentSkin(string url)
         {
@@ -64,7 +64,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI
 
         public static string GetDisplayString(string value)
         {
-            if (value.ToUpper() == "Y")
+            if ((value.ToUpper() == "Y") || (value.ToUpper() == "TRUE"))
                 return "<span class='label label-success'>Yes</span>";
             else
                 return "<span class='label label-danger'>No</span>";

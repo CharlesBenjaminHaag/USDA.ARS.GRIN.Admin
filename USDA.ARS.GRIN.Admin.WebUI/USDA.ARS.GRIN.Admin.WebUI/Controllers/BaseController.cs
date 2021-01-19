@@ -19,7 +19,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             get
             {
-                UserSession userSession = null;
+                UserSession userSession = new UserSession();
                 
                 if (Session["USER_SESSION"] != null)
                 {

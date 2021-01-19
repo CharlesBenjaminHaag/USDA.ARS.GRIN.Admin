@@ -82,7 +82,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                // Create a "review began" action record, which will be used to lock it for editing.
+                // Lock the web order request record.
+                resultContainer = service.SetReviewStatus(id, AuthenticatedUser.WebCooperatorID, true);
+
+                // Create a "review began" action record.
                 resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW_BEGUN", CreatedByCooperatorID = 1 });
 
                 webOrderRequest = service.GetWebOrderRequest(id);
@@ -132,9 +135,28 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
         {
+            ResultContainer resultContainer = null;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-            ResultContainer resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = "NRR_ACCEPTED", CreatedByCooperatorID = 1 });
-
+        
+            try
+            {
+                switch (viewModel.Action)
+                {
+                    case OrderRequestAction.NRRApprove:
+                        resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, CreatedByCooperatorID = 1 });
+                        break;
+                    case OrderRequestAction.NRRReject:
+                        resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, CreatedByCooperatorID = 1 });
+                        break;
+                    case OrderRequestAction.NRRReviewEnd:
+                        service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            { 
+            
+            }
             return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
         }
     }

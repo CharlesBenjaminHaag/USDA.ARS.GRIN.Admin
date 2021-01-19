@@ -510,7 +510,49 @@ namespace USDA.ARS.GRIN.Admin.Repository
         }
         public IQueryable<Species> FindUserSpecies(int cooperatorId)
         {
-            return Search("WHERE created_by = " + cooperatorId);
+            const string COMMAND_TEXT = "usp_TaxonomySpeciesByUser_Select";
+            List<Species> speciesList = new List<Species>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@cooperator_id", cooperatorId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Species species = new Species();
+                                species.ID = GetInt(reader["taxonomy_species_id"].ToString());
+                                species.NomenNumber = GetInt(reader["nomen_number"].ToString());
+                                species.IsSpecificHybrid = ParseBool(reader["is_specific_hybrid"].ToString());
+                                species.SpeciesName = reader["species_name"].ToString();
+                                species.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
+                                species.Authority = reader["species_authority"].ToString();
+                                species.NameAuthority = reader["name_authority"].ToString();
+                                species.IsSubSpecificHybrid = ParseBool(reader["is_subspecific_hybrid"].ToString());
+                                species.SubSpeciesName = reader["subspecies_name"].ToString();
+                                species.IsVarietalHybrid = ParseBool(reader["is_varietal_hybrid"].ToString());
+                                species.Protologue = reader["protologue"].ToString();
+                                species.AccessionCount = GetInt(reader["accession_count"].ToString());
+                                speciesList.Add(species);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return speciesList.AsQueryable();
         }
 
         public IQueryable<Species> FindRecentSpecies()

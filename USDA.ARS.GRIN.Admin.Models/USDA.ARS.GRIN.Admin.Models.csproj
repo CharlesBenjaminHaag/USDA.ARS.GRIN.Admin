@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Genesys\PassportDataExport.cs" />
     <Compile Include="Genesys\MCPDAccession.cs" />
     <Compile Include="GRINGlobal\Accession.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="CodeValueReferenceItem.cs" />
     <Compile Include="FileMetaData.cs" />
+    <Compile Include="GRINGlobal\OrderRequestAction.cs" />
     <Compile Include="GRINGlobal\WebOrderRequestAction.cs" />
     <Compile Include="GRINGlobal\Cooperator.cs" />
     <Compile Include="GRINGlobal\CooperatorTypeEnum.cs" />

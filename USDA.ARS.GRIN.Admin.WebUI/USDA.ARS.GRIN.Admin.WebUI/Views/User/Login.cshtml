@@ -34,7 +34,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>GGTools</b>@DisplayManager.GetVersion() Login</a>
+            <a href="../../index2.html"><b>GGTools</b>@DisplayHelper.GetVersion() Login</a>
         </div>
         <!-- /.login-logo -->
 
@@ -61,7 +61,7 @@
         <div class="login-box-body">
             <div id="btn-container" style="margin-bottom:20px;">
                 <button class="btn btn-default btn-block btn-sm btn-flat" data-toggle="modal" data-target="#modal-release-notes">
-                    Release @DisplayManager.GetVersion() Notes
+                    Release @DisplayHelper.GetVersion() Notes
                 </button>
             </div>
 
@@ -77,7 +77,7 @@
                 <label>Select Server</label>
                 <div class="form-group has-feedback">
                     <select name="environment" class="form-control">
-                        @*<option value="LOCAL">Local</option>*@
+                        <option value="LOCAL">Local</option>
                         @*<option value="PRODCOPY">Prod-Copy</option>*@
                         <option value="DEVELOPMENT">Development</option>
                         @*<option value="TEST">Test</option>*@
@@ -106,7 +106,7 @@
             </form>
             <div class="row">
                 <div class="col-xs-12" style="margin-top:20px;">
-                    <a href="">I would like to request a new Curator account.</a>
+                    <a href="@Url.Action("AccountRequest")" class="btn btn-success btn-block">I would like to request a new Curator account.</a>
                     @*<button disabled="" class="btn btn-primary btn-block btn-flat pull-right">Request New Account</button>*@
                 </div>
             </div>
@@ -126,29 +126,54 @@
                 </div>
                 <div class="modal-body">
 
-                    <h4>
-                        Revisions
-                    </h4>
+
+                    Release notes - NGRL DBMU Initiatives - Version GGTools 1.1.1
+
+                    <h2>
+                        Task
+                    </h2>
                     <ul>
                         <li>
-                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-81'>NDI-81</a>] -         Add Visibility Status to Folder Table and Related Objects
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-171'>NDI-171</a>] -         Configure &quot;Enter&quot; Key To Save Changes in All Edit Pages
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-172'>NDI-172</a>] -         Display Full Species Name in CWR Map Edit Page
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-173'>NDI-173</a>] -         Display Internal Record ID on All Edit Pages
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-176'>NDI-176</a>] -         Add  &quot;Save Changes?&quot; Prompt to All Edit Pages
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-181'>NDI-181</a>] -         On All Edit Pages, &quot;Note&quot; Fields Must be Multi-Line
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-184'>NDI-184</a>] -         On Species Edit Page, Change &quot;Authority&quot; to &quot;Name Authority&quot; and Move Field Under &quot;Name&quot; Field
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-187'>NDI-187</a>] -         Species Edit Page: Change &quot;Add Variety&quot; to &quot;Add SubTaxa&quot;
                         </li>
                     </ul>
 
-                    <h4>
-                        Bugs
-                    </h4>
+                    <h2>
+                        Bug
+                    </h2>
                     <ul>
                         <li>
-                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-8'>NDI-8</a>] -         Cannot Batch-Delete Folder Items
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-168'>NDI-168</a>] -         Change &quot;Genii&quot; to &quot;Genera&quot;
                         </li>
                         <li>
-                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-10'>NDI-10</a>] -         Cannot Delete Individual Folder Items
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-170'>NDI-170</a>] -         &quot;Last Modified&quot; Appearing in Lists as &quot;1/1/0001&quot; When No Date Exists
                         </li>
                         <li>
-                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-11'>NDI-11</a>] -         Crop Map Home Page Throws Error On Load
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-177'>NDI-177</a>] -         On CWR Map Home Page, All Records Show &quot;Is Crop&quot; as &quot;Yes&quot;
+                        </li>
+                        <li>
+                            [<a href='https://ngrl-dbmu.atlassian.net/browse/NDI-183'>NDI-183</a>] -         On Species Home Page, All Records Appear With  &quot;Accepted&quot; = &quot;No&quot;
                         </li>
                     </ul>
+
 
 
                 </div>

@@ -70,6 +70,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return RedirectToAction("Index", "Home", new { loginStatus = LoginResult.SUCCESS.ToString(), Area = "" });
         }
 
+        public ActionResult AccountRequest()
+        {
+            return View();
+        }
+
         public ActionResult Edit(string userName)
         {
             // TO DO

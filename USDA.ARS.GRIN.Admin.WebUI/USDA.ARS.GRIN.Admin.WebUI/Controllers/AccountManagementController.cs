@@ -122,6 +122,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        public USDA.ARS.GRIN.Admin.Models.GRINGlobal.Cooperator FindCooperator(string emailAddress)
+        {
+            USDA.ARS.GRIN.Admin.Models.GRINGlobal.Cooperator cooperator = new Models.GRINGlobal.Cooperator();
+            return cooperator;
+        }
+
         private DirectorySearcher BuildUserSearcher(DirectoryEntry de)
         {
             DirectorySearcher ds = null;

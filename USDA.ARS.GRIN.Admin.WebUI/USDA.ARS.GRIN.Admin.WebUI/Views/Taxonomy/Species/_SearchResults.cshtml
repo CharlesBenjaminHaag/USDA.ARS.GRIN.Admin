@@ -51,7 +51,7 @@
                                 <span class="label label-default">@species.ID</span>
                             </td>
                             <td>@species.SpeciesName</td>
-                            <td>@Html.Raw(DisplayManager.GetDisplayString(@species.IsAcceptedName.ToString()))</td>
+                            <td>@Html.Raw(DisplayHelper.GetDisplayString(@species.IsAcceptedName.ToString()))</td>
                             <td>@species.Authority</td>
                             <td>@species.NameAuthority</td>
                             <td>@species.Protologue</td>
@@ -62,7 +62,7 @@
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = species.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                <a href="@Url.Action("Edit", "Taxonomy/Species", new { id = species.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             </td>
@@ -82,7 +82,23 @@
         </div>
     </div>
 
+<script>
 
+    if ($.fn.dataTable.isDataTable('#search-results')) {
+        table = $('#search-results').DataTable();
+    }
+    else {
+        table = $('#search-results').DataTable({
+            'destroy': true,
+            'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        });
+    }
+</script>
 
 
 

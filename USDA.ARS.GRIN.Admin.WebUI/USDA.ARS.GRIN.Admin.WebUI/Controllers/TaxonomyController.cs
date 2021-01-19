@@ -15,7 +15,7 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
-    [RoutePrefix("taxonomy")]
+    //[RoutePrefix("taxonomy")]
     [GrinGlobalAuthentication]
     public class TaxonomyController : BaseController
     {
@@ -290,10 +290,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         #region Crop for CWR
 
         [Route("CropForCWR/Home")]
-        public ActionResult CropHome()
+        public ActionResult CropForCWRHome()
         {
             CropHomeViewModel viewModel = new CropHomeViewModel();
-            return View("~/Views/Taxonomy/Crop/Index.cshtml", viewModel);
+            return View("~/Views/Taxonomy/Crop/CropForCWR/Index.cshtml", viewModel);
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]

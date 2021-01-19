@@ -4,8 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="//cdn.jsdelivr.net/jquery.dirtyforms/2.0.0/jquery.dirtyforms.min.js" type="text/javascript"></script>
-
 <div id="section-data-list">
 
     @if (Model.ID > 0)
@@ -45,6 +43,12 @@
                     <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="box-body">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">ID</label>
+                                    <div class="col-sm-10">
+                                        <span class="label label-default">@Model.ID</span>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="txtName" class="col-sm-2 control-label">Common Name</label>
                                     <div class="col-sm-10">
@@ -98,14 +102,13 @@
                                     <label for="txtSpeciesName" class="col-sm-2 control-label">Note</label>
                                     <div class="col-sm-10">
                                         <div class="input-group">
-                                            @Html.TextBoxFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                                            @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="txtCitation" class="col-sm-2 control-label">Citation</label>
                                     <div class="col-sm-10">
@@ -257,13 +260,12 @@ MODALS
 </div>
 
 <script type="text/javascript">
-
-    $(document).ready(function () {
-        $('form').dirtyForms({
-            dialog: { title: 'Wait!' },
-            message: 'You forgot to save your details. If you leave now, they will be lost forever.'
-        });
-    });
+    //$(document).ready(function () {
+    //    $('form').dirtyForms({
+    //        dialog: { title: 'Wait!' },
+    //        message: 'You forgot to save your details. If you leave now, they will be lost forever.'
+    //    });
+    //});
 
     $(function () {
         $('.check-all-search-results').on('click', function () {
