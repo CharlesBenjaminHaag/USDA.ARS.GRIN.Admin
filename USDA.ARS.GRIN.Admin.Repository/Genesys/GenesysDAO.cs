@@ -12,11 +12,12 @@ namespace USDA.ARS.GRIN.Admin.Repository.Genesys
 {
     public class GenesysDAO : BaseDAO
     {
-        public PassportDataExport GetExport()
+        public List<MCPDAccession> GetExport(int offset, int limit)
         {
             const string COMMAND_TEXT = "usp_GenesysExport_Select";
             const string CONTEXT = "PRODUCTION";
-            PassportDataExport passport = new PassportDataExport();
+            //PassportDataExport passport = new PassportDataExport();
+            List<MCPDAccession> mCPDAccessions = new List<MCPDAccession>();
 
             try
             {
@@ -27,6 +28,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.Genesys
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@offset", offset);
+                        cmd.Parameters.AddWithValue("@limit", limit);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -53,8 +56,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.Genesys
                                 mCPDAccession.COORDUNCERT = reader["COORDUNCERT"].ToString();
                                 mCPDAccession.DECLATITUDE = reader["DECLATITUDE"].ToString();
                                 mCPDAccession.DECLONGITUDE = reader["DECLONGITUDE"].ToString();
-                                mCPDAccession.ORIGCTY = reader["ORIGCTY"].ToString(); 
-                                passport.Accessions.Add(mCPDAccession);
+                                mCPDAccession.ORIGCTY = reader["ORIGCTY"].ToString();
+                                mCPDAccessions.Add(mCPDAccession);
                             }
                         }
                     }
@@ -69,7 +72,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Genesys
                 //conn.Close();
                 //adapter.Dispose();
             }
-            return passport;
+            return mCPDAccessions;
         }
 
     }

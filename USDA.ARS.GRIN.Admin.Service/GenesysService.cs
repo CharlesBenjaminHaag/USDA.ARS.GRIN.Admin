@@ -14,9 +14,9 @@ namespace USDA.ARS.GRIN.Admin.Service
     {
         GenesysDAO _genesysDAO = new GenesysDAO();
 
-        public PassportDataExport GetExport()
+        public List<MCPDAccession> GetExport(int offset, int limit)
         {
-            return _genesysDAO.GetExport();
+            return _genesysDAO.GetExport(offset, limit);
         }
     }
 }

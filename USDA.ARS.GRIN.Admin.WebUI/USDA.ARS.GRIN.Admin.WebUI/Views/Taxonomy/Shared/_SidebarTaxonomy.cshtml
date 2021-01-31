@@ -12,86 +12,73 @@
                 </span>
             </div>
         </form>
-        @* END Search *@
-        @* BEGIN Menu *@
-
-
-        @*CROP
-        Crop Map
-        Crop For CWR
-        SPECIES
-        Home
-        GENUS
-        Home
-        FAMILY
-        Home
-        REPORTS
-        ISTA*@
-
-    <ul class="sidebar-menu tree" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="@Url.IsLinkActive("Index", "Home")">
-            <a href="@Url.Action("Index","Home")">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/icon-home.png" />
-                <span>GGTools Home</span>
-            </a>
-        </li>
-        <li class="@Url.IsLinkActive("Index", "Taxonomy")">
-            <a href="@Url.Action("Index","Taxonomy")">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-tree.png" />
-                <span>TurboTaxon Home</span>
-            </a>
-        </li>
-        <li class="header">MANAGE DATA</li>
-        <!-- CROP -->
-        <li class="treeview menu-open">
-            <a href="#">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
-                <span>TAXONOMY</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu" style="display: block;">
-                <li>
-                    <a href="@Url.Action("CropForCWRHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Crop for CWR
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("CWRMapHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />CWR Map
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("Home", "Taxonomy/Species")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Species
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("CropTraitHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Trait Manager
-                    </a>
-                </li>
-
-
-                <!--
-    *********************************************************************************************
-    TODO: ADD IN 1.2.0
-    *********************************************************************************************
-    -->
-                @*<li>
-            <a href="@Url.Action("GenusHome", "Taxonomy")">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Genus
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("FamilyHome", "Taxonomy")">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Family
-            </a>
-        </li>*@
-            </ul>
-                </li>
+        <ul class="sidebar-menu tree" data-widget="tree">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="@Url.IsLinkActive("Index", "Home")">
+                <a href="@Url.Action("Index","Home")">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/icon-home.png" />
+                    <span>GGTools Home</span>
+                </a>
+            </li>
+            <li class="@Url.IsLinkActive("Index", "Taxonomy")">
+                <a href="@Url.Action("Index","Taxonomy")">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-tree.png" />
+                    <span>TurboTaxon Home</span>
+                </a>
+            </li>
+            <li class="header">MANAGE DATA</li>
+            <!-- CROP -->
+            <li class="treeview menu-open">
+                <a href="#">
+                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                    <span>TAXONOMY</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu" style="display: block;">
+                    <li>
+                        <a href="@Url.Action("CropForCWRHome", "Taxonomy")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Crop for CWR
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Home", "Taxonomy/CWRMap")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />CWR Map
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Home", "Taxonomy/CWRTrait")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />CWR Trait
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Home", "Taxonomy/Species")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Species
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CropTraitHome", "Taxonomy")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Trait Manager
+                        </a>
+                    </li>
+                    <!--
+                    *********************************************************************************************
+                    TODO: ADD IN 1.2.0
+                    *********************************************************************************************
+                    -->
+                    @*<li>
+                        <a href="@Url.Action("GenusHome", "Taxonomy")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Genus
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("FamilyHome", "Taxonomy")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Family
+                        </a>
+                    </li>*@
+                </ul>
+            </li>
 
         <!-- REFERENCE -->
         <li class="treeview menu-open">

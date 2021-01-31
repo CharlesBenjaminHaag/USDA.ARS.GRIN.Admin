@@ -25,10 +25,10 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-records" title="UserCWRMaps" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                    <a href="#tab_1" id="tab-my-records" title="ListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="RecentCWRMaps" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Added</a>
+                    <a href="#tab_2" id="tab-recently-added" title="ListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
                     <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
@@ -165,14 +165,14 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        var link = '@Url.Action("UserCWRMaps", "Taxonomy")';
+        var link = '@Url.Action("ListByUser", "Taxonomy/CWRMap")';
         $("#section-my-records").load(link);
     });
 
     $(".selector-tab").click(function () {
         var id = $(this).attr('id');
         var action = $(this).attr('title');
-        var link = '@Url.Action("Action", "Taxonomy")';
+        var link = '@Url.Action("Action", "Taxonomy/CWRMap")';
         var displaySection = '';
 
         $('.mailbox-messages input:checkbox').prop('checked', false);
@@ -186,7 +186,7 @@
 
     $("#btnSearch").click(function () {
         var value = $("#txtCropName").val();
-        var url = '@Url.Action("CWRMapSearch", "Taxonomy")';
+        var url = '@Url.Action("Search", "Taxonomy/CWRMap")';
 
         $.get(url, { searchText: value })
         .done(function (response) {

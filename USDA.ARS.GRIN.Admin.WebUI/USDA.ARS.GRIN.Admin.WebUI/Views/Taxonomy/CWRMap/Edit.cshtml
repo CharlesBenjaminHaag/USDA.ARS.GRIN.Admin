@@ -1,4 +1,4 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.CWRMapEditViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRMapViewModel
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,7 +17,7 @@
             </div>
         </div>
     }
-    @using (Html.BeginForm("CWRMapEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+    @using (Html.BeginForm("Edit", "Taxonomy/CWRMap", FormMethod.Post, new { id = "frmEdit" }))
     {
         @Html.HiddenFor(x => x.ID, new { id = "hfCropMapID", name = "ID" })
         @Html.HiddenFor(x => x.SpeciesID, new { id = "hfSpeciesID" })
@@ -45,8 +45,8 @@
                             <div class="box-body">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">ID</label>
-                                    <div class="col-sm-10">
-                                        <span class="label label-default">@Model.ID</span>
+                                    <div class="col-sm-1">
+                                        <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />   
                                     </div>
                                 </div>
                                 <div class="form-group">

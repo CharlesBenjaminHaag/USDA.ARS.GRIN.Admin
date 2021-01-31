@@ -486,7 +486,7 @@
             Enables the export of data formatted for use in the Genesys database.
             </summary>
         </member>
-        <member name="M:USDA.ARS.GRIN.Admin.API.Controllers.GenesysController.Get">
+        <member name="M:USDA.ARS.GRIN.Admin.API.Controllers.GenesysController.Get(System.Int32,System.Int32)">
             <summary>
             Returns a list of accessions updated in GRIN-Global within the last month.
             </summary>

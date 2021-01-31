@@ -30,15 +30,15 @@ namespace USDA.ARS.GRIN.Admin.API.Controllers
         /// </example>
    
         [Route]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(int offset = 0, int limit = 0)
         {
-            PassportDataExport passport = null;
+            List<MCPDAccession> mCPDAccessions;
           
             try
             {
-                passport = _genesysService.GetExport();
+                mCPDAccessions = _genesysService.GetExport(offset, limit);
                 //string json = JsonConvert.SerializeObject(passport, Formatting.None);
-                return Ok(passport);
+                return Ok(mCPDAccessions);
             }
             catch (Exception ex)
             {

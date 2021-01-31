@@ -15,7 +15,7 @@
             @*<button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropSearch", "Taxonomy")'">
             <img src="~/Content/img/fa-search-plus.png" style="width:18px; height:18px;" />
         </button>*@
-            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CWRMapEdit", "Taxonomy", new { cropId = Model.CropID })'">
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "Taxonomy/CWRMap", new { id = Model.CropID })'">
                 <i class="fa fa-plus"></i>
             </button>
 
@@ -43,7 +43,7 @@
                         <th>By</th>
                         <th>Last Modified</th>
                         <th>By</th>
-                        <th style="text-align:center;">Related CWR</th>
+                        <th style="text-align:center;">Related Traits</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -80,13 +80,13 @@
                                         @cwrMap.ModifiedByCooperatorName
                                     </td>
                                     <td style="text-align:center;">
-                                        @*@if (Int32.Parse(row["cwr_count"].ToString()) > 0)
+                                        @*@if (Int32.Parse(row["taxonomy_cwr_trait_count"].ToString()) > 0)
                                         {
                                             <span class="label label-success">@row["cwr_count"]</span>
                                         }*@
                                     </td>
                                     <td>
-                                        <a href="@Url.Action("CWRMapEdit", "Taxonomy", new { cropId = cwrMap.CropID, cwrMapid = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                        <a href="@Url.Action("Edit", "Taxonomy/CWRMap", new { id = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
