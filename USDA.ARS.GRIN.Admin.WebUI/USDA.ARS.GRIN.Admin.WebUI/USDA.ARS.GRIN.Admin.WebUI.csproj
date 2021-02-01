@@ -331,6 +331,7 @@
     <Content Include="Views\User\AccountRequest.cshtml" />
     <Content Include="Views\Taxonomy\CWRTrait\Index.cshtml" />
     <Content Include="Views\Taxonomy\CWRTrait\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\AddSubTaxa.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -425,6 +426,7 @@
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\SearchComparisonOperatorViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\AddSubTaxaViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
     <Compile Include="ViewModels\AccountManagement\UserEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />

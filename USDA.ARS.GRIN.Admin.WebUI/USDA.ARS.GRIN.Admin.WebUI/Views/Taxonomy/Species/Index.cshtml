@@ -55,7 +55,7 @@
                 </div>
 
                 <!-- ============================================================================================== -->
-                <!-- CROP SEARCH TAB -->
+                <!-- SEARCH TAB -->
                 <!-- ============================================================================================== -->
                 <div class="tab-pane" id="tab_3">
                     <div class="box-body">
@@ -89,8 +89,8 @@
 <!-- Page Script -->
 <script type="text/javascript">
     $(document).ready(function(){
-        //var link = '@Url.Action("UserSpecies", "Taxonomy")';
-        //$("#section-my-records").load(link);
+        var link = '@Url.Action("UserSpecies", "Taxonomy")';
+        $("#section-my-records").load(link);
     });
 
     $(".selector-tab").click(function () {
@@ -104,11 +104,6 @@
         if (action != '') {
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
-
-            //DEBUG
-            alert("LOAD " + link + " IN " + displaySection);
-
-
             $(displaySection).load(link);
         }
     });

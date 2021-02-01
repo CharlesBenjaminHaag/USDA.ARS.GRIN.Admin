@@ -160,5 +160,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
+
+        [HttpGet]
+        [Route("taxonomy/species/addsubtaxa/{id}")]
+        public ActionResult AddSubTaxa(int id)
+        {
+            TempData["context"] = "Add SubTaxa";
+            AddSubTaxaViewModel addSubTaxaViewModel = new AddSubTaxaViewModel();
+            Species species = null;
+
+            try
+            {
+                TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+                species = _taxonomyService.GetSpecies(id);
+                addSubTaxaViewModel.SpeciesName = species.Name;
+                addSubTaxaViewModel.GenusName = species.GenusName;
+                addSubTaxaViewModel.NameAuthority = species.NameAuthority;
+                addSubTaxaViewModel.Protologue = species.Protologue;
+                addSubTaxaViewModel.ProtologueURL = species.ProtologueVirtualPath;
+            }
+            catch (Exception ex)
+            { 
+            
+            }
+            return View(BASE_PATH + "/AddSubTaxa.cshtml", addSubTaxaViewModel);
+        }
     }
 }

@@ -470,7 +470,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
 
-                        cmd.Parameters.AddWithValue("@search_string", searchString);
+                        searchString = "WHERE name LIKE '%" + searchString + "%' OR species_name LIKE '%" + searchString + "%' OR alternate_name LIKE '%" + searchString + "%'";
+
+                        cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
