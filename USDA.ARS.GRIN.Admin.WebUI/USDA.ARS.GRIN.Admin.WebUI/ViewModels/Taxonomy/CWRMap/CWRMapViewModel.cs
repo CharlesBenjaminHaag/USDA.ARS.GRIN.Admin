@@ -12,7 +12,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CWRMapViewModel : BaseViewModel
     {
-        //private TaxonomyService _taxonomyService = new TaxonomyService();
         private Citation _citation = new Citation();
         private IEnumerable<Citation> _citations;
         private IEnumerable<CodeValueReferenceItem> _genepoolCodes;
@@ -30,6 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int CitationID { get; set; }
         public string CitationTitle { get; set; }
 
+        public List<CWRTrait> CWRTraits { get; set; }
         public IEnumerable<SelectListItem> Crops
         {
             get

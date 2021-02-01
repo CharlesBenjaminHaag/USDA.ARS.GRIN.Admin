@@ -9,7 +9,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CropTraitHomeViewModel : BaseViewModel
     {
-        public List<CropTrait> CropTraits { get; set; }
+        public List<CWRTrait> CropTraits { get; set; }
         public List<CWRMap> CWRMaps { get; set; }
     }
 }

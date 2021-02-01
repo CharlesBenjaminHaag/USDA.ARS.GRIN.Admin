@@ -41,6 +41,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers.Taxonomy
             throw new NotImplementedException();
         }
 
+        [HttpGet]
+        [Route("Taxonomy/CWRTrait/List/{cwrMapId}")]
+        public PartialViewResult List(int cwrMapId)
+        {
+            throw new NotImplementedException();
+        }
+
         public PartialViewResult Search(Query q)
         {
             throw new NotImplementedException();

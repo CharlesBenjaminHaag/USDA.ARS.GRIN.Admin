@@ -281,7 +281,7 @@
     <Content Include="Views\Taxonomy\Crop\_SearchCriteria.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_Detail.cshtml" />
     <Content Include="Views\Taxonomy\Crop\_CropMapTraits.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Trait\_List.cshtml" />
+    <Content Include="Views\Taxonomy\CWRTrait\_List.cshtml" />
     <Content Include="Views\Taxonomy\Crop\Trait\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_NoteList.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_List.cshtml" />
@@ -406,13 +406,13 @@
     <Compile Include="ViewModels\Taxonomy\Crop\CropEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropTraitHomeViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRMapHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropTraitListViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRMapViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRTraitViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderEditViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\Crop\CWRMapEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropTraitEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CWRMapSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Crop\CropWildRelativeEditViewModel.cs" />
@@ -573,6 +573,7 @@
     <Folder Include="ViewModels\Shared\" />
     <Folder Include="ViewModels\SiteManagement\" />
     <Folder Include="ViewModels\Taxonomy\Citation\" />
+    <Folder Include="ViewModels\Taxonomy\CropForCWR\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
     <Folder Include="Views\AccountManagement\Cooperator\" />
     <Folder Include="Views\Taxonomy\CropForCWR\" />

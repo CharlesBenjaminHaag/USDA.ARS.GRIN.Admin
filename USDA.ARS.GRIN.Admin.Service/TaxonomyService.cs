@@ -170,22 +170,22 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region CWR Trait
 
-        public List<CropTrait> GetCropMapTraits(int cropMapId)
+        public List<CWRTrait> GetCWRTraits(int cropMapId)
         {
-            return _cropForCwrDAO.GetCropTraits(cropMapId);     
+            return _cropForCwrDAO.GetCwrTraits(cropMapId);     
         }
 
-        public CropTrait GetCropTrait(int id)
+        public CWRTrait GetCropTrait(int id)
         {
             return _cropForCwrDAO.GetCropTrait(id);
         }
 
-        public ResultContainer AddCropTrait(CropTrait cropTrait)
+        public ResultContainer AddCropTrait(CWRTrait cropTrait)
         {
             return _cropForCwrDAO.AddCropTrait(cropTrait);
         }
 
-        public int UpdateCropTrait(CropTrait cropTrait)
+        public int UpdateCropTrait(CWRTrait cropTrait)
         {
             return _cropForCwrDAO.UpdateCropTrait(cropTrait);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
@@ -13,6 +14,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int CurrentTaxonomySpeciesID { get; set; }
         public int NomenNumber { get; set; }
         public bool IsSpecificHybrid { get; set; }
+        [Required]
         public string SpeciesName { get; set; }
         public bool IsAcceptedName { get; set; }
         public string Authority { get; set; }
@@ -31,6 +33,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public string FormaName { get; set; }
         public string FormaAuthority { get; set; }
         public string Protologue { get; set; }
+        [Range(1, Int32.MaxValue, ErrorMessage = "The Genus is required.")]
         public int GenusID { get; set; }
         public string GenusName { get; set; }
         public bool IsNamePending { get; set; }

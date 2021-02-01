@@ -183,12 +183,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.IsVarietalHybrid = species.IsVarietalHybrid;
                     viewModel.VarietyName = species.VarietyName;
                     viewModel.VarietyAuthority = species.VarietyAuthority;
-
+                    viewModel.FormaName = species.FormaName;
+                    viewModel.FormaAuthority = species.FormaAuthority;
+                    viewModel.FormaRankType = species.FormaRankType;
                     viewModel.GenusID = species.GenusID;
                     viewModel.GenusName = species.GenusName;
-
                     viewModel.Protologue = species.Protologue;
-
                     viewModel.NameAuthority = species.NameAuthority;
                     viewModel.GenusID = species.GenusID;
                     viewModel.GenusName = species.GenusName;
@@ -233,16 +233,27 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 species.ID = viewModel.ID;
+                species.CurrentTaxonomySpeciesID = viewModel.CurrentTaxonomySpeciesID;
+                species.NomenNumber = viewModel.NomenNumber;
+                species.IsSpecificHybrid = viewModel.IsSpecificHybrid;
                 species.SpeciesName = viewModel.SpeciesName;
                 species.Name = viewModel.Name;
-                species.GenusID = viewModel.GenusID;
-                species.GenusName = viewModel.GenusName;
-                species.Protologue = viewModel.Protologue;
+                species.IsAcceptedName = viewModel.IsAcceptedName;
                 species.Authority = viewModel.Authority;
-                species.IsSpecificHybrid = viewModel.IsSpecificHybrid;
                 species.IsSubSpecificHybrid = viewModel.IsSubSpecificHybrid;
-                species.IsVarietalHybrid = viewModel.IsVarietalHybrid;
-                species.IsSubVarietalHybrid = viewModel.IsSubVarietalHybrid;
+                species.SubSpeciesName = viewModel.SubSpeciesName;
+                species.SubSpeciesAuthority = viewModel.SubSpeciesAuthority;
+                //viewModel.IsVarietalHybrid = species.IsVarietalHybrid;
+                //viewModel.VarietyName = species.VarietyName;
+                //viewModel.VarietyAuthority = species.VarietyAuthority;
+                species.FormaName = viewModel.FormaName;
+                species.FormaAuthority = viewModel.FormaAuthority;
+                species.FormaRankType = viewModel.FormaRankType;
+                species.GenusID = viewModel.GenusID;
+                species.Protologue = viewModel.Protologue;
+                species.NameAuthority = viewModel.NameAuthority;
+                species.GenusID = viewModel.GenusID;
+                species.Authority = viewModel.Authority;
                 species.Note = viewModel.Note;
 
                 if (viewModel.ID > 0)
@@ -505,7 +516,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult CWRMapEdit(int cropId, int cwrMapId = 0)
         {
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            CWRMapEditViewModel viewModel = null;
+            CWRMapViewModel viewModel = null;
            
             try
             {
@@ -515,7 +526,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                     CWRMap cwrMap = taxonomyService.GetCWRMap(cwrMapId);
 
-                    viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR(), taxonomyService.FindCitations(cwrMap.SpeciesID));
+                    viewModel = new CWRMapViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR(), taxonomyService.FindCitations(cwrMap.SpeciesID));
                     viewModel.ID = cwrMap.ID;
                     viewModel.CropID = cwrMap.CropID;
                     viewModel.SpeciesID = cwrMap.SpeciesID;
@@ -539,7 +550,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
                 else
                 {
-                    viewModel = new CWRMapEditViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
+                    viewModel = new CWRMapViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
                     viewModel.CropID = cropId;
                     TempData["context"] = "Add CWR Map";
                 }
@@ -553,7 +564,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CWRMapEdit(CWRMapEditViewModel viewModel)
+        public ActionResult CWRMapEdit(CWRMapViewModel viewModel)
         {
             CWRMap cwrMap = new CWRMap();
             ResultContainer resultContainer = null;
@@ -673,7 +684,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             TempData["context"] = "Crop Trait Mapper";
 
             viewModel.CWRMaps = taxonomyService.GetCWRMaps(1);
-            viewModel.CropTraits = taxonomyService.GetCropMapTraits(1);
+            viewModel.CropTraits = taxonomyService.GetCWRTraits(1);
             
             return View("~/Views/Taxonomy/Crop/Trait/Index.cshtml", viewModel);
         }
@@ -686,14 +697,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.SpeciesID = speciesId;
             viewModel.CropId = cropId;
             viewModel.CropMapID = cropMapId;
-            viewModel.CropTraits = _taxonomyService.GetCropMapTraits(cropMapId);
+            viewModel.CropTraits = _taxonomyService.GetCWRTraits(cropMapId);
             return PartialView("~/Views/Taxonomy/Crop/Trait/_List.cshtml", viewModel);
         }
 
         public ActionResult CropTraitEdit(int speciesId = 0, int cropId = 0, int cropMapId = 0, int cropTraitId = 0)
         {
             CropTraitEditViewModel viewModel = new CropTraitEditViewModel();
-            CropTrait cropTrait = new CropTrait();
+            CWRTrait cropTrait = new CWRTrait();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             try
@@ -705,8 +716,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                     cropTrait = _taxonomyService.GetCropTrait(cropTraitId);
                     viewModel.ID = cropTrait.ID;
-                    viewModel.CropMapID = cropTrait.CropMapID;
-                    viewModel.CropID = cropTrait.CropID;
+                    viewModel.CropMapID = cropTrait.CWRMapID;
+                    viewModel.CropID = cropTrait.CropForCWRID;
                     viewModel.SpeciesID = cropTrait.SpeciesID;
                     viewModel.TraitClassCode = cropTrait.TraitClassCode;
                     viewModel.IsPotential = cropTrait.IsPotential;
@@ -740,7 +751,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult CropTraitEdit(CropTraitEditViewModel viewModel)
         {
             ResultContainer resultContainer = new ResultContainer();
-            CropTrait cropTrait = new CropTrait();
+            CWRTrait cropTrait = new CWRTrait();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             if (!ModelState.IsValid)
@@ -751,7 +762,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 cropTrait.ID = viewModel.ID;
-                cropTrait.CropMapID = viewModel.CropMapID;
+                cropTrait.CWRMapID = viewModel.CropMapID;
                 cropTrait.TraitClassCode = viewModel.TraitClassCode;
                 cropTrait.IsPotential = viewModel.IsPotential;
                 cropTrait.BreedingTypeCode = viewModel.BreedingTypeCode;
@@ -803,7 +814,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.SpeciesID = speciesId;
             viewModel.CropId = cropId;
             viewModel.CropMapID = cropMapId;
-            viewModel.CropTraits = _taxonomyService.GetCropMapTraits(cropMapId);
+            viewModel.CropTraits = _taxonomyService.GetCWRTraits(cropMapId);
             return PartialView("~/Views/Taxonomy/Crop/Trait/_List.cshtml", viewModel);
         }
 

@@ -68,12 +68,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.IsVarietalHybrid = species.IsVarietalHybrid;
                     viewModel.VarietyName = species.VarietyName;
                     viewModel.VarietyAuthority = species.VarietyAuthority;
-
+                    viewModel.FormaName = species.FormaName;
+                    viewModel.FormaAuthority = species.FormaAuthority;
+                    viewModel.FormaRankType = species.FormaRankType;
                     viewModel.GenusID = species.GenusID;
                     viewModel.GenusName = species.GenusName;
-
                     viewModel.Protologue = species.Protologue;
-
                     viewModel.NameAuthority = species.NameAuthority;
                     viewModel.GenusID = species.GenusID;
                     viewModel.GenusName = species.GenusName;
@@ -113,7 +113,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(BASE_PATH + "Edit.cshtml", viewModel);
+                return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
             }
 
             try
@@ -129,6 +129,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 species.IsSubSpecificHybrid = viewModel.IsSubSpecificHybrid;
                 species.IsVarietalHybrid = viewModel.IsVarietalHybrid;
                 species.IsSubVarietalHybrid = viewModel.IsSubVarietalHybrid;
+                species.FormaName = viewModel.FormaName;
+                species.FormaAuthority = viewModel.FormaAuthority;
+                species.FormaRankType = viewModel.FormaRankType;
                 species.Note = viewModel.Note;
 
                 if (viewModel.ID > 0)

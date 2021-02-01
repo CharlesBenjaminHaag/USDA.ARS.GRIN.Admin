@@ -146,7 +146,100 @@
             <div id="section-crop-trait-list" class="box-body">
                 <div class="row">
                     <div class="col-md-12">
-                        @{Html.RenderAction("CropTraits", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropID, cropMapId = Model.ID });}
+                        <div>
+                            <div class="mailbox-controls">
+                                <button type="button" class="btn btn-success btn-sm check-all-search-results">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+                                    <i class="fa fa-check-square"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropID, cropTraitid = 0 })'">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <div class="pull-right">
+                                    <button type="button" disabled class="btn btn-default btn-sm">
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive mailbox-messages">
+                                <table id="data-list" class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Trait Class</th>
+                                            <th>Breeding Type</th>
+                                            <th>Potential?</th>
+                                            <th>Breeding Usage</th>
+                                            <th>Created</th>
+                                            <th>By</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            if (Model.CWRTraits.Count > 0)
+                                            {
+                                                foreach (var trait in Model.CWRTraits)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@trait.ID">
+                                                        </td>
+                                                        <td>
+                                                            <span class="label label-default">@trait.ID</span>
+                                                        </td>
+                                                        <td>
+                                                            @trait.TraitClassTitle
+                                                        </td>
+                                                        <td>
+                                                            @trait.BreedingTypeTitle
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(DisplayHelper.GetBooleanDisplayString(trait.IsPotential))
+                                                        </td>
+                                                        <td>
+                                                            @trait.BreedingUsageNote
+                                                        </td>
+                                                        <td>
+                                                            @trait.CreatedDate.ToShortDateString()
+                                                        </td>
+                                                        <td>
+                                                            @trait.CreatedByCooperatorName
+                                                        </td>
+                                                        <td>
+                                                            <a href="@Url.Action("CropTraitDelete", "Taxonomy", new { cropId = Model.CropID, cropMapId = Model.ID, cropTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                                                <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
+                                                            </a>
+                                                            <a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropID, cropMapId = Model.ID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                                <img class="img-action-button" src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="8">
+                                                        <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                                                            @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                                                            There are no traits associated with this map.
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

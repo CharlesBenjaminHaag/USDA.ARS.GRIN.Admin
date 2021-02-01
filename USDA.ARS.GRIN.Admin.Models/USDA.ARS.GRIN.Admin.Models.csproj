@@ -73,7 +73,7 @@
     <Compile Include="QueryCriterion.cs" />
     <Compile Include="ReferenceItem.cs" />
     <Compile Include="SearchOperator.cs" />
-    <Compile Include="Taxonomy\CropTrait.cs" />
+    <Compile Include="Taxonomy\CWRTrait.cs" />
     <Compile Include="Taxonomy\Folder.cs" />
     <Compile Include="Taxonomy\FolderItem.cs" />
     <Compile Include="Taxonomy\Literature.cs" />

@@ -166,6 +166,28 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@subvariety_name", String.IsNullOrEmpty(entity.SubVarietyName) ? "" : entity.SubVarietyName);
                         cmd.Parameters.AddWithValue("@subvariety_authority", String.IsNullOrEmpty(entity.SubVarietyAuthority) ? "" : entity.SubVarietyAuthority);
                         cmd.Parameters.AddWithValue("@is_forma_hybrid", entity.IsFormaHybrid);
+
+                        if (String.IsNullOrEmpty(entity.FormaRankType))
+                        {
+                            cmd.Parameters.AddWithValue("@forma_rank_type", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@forma_rank_type", entity.FormaRankType);
+                       
+                        if (String.IsNullOrEmpty(entity.FormaName))
+                        {
+                            cmd.Parameters.AddWithValue("@forma_name", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@forma_name", entity.FormaName);
+
+                        if (String.IsNullOrEmpty(entity.FormaAuthority))
+                        {
+                            cmd.Parameters.AddWithValue("@forma_authority", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@forma_authority", entity.FormaAuthority);
+
                         cmd.Parameters.AddWithValue("@taxonomy_genus_id", entity.GenusID);
                         cmd.Parameters.AddWithValue("@life_form_code", "TODO");
                         cmd.Parameters.AddWithValue("@is_name_pending", entity.IsNamePending);
@@ -266,6 +288,27 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             cmd.Parameters.AddWithValue("@variety_authority", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@variety_authority", entity.VarietyAuthority);
+
+                        if (String.IsNullOrEmpty(entity.FormaRankType))
+                        {
+                            cmd.Parameters.AddWithValue("@forma_rank_type", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@forma_rank_type", entity.FormaRankType);
+
+                        if (String.IsNullOrEmpty(entity.FormaName))
+                        {
+                            cmd.Parameters.AddWithValue("@forma_name", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@forma_name", entity.FormaName);
+
+                        if (String.IsNullOrEmpty(entity.FormaAuthority))
+                        {
+                            cmd.Parameters.AddWithValue("@forma_authority", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@forma_authority", entity.FormaAuthority);
 
                         cmd.Parameters.AddWithValue("@is_subvarietal_hybrid", entity.IsSubVarietalHybrid);
                         cmd.Parameters.AddWithValue("@subvariety_name", String.IsNullOrEmpty(entity.SubVarietyName) ? "" : entity.SubVarietyName);
@@ -371,6 +414,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 species.IsVarietalHybrid = ParseBool(reader["is_varietal_hybrid"].ToString());
                                 species.VarietyName = reader["variety_name"].ToString();
                                 species.VarietyAuthority = reader["variety_authority"].ToString();
+                                species.FormaRankType = reader["forma_rank_type"].ToString();
+                                species.FormaName = reader["forma_name"].ToString();
+                                species.FormaAuthority = reader["forma_authority"].ToString();
                                 species.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
                                 species.GenusName = reader["genus_name"].ToString();
                                 species.SynonymCode = reader["synonym_code"].ToString();
@@ -557,7 +603,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public IQueryable<Species> FindRecentSpecies()
         {
-            return Search("WHERE created_date > DATEADD(MONTH, -1, GETDATE())");
+            return Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())");
         }
 
         public List<Accession> GetSpeciesAccessions(int id)

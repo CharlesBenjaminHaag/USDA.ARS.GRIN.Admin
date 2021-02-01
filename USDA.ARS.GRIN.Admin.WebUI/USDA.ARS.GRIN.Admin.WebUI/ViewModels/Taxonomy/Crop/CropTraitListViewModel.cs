@@ -13,10 +13,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int SpeciesID { get; set; }
         public int CropId { get; set; }
         public int CropMapID { get; set; }
-        public List<CropTrait> CropTraits { get; set; }
+        public List<CWRTrait> CropTraits { get; set; }
         public CropTraitListViewModel()
         {
-            this.CropTraits = new List<CropTrait>();
+            this.CropTraits = new List<CWRTrait>();
         }
     }
 }

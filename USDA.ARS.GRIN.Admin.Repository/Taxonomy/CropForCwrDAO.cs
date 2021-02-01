@@ -622,6 +622,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 cwrMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                             }
                         }
+
+                        cwrMap.CWRTraits = GetCwrTraits(id);
                     }
                 }
             }
@@ -821,12 +823,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         #endregion CWRMap
 
-        #region CropMapTrait
+        #region CWRTrait
 
-        public List<CropTrait> GetCropTraits(int cropMapId)
+        public List<CWRTrait> GetCwrTraits(int cropMapId)
         {
-            const string COMMAND_TEXT = "usp_TaxonomyTraitTypes_Select";
-            List<CropTrait> cropMapTraits = new List<CropTrait>();
+            const string COMMAND_TEXT = "usp_TaxonomyCWRTraits_Select";
+            List<CWRTrait> cWRTraits = new List<CWRTrait>();
 
             try
             {
@@ -838,31 +840,31 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
 
-                        //cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cropMapId);
+                        cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cropMapId);
 
-                        //using (SqlDataReader reader = cmd.ExecuteReader())
-                        //{
-                        //    while (reader.Read())
-                        //    {
-                        //        CropTrait cropMapTrait = new CropTrait();
-                        //        //cropMapTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
-                        //        //cropMapTrait.CropMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
-                        //        //cropMapTrait.CropID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
-                        //        //cropMapTrait.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
-                        //        //cropMapTrait.TraitClassCode = reader["trait_class_code"].ToString();
-                        //        //cropMapTrait.TraitClassTitle = reader["trait_class_title"].ToString();
-                        //        //cropMapTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
-                        //        cropMapTrait.TraitClassCode = reader["breeding_type_code"].ToString();
-                        //        cropMapTrait.BreedingTypeCode = reader["breeding_type_code"].ToString();
-                        //        cropMapTrait.BreedingTypeTitle = reader["breeding_type_title"].ToString();
-                        //        //cropMapTrait.BreedingUsageNote = reader["breeding_usage_note"].ToString();
-                        //        //cropMapTrait.OntologyTraitIdentifier = reader["ontology_trait_identifier"].ToString();
-                        //        //cropMapTrait.CitationID = GetInt(reader["citation_id"].ToString());
-                        //        //cropMapTrait.CreatedDate = GetDate(reader["created_date"].ToString());
-                        //        //cropMapTrait.CreatedByCooperatorName = reader["created_by_name"].ToString();
-                        //        cropMapTraits.Add(cropMapTrait);
-                        //    }
-                        //}
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CWRTrait cWrTrait = new CWRTrait();
+                                cWrTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
+                                cWrTrait.CWRMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
+                                cWrTrait.CropForCWRID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                cWrTrait.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                cWrTrait.TraitClassCode = reader["trait_class_code"].ToString();
+                                cWrTrait.TraitClassTitle = reader["trait_class_title"].ToString();
+                                cWrTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
+                                cWrTrait.TraitClassCode = reader["breeding_type_code"].ToString();
+                                cWrTrait.BreedingTypeCode = reader["breeding_type_code"].ToString();
+                                cWrTrait.BreedingTypeTitle = reader["breeding_type_title"].ToString();
+                                cWrTrait.BreedingUsageNote = reader["breeding_usage_note"].ToString();
+                                cWrTrait.OntologyTraitIdentifier = reader["ontology_trait_identifier"].ToString();
+                                cWrTrait.CitationID = GetInt(reader["citation_id"].ToString());
+                                cWrTrait.CreatedDate = GetDate(reader["created_date"].ToString());
+                                cWrTrait.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                cWRTraits.Add(cWrTrait);
+                            }
+                        }
                     }
                 }
             }
@@ -870,13 +872,13 @@ namespace USDA.ARS.GRIN.Admin.Repository
             {
                 throw ex;
             }
-            return cropMapTraits;
+            return cWRTraits;
         }
 
-        public CropTrait GetCropTrait(int id)
+        public CWRTrait GetCropTrait(int id)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCwrTrait_Select";
-            CropTrait cropTrait = new CropTrait();
+            CWRTrait cropTrait = new CWRTrait();
 
             try
             {
@@ -895,7 +897,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             while (reader.Read())
                             {
                                 cropTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
-                                cropTrait.CropMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
+                                cropTrait.CWRMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
                                 cropTrait.TraitClassCode = reader["trait_class_code"].ToString();
                                 cropTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
                                 cropTrait.BreedingTypeCode = reader["breeding_type_code"].ToString();
@@ -923,7 +925,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return cropTrait;
         }
 
-        public ResultContainer AddCropTrait(CropTrait cropTrait)
+        public ResultContainer AddCropTrait(CWRTrait cropTrait)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCwrTrait_Insert";
             ResultContainer resultContainer = new ResultContainer();
@@ -937,7 +939,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = COMMAND_TEXT;
 
-                    cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cropTrait.CropMapID);
+                    cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cropTrait.CWRMapID);
                     cmd.Parameters.AddWithValue("@trait_class_code", cropTrait.TraitClassCode);
                     cmd.Parameters.AddWithValue("@is_potential", UnBool(cropTrait.IsPotential));
 
@@ -999,7 +1001,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return resultContainer;
         }
 
-        public int UpdateCropTrait(CropTrait cropTrait)
+        public int UpdateCropTrait(CWRTrait cropTrait)
         {
             int returnCode = 0;
             const string COMMAND_TEXT = "usp_TaxonomyCwrTrait_Update";
@@ -1014,7 +1016,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     cmd.CommandText = COMMAND_TEXT;
 
                     cmd.Parameters.AddWithValue("@taxonomy_cwr_trait_id", cropTrait.ID);
-                    cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cropTrait.CropMapID);
+                    cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cropTrait.CWRMapID);
                     cmd.Parameters.AddWithValue("@trait_class_code", cropTrait.TraitClassCode);
                     cmd.Parameters.AddWithValue("@is_potential", UnBool(cropTrait.IsPotential));
                     cmd.Parameters.AddWithValue("@breeding_type_code", cropTrait.BreedingTypeCode);

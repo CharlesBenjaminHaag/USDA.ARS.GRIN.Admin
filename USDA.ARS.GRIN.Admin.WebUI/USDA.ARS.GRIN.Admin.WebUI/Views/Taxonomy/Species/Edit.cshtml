@@ -26,6 +26,7 @@
 
 @using (Html.BeginForm("Edit", "Taxonomy/Species", FormMethod.Post, new { id = "frmEdit" }))
 {
+    @Html.ValidationSummary()
     <!-- DETAILS SECTION -->
     <div class="box box-default">
         <div class="box-header" style="background-color:#ebebeb;">
@@ -82,6 +83,7 @@
                                             <input type="text" id="txtGenusName" disabled="" value="@Model.GenusName" class="form-control" />
                                             @Html.HiddenFor(x => x.GenusID, new { id = "hfGenusID" })
                                             @Html.HiddenFor(x => x.GenusName, new { id = "hfGenusName" })
+                                            @Html.ValidationMessageFor(x => x.GenusID, "", new { @class = "text-danger" })
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
                                             </span>
@@ -93,6 +95,7 @@
                                     <div class="col-sm-10">
                                         @Html.TextBoxFor(x => x.SpeciesName, new { @id = "txtSpeciesName", @class = "form-control" })
                                         @Html.HiddenFor(x => x.SpeciesName)
+                                        @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -105,6 +108,26 @@
                                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
                                             </span>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- FORMA FIELDS -->
+                                <div class="form-group">
+                                    <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Rank Type</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(x => x.FormaRankType, new { @id = "txtFormaRankType", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtForma" class="col-sm-2 control-label">Forma Name</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(x => x.FormaName, new { @id = "txtFormaName", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Authority</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(x => x.FormaAuthority, new { @id = "txtFormaAuthority", @class = "form-control" })
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -357,12 +380,12 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        $('form').dirtyForms({
-            dialog: { title: 'Wait!' },
-            message: 'You forgot to save your details. If you leave now, they will be lost forever.'
-        });
-    });
+    //$(document).ready(function () {
+    //    $('form').dirtyForms({
+    //        dialog: { title: 'Wait!' },
+    //        message: 'You forgot to save your details. If you leave now, they will be lost forever.'
+    //    });
+    //});
 
     $('form input').keydown(function (e) {
         if (e.keyCode == 13) {

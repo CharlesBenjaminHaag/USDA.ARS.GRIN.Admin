@@ -11,7 +11,7 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers.Taxonomy
 {
-    public class CWRMapController : BaseController
+    public class CWRMapController : BaseController, IController<CWRMapViewModel>
     {
         const string BASE_PATH = "~/Views/Taxonomy/CWRMap";
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
@@ -49,6 +49,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers.Taxonomy
                     viewModel.ModifiedDate = cwrMap.ModifiedDate;
                     viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
                     viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
+                    viewModel.CWRTraits = cwrMap.CWRTraits;
                 }
                 else
                 {
@@ -185,6 +186,16 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers.Taxonomy
                 Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
+        }
+
+        public PartialViewResult Search(Query q)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PartialViewResult Search(CWRMapViewModel viewModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -22,10 +22,10 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-crops" title="UserSpecies" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                    <a href="#tab_1" id="tab-my-records" title="UserSpecies" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="RecentSpecies" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Added</a>
+                    <a href="#tab_2" id="tab-recently-added" title="RecentSpecies" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
                     <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
@@ -104,6 +104,11 @@
         if (action != '') {
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
+
+            //DEBUG
+            alert("LOAD " + link + " IN " + displaySection);
+
+
             $(displaySection).load(link);
         }
     });

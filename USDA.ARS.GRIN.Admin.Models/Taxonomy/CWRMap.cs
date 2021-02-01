@@ -19,5 +19,11 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public bool IsPotential { get; set; }
         public int CitationID { get; set; }
         public string Note { get; set; }
+        public List<CWRTrait> CWRTraits { get; set; }
+
+        public CWRMap()
+        {
+            CWRTraits = new List<CWRTrait>();
+        }
     }
 }
