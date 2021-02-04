@@ -332,6 +332,7 @@
     <Content Include="Views\Taxonomy\CWRTrait\Index.cshtml" />
     <Content Include="Views\Taxonomy\CWRTrait\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\AddSubTaxa.cshtml" />
+    <Content Include="Views\AccountManagement\Cooperator\_Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -432,7 +433,7 @@
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesSearchViewModel.cs" />
     <Compile Include="ViewModels\UserApplicationsViewModel.cs" />
-    <Compile Include="ViewModels\UserListViewModel.cs" />
+    <Compile Include="ViewModels\SysUserListViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\Utilities\IndexViewModel.cs" />
   </ItemGroup>
@@ -577,7 +578,6 @@
     <Folder Include="ViewModels\Taxonomy\Citation\" />
     <Folder Include="ViewModels\Taxonomy\CropForCWR\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
-    <Folder Include="Views\AccountManagement\Cooperator\" />
     <Folder Include="Views\Taxonomy\CropForCWR\" />
     <Folder Include="Views\Taxonomy\Crop\CWRMap\" />
     <Folder Include="Views\Taxonomy\Home\" />

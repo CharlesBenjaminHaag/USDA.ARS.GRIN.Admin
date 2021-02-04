@@ -24,7 +24,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _userDAO.Find(searchObject, sql);
         }
 
-        public IQueryable<User> GetActiveUsers()
+        public IQueryable<SysUser> GetActiveUsers()
         {
             return _userDAO.FindAll();
         }

@@ -157,10 +157,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<User> FindAll()
+        public IQueryable<SysUser> FindAll()
         {
-            const string COMMAND_TEXT = "usp_User_Search";
-            List<User> users = new List<User>();
+            const string COMMAND_TEXT = "usp_Users_Select";
+            List<SysUser> sysUsers = new List<SysUser>();
 
             try
             {
@@ -174,7 +174,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         {
                             while (reader.Read())
                             {
-                                User user = new User();
+                                SysUser sysUser = new SysUser();
+                                sysUser.ID = GetInt(reader["sys_user_id"].ToString());
+                                sysUser.UserName = reader["user_name"].ToString();
+                                sysUser.Password = reader["password"].ToString();
+
+                                // TO DO: ADD RELATED COOP DATA HERE? (2/3/2021)
                                 //        user.ID = GetInt(reader["sys_user_id"].ToString());
                                 //        user.UserName = reader["user_name"].ToString();
                                 //        //user.Password = reader["password"].ToString();
@@ -184,7 +189,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 //        //user.Email = reader["email"].ToString();
                                 //        //user.OrganizationName = reader["organization"].ToString();
                                 //        //user.OrganizationAbbreviation = reader["organization_abbrev"].ToString();
-                                //        users.Add(user);
+
+                                sysUsers.Add(sysUser);
                             }
                         }
                     }
@@ -194,7 +200,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             {
                 throw ex;
             }
-            return users.AsQueryable();
+            return sysUsers.AsQueryable();
         }
 
         public List<Application> GetUserApplications(int userId)
@@ -291,6 +297,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
         }
 
         IQueryable<User> IRepository<User>.Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<User> IRepository<User>.FindAll()
         {
             throw new NotImplementedException();
         }

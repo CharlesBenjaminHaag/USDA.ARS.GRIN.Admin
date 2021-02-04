@@ -16,7 +16,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     public class AccountManagementController : BaseController
     {
-        UserService _userService = null;
+        UserService _sysUserService = null;
         SmtpService _smtpService = new SmtpService();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -46,12 +46,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult ActiveUsers()
         {
-            UserListViewModel viewModel = new UserListViewModel();
+            SysUserListViewModel viewModel = new SysUserListViewModel();
             try
             {
-
-                _userService = new UserService(this.GetUserSession().Environment);
-                viewModel.Users = _userService.GetActiveUsers();
+                _sysUserService = new UserService(this.GetUserSession().Environment);
+                viewModel.SysUsers = _sysUserService.GetActiveUsers();
                 return PartialView("~/Views/AccountManagement/User/_List.cshtml", viewModel);
             }
             catch (Exception ex)

@@ -63,6 +63,7 @@
     <Compile Include="LoginResultEnum.cs" />
     <Compile Include="PostalAddress.cs" />
     <Compile Include="Site.cs" />
+    <Compile Include="SysUser.cs" />
     <Compile Include="Taxonomy\Accession.cs" />
     <Compile Include="Taxonomy\Family.cs" />
     <Compile Include="Taxonomy\Regulation.cs" />
