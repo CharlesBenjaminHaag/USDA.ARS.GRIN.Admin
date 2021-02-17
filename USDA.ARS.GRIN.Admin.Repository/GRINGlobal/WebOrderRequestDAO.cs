@@ -485,10 +485,17 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         }
 
-        int IRepository<WebOrderRequest>.Update(WebOrderRequest entity)
+        ResultContainer IRepository<WebOrderRequest>.Add(WebOrderRequest entity)
         {
             throw new NotImplementedException();
         }
+
+        ResultContainer IRepository<WebOrderRequest>.Remove(WebOrderRequest entity)
+        {
+            throw new NotImplementedException();
+        }
+
+
         #endregion
 
 

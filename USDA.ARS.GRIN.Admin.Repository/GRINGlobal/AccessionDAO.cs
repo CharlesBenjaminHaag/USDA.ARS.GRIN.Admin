@@ -145,5 +145,20 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             throw new NotImplementedException();
         }
+
+        ResultContainer IRepository<Accession>.Add(Accession entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Accession>.Remove(Accession entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Accession>.Update(Accession entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -254,50 +254,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
         }
 
-        public List<CodeValueReferenceItem> GetCodeValueReferenceItems()
-        {
-            string CacheKey = "CodeValueReferenceItems";
-            List<CodeValueReferenceItem> codeValueReferenceItems = new List<CodeValueReferenceItem>();
-            ObjectCache cache = MemoryCache.Default;
-
-            if (cache.Contains(CacheKey))
-                codeValueReferenceItems = (List<CodeValueReferenceItem>)cache.Get(CacheKey);
-            else
-            {
-                codeValueReferenceItems = GetAllCodeValueReferenceItems();
-                CacheItemPolicy cacheItemPolicy = new CacheItemPolicy();
-                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
-                cache.Add(CacheKey, codeValueReferenceItems, cacheItemPolicy);
-            }
-            return codeValueReferenceItems;
-        }
-
-        public List<CodeValueReferenceItem> GetAllCodeValueReferenceItems()
-        {
-            const string COMMAND_TEXT = "usp_CodeValues_Select";
-            List<CodeValueReferenceItem> codeValueReferenceItems = new List<CodeValueReferenceItem>();
-
-            try
-            {
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = conn;
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = COMMAND_TEXT;
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        codeValueReferenceItems.Add(new CodeValueReferenceItem { GroupName = reader["group_name"].ToString(), CodeValueID = Int32.Parse(reader["code_value_id"].ToString()), CodeValue = reader["value"].ToString(), Title = reader["title"].ToString(), Description = reader["description"].ToString() });
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            return codeValueReferenceItems;
-        }
+       
 
         public IEnumerable<SearchOperator> GetAllSearchOperators()
         {

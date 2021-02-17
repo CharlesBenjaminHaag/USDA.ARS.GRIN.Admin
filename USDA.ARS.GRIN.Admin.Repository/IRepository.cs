@@ -10,10 +10,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public interface IRepository<T>
     {
-        int Add(T entity);
+        ResultContainer Add(T entity);
         T Get(int id);
-        int Remove(T entity);
-        int Update(T entity);
+        ResultContainer Remove(T entity);
+        ResultContainer Update(T entity);
         IQueryable<T> FindAll();
         IQueryable<T> Search(Query query);
         IQueryable<T> Search(string searchString);

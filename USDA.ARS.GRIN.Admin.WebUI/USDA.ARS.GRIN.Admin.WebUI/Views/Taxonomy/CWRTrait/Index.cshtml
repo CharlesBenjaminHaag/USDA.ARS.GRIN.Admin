@@ -1,8 +1,229 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropTraitHomeViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<!-- ============================================================================================== -->
+<!-- TABBED VIEW -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">CWR Trait</h3>
+
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_1" id="tab-my-records" title="CWRTraitListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_2" id="tab-recently-added" title="CWRTraitListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </li>
+            </ul>
+            <!--<div class="tab-content">-->
+                <!-- ============================================================================================== -->
+                <!-- MY-RECORDS TAB -->
+                <!-- ============================================================================================== -->
+                <!--<div class="tab-pane active" id="tab_1">
+                    <div class="box-body">
+                        <div id="section-my-records">
+                        </div>
+                    </div>
+                </div>-->
+
+                <!-- ============================================================================================== -->
+                <!-- RECENTLY-ADDED TAB -->
+                <!-- ============================================================================================== -->
+                <!--<div class="tab-pane" id="tab_2">
+                    <div class="box-body">
+                        <div id="section-recently-added">
+                        </div>
+                    </div>
+                </div>-->
+
+                <!-- ============================================================================================== -->
+                <!-- SEARCH TAB -->
+                <!-- ============================================================================================== -->
+                <!--<div class="tab-pane" id="tab_3">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-7" style="padding-left:0px;">
+                                        <div class="input-group" style="margin-left:0px;">
+                                            <input type="text" id="txtCropName" name="CropName" placeholder="Type name ..." class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="section-search-results" class="crop-search-results">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+        <div id="section-search-results"></div>
+    </div>
+</div>
+
+<!-- ============================================================================================== -->
+<!-- ADD-TO-FOLDER MODAL -->
+<!-- ============================================================================================== -->
+<div class="modal fade" id="modal-add-search-results-to-folder">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="hfFolderCategory" value="" />
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add to Folder</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_new_folder" data-toggle="tab" aria-expanded="true">New Folder</a></li>
+                                <li class=""><a href="#tab_select_folder" data-toggle="tab" aria-expanded="false">Saved Folders</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_new_folder">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <input type="text" id="txtSearchResultsFolderTitle" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnCreateFolderSearchResults" class="btn btn-info btn-flat">Create</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_select_folder">
+                                    <div class="alert alert-warning">
+                                        <h4><i class="icon fa fa-warning"></i>Please Note</h4>
+                                        This functionality will be available in the next release.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Script -->
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        var link = '@Url.Action("CWRTraitListByUser", "Taxonomy")';
+        $("#section-search-results").load(link);
+    });
+
+    $(".selector-tab").click(function () {
+        var id = $(this).attr('id');
+        var action = $(this).attr('title');
+        var link = '@Url.Action("Action", "Taxonomy")';
+        var displaySection = '';
+
+        $('.mailbox-messages input:checkbox').prop('checked', false);
+
+        if (action != '') {
+            displaySection = "#" + id.replace("tab", "section");
+            link = link.replace("Action", action);
+            $("#section-search-results").load(link);
+
+            //$('#search-results').DataTable({
+                
+            //    'paging': true,
+            //    'lengthChange': false,
+            //    'searching': false,
+            //    'ordering': true,
+            //    'info': true,
+            //    'autoWidth': false
+            //});
+        }
+    });
+
+    $("#btnSearch").click(function () {
+        var value = $("#txtCropName").val();
+        var url = '@Url.Action("CWRTraitSearch", "Taxonomy")';
+
+        $.get(url, { searchText: value })
+        .done(function (response) {
+            $("#section-search-results").html(response);
+
+            $('#search-results').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+        });
+    });
+
+    $("#btnCreateFolderSearchResults").click(function () {
+        var valueArray = [];
+        var title = "";
+        var category = "Crop";
+        var source = "";
+
+        $('#modal-add-search-results-to-folder').modal('hide');
+
+        title = $("#txtSearchResultsFolderTitle").val();
+
+        $(".active input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        $.ajax({
+            url: '@Url.Action("AddToFolder","Taxonomy")',
+            type: "GET",
+            data: {folderId: 0, folderTitle: title, dataSource: 'taxonomy_cwr_map', values:valueArray.toString() },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //alert("DEBUG SUCCESS");
+            },
+            error: function () {
+                //alert("error");
+            }
+        });
+    });
+
+</script>
 

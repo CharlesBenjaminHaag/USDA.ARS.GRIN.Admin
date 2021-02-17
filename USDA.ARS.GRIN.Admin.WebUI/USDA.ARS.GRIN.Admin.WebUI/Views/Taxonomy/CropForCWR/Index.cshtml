@@ -1,4 +1,4 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropHomeViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropForCWRHomeViewModel
 @{
     ViewBag.Title = "Taxonomy: Crop For CWR";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,10 +24,10 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                    <a href="#tab_1" id="tab-my-crops" title="CropForCWRListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="RecentCrops" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Added</a>
+                    <a href="#tab_2" id="tab-recently-added" title="CropForCWRListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
                     <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
@@ -142,8 +142,13 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        var link = '@Url.Action("UserCrops", "Taxonomy")';
+        var link = '@Url.Action("CropForCWRListByUser", "Taxonomy")';
         $("#section-my-crops").load(link);
+
+        
+        
+
+        
     });
 
     $(".selector-tab").click(function () {
@@ -159,17 +164,44 @@
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
             $(displaySection).load(link);
+            $('table').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
         }
     });
 
     $("#btnSearch").click(function () {
         var value = $("#txtCropName").val();
-        var url = '@Url.Action("CropSearch", "Taxonomy")';
 
-        $.get(url, { searchText: value })
-        .done(function (response) {
-            $("#section-search-results").html(response);
+        $.ajax({
+            url: '@Url.Action("CropForCWRSearch", "Taxonomy")',
+            type: "GET",
+            data: {searchText: value},
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $("#section-search-results").html(response);
+                $('table').DataTable({
+                    'destroy': true,
+                    'paging': true,
+                    'lengthChange': false,
+                    'searching': false,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                });
+            }
         });
+
+
+
     });
 
     $("#btnCreateFolderSearchResults").click(function () {

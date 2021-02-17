@@ -51,7 +51,22 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
+        ResultContainer IRepository<Inventory>.Add(Inventory entity)
+        {
+            throw new NotImplementedException();
+        }
+
         IQueryable<Inventory> IRepository<Inventory>.FindAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Inventory>.Remove(Inventory entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Inventory>.Update(Inventory entity)
         {
             throw new NotImplementedException();
         }

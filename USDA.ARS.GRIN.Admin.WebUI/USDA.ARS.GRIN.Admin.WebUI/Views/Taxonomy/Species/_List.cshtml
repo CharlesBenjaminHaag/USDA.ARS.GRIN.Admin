@@ -4,17 +4,31 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Accepted?</th>
+            <th>Author</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var species in Model)
+        @if (Model.Count() > 0)
         {
-            <tr>
-                <td><span class="label label-default">@species.ID</span></td>
-                <td>@species.SpeciesName</td>
-                <td><button id="btnAuthor1" value="@species.SpeciesName" class="btn btn-primary btn-small proto" onclick="SelectSpecies(@species.ID, this.value);return false;">Select</button></td>
-            </tr>
+            foreach (var species in Model)
+            {
+                <tr>
+                    <td><span class="label label-default">@species.ID</span></td>
+                    <td>@species.SpeciesName</td>
+                    <td>@Html.Raw(DisplayHelper.GetBooleanDisplayString(species.IsAcceptedName))</td>
+                    <td>@species.Authority</td>
+                    <td><button id="btnAuthor1" value="@species.SpeciesName" class="btn btn-primary btn-small proto" onclick="SelectSpecies(@species.ID, this.value);return false;">Select</button></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <div class="callout callout-info" style="vertical-align:middle; margin-top:5px;">
+                @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                Your search returned no matches.
+            </div>
         }
     </tbody>
 </table>

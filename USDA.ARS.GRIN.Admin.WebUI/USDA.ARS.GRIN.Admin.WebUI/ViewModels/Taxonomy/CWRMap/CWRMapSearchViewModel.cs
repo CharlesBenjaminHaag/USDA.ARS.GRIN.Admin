@@ -19,7 +19,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         private IEnumerable<CodeValueReferenceItem> _genepoolCodes;
 
         public string CommonNameComparisonOperator { get; set; }
-        public int CropID { get; set; }
+        public int CropForCWRID { get; set; }
         public string CommonName { get; set; }
         public bool IsCrop { get; set; }
         public bool IsGraftStock { get; set; }
@@ -32,7 +32,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
            // _taxonomyService = new TaxonomyService();
         }
 
-        public List<CWRMap> CWRMaps 
+        public IQueryable<CWRMap> CWRMaps 
         { get; set; }
     }
 }

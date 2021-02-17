@@ -12,5 +12,6 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string CropName { get; set; }
         public string Note { get; set; }
         public int CropWildRelativeCount { get; set; }
-    }
+        public IQueryable<CWRMap> CWRMaps { get; set; }
+            }
 }

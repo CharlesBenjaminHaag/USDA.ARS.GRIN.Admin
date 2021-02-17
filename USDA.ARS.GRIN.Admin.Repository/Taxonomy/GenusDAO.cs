@@ -127,5 +127,20 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
         {
             throw new NotImplementedException();
         }
+
+        ResultContainer IRepository<Genus>.Add(Genus entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Genus>.Remove(Genus entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Genus>.Update(Genus entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

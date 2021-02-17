@@ -1,4 +1,4 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropEditViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropForCWRViewModel
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -48,19 +48,22 @@
                 </div>
                 <div class="col-md-12">
                     <div id="status-holder"></div>
-                    <input type="button" id="btn-save" class="btn btn-success pull-right" style="margin-right:5px;" value="Save Edits" />
+                    <input type="submit" id="btn-save" class="btn btn-success pull-right" style="margin-right:5px;" value="Save Edits" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-horizontal">
                         <div class="box-body">
-                            <div class="form-group my-auto">
-                                <label for="txtGenus" class="col-sm-2 control-label">ID</label>
-                                <div class="col-sm-10">
-                                    <span class="label label-default">@Model.ID</span>
+                            @if (Model.ID > 0)
+                            {
+                                <div class="form-group my-auto">
+                                    <label for="txtGenus" class="col-sm-2 control-label">ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div class="form-group">
                                 <label for="txtName" class="col-sm-2 control-label">Crop Name</label>
                                 <div class="col-sm-10">
@@ -71,12 +74,8 @@
                             <div class="form-group">
                                 <label for="txtNote" class="col-sm-2 control-label">Note</label>
                                 <div class="col-sm-10">
-                                    <div class="input-group">
-                                        @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
-                                        </span>
-                                    </div>
+                                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                                    <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
                                 </div>
                             </div>
                         </div>
@@ -168,25 +167,25 @@ MODALS
     //}) 
 
 
-$(document).ready(function () {
-    var timeoutId;
+//$(document).ready(function () {
+//    var timeoutId;
 
-    $('form input, form textarea').on('input propertychange change', function () {
-        console.log('Textarea Change');
+//    $('form input, form textarea').on('input propertychange change', function () {
+//        console.log('Textarea Change');
 
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(function () {
-            // Runs 1 second (1000 ms) after the last change
-            saveToDB();
-        }, 1000);
-    });
+//        clearTimeout(timeoutId);
+//        timeoutId = setTimeout(function () {
+//            // Runs 1 second (1000 ms) after the last change
+//            saveToDB();
+//        }, 1000);
+//    });
 
-    function saveToDB() {
-        console.log('Saving to the db');
-        //$('#status-holder').html('<span class=label label-default>SAVING CHANGES...</span>');
-        $("#frmEdit").submit();
-    }
-});
+//    function saveToDB() {
+//        console.log('Saving to the db');
+//        //$('#status-holder').html('<span class=label label-default>SAVING CHANGES...</span>');
+//        $("#frmEdit").submit();
+//    }
+//});
 
 function SelectNote(noteText) {
             $('#modal-note-search').modal('hide');

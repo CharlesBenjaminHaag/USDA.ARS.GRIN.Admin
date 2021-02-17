@@ -106,26 +106,29 @@
                     </div>
                     
                 </div>
-                <ul class="nav nav-pills nav-stacked">
-                    <li id="1" class="active">
-                        <a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a>
-                    </li>
-                    <li id="2"><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> Cassandra.Knecht@ars.usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> Chance.Tennant@ars.usda.gov</a></li>
-                    
-                    
-                    <li><a href="#"><i class="fa fa-user"></i>christina.walters@ars.usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                    <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
-                </ul>
+                
+                <div id="section-user-pick-list">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li id="1" class="active">
+                            <a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a>
+                        </li>
+                        <li id="2"><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> Cassandra.Knecht@ars.usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> Chance.Tennant@ars.usda.gov</a></li>
+
+
+                        <li><a href="#"><i class="fa fa-user"></i>christina.walters@ars.usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> benjamin.haag@usda.gov</a></li>
+                    </ul>
+                </div>
             </div>
             <!-- /.box-body -->
         </div>
@@ -453,12 +456,19 @@
         $("#section-active-users").load(link);
     });
 
-    //$(function () {
-    //    $('ul.nav li').on('click', function () {
-    //        $(this).parent().find('li.active').removeClass('active');
-    //        $(this).addClass('active');
-    //    });
-    //});
+    $(function () {
+        $('#section-user-pick-list ul.nav li').on('click', function () {
+
+            // Highlight selected user control
+            $(this).parent().find('li.active').removeClass('active');
+            $(this).addClass('active');
+
+            // Call method that retrieves details for selected user
+            var id = $(this).attr('id');
+            //DEBUG
+            alert("SELECTED " + id);
+        });
+    });
 
     //$(".nav-pills li").click(function () {
     //    var id = $(this).attr('id');

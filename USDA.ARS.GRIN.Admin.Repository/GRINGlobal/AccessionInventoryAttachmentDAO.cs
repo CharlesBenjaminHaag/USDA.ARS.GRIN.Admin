@@ -232,5 +232,20 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             throw new NotImplementedException();
         }
+
+        ResultContainer IRepository<AccessionInventoryAttachment>.Add(AccessionInventoryAttachment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<AccessionInventoryAttachment>.Remove(AccessionInventoryAttachment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<AccessionInventoryAttachment>.Update(AccessionInventoryAttachment entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

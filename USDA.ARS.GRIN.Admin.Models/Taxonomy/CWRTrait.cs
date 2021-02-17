@@ -11,7 +11,9 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public int ID { get; set; }
         public int CWRMapID { get; set; }
         public int CropForCWRID { get; set; }
+        public string CropForCWRName { get; set; }
         public int SpeciesID { get; set; }
+        public string SpeciesName { get; set; }
         public string TraitClassCode { get; set; }
         public string TraitClassTitle { get; set; }
         public bool IsPotential { get; set; }

@@ -28,7 +28,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.App_Start
                 //.Include("~/Content/js/plugins/validator/validator.js")
                 .Include("~/Content/js/plugins/inputmask/jquery.inputmask.bundle.js")
                 .Include("~/Content/js/adminlte.js")
-                .Include("~/Content/js/init.js")  );
+                .Include("~/Content/js/init.js")
+                .Include("~/Scripts/jquery.validate.min.js")
+                .Include("~/Scripts/jquery.validate.unobtrusive.min.js"));
             
 
 

@@ -35,6 +35,18 @@
             width: 19px;
             height: 16px;
         }
+
+        .validation-summary-errors {
+            background-color:red;
+            color:white;
+            font-weight:bold;
+            padding:10px;
+        }
+
+        .text-danger  {
+            color:red;
+        }
+       
     </style>
 
     @Styles.Render("~/Bundles/css")
@@ -99,25 +111,25 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        var timeoutId;
+    //$(document).ready(function () {
+    //    var timeoutId;
 
-        $('form input, form textarea').on('input propertychange change', function () {
-            console.log('Textarea Change');
+    //    $('form input, form textarea').on('input propertychange change', function () {
+    //        console.log('Textarea Change');
 
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(function () {
-                // Runs 1 second (1000 ms) after the last change
-                saveToDB();
-            }, 5000);
-        });
+    //        clearTimeout(timeoutId);
+    //        timeoutId = setTimeout(function () {
+    //            // Runs 1 second (1000 ms) after the last change
+    //            saveToDB();
+    //        }, 5000);
+    //    });
 
-        function saveToDB() {
-            console.log('Saving to the db');
-            //$('#status-holder').html('<span class=label label-default>SAVING CHANGES...</span>');
-            $("#frmEdit").submit();
-        }
-    });
+    //    function saveToDB() {
+    //        console.log('Saving to the db');
+    //        //$('#status-holder').html('<span class=label label-default>SAVING CHANGES...</span>');
+    //        $("#frmEdit").submit();
+    //    }
+    //});
 
     $(".menu-item-selector").click(function () {
 

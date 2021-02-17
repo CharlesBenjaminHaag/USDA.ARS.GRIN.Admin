@@ -62,22 +62,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
             }
         }
 
-        //public IEnumerable<SelectListItem> Citations
-        //{
-        //    get
-        //    {
-        //        return new SelectList(_citations, "ID", "Title");
-        //    }
-        //}
-
+        //public IEnumerable<SelectListItem> Citations { get; set; }
+       
         public BaseViewModel()
         {
-           // _citations = new List<Citation>();
         }
 
-        public void LoadCitations(int speciesId)
-        {
-            //this._citations = _taxonomyService.FindCitations(speciesId);
-        }
+        //public void LoadCitations(int speciesId)
+        //{
+        //    //this._citations = _taxonomyService.FindCitations(speciesId);
+        //}
     }
 }

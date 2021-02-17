@@ -144,5 +144,20 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             throw new NotImplementedException();
         }
+
+        ResultContainer IRepository<Regulation>.Add(Regulation entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Regulation>.Remove(Regulation entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Regulation>.Update(Regulation entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -872,6 +872,21 @@ namespace USDA.ARS.GRIN.Admin.Repository
         {
             throw new NotImplementedException();
         }
+
+        ResultContainer IRepository<Species>.Add(Species entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Species>.Remove(Species entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResultContainer IRepository<Species>.Update(Species entity)
+        {
+            throw new NotImplementedException();
+        }
         #endregion Utilities
     }
 }

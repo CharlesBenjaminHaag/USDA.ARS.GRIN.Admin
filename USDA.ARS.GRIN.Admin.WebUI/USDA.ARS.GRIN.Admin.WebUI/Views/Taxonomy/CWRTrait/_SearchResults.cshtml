@@ -1,4 +1,4 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropTraitListViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRTraitSearchViewModel
 
 <div>
     <div class="mailbox-controls">
@@ -8,9 +8,9 @@
         <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
             <i class="fa fa-check-square"></i>
         </button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = 0 })'">
+        @*<button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = 0 })'">
             <i class="fa fa-plus"></i>
-        </button>
+        </button>*@
         <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
             <i class="fa fa-trash"></i>
         </button>
@@ -22,9 +22,10 @@
     </div>
 
     <div class="table-responsive mailbox-messages">
-        <table id="data-list" class="table table-hover table-striped">
+        <table id="search-results" class="table table-hover table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>Trait Class</th>
                     <th>Breeding Type</th>
@@ -36,11 +37,10 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null)
-                {
-                    if (Model.CropTraits.Count > 0)
+               
+                    @if (Model.CWRTraits.Count() > 0)
                     {
-                        foreach (var trait in Model.CropTraits)
+                        foreach (var trait in Model.CWRTraits)
                         {
                             <tr>
                                 <td>
@@ -59,7 +59,7 @@
                                     @Html.Raw(DisplayHelper.GetBooleanDisplayString(trait.IsPotential))
                                 </td>
                                 <td>
-                                    @trait.BreedingUsageNote
+                                    @Html.Raw(trait.BreedingUsageNote)
                                 </td>
                                 <td>
                                     @trait.CreatedDate.ToShortDateString()
@@ -68,11 +68,8 @@
                                     @trait.CreatedByCooperatorName
                                 </td>
                                 <td>
-                                    <a href="@Url.Action("CropTraitDelete", "Taxonomy", new { cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                                        <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;"/>
-                                    </a>
-                                    <a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                        <img class="img-action-button" src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
+                                    <a href="@Url.Action("CWRTraitEdit", "Taxonomy", new { speciesId = trait.SpeciesID, cropForCwrId = trait.CropForCWRID, cwrMapId = trait.CWRMapID, cwrTraitId = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                        <i class="fa fa-edit"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -89,12 +86,22 @@
                             </td>
                         </tr>
                     }
-                }
+               
             </tbody>
         </table>
     </div>
 </div>
 <script type="text/javascript">
+    $('#search-results').DataTable({
+
+        'paging': true,
+        'lengthChange': false,
+        'searching': false,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+    });
+
     $(function () {
         $('.check-all-search-results').on('click', function () {
             $('.mailbox-messages input:checkbox').prop('checked', true);

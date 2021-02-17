@@ -21,7 +21,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+            DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
             Log.Info("Routes and bundles registered");
             Log.Info("Started");
         }

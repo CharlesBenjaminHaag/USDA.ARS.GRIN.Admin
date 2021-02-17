@@ -11,7 +11,8 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public int ID { get; set; }
         public int SpeciesID { get; set; }
         public string SpeciesName { get; set; }
-        public int CropID { get; set; }
+        public int CropForCWRID { get; set; }
+        public string CropForCWRName { get; set; }
         public string CommonName { get; set; }
         public bool IsCrop { get; set; }
         public string GenepoolCode { get; set; }

@@ -39,20 +39,20 @@
                 <ul class="treeview-menu" style="display: block;">
                     <li>
                         <a href="@Url.Action("CropForCWRHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Crop for CWR
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />Crop for CWR
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Home", "Taxonomy/CWRMap")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />CWR Map
+                        <a href="@Url.Action("CWRMapHome", "Taxonomy")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />CWR Map
                         </a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Home", "Taxonomy/CWRTrait")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />CWR Trait
+                        <a href="@Url.Action("CWRTraitHome", "Taxonomy")">
+                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />CWR Trait
                         </a>
                     </li>
-                    <li>
+                    @*<li>
                         <a href="@Url.Action("Home", "Taxonomy/Species")">
                             <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Species
                         </a>
@@ -61,7 +61,7 @@
                         <a href="@Url.Action("CropTraitHome", "Taxonomy")">
                             <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />Trait Manager
                         </a>
-                    </li>
+                    </li>*@
                     <!--
                     *********************************************************************************************
                     TODO: ADD IN 1.2.0
@@ -92,13 +92,13 @@
             <ul class="treeview-menu" style="display: block;">
                 <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
                         <span>Regulation</span>
                     </a>
                 </li>
                 <li class="@Url.IsLinkActive("RegulationMapHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationMapHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
                         <span>Regulation Map</span>
                     </a>
                 </li>
@@ -110,7 +110,7 @@
         <!-- REPORTS -->
         <li class="treeview menu-open">
             <a href="#">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/th.png" class="toolbar-icon" />
+                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
                 <span>SEASONAL</span>
                 <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
@@ -119,7 +119,7 @@
             <ul class="treeview-menu" style="display: block;">
                 <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
                         <span>ISTA</span>
                     </a>
                 </li>

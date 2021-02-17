@@ -17,6 +17,8 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected GenusDAO _genusDAO = null;
         protected SpeciesDAO _speciesDAO = null;
         protected CropForCwrDAO _cropForCwrDAO = null;
+        protected CwrMapDAO _cwrMapDAO = null;
+        protected CwrTraitDAO _cwrTraitDAO = null;
         protected FolderDAO _folderDAO = null;
         protected ReferenceDAO _referenceDAO = null;
         protected RegulationDAO _regulationDAO = null;
@@ -29,12 +31,17 @@ namespace USDA.ARS.GRIN.Admin.Service
             this._genusDAO = new GenusDAO(context);
             this._speciesDAO = new SpeciesDAO(context);
             this._cropForCwrDAO = new CropForCwrDAO(context);
+            this._cwrMapDAO = new CwrMapDAO(context);
+            this._cwrTraitDAO = new CwrTraitDAO(context);
             this._folderDAO = new FolderDAO(context);
             this._referenceDAO = new ReferenceDAO(context);
             this._regulationDAO = new RegulationDAO(context);
             this._reportDAO = new ReportDAO(context);
         }
 
+        // ****************************************************************************
+        // GENUS
+        // ****************************************************************************
         #region Genus
 
         public IQueryable<Genus> FindGenus(string searchString)
@@ -44,6 +51,9 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #endregion
 
+        // ****************************************************************************
+        // SPECIES
+        // ****************************************************************************
         #region Species
 
         public Species GetSpecies(int id)
@@ -51,19 +61,21 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Get(id);
         }
 
-        public IQueryable<Species> FindSpecies(string searchString)
+        public IQueryable<Species> FindSpecies(string searchString, bool includeSynonyms)
         {
-            return _speciesDAO.Search(searchString);
+            return _speciesDAO.Search(searchString, includeSynonyms);
         }
 
         public IQueryable<Species> FindUserSpecies(int cooperatorId)
         {
-            return _speciesDAO.FindUserSpecies(cooperatorId);
+            //return _speciesDAO.Find(null,"");
+            return null;
         }
 
         public IQueryable<Species> FindRecentSpecies()
         {
-            return _speciesDAO.FindRecentSpecies();
+            //return _speciesDAO.Search(.FindRecentSpecies();
+            return null;
         }
 
         public ResultContainer AddSpecies(Species species)
@@ -77,157 +89,156 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public List<Accession> GetAccessions(int speciesId)
         {
-            return _speciesDAO.GetSpeciesAccessions(speciesId);
+            //return _speciesDAO.GetSpeciesAccessions(speciesId);
+            return null;
         }
 
         #endregion Species
 
+        // ****************************************************************************
+        // CROP FOR CWR
+        // ****************************************************************************
         #region Crop for CWR
 
-        public List<CropForCWR> FindCropsForCWR(string sqlWhereClause)
+        public IQueryable<CropForCWR> FindCropsForCWR(string searchText)
         {
-            return _cropForCwrDAO.FindCropsForCwr(sqlWhereClause);
+            return _cropForCwrDAO.Search("WHERE crop_name LIKE '%" + searchText + "%'");
+        }
+
+        public IQueryable<CropForCWR> FindRecentCropsForCWR()
+        {
+            return _cropForCwrDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())"); 
+        }
+
+        public IQueryable<CropForCWR> FindUserCropsForCWR(int cooperatorId)
+        {
+            return _cropForCwrDAO.Search("WHERE created_by = " + cooperatorId.ToString());
         }
 
         public CropForCWR GetCropForCWR(int id)
         {
-            return _cropForCwrDAO.GetCropForCWR(id);
+            return _cropForCwrDAO.Get(id);
+        }
+       
+        public IQueryable<CropForCWR> GetCropsForCWR()
+        {
+            return _cropForCwrDAO.Search("");
         }
 
-        public List<CropForCWR> FindUserCrops(int cooperatorId)
+        public ResultContainer AddCropForCWR(CropForCWR cropForCwr)
         {
-            return _cropForCwrDAO.FindUserCrops(cooperatorId);
+            return _cropForCwrDAO.Add(cropForCwr);
         }
-
-        public List<CropForCWR> FindRecentCrops()
+        public ResultContainer UpdateCropForCWR(CropForCWR cropForCwr)
         {
-            return _cropForCwrDAO.FindRecentCrops();
-        }
-
-        public List<CropForCWR> GetCropsForCWR()
-        {
-            return _cropForCwrDAO.FindAll();
-        }
-
-        public ResultContainer AddCropForCWR(CropForCWR crop)
-        {
-            return _cropForCwrDAO.AddCropForCWR(crop);
-        }
-        public ResultContainer UpdateCropForCWR(CropForCWR crop)
-        {
-            return _cropForCwrDAO.UpdateCropForCWR(crop);
-        }
-
-        #endregion 
-
-        #region CWR Map
-
-        public List<CWRMap> GetCWRMaps(int cropForCwrId)
-        {
-            return _cropForCwrDAO.FindCWRMaps(cropForCwrId);
-        }
-
-        public List<CWRMap> FindCWRMaps(string sqlWhereClause)
-        {
-            return _cropForCwrDAO.FindCWRMaps(sqlWhereClause);
-        }
-
-        public CWRMap GetCWRMap(int id)
-        {
-            return _cropForCwrDAO.GetCWRMap(id);
-        }
-
-        public List<CWRMap> FindUserCWRMaps(int cooperatorId)
-        {
-            return _cropForCwrDAO.FindUserCWRMaps(cooperatorId);
-        }
-
-        public List<CWRMap> FindRecentCWRMaps()
-        {
-            return _cropForCwrDAO.FindRecentCWRMaps();
-        }
-
-        public ResultContainer AddCWRMap(CWRMap cropMap)
-        {
-            return _cropForCwrDAO.AddCWRMap(cropMap);
-        }
-        public ResultContainer UpdateCWRMap(CWRMap cropMap)
-        {
-            return _cropForCwrDAO.UpdateCWRMap(cropMap);
-        }
-
-        public ResultContainer DeleteCWRMap(int cropMapId)
-        {
-            return _cropForCwrDAO.RemoveCWRpMap(cropMapId);
-        }
-
-        public ResultContainer DeleteCWRMaps(string cropMapIdList)
-        {
-            return _cropForCwrDAO.RemoveCWRMaps(cropMapIdList);
-        }
-
-        #endregion CropMap
-
-        #region CWR Trait
-
-        public List<CWRTrait> GetCWRTraits(int cropMapId)
-        {
-            return _cropForCwrDAO.GetCwrTraits(cropMapId);     
-        }
-
-        public CWRTrait GetCropTrait(int id)
-        {
-            return _cropForCwrDAO.GetCropTrait(id);
-        }
-
-        public ResultContainer AddCropTrait(CWRTrait cropTrait)
-        {
-            return _cropForCwrDAO.AddCropTrait(cropTrait);
-        }
-
-        public int UpdateCropTrait(CWRTrait cropTrait)
-        {
-            return _cropForCwrDAO.UpdateCropTrait(cropTrait);
-        }
-
-        public ResultContainer DeleteCropTrait(int cropTraitId)
-        {
-            return _cropForCwrDAO.RemoveCropTrait(cropTraitId);
-        }
-        public ResultContainer DeleteCropTraits(string cropTraitIdList)
-        {
-            return _cropForCwrDAO.RemoveCropTraits(cropTraitIdList);
+            return _cropForCwrDAO.Update(cropForCwr);
         }
 
         #endregion
 
-        #region CWR
+        // ****************************************************************************
+        // CWR MAP
+        // ****************************************************************************
+        #region CWR Map
 
-        public CropWildRelative GetCropWildRelative(int id)
+        public IQueryable<CWRMap> GetCWRMaps(int cropForCwrId)
         {
-            return _cropForCwrDAO.GetCropWildRelative(id);
+            return _cropForCwrDAO.GetCWRMaps(cropForCwrId);
         }
 
-        public DataTable FindCropWildRelatives(Query searchObject)
+        public IQueryable<CWRMap> FindCWRMaps(string searchText)
         {
-            return _cropForCwrDAO.FindCropWildRelatives(searchObject);
-        }
-        public int InsertCropWildRelative(CropWildRelative cropWildRelative)
-        {
-            return _cropForCwrDAO.AddCropWildRelative(cropWildRelative);
+            return _cwrMapDAO.Search("WHERE crop_common_name LIKE '%" + searchText + "%'");
         }
 
-        public int UpdateCropWildRelative(CropWildRelative cropWildRelative)
+        public CWRMap GetCWRMap(int id)
         {
-            return _cropForCwrDAO.UpdateCropWildRelative(cropWildRelative);
+            return _cwrMapDAO.Get(id);
         }
 
-        #endregion CWR
-
-        public IEnumerable<Family> SearchFamilies(Query query)
+        public IQueryable<CWRMap> FindUserCWRMaps(int cooperatorId)
         {
-            return _familyDAO.Find(query);
+            return _cwrMapDAO.Search("WHERE created_by = " + cooperatorId.ToString());
         }
+
+        public IQueryable<CWRMap> FindRecentCWRMaps()
+        {
+            return _cwrMapDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())");
+        }
+
+        public ResultContainer AddCWRMap(CWRMap cropMap)
+        {
+            return _cwrMapDAO.Add(cropMap);
+        }
+        public ResultContainer UpdateCWRMap(CWRMap cropMap)
+        {
+            return _cwrMapDAO.Update(cropMap);
+        }
+
+        public ResultContainer DeleteCWRMap(int cropMapId)
+        {
+            CWRMap cWRMap = new CWRMap();
+            cWRMap.ID = cropMapId;
+            return _cropForCwrDAO.Remove(cWRMap);
+        }
+
+        public ResultContainer DeleteCWRMaps(string cropMapIdList)
+        {
+            //return _cropForCwrDAO.RemoveCWRMaps(cropMapIdList);
+            return null;
+        }
+
+        #endregion CropMap
+
+        // ****************************************************************************
+        // CWR TRAIT
+        // ****************************************************************************
+        #region CWR Trait
+
+        public IQueryable<CWRTrait> GetCWRTraits(int cropMapId)
+        {
+            return _cwrTraitDAO.FindAll();     
+        }
+
+        public IQueryable<CWRTrait> FindCWRTraits(string searchText)
+        {
+            return _cwrTraitDAO.Search("WHERE vtctcl.title LIKE '%" + searchText + "%' OR vtbtl.title LIKE '%" + searchText + "%'");
+        }
+
+        public IQueryable<CWRTrait> FindUserCWRTraits(int cooperatorId)
+        {
+            return _cwrTraitDAO.Search("WHERE tct.created_by = " + cooperatorId);
+        }
+        public IQueryable<CWRTrait> FindRecentCWRTraits()
+        {
+            return _cwrTraitDAO.Search("WHERE tct.modified_date > DATEADD(MONTH, -1, GETDATE())");
+        }
+
+        public CWRTrait GetCWRTrait(int id)
+        {
+            return _cwrTraitDAO.Get(id);
+        }
+
+        public ResultContainer AddCropTrait(CWRTrait cwrTrait)
+        {
+            return _cwrTraitDAO.Add(cwrTrait);
+        }
+
+        public ResultContainer UpdateCWRTrait(CWRTrait cropTrait)
+        {
+            return _cwrTraitDAO.Update(cropTrait);
+        }
+
+        //public ResultContainer DeleteCropTrait(CWRTrait cwrTrait)
+        //{
+        //    return _cwrTraitDAO.Remove(cwrTrait);
+        //}
+        //public ResultContainer DeleteCropTraits(string cropTraitIdList)
+        //{
+        //    return _cropForCwrDAO.RemoveCropTraits(cropTraitIdList);
+        //}
+
+        #endregion
 
         #region Citation
 
@@ -314,13 +325,13 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_GENEPOOL").ToList();
         }
-        public IEnumerable<CodeValueReferenceItem> GetTraitClassCodes()
+        public List<CodeValueReferenceItem> GetTraitClassCodes()
         {
-            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_TRAIT_CLASS").AsEnumerable();
+            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_TRAIT_CLASS").ToList();
         }
-        public IEnumerable<CodeValueReferenceItem> GetBreedingTypeCodes()
+        public List<CodeValueReferenceItem> GetBreedingTypeCodes()
         {
-            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_BREEDING_TYPE").AsEnumerable();
+            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_BREEDING_TYPE").ToList();
         }
 
         public IEnumerable<Note> FindNotes(string searchString, string context)

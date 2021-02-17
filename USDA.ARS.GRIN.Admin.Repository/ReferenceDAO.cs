@@ -112,31 +112,23 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
             try 
             {
-                const string COMMAND_TEXT = "usp_Search";
+                const string COMMAND_TEXT = "usp_TaxonomyNote_Search";
                 StringBuilder sbSqlStatement = new StringBuilder();
-
-                sbSqlStatement.Append("SELECT DISTINCT note FROM ");
-                sbSqlStatement.Append(context);
-                sbSqlStatement.Append(" WHERE note LIKE ");
-                sbSqlStatement.Append("'%");
-                sbSqlStatement.Append(searchString);
-                sbSqlStatement.Append("%'");
-                sbSqlStatement.Append(" AND note IS NOT NULL");
-                sbSqlStatement.Append(" ORDER BY note ASC");
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
                     using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@sql_statement", sbSqlStatement.ToString());
+                        cmd.Parameters.AddWithValue("@sys_table_name", context);
+                        cmd.Parameters.AddWithValue("@search_string", searchString);
                         SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         if (reader.HasRows)
                         {
                             while (reader.Read())
                             {
-                                notes.Add(new Note { NoteText = reader["note"].ToString() });
+                                notes.Add(new Note { NoteText = reader["note_text"].ToString() });
                             }
                         }
                     }
@@ -221,7 +213,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
             try
             {
-                String commandText = "usp_CitationsBySpecies_Select";
+                String commandText = "usp_TaxonomyCitationsBySpecies_Select";
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
@@ -238,7 +230,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 Citation citation = new Citation();
                                 citation.ID = Int32.Parse(reader["citation_id"].ToString());
                                 citation.Title = reader["citation_text"].ToString();
-                                citation.CitationLiterature = new Literature { ID = GetInt(reader["literature_id"].ToString()), ReferenceTitle = reader["reference_title"].ToString() };
+                                //citation.CitationLiterature = new Literature { ID = GetInt(reader["literature_id"].ToString()), ReferenceTitle = reader["reference_title"].ToString() };
                                 citations.Add(citation);
                             }
                         }
