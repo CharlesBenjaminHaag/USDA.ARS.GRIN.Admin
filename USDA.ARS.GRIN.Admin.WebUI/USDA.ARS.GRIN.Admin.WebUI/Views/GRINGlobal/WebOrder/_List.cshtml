@@ -37,8 +37,11 @@
                         <div class="box-body">
                             <div class="mailbox-controls">
                                 
-                                <span class="label label-danger" style="margin-left:10px; font-size:1em;">Locked by Reisinger, Marty: 12/10/2020 12:00 PM</span>
-                                
+                                @if (webOrderRequest.IsLocked)
+                                {
+                                <span class="label label-danger" style="margin-left:10px; font-size:1em;">Locked: @webOrderRequest.OwnedDate.ToShortDateString() as of @webOrderRequest.OwnedDate.ToShortTimeString()</span>
+                                }
+
                                 <button type="button" id="btnApprove-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
                                     <i class="fa fa-thumbs-up"></i>
                                 </button>

@@ -114,7 +114,10 @@
                                 <div class="form-group">
                                     <label for="txtCitation" class="col-sm-2 control-label">Citation</label>
                                     <div class="col-sm-10">
-                                        @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                        @if (Model.ID > 0)
+                                        {
+                                            @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                        }
                                     </div>
                                 </div>
                             </div>

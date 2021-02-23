@@ -322,12 +322,17 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebCooperator.Address.ZIP = reader["web_cooperator_address_postal_index"].ToString();
                                 webOrderRequest.WebCooperator.CreatedDate = GetDate(reader["web_cooperator_created_date"].ToString());
                                 webOrderRequest.WebCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
-
                                 webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
                                 webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
                                 webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();
                                 webOrderRequest.Note = reader["note"].ToString();
                                 webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
+                                webOrderRequest.CreatedDate = GetDate(reader["created_date"].ToString());
+                                webOrderRequest.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                webOrderRequest.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                webOrderRequest.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
+                                webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
                                 webOrderRequests.Add(webOrderRequest);
                             }

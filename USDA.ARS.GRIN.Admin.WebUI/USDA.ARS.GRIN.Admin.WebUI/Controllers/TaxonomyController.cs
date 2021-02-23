@@ -397,6 +397,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 {
                     viewModel = new CWRMapViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
                     viewModel.CropID = cropForCwrId;
+                    viewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                     TempData["context"] = "Add CWR Map";
                 }
             }

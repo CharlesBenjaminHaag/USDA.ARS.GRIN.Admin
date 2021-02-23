@@ -97,6 +97,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
                 viewModel.Cooperator = webOrderRequest.Cooperators.Where(x => x.Type == 1).FirstOrDefault();
                 viewModel.WebCooperator = webOrderRequest.Cooperators.Where(x => x.Type == 2).FirstOrDefault();
+                viewModel.OwnedDate = webOrderRequest.OwnedDate;
+                viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
                 viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;
 
                 // EXTRACT GROUPED DATA
