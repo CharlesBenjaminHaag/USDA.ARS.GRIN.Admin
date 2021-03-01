@@ -51,8 +51,12 @@ namespace USDA.ARS.GRIN.Admin.Service
             demoContainer.CWRTraits = _cwrTraitDAO.Demo();
             return demoContainer;
         }
-        
+
         #region Genus
+        public IQueryable<Genus> GetGenera()
+        {
+            return _genusDAO.Find();
+        }
 
         public IQueryable<Genus> FindGenus(string searchString)
         {

@@ -266,13 +266,30 @@ MODALS
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchSpecies" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchSpecies" class="btn btn-info btn-flat">Search</button>
-                            </span>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Genus</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownListFor(x => x.GenusID, Model.Genera, "Select genus", new { @id = "ddlSelectGenus", @class = "form-control" })
+                            </div>
                         </div>
-                        <input type="checkbox" id="cbxIncludeSynonyms" /><label style="margin-left:10px;">Include Synonyms</label>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Species Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="txtSearchSpecies" class="form-control">
+                                <br />
+                                <input type="checkbox" id="cbxIncludeSynonyms" /><label style="margin-left:10px;">Include Synonyms</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" id="btnSearchSpecies" class="btn btn-info btn-flat pull-right">Search</button>
                     </div>
                 </div>
                 <div id="section-species-search-results">
@@ -424,6 +441,7 @@ MODALS
 
     $("#btnSearchSpecies").click(function () {
         var url = '@Url.Action("FindSpecies","Taxonomy")';
+        var genusId = $("#ddlSelectGenus").val();
         var inputSearchString = $("#txtSearchSpecies").val();
         var includeSynonyms = false;
 
@@ -431,7 +449,7 @@ MODALS
             includeSynonyms = true;
         }
 
-        $.post(url, { searchString: inputSearchString, includeSynonyms: includeSynonyms })
+        $.post(url, { genusId: genusId,  searchString: inputSearchString, includeSynonyms: includeSynonyms })
             .done(function (response) {
                 $("#section-species-search-results").html(response);
         });

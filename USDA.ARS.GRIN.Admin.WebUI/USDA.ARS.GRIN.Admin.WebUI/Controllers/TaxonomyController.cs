@@ -405,6 +405,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                     TempData["context"] = "Add CWR Map";
                 }
+                viewModel.Genera = new SelectList(taxonomyService.GetGenera(), "ID","Name");
             }
             catch (Exception ex)
             {
@@ -526,10 +527,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             CropTraitHomeViewModel viewModel = new CropTraitHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             TempData["context"] = "Crop Trait Home";
-
-            //viewModel.CWRMaps = taxonomyService.GetCWRMaps(1);
-            //viewModel.CropTraits = taxonomyService.GetCWRTraits(1);
-
             return View("~/Views/Taxonomy/CWRTrait/Index.cshtml", viewModel);
         }
 
@@ -814,7 +811,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult FindSpecies(string searchString, bool includeSynonyms)
+        public ActionResult FindSpecies(string searchString, bool includeSynonyms, int genusId = 0)
         {
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 

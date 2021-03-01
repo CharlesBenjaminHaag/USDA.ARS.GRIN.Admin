@@ -46,6 +46,32 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             return genusList.AsQueryable();
         }
 
+        public IQueryable<Genus> Find()
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyGenera_Select";
+            List<Genus> genusList = new List<Genus>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        genusList.Add(new Genus { ID = GetInt(reader["taxonomy_genus_id"].ToString()), Name = reader["genus_name"].ToString() });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return genusList.AsQueryable();
+        }
 
         public IQueryable<Genus> Find(int familyId)
         {

@@ -27,6 +27,8 @@
                 <tr>
                     <th></th>
                     <th>ID</th>
+                    <th>Species</th>
+                    <th>Crop</th>
                     <th>Trait Class</th>
                     <th>Breeding Type</th>
                     <th>Potential?</th>
@@ -48,6 +50,12 @@
                                 </td>
                                 <td>
                                     <span class="label label-default">@trait.ID</span>
+                                </td>
+                                <td>
+                                    @trait.CropForCWRName
+                                </td>
+                                <td>
+                                    @trait.SpeciesName
                                 </td>
                                 <td>
                                     @trait.TraitClassTitle

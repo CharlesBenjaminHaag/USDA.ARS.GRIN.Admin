@@ -19,7 +19,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         private IQueryable<CropForCWR> _taxonomyCrops;
 
         public int ID { get; set; }
-
+        public int GenusID { get; set; }
         [RequiredGreaterThanZero(ErrorMessage="Species is required.")]
         public int SpeciesID { get; set; }
         [Required(ErrorMessage = "Species is required.")]
@@ -63,7 +63,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         }
 
         public IEnumerable<SelectListItem> Citations { get; set; }
-        
+        public IEnumerable<SelectListItem> Genera { get; set; }
+
         public CWRMapViewModel()
         { }
 

@@ -302,7 +302,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 cWrTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
                                 cWrTrait.CWRMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
                                 cWrTrait.CropForCWRID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                cWrTrait.CropForCWRName = reader["crop_for_cwr_name"].ToString();
                                 cWrTrait.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                cWrTrait.SpeciesName = reader["species_name"].ToString();
                                 cWrTrait.TraitClassCode = reader["trait_class_code"].ToString();
                                 cWrTrait.TraitClassTitle = reader["trait_class_title"].ToString();
                                 cWrTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
