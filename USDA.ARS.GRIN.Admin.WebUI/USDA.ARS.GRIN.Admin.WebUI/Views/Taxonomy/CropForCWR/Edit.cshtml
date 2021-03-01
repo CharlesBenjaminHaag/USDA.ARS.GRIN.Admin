@@ -6,8 +6,8 @@
 
 <style>
     .alert-error {
-        padding:10px; 
-        margin:5px;
+        padding: 10px;
+        margin: 5px;
     }
 </style>
 
@@ -16,13 +16,13 @@
     <div class="row">
         <div class="col-md-12">
             <div class="callout callout-info" style="vertical-align:middle;">
-                @Html.Raw(Model.RevisionHistoryText) 
+                @Html.Raw(Model.RevisionHistoryText)
             </div>
         </div>
     </div>
 }
 
-@using (Html.BeginForm("CropForCWREdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit"}))
+@using (Html.BeginForm("CropForCWREdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID, new { id = "hfCropID", name = "ID" })
     @Html.ValidationSummary()
@@ -41,14 +41,14 @@
             <div class="row">
                 <div class="col-md-12">
                     @*<div id="save-confirmation" class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                        <div id="status-holder-DEBUG"></div>
-                    </div>*@
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                            <div id="status-holder-DEBUG"></div>
+                        </div>*@
                 </div>
                 <div class="col-md-12">
                     <div id="status-holder"></div>
-                    <input type="submit" id="btn-save" class="btn btn-success pull-right" style="margin-right:5px;" value="Save Edits" />
+                    <input type="submit" id="btn-save" class="btn btn-default pull-right" style="margin-right:5px;" value="Save" />
                 </div>
             </div>
             <div class="row">
@@ -107,10 +107,9 @@
     </div>
 }
 
-
 <!--
 =====================================================================================
-MODALS
+NOTE-SEARCH MODAL
 =====================================================================================
 -->
 <div class="modal fade" id="modal-note-search">
@@ -146,26 +145,67 @@ MODALS
     <!-- /.modal-dialog -->
 </div>
 
+<!--
+=====================================================================================
+CWR-TRAIT MODAL
+=====================================================================================
+-->
+<div class="modal fade" id="modal-cwr-trait">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Apply CWR Trait</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom:1.2rem;">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Trait Class</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(x => Model.CWRTraitViewModel.TraitClassCode, Model.CWRTraitViewModel.TraitClassCodes, "Select a trait class code", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row"  style="margin-bottom:1.2rem;">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Breeding Type</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(x => x.CWRTraitViewModel.BreedingTypeCode, Model.CWRTraitViewModel.BreedingTypeCodes, "Select a breeding type code", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:1.2rem;">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Breeding Usage</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(x => x.CWRTraitViewModel.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(x => x.CWRTraitViewModel.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSaveTrait" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
 <script type="text/javascript">
-
-    // Wait for document to load 
-    //$(document).ready(() => {
-    //    $('.info').on('submit', () => {
-
-    //        // prevents default behaviour 
-    //        // Prevents event propagation 
-    //        return false;
-    //    });
-    //});
-    //$('.info').keypress((e) => {
-
-    //    // Enter key corresponds to number 13 
-    //    if (e.which === 13) {
-    //        $('#frmEdit').submit();
-    //        console.log('form submitted');
-    //    }
-    //}) 
-
 
 //$(document).ready(function () {
 //    var timeoutId;
@@ -186,6 +226,40 @@ MODALS
 //        $("#frmEdit").submit();
 //    }
 //});
+
+    $("#btnSaveTrait").click(function () {
+        var valueArray = [];
+        var traitClassCode = "";
+        var breedingTypeCode = "";
+        var breedingUsageNote = "";
+        var ontologyTraitIdentifier = "";
+    
+        $('#modal-cwr-trait').modal('hide');
+
+        traitClassCode = $("#CWRTraitViewModel_TraitClassCode").val();
+        breedingTypeCode = $("#CWRTraitViewModel_BreedingTypeCode").val();
+        breedingUsageNote = $("#txtBreedingUsageNote").val();
+        ontologyTraitIdentifier = $("#txtOntologyTraitIdentifier").val();
+
+        $("#section-crop-map-list input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        $.ajax({
+            url: '@Url.Action("ApplyCWRTrait","Taxonomy")',
+            type: "GET",
+            data: { traitClassCode: traitClassCode, breedingTypeCode: breedingTypeCode, breedingUsageNote: breedingUsageNote, ontologyTraitIdentifier: ontologyTraitIdentifier, cwrMapIdList:valueArray.toString() },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+            }
+        });
+    });
+
 
 function SelectNote(noteText) {
             $('#modal-note-search').modal('hide');

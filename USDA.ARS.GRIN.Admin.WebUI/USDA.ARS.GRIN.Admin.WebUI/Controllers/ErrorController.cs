@@ -13,6 +13,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpGet]
         public ActionResult InternalServerError()
         {
+            var exception = Server.GetLastError();
+
             return View();
         }
 

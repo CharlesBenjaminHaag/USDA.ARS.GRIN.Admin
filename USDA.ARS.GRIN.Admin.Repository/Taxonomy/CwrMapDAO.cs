@@ -65,7 +65,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 cwrMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                             }
                         }
-                        //cwrMap.CWRTraits = GetCwrTraits(id);
+                        cwrMap.CWRTraits = GetCWRTraits(id);
                     }
                 }
             }
@@ -76,6 +76,65 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             return cwrMap;
         }
 
+        public List<CWRTrait> GetCWRTraits(int cwrMapId)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCwrTraits_Select";
+            List<CWRTrait> cwrTraits = new List<CWRTrait>();
+            CWRTrait cwrTrait = new CWRTrait();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_cwr_map_id", cwrMapId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                cwrTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
+                                cwrTrait.CWRMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
+                                cwrTrait.CropForCWRID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                //cwrTrait.CropForCWRName = reader["cwr_crop_name"].ToString();
+                                cwrTrait.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                //cwrTrait.SpeciesName = reader["species_name"].ToString();
+                                cwrTrait.TraitClassCode = reader["trait_class_code"].ToString();
+                                cwrTrait.TraitClassTitle = reader["trait_class_title"].ToString();
+                                cwrTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
+                                cwrTrait.BreedingTypeCode = reader["breeding_type_code"].ToString();
+                                cwrTrait.BreedingTypeTitle = reader["breeding_type_title"].ToString();
+                                cwrTrait.BreedingUsageNote = reader["breeding_usage_note"].ToString();
+                                cwrTrait.OntologyTraitIdentifier = reader["ontology_trait_identifier"].ToString();
+                                cwrTrait.CitationID = GetInt(reader["citation_id"].ToString());
+
+                                if (reader["note"] != DBNull.Value)
+                                {
+                                    cwrTrait.Note = reader["note"].ToString();
+                                }
+                                cwrTrait.CreatedDate = GetDate(reader["created_date"].ToString());
+                                cwrTrait.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                cwrTrait.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                cwrTrait.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                cwrTrait.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                cwrTrait.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                cwrTraits.Add(cwrTrait);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return cwrTraits;
+        }
         public IQueryable<CWRMap> Search(Query query)
         {
             throw new NotImplementedException();

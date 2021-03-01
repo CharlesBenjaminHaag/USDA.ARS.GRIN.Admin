@@ -21,7 +21,57 @@ namespace USDA.ARS.GRIN.Admin.Repository
             _context = context;
             _referenceDAO = new ReferenceDAO(context);
         }
-        
+
+        public List<CropForCWR> Demo()
+        {
+            const string COMMAND_TEXT = "usp_Taxonomy_Demo_CwrCrops_Select";
+            List<CropForCWR> cropForCwrList = new List<CropForCWR>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CropForCWR crop = new CropForCWR();
+                                crop.ID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                crop.CropName = reader["crop_name"].ToString();
+                                crop.Note = reader["note"].ToString();
+                                crop.CropWildRelativeCount = GetInt(reader["cwr_count"].ToString());
+                                crop.CreatedDate = GetDate(reader["created_date"].ToString());
+                                crop.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                crop.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                crop.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+
+                                if (reader["note"] != DBNull.Value)
+                                {
+                                    crop.Note = reader["note"].ToString();
+                                }
+                                cropForCwrList.Add(crop);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return cropForCwrList;
+        }
+
         public ResultContainer Add(CropForCWR entity)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCwrCrop_Insert";

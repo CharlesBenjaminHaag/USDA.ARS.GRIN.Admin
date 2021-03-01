@@ -58,6 +58,8 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Email</th>
+                                                <th>Organization</th>
                                                 <th>Address Line 1</th>
                                                 <th>Address Line 2</th>
                                                 <th>City</th>
@@ -68,6 +70,8 @@
                                         </thead>
                                         <tr>
                                             <td>@webOrderRequest.ID</td>
+                                            <td>@webOrderRequest.WebCooperator.EmailAddress</td>
+                                            <td>@webOrderRequest.WebCooperator.Organization</td>
                                             <td>@webOrderRequest.WebCooperator.Address.AddressLine1</td>
                                             <td>@webOrderRequest.WebCooperator.Address.AddressLine2</td>
                                             <td>@webOrderRequest.WebCooperator.Address.City</td>

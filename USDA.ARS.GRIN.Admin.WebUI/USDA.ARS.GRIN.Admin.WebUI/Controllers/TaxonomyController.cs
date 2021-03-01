@@ -74,6 +74,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     cropForCWRViewModel.ModifiedByCooperatorID = cropForCwr.ModifiedByCooperatorID;
                     cropForCWRViewModel.ModifiedByCooperatorName = cropForCwr.ModifiedByCooperatorName;
                     cropForCWRViewModel.CWRMaps = cropForCwr.CWRMaps;
+
+                    // If editing an existing Crop for CWR, load the CWR Trait view model to support batch-applying traits to maps.
+                    cropForCWRViewModel.CWRTraitViewModel = new CWRTraitViewModel(_taxonomyService.GetTraitClassCodes(), _taxonomyService.GetBreedingTypeCodes());
+                    cropForCWRViewModel.CWRTraitViewModel.Citations = new SelectList(_taxonomyService.FindCitations(cropForCWRViewModel.SpeciesID), "ID", "Title");
                 }
                 else
                 {
@@ -360,7 +364,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/CWRMap/_SearchResults.cshtml", viewModel);
         }
 
-        public ActionResult CWRMapEdit(int cropForCwrId, int cwrMapId = 0)
+        public ActionResult CWRMapEdit(int cropForCwrId = 0, int cwrMapId = 0)
         {
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             CWRMapViewModel viewModel = null;
@@ -375,7 +379,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                     viewModel = new CWRMapViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
                     viewModel.ID = cwrMap.ID;
-                    viewModel.CropID = cwrMap.CropForCWRID;
+                    viewModel.CropForCWRID = cwrMap.CropForCWRID;
                     viewModel.SpeciesID = cwrMap.SpeciesID;
                     viewModel.SpeciesName = cwrMap.SpeciesName;
                     viewModel.CommonName = cwrMap.CommonName;
@@ -392,11 +396,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
                     viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
                     viewModel.Citations = new SelectList(taxonomyService.FindCitations(viewModel.SpeciesID), "ID", "Title");
+                    viewModel.CWRTraits = cwrMap.CWRTraits;
                 }
                 else
                 {
                     viewModel = new CWRMapViewModel(taxonomyService.GetGenePoolCodes(), taxonomyService.GetCropsForCWR());
-                    viewModel.CropID = cropForCwrId;
+                    viewModel.CropForCWRID = cropForCwrId;
                     viewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                     TempData["context"] = "Add CWR Map";
                 }
@@ -425,7 +430,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 cwrMap.ID = viewModel.ID;
                 cwrMap.SpeciesID = viewModel.SpeciesID;
-                cwrMap.CropForCWRID = viewModel.CropID;
+                cwrMap.CropForCWRID = viewModel.CropForCWRID;
                 cwrMap.CommonName = viewModel.CommonName;
                 cwrMap.IsCrop = viewModel.IsCrop;
                 cwrMap.GenepoolCode = viewModel.GenepoolCode;
@@ -461,6 +466,19 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             }
             return RedirectToAction("CWRMapEdit", "Taxonomy", new { cropForCwrId = cwrMap.CropForCWRID, cwrMapId = cwrMap.ID });
+        }
+
+        public ActionResult Manager()
+        {
+            TempData["context"] = "Crop Mapper";
+            ManagerViewModel managerViewModel = new ManagerViewModel();
+            DemoContainer demoContainer = new DemoContainer();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            demoContainer = taxonomyService.Demo();
+            managerViewModel.CropsForCWR = demoContainer.CropsForCWR;
+            managerViewModel.Species = demoContainer.Species;
+            managerViewModel.CWRTraits = demoContainer.CWRTraits;
+            return View("~/Views/Taxonomy/CWRMap/Manager.cshtml", managerViewModel);
         }
 
         //[HttpPost]
@@ -558,6 +576,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 cwrTraitViewModel = new CWRTraitViewModel(taxonomyService.GetTraitClassCodes(), taxonomyService.GetBreedingTypeCodes());
+
+                cwrTraitViewModel.CWRMap = taxonomyService.GetCWRMap(cwrMapId);
+                
                 cwrTraitViewModel.CWRMapID = cwrMapId;
                 if (cwrTraitId > 0)
                 {
@@ -588,8 +609,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 else
                 {
                     TempData["context"] = "Add CWR Trait";
+                    cwrTraitViewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                 }
-                //cwrTraitViewModel.LoadCitations(speciesId);
             }
             catch (Exception ex)
             {
@@ -648,13 +669,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return RedirectToAction("CWRTraitEdit", "Taxonomy", new { speciesId = viewModel.SpeciesID, cropForCwrId = viewModel.CropForCWRID, cwrMapId = viewModel.CWRMapID, cwrTraitId = viewModel.ID });
         }
 
-        //public ActionResult CropTraitDelete(int cropId, int cropMapId, int cropTraitId)
-        //{
-        //    TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-        //    _taxonomyService.DeleteCropTrait(cropTraitId);
-        //    return RedirectToAction("CWRMapEdit", "Taxonomy", new { cropId = cropId, cropMapid = cropMapId });
-        //}
+        public ActionResult CWRTraitDelete(int cropForCwrId, int cwrMapId, int cwrTraitId)
+        {
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+             
+            _taxonomyService.DeleteCWRTrait(new CWRTrait { ID = cwrTraitId });
+            return RedirectToAction("CWRMapEdit", "Taxonomy", new { cropForCwrId = cropForCwrId, cwrMapId = cwrMapId });
+        }
 
         //public ActionResult CropTraitsDelete(int speciesId, int cropId, int cropMapId, string cropTraitIdList)
         //{
@@ -669,6 +690,27 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         //    viewModel.CropTraits = _taxonomyService.GetCWRTraits(cropMapId);
         //    return PartialView("~/Views/Taxonomy/Crop/Trait/_List.cshtml", viewModel);
         //}
+
+
+        //traitClassCode = $("#CWRTraitViewModel_TraitClassCode").val();
+        //breedingTypeCode = $("#CWRTraitViewModel_BreedingTypeCode").val();
+        //breedingUsageNote = $("#CWRTraitViewModel_BreedingUsageNote").val();
+        //ontologyTraitIdentifier
+
+
+
+        public JsonResult ApplyCWRTrait(string traitClassCode, string breedingTypeCode, string breedingUsageNote, string ontologyTraitIdentifier, string cwrMapIdList)
+        {
+            Folder folder = new Folder();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            string[] valueList = cwrMapIdList.Split(',');
+            foreach (var cwrMapId in valueList)
+            {
+                taxonomyService.AddCropTrait(new CWRTrait { CWRMapID = Int32.Parse(cwrMapId), TraitClassCode = traitClassCode, BreedingTypeCode = breedingTypeCode, BreedingUsageNote = breedingUsageNote, OntologyTraitIdentifier = ontologyTraitIdentifier, CreatedByCooperatorID = AuthenticatedUser.CooperatorID });
+            }
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 

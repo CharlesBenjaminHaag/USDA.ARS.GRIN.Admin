@@ -30,6 +30,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string OntologyTraitIdentifier { get; set; }
         public int CitationID { get; set; }
         public string CitationTitle { get; set; }
+        public CWRMap CWRMap { get; set; }
 
         public CWRTraitViewModel()
          {

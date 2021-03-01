@@ -24,7 +24,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int SpeciesID { get; set; }
         [Required(ErrorMessage = "Species is required.")]
         public string SpeciesName { get; set; }
-        public int CropID { get; set; }
+        public int CropForCWRID { get; set; }
         [RequiredIf("IsCrop",true,"Common Name is required.")]
         public string CommonName { get; set; }
         public bool IsCrop { get; set; }

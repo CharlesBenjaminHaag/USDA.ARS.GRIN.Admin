@@ -98,6 +98,9 @@
         }
     });
 
+    
+
+
     $(document).ready(function () {
         var link = '@Url.Action("_List", "WebOrder")';
         //$("#section-data").load(link);
@@ -105,15 +108,14 @@
         $.ajax(
             {
                 type: 'POST',
-                url: '/WebOrder/_List',
-                //data: { webOrderRequestId: webOrderRequestId, webCooperatorId: webCooperatorId, statusCode: status, actionNote: note },
+                url: link,
                 success:
                     function (response) {
                         $("#section-data").html(response);
                     },
                 error:
                     function (response) {
-                        alert("Error: " + response);
+                        console.log(response);
                     }
             });
 

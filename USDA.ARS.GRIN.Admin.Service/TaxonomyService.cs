@@ -42,6 +42,16 @@ namespace USDA.ARS.GRIN.Admin.Service
         // ****************************************************************************
         // GENUS
         // ****************************************************************************
+
+        public DemoContainer Demo()
+        {
+            DemoContainer demoContainer = new DemoContainer();
+            demoContainer.CropsForCWR = _cropForCwrDAO.Demo();
+            demoContainer.Species = _speciesDAO.Demo();
+            demoContainer.CWRTraits = _cwrTraitDAO.Demo();
+            return demoContainer;
+        }
+        
         #region Genus
 
         public IQueryable<Genus> FindGenus(string searchString)
@@ -229,14 +239,14 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _cwrTraitDAO.Update(cropTrait);
         }
 
-        //public ResultContainer DeleteCropTrait(CWRTrait cwrTrait)
-        //{
-        //    return _cwrTraitDAO.Remove(cwrTrait);
-        //}
-        //public ResultContainer DeleteCropTraits(string cropTraitIdList)
-        //{
-        //    return _cropForCwrDAO.RemoveCropTraits(cropTraitIdList);
-        //}
+        public ResultContainer DeleteCWRTrait(CWRTrait cwrTrait)
+        {
+            return _cwrTraitDAO.Remove(cwrTrait);
+        }
+        public ResultContainer DeleteCWRTraits(int[] idList)
+        {
+            return _cwrTraitDAO.Remove(idList);
+        }
 
         #endregion
 

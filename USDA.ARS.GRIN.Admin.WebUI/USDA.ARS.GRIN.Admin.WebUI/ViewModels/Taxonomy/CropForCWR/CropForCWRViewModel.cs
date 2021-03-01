@@ -44,5 +44,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         [Required]
         public string CropName { get; set; }
         public IQueryable<CWRMap> CWRMaps { get; set; }
+        public CWRTraitViewModel CWRTraitViewModel { get; set; }
     }
 }

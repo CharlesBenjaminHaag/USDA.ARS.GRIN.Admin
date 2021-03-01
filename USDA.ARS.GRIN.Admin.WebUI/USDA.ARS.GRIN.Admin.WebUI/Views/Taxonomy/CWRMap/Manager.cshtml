@@ -1,0 +1,232 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.ManagerViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /*   input[type='checkbox'] {
+        -webkit-appearance: none;
+        width: 30px;
+        height: 30px;
+        background: white;
+        border-radius: 5px;
+        border: 2px solid #555;
+    }
+    */
+
+    input[type='checkbox']:checked {
+        background: green;
+    }
+
+    .double {
+        zoom: 1;
+        transform: scale(2);
+        -ms-transform: scale(2);
+        -webkit-transform: scale(2);
+        -o-transform: scale(2);
+        -moz-transform: scale(2);
+        transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+        -webkit-transform-origin: 0 0;
+        -o-transform-origin: 0 0;
+        -moz-transform-origin: 0 0;
+    }
+
+    .inner h3 {
+        font-size: 1.5em;
+        color: #767676;
+    }
+</style>
+
+<section class="content">
+
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <a class="btn btn-app pull-right">
+                <i class="fa fa-chain"></i>Generate Relationships
+            </a>
+            </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>Crops For CWR</h4>
+                    <div class="input-group input-group-sm" style="margin-bottom:1rem;">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat">Search</button>
+                        </span>
+                    </div>
+        
+                    @foreach (var cropForCwr in Model.CropsForCWR)
+                    {
+                    <div class="small-box bg-gray-active">
+                        <div class="inner">
+                            <h3>@cropForCwr.CropName</h3>
+                            <div class="double">
+                                <input type="checkbox" />
+                            </div>
+                            <br />
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        @*<a href="#" class="small-box-footer">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                        </a>*@
+                    </div>
+                    }
+                </div>
+                <!--<div class="col-md-1">-->
+                @*<div style="margin-top:150px;"></div>
+                    <button class="btn-success btn-block btn-flat btn-lg">>></button>
+                    <button class="btn-danger btn-block btn-flat btn-lg"><<</button>*@
+                <!--</div>-->
+                <div class="col-md-5" style="        border-left: 1px solid #b5bbc8;">
+                    <h4>Species</h4>
+                    <div class="input-group input-group-sm" style="margin-bottom:1rem;">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat">Search</button>
+                        </span>
+                    </div>
+
+                    @foreach (var species in Model.Species)
+                    {
+                        <div class="small-box bg-gray-active">
+                            <div class="inner">
+                                <h3>@species.SpeciesName</h3>
+                                <div class="double">
+                                    <input type="checkbox" />
+                                </div>
+                                <br />
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-leaf"></i>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-4" style="        border-left: 1px solid #b5bbc8;">
+                    <h4>Traits</h4>
+                    <div class="input-group input-group-sm" style="margin-bottom:1rem;">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat">Search</button>
+                        </span>
+                    </div>
+                    @foreach (var cwrTrait in Model.CWRTraits)
+                    {
+                    <div class="small-box bg-gray-active">
+                        <div class="inner">
+                            <h3>@cwrTrait.BreedingTypeTitle, @cwrTrait.TraitClassTitle</h3>
+                            <div class="double">
+                                <input type="checkbox" />
+                            </div>
+                            <br />
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-leaf"></i>
+                        </div>
+                        @*<a href="#" class="small-box-footer">
+                                More info <i class="fa fa-arrow-circle-right"></i>
+                            </a>*@
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="5%"></th>
+                <th>Species</th>
+                <th>Crop For CWR</th>
+                <th>Is Crop?</th>
+                <th>Trait Class Code</th>
+                <th>Breeding Type Code</th>
+                <th>Breeding Usage Note</th>
+                <th>Ontology</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id=""></td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>
+                    <a href="" class="btn btn-danger btn-sm pull-right row-edit">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id=""></td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>
+                    <a href="" class="btn btn-danger btn-sm pull-right row-edit">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+            
+            <tr>
+                <td><input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id=""></td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>
+                    <a href="" class="btn btn-danger btn-sm pull-right row-edit">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id=""></td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>VAL</td>
+                <td>
+                    <a href="" class="btn btn-danger btn-sm pull-right row-edit">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</section>

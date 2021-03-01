@@ -332,6 +332,7 @@
     <Content Include="Views\Taxonomy\CWRTrait\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\AddSubTaxa.cshtml" />
     <Content Include="Views\AccountManagement\Cooperator\_Detail.cshtml" />
+    <Content Include="Views\Taxonomy\CWRMap\Manager.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -414,6 +415,7 @@
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRTrait\ManagerViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CropTraitEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapSearchViewModel.cs" />

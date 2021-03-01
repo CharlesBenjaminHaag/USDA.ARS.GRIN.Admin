@@ -21,6 +21,42 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             _referenceDAO = new ReferenceDAO(context);
         }
 
+        public List<CWRTrait> Demo()
+        {
+            const string COMMAND_TEXT = "usp_Taxonomy_Demo_CwrTraits_Select";
+            List<CWRTrait> cWRTraitList = new List<CWRTrait>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CWRTrait cWrTrait = new CWRTrait();
+                                cWrTrait.TraitClassTitle = reader["trait_class_title"].ToString();
+                                cWrTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
+                                cWrTrait.BreedingTypeTitle = reader["breeding_type_title"].ToString();
+                                cWRTraitList.Add(cWrTrait);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return cWRTraitList;
+        }
+
         public ResultContainer Add(CWRTrait entity)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCwrTrait_Insert";
@@ -220,6 +256,20 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
         public ResultContainer Remove(CWRTrait entity)
         {
             throw new NotImplementedException();
+        }
+
+        public ResultContainer Remove(int[] idList)
+        {
+            ResultContainer resultContainer = new ResultContainer();     
+
+            try
+            { 
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
         }
 
         public IQueryable<CWRTrait> Search(Query query)
