@@ -37,7 +37,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
+                webOrderRequests = service.GetWebOrderRequests("NRR_REVIEW");
                 return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
             }
             catch (Exception ex)
@@ -86,7 +86,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 resultContainer = service.SetReviewStatus(id, AuthenticatedUser.WebCooperatorID, true);
 
                 // Create a "review began" action record.
-                resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW_BEGUN", CreatedByCooperatorID = 1 });
+                resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW_BEGUN", CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
 
                 webOrderRequest = service.GetWebOrderRequest(id);
                 viewModel.ID = webOrderRequest.ID;

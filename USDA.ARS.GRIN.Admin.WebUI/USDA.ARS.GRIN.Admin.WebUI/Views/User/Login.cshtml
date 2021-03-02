@@ -77,7 +77,7 @@
                 <label>Select Server</label>
                 <div class="form-group has-feedback">
                     <select name="environment" class="form-control">
-                        <option value="LOCAL">Local</option>
+                        @*<option value="LOCAL">Local</option>*@
                         @*<option value="PRODCOPY">Prod-Copy</option>*@
                         <option value="DEVELOPMENT">Development</option>
                         @*<option value="TEST">Test</option>*@
@@ -95,7 +95,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
-                        <button type="button" class="btn btn-primary btn-block btn-flat">
+                        <button type="button" class="btn btn-primary btn-block btn-flat disabled">
                             Reset Password
                         </button>
                     </div>
@@ -106,7 +106,7 @@
             </form>
             <div class="row">
                 <div class="col-xs-12" style="margin-top:20px;">
-                    <a href="@Url.Action("AccountRequest")" class="btn btn-success btn-block">I would like to request a new Curator account.</a>
+                    <a href="@Url.Action("AccountRequest")" class="btn btn-success btn-block disabled"button>I would like to request a new Curator account.</a>
                     @*<button disabled="" class="btn btn-primary btn-block btn-flat pull-right">Request New Account</button>*@
                 </div>
             </div>

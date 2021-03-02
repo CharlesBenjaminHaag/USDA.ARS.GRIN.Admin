@@ -17,6 +17,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
         public string IntendedUseNote { get; set; }
         public string StatusCode { get; set; }
         public string Note { get; set; }
+        public string ActionNote { get; set; }
         public string SpecialInstruction { get; set; }
         public Cooperator Cooperator { get; set; }
         public Cooperator WebCooperator { get; set; } 

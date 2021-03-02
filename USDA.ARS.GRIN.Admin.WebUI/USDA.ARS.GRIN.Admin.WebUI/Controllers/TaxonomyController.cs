@@ -54,15 +54,16 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpGet]
         public ActionResult CropForCWREdit(int id = 0)
         {
-            CropForCWRViewModel cropForCWRViewModel = new CropForCWRViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            CropForCWRViewModel cropForCWRViewModel = new CropForCWRViewModel();
 
             try
             {
+                cropForCWRViewModel.CWRTraitViewModel = new CWRTraitViewModel(_taxonomyService.GetTraitClassCodes(), _taxonomyService.GetBreedingTypeCodes());
                 if (id > 0)
                 {
                     TempData["context"] = "Edit Crop for CWR";
-
+                    
                     CropForCWR cropForCwr = _taxonomyService.GetCropForCWR(id);
                     cropForCWRViewModel.ID = cropForCwr.ID;
                     cropForCWRViewModel.CropName = cropForCwr.CropName;
@@ -74,14 +75,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     cropForCWRViewModel.ModifiedByCooperatorID = cropForCwr.ModifiedByCooperatorID;
                     cropForCWRViewModel.ModifiedByCooperatorName = cropForCwr.ModifiedByCooperatorName;
                     cropForCWRViewModel.CWRMaps = cropForCwr.CWRMaps;
-
-                    // If editing an existing Crop for CWR, load the CWR Trait view model to support batch-applying traits to maps.
-                    cropForCWRViewModel.CWRTraitViewModel = new CWRTraitViewModel(_taxonomyService.GetTraitClassCodes(), _taxonomyService.GetBreedingTypeCodes());
                     cropForCWRViewModel.CWRTraitViewModel.Citations = new SelectList(_taxonomyService.FindCitations(cropForCWRViewModel.SpeciesID), "ID", "Title");
                 }
                 else
                 {
                     TempData["context"] = "Add Crop for CWR";
+                    
+                    cropForCWRViewModel.CWRTraitViewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                 }
             }
             catch (Exception ex)
