@@ -25,7 +25,7 @@ namespace USDA.ARS.GRIN.Admin.API.Controllers
         [Route]
         public IHttpActionResult Get(bool includeBasionyms = false, bool includeSynonyms = false)
         {
-            IQueryable<Species> speciesList = null;
+            List<Species> speciesList = null;
 
             try
             {

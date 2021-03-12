@@ -136,6 +136,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public PartialViewResult CropForCWRListByUser()
         {
             CropForCWRSearchViewModel cropForCWRSearchViewModel = new CropForCWRSearchViewModel();
@@ -144,7 +145,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             cropForCWRSearchViewModel.CropsForCWR = _taxonomyService.FindUserCropsForCWR(this.AuthenticatedUser.CooperatorID);
             return PartialView(BASE_PATH + "CropForCWR/_SearchResults.cshtml", cropForCWRSearchViewModel);
         }
-       
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public PartialViewResult CropForCWRListRecent()
         {
             CropForCWRSearchViewModel cropForCWRSearchViewModel = new CropForCWRSearchViewModel();
@@ -817,7 +819,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                IQueryable<Species> speciesList = new List<Species>().AsQueryable();
+                List<Species> speciesList = new List<Species>();
                 speciesList = _taxonomyService.FindSpecies(searchString, includeSynonyms);
                 return PartialView("~/Views/Taxonomy/Species/_List.cshtml", speciesList);
             }
@@ -972,6 +974,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             viewModel.SearchData.QueryCriteria.Add(new QueryCriterion { FieldName = "SpeciesName", FieldValue = searchText, SearchOperatorCode = "CNT" });
             viewModel.Species = _taxonomyService.FindSpecies(searchText, false);
             return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult SpeciesNameSearch(string searchText)
+        {
+            List<Species> speciesList = new List<Species>();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            speciesList = taxonomyService.FindSpecies(searchText, false);
+            return Json(speciesList, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

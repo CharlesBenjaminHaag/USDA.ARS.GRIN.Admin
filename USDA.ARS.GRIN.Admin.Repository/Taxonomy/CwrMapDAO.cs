@@ -167,6 +167,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 cwrMap.SpeciesName = reader["species_name"].ToString();
                                 cwrMap.CropForCWRID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
                                 cwrMap.CommonName = reader["crop_common_name"].ToString();
+                                cwrMap.CropForCWRName = reader["crop_name"].ToString();
                                 cwrMap.IsCrop = ParseBool(reader["is_crop"].ToString());
                                 cwrMap.GenepoolCode = reader["genepool_code"].ToString();
                                 cwrMap.IsGraftStock = ParseBool(reader["is_graftstock"].ToString());
@@ -186,6 +187,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 cwrMap.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                                 cwrMap.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 cwrMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                //cwrMap.CWRTraits = GetCWRTraits(cwrMap.ID);
                                 cwrMapList.Add(cwrMap);
                             }
                         }

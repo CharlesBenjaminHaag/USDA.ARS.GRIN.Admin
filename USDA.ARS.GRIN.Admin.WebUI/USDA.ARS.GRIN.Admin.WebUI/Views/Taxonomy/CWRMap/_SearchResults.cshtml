@@ -35,12 +35,11 @@
                         <th>ID</th>
                         <th>Species</th>
                         <th>Crop For CWR</th>
-                        <th>Crop?</th>
-                        <th>Created</th>
-                        <th>By</th>
-                        <th>Last Modified</th>
-                        <th>By</th>
-                        <th>Related Traits</th>
+                        <th>Common Name</th>
+                        <th>Genepool</th>
+                        <th style="text-align:center;">Graftstock?</th>
+                        <th style="text-align:center;">Potential?</th>
+                        <th style="text-align:center;">Crop?</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -51,49 +50,34 @@
                         {
                             foreach (var cwrMap in Model.CWRMaps)
                             {
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@cwrMap.ID">
-                                    </td>
-                                    <td>
-                                        <span class="label label-default">@cwrMap.ID</span>
-                                    </td>
-                                    <td>
-                                        @cwrMap.SpeciesName
-                                    </td>
-                                    <td>
-                                        @cwrMap.CommonName
-                                    </td>
-                                    <td>
-                                       @Html.Raw(DisplayHelper.GetBooleanDisplayString(cwrMap.IsCrop))
-                                    </td>
-                                    <td>
-                                        @cwrMap.CreatedDate.ToShortDateString()
-                                    </td>
-                                    <td>
-                                        @cwrMap.CreatedByCooperatorName
-                                    </td>
-                                    <td>
-                                        @if (cwrMap.ModifiedDate != DateTime.MinValue)
-                                        {
-                                            @cwrMap.ModifiedDate.ToShortDateString()
-                                        }
-                                    </td>
-                                    <td>
-                                        @cwrMap.ModifiedByCooperatorName
-                                    </td>
-                                    <td style="text-align:center;">
-                                        @*@if (Int32.Parse(row["taxonomy_cwr_trait_count"].ToString()) > 0)
-                                        {
-                                            <span class="label label-success">@row["cwr_count"]</span>
-                                        }*@
-                                    </td>
-                                    <td>
-                                        <a href="@Url.Action("CWRMapEdit", "Taxonomy", new { cropForCwrId = cwrMap.CropForCWRID, cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@cwrMap.ID">
+                        </td>
+                        <td>
+                            <span class="label label-default">@cwrMap.ID</span>
+                        </td>
+                        <td>
+                            @cwrMap.SpeciesName
+                        </td>
+                        <td>
+                            @cwrMap.CropForCWRName
+                        </td>
+                        <td>
+                            @cwrMap.CommonName
+                        </td>
+                        <td>@cwrMap.GenepoolCode</td>
+                        <td style="text-align:center;">@Html.Raw(DisplayHelper.GetBooleanDisplayString(cwrMap.IsGraftStock))</td>
+                        <td style="text-align:center;">@Html.Raw(DisplayHelper.GetBooleanDisplayString(cwrMap.IsPotential))</td>
+                        <td style="text-align:center;">
+                            @Html.Raw(DisplayHelper.GetBooleanDisplayString(cwrMap.IsCrop))
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CWRMapEdit", "Taxonomy", new { cropForCwrId = cwrMap.CropForCWRID, cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
                             }
                         }
 

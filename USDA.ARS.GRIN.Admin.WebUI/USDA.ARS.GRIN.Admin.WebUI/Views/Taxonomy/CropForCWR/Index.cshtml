@@ -24,7 +24,7 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-crops" title="CropForCWRListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                    <a href="#tab_1" id="tab-my-crops" title="CropForCWRListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">By User</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
                     <a href="#tab_2" id="tab-recently-added" title="CropForCWRListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
@@ -37,12 +37,62 @@
             </ul>
             <div class="tab-content">
                 <!-- ============================================================================================== -->
-                <!-- MY-CROPS TAB -->
+                <!-- BY-USER TAB -->
                 <!-- ============================================================================================== -->
                 <div class="tab-pane active" id="tab_1">
                     <div class="box-body">
-                        <div id="section-my-crops">
-                        </div>
+
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-3">
+
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+
+
+
+                            @*<div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" />
+                                        </div>
+
+                                        <div class="col-md-3" style="padding-left:0px;">
+                                            <div class="input-group" style="margin-left:0px;">
+                                                <select class="form-control">
+                                                    <option>Leon, Blanca</option>
+                                                    <option>Schori, Melanie</option>
+                                                </select>
+                                                <span class="input-group-btn">
+                                                    <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                            <div id="section-my-crops">
+                            </div>
                     </div>
                 </div>
 
@@ -144,6 +194,7 @@
     $(document).ready(function(){
         var link = '@Url.Action("CropForCWRListByUser", "Taxonomy")';
         $("#section-my-crops").load(link);
+        //InitializeDataTable();
     });
 
     $(".selector-tab").click(function () {
@@ -159,15 +210,7 @@
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
             $(displaySection).load(link);
-            $('table').DataTable({
-                'destroy': true,
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            });
+            InitializeDataTable();
         }
     });
 
@@ -183,15 +226,7 @@
             dataType: "html",
             success: function (response) {
                 $("#section-search-results").html(response);
-                $('table').DataTable({
-                    'destroy': true,
-                    'paging': true,
-                    'lengthChange': false,
-                    'searching': false,
-                    'ordering': true,
-                    'info': true,
-                    'autoWidth': false
-                });
+                InitializeDataTable();
             }
         });
 
@@ -228,5 +263,23 @@
             }
         });
     });
+
+    function InitializeDataTable()
+    {
+        $(document).ready(function () {
+            //if (!$.fn.DataTable.isDataTable('#search-results')) {
+                //$('#search-results').DataTable().destroy();
+                $('table.ggtools').DataTable({
+                    'destroy': true,
+                    'paging': true,
+                    'lengthChange': false,
+                    'searching': false,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false
+                });
+            //}
+        });
+    }
 
 </script>

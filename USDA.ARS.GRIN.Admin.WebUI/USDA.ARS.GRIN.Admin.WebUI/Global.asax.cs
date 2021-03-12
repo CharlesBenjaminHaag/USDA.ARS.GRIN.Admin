@@ -17,18 +17,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI
 
         protected void Application_Start()
         {
-            Log.Info("Starting up...");
+            //Log.Info("Starting up...");
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
-            Log.Info("Routes and bundles registered");
-            Log.Info("Started");
+            //Log.Info("Routes and bundles registered");
+            //Log.Info("Started");
         }
 
         protected void Application_End()
         {
-            Log.Info("Stopped");
+            //Log.Info("Stopped");
         }
 
         protected void Application_Error(object sender, EventArgs e)

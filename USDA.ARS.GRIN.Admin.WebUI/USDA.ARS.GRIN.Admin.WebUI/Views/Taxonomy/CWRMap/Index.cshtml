@@ -181,15 +181,15 @@
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
             $(displaySection).load(link);
-            $('#search-results').DataTable({
-                'destroy': true,
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            });
+            //$('#search-results').DataTable({
+            //    'destroy': true,
+            //    'paging': true,
+            //    'lengthChange': false,
+            //    'searching': false,
+            //    'ordering': true,
+            //    'info': true,
+            //    'autoWidth': false
+            //});
         }
     });
 
@@ -201,15 +201,15 @@
         .done(function (response) {
             $("#section-search-results").html(response);
 
-            $('#search-results').DataTable({
-                'destroy': true,
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            });
+            //$('#search-results').DataTable({
+            //    'destroy': true,
+            //    'paging': true,
+            //    'lengthChange': false,
+            //    'searching': false,
+            //    'ordering': true,
+            //    'info': true,
+            //    'autoWidth': false
+            //});
         });
     });
 

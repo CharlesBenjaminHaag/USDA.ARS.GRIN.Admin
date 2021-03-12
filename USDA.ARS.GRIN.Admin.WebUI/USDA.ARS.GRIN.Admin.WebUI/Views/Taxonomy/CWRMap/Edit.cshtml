@@ -3,7 +3,8 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
 <div id="section-data-list">
 
     @if (Model.ID > 0)
@@ -48,7 +49,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">ID</label>
                                         <div class="col-sm-1">
-                                            <input type = "text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />   
+                                            <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
                                         </div>
                                     </div>
                                 }
@@ -186,43 +187,43 @@
                                             {
                                                 foreach (var trait in Model.CWRTraits)
                                                 {
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@trait.ID">
-                                            </td>
-                                            <td>
-                                                <span class="label label-default">@trait.ID</span>
-                                            </td>
-                                            <td>
-                                                @trait.TraitClassTitle
-                                            </td>
-                                            <td>
-                                                @trait.BreedingTypeTitle
-                                            </td>
-                                            <td>
-                                                @Html.Raw(DisplayHelper.GetBooleanDisplayString(trait.IsPotential))
-                                            </td>
-                                            <td>
-                                                @trait.OntologyTraitIdentifier
-                                            </td>
-                                            <td>
-                                                @trait.BreedingUsageNote
-                                            </td>
-                                            <td>
-                                                @trait.CreatedDate.ToShortDateString()
-                                            </td>
-                                            <td>
-                                                @trait.CreatedByCooperatorName
-                                            </td>
-                                            <td>
-                                                <a href="@Url.Action("CWRTraitDelete", "Taxonomy", new { cropForCwrId = Model.CropForCWRID, cwrMapId = Model.ID, cwrTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                                <a href="@Url.Action("CWRTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropForCwrId = Model.CropForCWRID, cwrMapId = Model.ID, cWRTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@trait.ID">
+                                                        </td>
+                                                        <td>
+                                                            <span class="label label-default">@trait.ID</span>
+                                                        </td>
+                                                        <td>
+                                                            @trait.TraitClassTitle
+                                                        </td>
+                                                        <td>
+                                                            @trait.BreedingTypeTitle
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(DisplayHelper.GetBooleanDisplayString(trait.IsPotential))
+                                                        </td>
+                                                        <td>
+                                                            @trait.OntologyTraitIdentifier
+                                                        </td>
+                                                        <td>
+                                                            @trait.BreedingUsageNote
+                                                        </td>
+                                                        <td>
+                                                            @trait.CreatedDate.ToShortDateString()
+                                                        </td>
+                                                        <td>
+                                                            @trait.CreatedByCooperatorName
+                                                        </td>
+                                                        <td>
+                                                            <a href="@Url.Action("CWRTraitDelete", "Taxonomy", new { cropForCwrId = Model.CropForCWRID, cwrMapId = Model.ID, cwrTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                            <a href="@Url.Action("CWRTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropForCwrId = Model.CropForCWRID, cwrMapId = Model.ID, cWRTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
                                                 }
                                             }
                                             else
@@ -267,20 +268,9 @@ MODALS
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Genus</label>
-                            <div class="col-sm-10">
-                                @Html.DropDownListFor(x => x.GenusID, Model.Genera, "Select genus", new { @id = "ddlSelectGenus", @class = "form-control" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">Species Name</label>
                             <div class="col-sm-10">
-                                <input type="text" id="txtSearchSpecies" class="form-control">
+                                <input type="text" id="SpeciesSearchText" class="form-control">
                                 <br />
                                 <input type="checkbox" id="cbxIncludeSynonyms" /><label style="margin-left:10px;">Include Synonyms</label>
                             </div>
@@ -376,7 +366,7 @@ MODALS
         var commonName = $("#txtCommonName").val();
         if (commonName != '')
         {
-            $("#section-common-name").show();   
+            $("#section-common-name").show();
         }
     });
 
@@ -442,7 +432,7 @@ MODALS
     $("#btnSearchSpecies").click(function () {
         var url = '@Url.Action("FindSpecies","Taxonomy")';
         var genusId = $("#ddlSelectGenus").val();
-        var inputSearchString = $("#txtSearchSpecies").val();
+        var inputSearchString = $("#SpeciesSearchText").val();
         var includeSynonyms = false;
 
         if ($('#cbxIncludeSynonyms').is(":checked")) {
@@ -519,6 +509,28 @@ MODALS
             });
         }
     }
+
+    //$(document).ready(function () {
+    //    $("#SpeciesSearchText").autocomplete({
+    //        source: function (request, response) {
+    //            $.ajax({
+    //                url: "/Taxonomy/SpeciesNameSearch",
+    //                type: "POST",
+    //                dataType: "json",
+    //                data: { searchText: request.term },
+    //                success: function (data) {
+    //                    response($.map(data, function (item) {
+    //                        return { label: item.SpeciesName, value: item.ID };
+    //                    }))
+    //                }
+    //            })
+    //        },
+    //        select: function (e, i) {
+    //            $("#lblVendorName").text(i.item.value);
+    //        }
+            
+    //    });
+    //});
 
 </script>
 

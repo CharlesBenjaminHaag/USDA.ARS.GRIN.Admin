@@ -75,18 +75,18 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Get(id);
         }
 
-        public IQueryable<Species> FindSpecies(string searchString, bool includeSynonyms)
+        public List<Species> FindSpecies(string searchString, bool includeSynonyms)
         {
             return _speciesDAO.Search(searchString, includeSynonyms);
         }
 
-        public IQueryable<Species> FindUserSpecies(int cooperatorId)
+        public List<Species> FindUserSpecies(int cooperatorId)
         {
             //return _speciesDAO.Find(null,"");
             return null;
         }
 
-        public IQueryable<Species> FindRecentSpecies()
+        public List<Species> FindRecentSpecies()
         {
             //return _speciesDAO.Search(.FindRecentSpecies();
             return null;

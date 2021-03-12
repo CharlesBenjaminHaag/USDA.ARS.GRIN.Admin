@@ -9,6 +9,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class SpeciesSearchViewModel : BaseSearchViewModel
     {
-        public IQueryable<Species> Species { get; set; }
+        public List<Species> Species { get; set; }
     }
 }

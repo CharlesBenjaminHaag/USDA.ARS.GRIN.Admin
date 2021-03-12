@@ -78,7 +78,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<Species> Search(string searchExpression, bool includeSynonyms)
+        public List<Species> Search(string searchExpression, bool includeSynonyms)
         {
             const string COMMAND_TEXT_NAME = "usp_TaxonomySpeciesAcceptedName_Search";
             const string COMMAND_TEXT_SYN = "usp_TaxonomySpeciesSynonym_Search";
@@ -112,7 +112,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             {
                 throw ex;
             }
-            return speciesList.AsQueryable();
+            return speciesList;
         }
 
         public IQueryable<Species> Search(string searchString)
