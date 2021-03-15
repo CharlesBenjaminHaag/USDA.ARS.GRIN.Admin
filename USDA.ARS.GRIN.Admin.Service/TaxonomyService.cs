@@ -21,6 +21,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected CwrTraitDAO _cwrTraitDAO = null;
         protected FolderDAO _folderDAO = null;
         protected ReferenceDAO _referenceDAO = null;
+        
         protected RegulationDAO _regulationDAO = null;
         protected ReportDAO _reportDAO = null;
 
@@ -271,6 +272,16 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _referenceDAO.GetCitations(speciesId);
         }
 
+        public IEnumerable<Citation> FindUserCitations(int cooperatorId)
+        {
+            return _referenceDAO.FindCitations("WHERE tct.modified_date > DATEADD(MONTH, -1, GETDATE())");
+        }
+
+        public List<Citation> FindRecentCitations()
+        {
+            return null;
+        }
+
         #endregion
 
         #region Folder
@@ -346,6 +357,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         public List<CodeValueReferenceItem> GetBreedingTypeCodes()
         {
             return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_BREEDING_TYPE").ToList();
+        }
+        public List<CodeValueReferenceItem> GetBreedingTypeCodes(string traitClassCode)
+        {
+            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_BREEDING_TYPE").Where(y => y.Description.Contains(traitClassCode)).ToList();
         }
 
         public IEnumerable<Note> FindNotes(string searchString, string context)

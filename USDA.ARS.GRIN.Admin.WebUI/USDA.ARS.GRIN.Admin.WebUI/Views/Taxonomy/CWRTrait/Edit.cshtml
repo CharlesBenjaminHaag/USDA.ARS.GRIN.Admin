@@ -4,135 +4,178 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .map-heading {
+        font-size:1.2em;
+    }
+   .map-attribute {
+       font-size:1.2em;
+    }
+</style>
+
 <div id="section-data-list">
     @if (Model.ID > 0)
     {
         <div class="row">
             <div class="col-md-12">
                 <div class="callout callout-info" style="vertical-align:middle;">
-                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
                     @Html.Raw(Model.RevisionHistoryText)
                 </div>
             </div>
         </div>
     }
-
     <div class="row">
-        <div class="col-md-6">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-leaf"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text"><h4><a href="">@Model.CWRMap.CropForCWRName</a></h4></span>
-                    <span class="info-box-number">Crop For CWR</span>
+        <div class="col-md-3">
+            <div class="box box-default">
+                <div class="box-body box-profile">
+                    <h3 class="profile-username">Species</h3>
+                    <p class="text-muted map-heading">@Html.Raw(@Model.Species.Name)</p>
+                    <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
+                    <p class="text-muted">
+                        @Html.Raw(Model.Species.GenusName)
+                    </p>
+                    <strong><i class="fa fa-leaf margin-r-5"></i>Family</strong>
+                    <p class="text-muted">
+                        @Html.Raw(Model.Species.FamilyName)
+                    </p>
+                    <strong><i class="fa fa-book margin-r-5"></i>Place of Publication</strong>
+                    <p class="text-muted">
+                        @Html.Raw(Model.Species.Protologue)
+                    </p>
+                    <a href="@Url.Action("SpeciesEdit","Taxonomy", new { id = Model.SpeciesID })" class="btn btn-default btn-block"><b>Edit</b></a>
                 </div>
-                <!-- /.info-box-content -->
+            </div>
+            <div class="box box-default">
+                <div class="box-body box-profile">
+                    <h3 class="profile-username text-center">Map</h3>
+                    <ul class="list-group list-group-unbordered">
+                        @if (Model.CWRMap.IsCrop)
+                        {
+                            <li class="list-group-item">
+                                <b>Common Name</b> <span class="pull-right">@Model.CWRMap.CommonName</span>
+                            </li>
+                        }
+                        @if (!String.IsNullOrEmpty(Model.CWRMap.GenepoolCode))
+                        {
+                            <li class="list-group-item">
+                                <b>Genepool</b> <span class="pull-right">@Model.CWRMap.GenepoolCode</span>
+                            </li>
+                        }
+                        <li class="list-group-item">
+                            <b>Crop</b> <span class="pull-right">@Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsCrop))</span>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Graftstock</b> <span class="pull-right">@Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsGraftStock))</span>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Potential</b> <span class="pull-right">@Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsPotential))</span>
+                        </li>
+                    </ul>
+                    <a href="@Url.Action("CWRMapEdit","Taxonomy",new { cropForCwrId = Model.CropForCWRID, cwrMapId = Model.CWRMapID })" class="btn btn-default btn-block"><b>Edit</b></a>
+                </div>
+            </div>
+            <div class="box box-default">
+                <div class="box-body box-profile">
+                    <h3 class="profile-username">Crop For CWR</h3>
+                    <p class="text-muted map-heading">@Html.Raw(Model.CropForCWR.CropName)</p>
+                    <a href="@Url.Action("CropForCwrEdit","Taxonomy", new { id = Model.CropForCWRID })" class="btn btn-default btn-block"><b>Details</b></a>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-leaf"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text"><h4><a href="">@Model.CWRMap.SpeciesName</a></h4></span>
-                    <span class="info-box-number">Species</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-        </div>
-    </div>
-
-
-    @using (Html.BeginForm("CWRTraitEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
-    {
-        @Html.HiddenFor(x => x.ID, new { name = "ID" })
-        @Html.HiddenFor(x => x.CWRMapID, new { name = "CropMapID" })
-        @Html.HiddenFor(x => x.CropForCWRID)
-        @Html.HiddenFor(x => x.SpeciesID)
-        @Html.ValidationSummary()
-
-        <div class="box box-default">
-            <div class="box-header">
-                <h3 class="box-title">Detail</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="submit" class="btn btn-default pull-right" style="margin-right:5px;" value="Save" />
-                        <input type="button" onclick="location.href='@Url.Action("CWRMapEdit", "Taxonomy", new { cwrMapId = Model.CWRMapID })'" class="btn btn-default pull-right" style="margin-right:5px;" value="Go to CWR Map" />
-                        @*<button type="button" onclick="location.href='@Url.Action("CWRMapEdit", "Taxonomy", new { cropId = Model.CropID, cwrMapId = Model.CropMapID })'" class="btn btn-default pull-right" style="margin-right:5px;">Return to Crop Map</button>*@
+        <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Detail</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-horizontal">
-                            <div class="box-body">
-                                @if (Model.ID > 0)
-                                {
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">ID</label>
-                                        <div class="col-sm-1">
-                                            <input type="text" id="txtCWRTraitID" disabled="" value="@Model.ID" class="form-control" />
-                                        </div>
-                                    </div>
-                                }
-                                <div class="form-group">
-                                    <label for="txtName" class="col-sm-2 control-label">Trait Class Code</label>
-                                    <div class="col-sm-10">
-                                        @Html.DropDownListFor(x => x.TraitClassCode, Model.TraitClassCodes, "Select a trait class code", new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                    <div class="col-sm-10">
-                                        @Html.CheckBoxFor(x => x.IsPotential)<label style="margin-left:10px;">Is Potential</label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="col-sm-2 control-label">Breeding Type Code</label>
-                                    <div class="col-sm-10">
-                                        @Html.DropDownListFor(x => x.BreedingTypeCode, Model.BreedingTypeCodes, "Select a breeding type code", new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="col-sm-2 control-label">Breeding Usage Note</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextBoxFor(x => x.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextBoxFor(x => x.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
-                                    </div>
-                                </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="submit" id="btnSave" class="btn btn-default pull-right" style="margin-right:5px;" value="Save" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-horizontal">
+                                    <div class="box-body">
 
-                                <div class="form-group">
-                                    <label for="txtSpeciesName" class="col-sm-2 control-label">Note</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                        <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
-                                    </div>
-                                </div>
+                                        @using (Html.BeginForm("CWRTraitEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+                                        {
+                                            @Html.HiddenFor(x => x.ID, new { name = "ID" })
+                                            @Html.HiddenFor(x => x.CWRMapID, new { name = "CropMapID" })
+                                            @Html.HiddenFor(x => x.CropForCWRID)
+                                            @Html.HiddenFor(x => x.SpeciesID)
+                                            @Html.ValidationSummary()
 
-                                <div class="form-group">
-                                    <label for="ddlCitations" class="col-sm-2 control-label">Citation</label>
-                                    <div class="col-sm-10">
-                                        @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                            if (Model.ID > 0)
+                                            {
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">ID</label>
+                                                    <div class="col-sm-1">
+                                                        <input type="text" id="txtCWRTraitID" disabled="" value="@Model.ID" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="form-group">
+                                                <label for="txtName" class="col-sm-2 control-label">Trait Class Code</label>
+                                                <div class="col-sm-10">
+                                                    @Html.DropDownListFor(x => x.TraitClassCode, Model.TraitClassCodes, "Select a trait class code", new { @id="ddlTraitClassCodes", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                                <div class="col-sm-10">
+                                                    @Html.CheckBoxFor(x => x.IsPotential)<label style="margin-left:10px;">Is Potential</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtName" class="col-sm-2 control-label">Breeding Type Code</label>
+                                                <div class="col-sm-10">
+                                                    @Html.DropDownListFor(x => x.BreedingTypeCode, Model.BreedingTypeCodes, "Select a breeding type code", new { @id="ddlBreedingTypeCodes", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtName" class="col-sm-2 control-label">Breeding Usage Note</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextBoxFor(x => x.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtSpeciesName" class="col-sm-2 control-label">Note</label>
+                                                <div class="col-sm-10">
+                                                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                                                    <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="ddlCitations" class="col-sm-2 control-label">Citation</label>
+                                                <div class="col-sm-10">
+                                                    @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            
+
         </div>
-    }
+    </div>
 </div>
 
 <!--
@@ -209,6 +252,15 @@ MODALS
 
 <script type="text/javascript">
 
+    $("#btnSave").click(function () {
+        $("#frmEdit").submit();
+    });
+
+    $("#ddlTraitClassCodes").change(function () {
+        var selectedValue = $(this).val();
+        LoadBreedingTypeCodes(selectedValue);
+    });
+
     /* Populate Citation DDL based on the species ID (if page is in update, vs. insert mode) */
     $(document).ready(function(){
         var speciesId = $("#hfSpeciesID").val();
@@ -223,7 +275,7 @@ MODALS
         $('#ddlSelectCitation').val(citationId);
     }
 
-     $("#btnSearchNotes").click(function () {
+    $("#btnSearchNotes").click(function () {
         var noteContext = "taxonomy_cwr_trait";
         var url = "/Taxonomy/FindNotes/";
 
@@ -258,4 +310,47 @@ MODALS
         $("#hfCitationID").val(id);
     }
 
+    function LoadBreedingTypeCodes(traitClassCode) {
+        var breedingTypeCodesSelect = $('#ddlBreedingTypeCodes');
+        breedingTypeCodesSelect.empty();
+
+        $.getJSON('@Url.Action("GetBreedingTypes")', { traitClassCode: traitClassCode }, function (breedingTypeCodes) {
+            if (breedingTypeCodes != null && !jQuery.isEmptyObject(breedingTypeCodes))
+            {
+                breedingTypeCodesSelect.append($('<option/>', {
+                    value: null,
+                    text: "Select a breeding type"
+                }));
+                $.each(breedingTypeCodes, function (index, breedingTypeCode) {
+                    breedingTypeCodesSelect.append($('<option/>', {
+                        value: breedingTypeCode.ID,
+                        text: breedingTypeCode.Title
+                    }));
+                });
+            };
+        });
+    }
+
+    function LoadCitations(speciesId) {
+        var citationsSelect = $('#ddlCitations');
+        citationsSelect.empty();
+
+        if (speciesId != null && speciesId != '') {
+            $.getJSON('@Url.Action("GetCitations")', { speciesId: speciesId }, function (citations) {
+                if (citations != null && !jQuery.isEmptyObject(citations))
+                {
+                    citationsSelect.append($('<option/>', {
+                        value: null,
+                        text: "Select a citation"
+                    }));
+                    $.each(citations, function (index, citation) {
+                        citationsSelect.append($('<option/>', {
+                            value: citation.ID,
+                            text: citation.Title
+                        }));
+                    });
+                };
+            });
+        }
+    }
 </script>

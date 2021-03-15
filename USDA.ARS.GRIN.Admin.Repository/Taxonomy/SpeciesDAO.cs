@@ -52,7 +52,37 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public Species Get(int id)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT_NAME = "usp_TaxonomySpecies_Select";
+            Species species = new Species();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT_NAME;
+                    cmd.Parameters.AddWithValue("@taxonomy_species_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        species = new Species();
+                        species.ID = GetInt(reader["taxonomy_species_id"].ToString());
+                        species.Name = reader["taxonomy_name"].ToString();
+                        species.GenusName = reader["genus_name"].ToString();
+                        species.FamilyName = reader["family_name"].ToString();
+                        species.Protologue = reader["protologue"].ToString();
+                        species.Authority = reader["name_authority"].ToString();
+                        // TO DO: ADDITIONAL FIELDS FOR CRUD OPERATIONS
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return species;
         }
         public ResultContainer Add(Species entity)
         {

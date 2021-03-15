@@ -239,8 +239,10 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 }
                                 cwrTrait.CreatedDate = GetDate(reader["created_date"].ToString());
                                 cwrTrait.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                cwrTrait.CreatedByCooperatorName = reader["created_by_name"].ToString();
                                 cwrTrait.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 cwrTrait.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                cwrTrait.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                             }
                         }
                     }

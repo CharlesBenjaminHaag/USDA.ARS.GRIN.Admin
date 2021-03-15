@@ -52,9 +52,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                                 crop.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
-                                crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                                crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
-
+                               
                                 if (reader["note"] != DBNull.Value)
                                 {
                                     crop.Note = reader["note"].ToString();

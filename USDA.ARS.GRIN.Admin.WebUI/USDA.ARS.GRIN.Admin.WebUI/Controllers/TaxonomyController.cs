@@ -608,8 +608,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 else
                 {
                     TempData["context"] = "Add CWR Trait";
+                    cwrTraitViewModel.CropForCWRID = cropForCwrId;
+                    cwrTraitViewModel.SpeciesID = speciesId;
                     cwrTraitViewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                 }
+                cwrTraitViewModel.CropForCWR = taxonomyService.GetCropForCWR(cwrTraitViewModel.CropForCWRID);
+                cwrTraitViewModel.Species = taxonomyService.GetSpecies(cwrTraitViewModel.SpeciesID);
             }
             catch (Exception ex)
             {
@@ -626,6 +630,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             CWRTrait cropTrait = new CWRTrait();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
+            // TO DO: HANDLE VALIDATION
             //if (!ModelState.IsValid)
             //{
             //    return View("~/Views/Taxonomy/Crop/Trait/Edit.cshtml", viewModel);
@@ -994,10 +999,59 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return Json(citations, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult GetBreedingTypes(string traitClassCode)
+        {
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            IEnumerable <CodeValueReferenceItem> breedingTypeCodes = _taxonomyService.GetBreedingTypeCodes(traitClassCode);
+            return Json(breedingTypeCodes, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion Species
 
         #region Citation
+        public ActionResult CitationHome()
+        {
+            CitationHomeViewModel viewModel = new CitationHomeViewModel();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            TempData["context"] = "Citation Home";
+            return View("~/Views/Taxonomy/Citation/Index.cshtml", viewModel);
+        }
+
+        public PartialViewResult CitationListByUser()
+        {
+            CitationSearchViewModel viewModel = new CitationSearchViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                //viewModel.Citations = _taxonomyService.f.fi.FindUserCWRTraits(AuthenticatedUser.CooperatorID);
+                return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("~/Views/Error/_Error.cshtml", viewModel);
+            }
+        }
+
+        //[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public PartialViewResult CitationListRecent()
+        {
+            CWRTraitSearchViewModel viewModel = new CWRTraitSearchViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                viewModel.CWRTraits = _taxonomyService.FindRecentCWRTraits();
+                return PartialView("~/Views/Taxonomy/CWRTrait/_SearchResults.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("~/Views/Error/_Error.cshtml", viewModel);
+            }
+        }
+
+
         public PartialViewResult CitationDetail(int citationId)
         {
             Citation citation = new Citation();

@@ -31,7 +31,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int CitationID { get; set; }
         public string CitationTitle { get; set; }
         public CWRMap CWRMap { get; set; }
-
+        public CropForCWR CropForCWR { get; set; }
+        public Species Species { get; set; }
         public CWRTraitViewModel()
          {
         }

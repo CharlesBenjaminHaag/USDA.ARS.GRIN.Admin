@@ -1,24 +1,37 @@
 ﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Note>
-<table>
+<br />
+<h4>@Model.Count() results found</h4>
+<table class="table table-striped">
     <thead>
         <tr>
-            |<th>Note</th>
+            <th>Note</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var note in Model)
+        @if (Model.Count() > 0)
+        {
+            foreach (var note in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.Raw(note.NoteText)
+                    </td>
+                    <td>
+                        <button id="btnAuthor1" value="@note.NoteText" class="btn btn-primary btn-small proto pull-right" onclick="SelectNote(this.value);return false;">Select</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
         { 
-        <tr>
-            <td>
-                <div class="comment-text" style="padding:15px;">
-                    @Html.Raw(note.NoteText)
-                </div>
-            </td>
-            <td style="padding:2px;">
-                <button id="btnAuthor1" value="@note.NoteText" class="btn btn-primary btn-small proto" onclick="SelectNote(this.value);return false;">Select</button>
-            </td>
-        </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:5px;">
+                        Your search returned no matches.
+                    </div>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

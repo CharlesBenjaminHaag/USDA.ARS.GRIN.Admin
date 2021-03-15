@@ -32,6 +32,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string Protologue { get; set; }
         public int GenusID { get; set; }
         public string GenusName { get; set; }
+        public string FamilyName { get; set; }
         public bool IsNamePending { get; set; }
         public string SynonymCode { get; set; }
         public int VerifierCooperatorID { get; set; }

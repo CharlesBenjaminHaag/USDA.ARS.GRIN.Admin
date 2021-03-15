@@ -95,7 +95,7 @@
                 </span>
             </a>
             <ul class="treeview-menu" style="display: block;">
-                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
+                @*<li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationHome", "Taxonomy")">
                         <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
                         <span>Regulation</span>
@@ -105,6 +105,12 @@
                     <a href="@Url.Action("RegulationMapHome", "Taxonomy")">
                         <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
                         <span>Regulation Map</span>
+                    </a>
+                </li>*@
+                <li class="@Url.IsLinkActive("CitationHome", "Taxonomy")">
+                    <a href="@Url.Action("CitationHome", "Taxonomy")">
+                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
+                        <span>Citations</span>
                     </a>
                 </li>
             </ul>

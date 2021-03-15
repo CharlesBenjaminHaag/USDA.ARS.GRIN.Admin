@@ -450,6 +450,8 @@ MODALS
         var url = "/Taxonomy/FindNotes/";
         var inputSearchString = $("#txtSearchNotes").val();
 
+        console.log("DEBUG SEARCH FOR "  + inputSearchString);
+
         $.post(url, { searchString: inputSearchString, context: noteContext })
             .done(function (response) {
                 $("#section-note-search-results").html(response);

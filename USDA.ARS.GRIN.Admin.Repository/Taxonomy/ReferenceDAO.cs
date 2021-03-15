@@ -180,7 +180,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
             try
             {
-                String commandText = "usp_SearchCitations";
+                String commandText = "usp_TaxonomyCitation_Search";
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
