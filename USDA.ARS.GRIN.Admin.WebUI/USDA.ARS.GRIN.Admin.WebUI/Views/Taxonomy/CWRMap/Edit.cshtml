@@ -109,7 +109,7 @@
                                     <label for="txtSpeciesName" class="col-sm-2 control-label">Note</label>
                                     <div class="col-sm-10">
                                         @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                        <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                                        <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -118,6 +118,7 @@
                                         @if (Model.ID > 0)
                                         {
                                             @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
+                                            <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:1em;" onclick="location.href='@Url.Action("CitationEdit", "Taxonomy", new { citationId = 0, speciesId = Model.SpeciesID })'">Add Citation</button>
                                         }
                                     </div>
                                 </div>

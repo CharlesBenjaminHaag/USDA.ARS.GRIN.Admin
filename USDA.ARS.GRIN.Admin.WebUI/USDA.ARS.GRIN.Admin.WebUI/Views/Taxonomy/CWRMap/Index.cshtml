@@ -25,7 +25,7 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-records" title="CWRMapListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                    <a href="#tab_1" id="tab-my-records" title="CWRMapListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">By User</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
                     <a href="#tab_2" id="tab-recently-added" title="CWRMapListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
@@ -42,6 +42,22 @@
                 <!-- ============================================================================================== -->
                 <div class="tab-pane active" id="tab_1">
                     <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-3" style="padding-left:0px;">
+                                        <div class="input-group" style="margin-left:0px;">
+                                            <select class="form-control disabled">
+                                                <option>Schori, Melanie</option>
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Filter</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div id="section-my-records">
                         </div>
                     </div>
@@ -67,7 +83,7 @@
                                 <div class="form-group">
                                     <div class="col-md-7" style="padding-left:0px;">
                                         <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtCropName" name="CropName" placeholder="Type name ..." class="form-control">
+                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type name ..." class="form-control">
                                             <span class="input-group-btn">
                                                 <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
                                             </span>
@@ -140,25 +156,65 @@
 </div>
 
 
-<!-- ============================================================================================== -->
-<!-- APPLY TRAIT MODAL -->
-<!-- ============================================================================================== -->
-<div class="modal fade" id="modal-apply-trait">
-    <div class="modal-dialog">
+<!--
+=====================================================================================
+CWR-TRAIT MODAL
+=====================================================================================
+-->
+<div class="modal fade" id="modal-cwr-trait">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Apply Trait</h4>
+                <h4 class="modal-title">Apply CWR Trait to Selected Records</h4>
             </div>
-      
+            <div class="modal-body">
+                <div class="row" style="margin-bottom:1.2rem;">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Trait Class</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(x => Model.CWRTraitViewModel.TraitClassCode, Model.CWRTraitViewModel.TraitClassCodes, "Select a trait class code", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:1.2rem;">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Breeding Type</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(x => x.CWRTraitViewModel.BreedingTypeCode, Model.CWRTraitViewModel.BreedingTypeCodes, "Select a breeding type code", new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:1.2rem;">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Breeding Usage</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(x => x.CWRTraitViewModel.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
+                        <div class="col-sm-10">
+                            @Html.TextBoxFor(x => x.CWRTraitViewModel.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveTrait" class="btn btn-primary">Save changes</button>
             </div>
         </div>
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
 </div>
+
 
 
 <!-- Page Script -->
@@ -181,35 +237,17 @@
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
             $(displaySection).load(link);
-            //$('#search-results').DataTable({
-            //    'destroy': true,
-            //    'paging': true,
-            //    'lengthChange': false,
-            //    'searching': false,
-            //    'ordering': true,
-            //    'info': true,
-            //    'autoWidth': false
-            //});
         }
     });
 
-    $("#btnSearch").click(function () {
-        var value = $("#txtCropName").val();
+     $(document).on("click", "[id*='btnSearch']", function () {
+        var value = $("#txtSearchText").val();
+
         var url = '@Url.Action("CWRMapSearch", "Taxonomy")';
 
         $.get(url, { searchText: value })
         .done(function (response) {
             $("#section-search-results").html(response);
-
-            //$('#search-results').DataTable({
-            //    'destroy': true,
-            //    'paging': true,
-            //    'lengthChange': false,
-            //    'searching': false,
-            //    'ordering': true,
-            //    'info': true,
-            //    'autoWidth': false
-            //});
         });
     });
 
@@ -237,12 +275,47 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
-                //alert("DEBUG SUCCESS");
+
             },
             error: function () {
                 //alert("error");
             }
         });
     });
+
+     $("#btnSaveTrait").click(function () {
+        var valueArray = [];
+        var traitClassCode = "";
+        var breedingTypeCode = "";
+        var breedingUsageNote = "";
+        var ontologyTraitIdentifier = "";
+
+        $('#modal-cwr-trait').modal('hide');
+
+        traitClassCode = $("#CWRTraitViewModel_TraitClassCode").val();
+        breedingTypeCode = $("#CWRTraitViewModel_BreedingTypeCode").val();
+        breedingUsageNote = $("#txtBreedingUsageNote").val();
+        ontologyTraitIdentifier = $("#txtOntologyTraitIdentifier").val();
+
+         $(".mailbox-messages input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        $.ajax({
+            url: '@Url.Action("ApplyCWRTrait","Taxonomy")',
+            type: "GET",
+            data: { traitClassCode: traitClassCode, breedingTypeCode: breedingTypeCode, breedingUsageNote: breedingUsageNote, ontologyTraitIdentifier: ontologyTraitIdentifier, cwrMapIdList:valueArray.toString() },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                var link = '@Url.Action("CWRMapListByUser", "Taxonomy")';
+                $("#section-my-records").load(link);
+            }
+        });
+    });
+
 
 </script>

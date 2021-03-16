@@ -335,6 +335,8 @@
     <Content Include="Views\Taxonomy\CWRMap\Manager.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\_LiteratureSearchResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -408,6 +410,7 @@
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationSearchViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Citation\CitationViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRViewModel.cs" />

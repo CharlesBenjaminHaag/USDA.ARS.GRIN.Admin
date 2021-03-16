@@ -28,7 +28,7 @@
 
             @if (Model.CWRMaps.Count() > 0)
             {
-            <table id="search-results" class="table table-hover table-striped">
+            <table id="search-results" class="table table-hover table-striped ggtools">
                 <thead>
                     <tr>
                         <th width="5%"></th>
@@ -40,6 +40,7 @@
                         <th style="text-align:center;">Graftstock?</th>
                         <th style="text-align:center;">Potential?</th>
                         <th style="text-align:center;">Crop?</th>
+                        <th style="text-align:center;">Traits</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -71,6 +72,12 @@
                         <td style="text-align:center;">@Html.Raw(DisplayHelper.GetBooleanDisplayString(cwrMap.IsPotential))</td>
                         <td style="text-align:center;">
                             @Html.Raw(DisplayHelper.GetBooleanDisplayString(cwrMap.IsCrop))
+                        </td>
+                        <td style="text-align:center;">
+                            @if (cwrMap.CWRTraitCount > 0)
+                            {
+                                <span class="label label-default">@cwrMap.CWRTraitCount</span>
+                            }
                         </td>
                         <td>
                             <a href="@Url.Action("CWRMapEdit", "Taxonomy", new { cropForCwrId = cwrMap.CropForCWRID, cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">

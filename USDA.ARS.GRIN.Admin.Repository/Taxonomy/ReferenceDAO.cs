@@ -140,73 +140,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return notes.AsEnumerable();
         }
-
-        public Citation GetCitation(int id)
-        {
-            Citation citation = new Citation();
-
-            try
-            {
-                String commandText = "usp_Citation_Select";
-
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@citation_id", id);
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                citation = new Citation { ID = Int32.Parse(reader["citation_id"].ToString()), Title = reader["reference_title"].ToString() };
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return citation;
-        }
-
-        public IEnumerable<Citation> FindCitations(string searchString)
-        {
-            List<Citation> citations = new List<Citation>();
-
-            try
-            {
-                String commandText = "usp_TaxonomyCitation_Search";
-
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@search_string", searchString);
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                citations.Add(new Citation { ID = Int32.Parse(reader["citation_id"].ToString()), Title = reader["citation_text"].ToString() });
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return citations.AsEnumerable();
-        }
-
         public List<Citation> GetCitations(int speciesId)
         {
             List<Citation> citations = new List<Citation>();
@@ -243,7 +176,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return citations;
         }
-
         public IEnumerable<ReferenceItem> FindReferenceItems(string searchString)
         {
             List<ReferenceItem> referenceItems = new List<ReferenceItem>();
@@ -275,7 +207,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return referenceItems.AsEnumerable();
         }
-
         public IEnumerable<Protologue> FindAllProtologues()
         {
             string CacheKey = "PROTOLOGUES";

@@ -20,8 +20,8 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected CwrMapDAO _cwrMapDAO = null;
         protected CwrTraitDAO _cwrTraitDAO = null;
         protected FolderDAO _folderDAO = null;
+        protected CitationDAO _citationDAO = null;
         protected ReferenceDAO _referenceDAO = null;
-        
         protected RegulationDAO _regulationDAO = null;
         protected ReportDAO _reportDAO = null;
 
@@ -35,6 +35,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             this._cwrMapDAO = new CwrMapDAO(context);
             this._cwrTraitDAO = new CwrTraitDAO(context);
             this._folderDAO = new FolderDAO(context);
+            this._citationDAO = new CitationDAO(context);
             this._referenceDAO = new ReferenceDAO(context);
             this._regulationDAO = new RegulationDAO(context);
             this._reportDAO = new ReportDAO(context);
@@ -181,6 +182,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _cwrMapDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())");
         }
 
+        public IQueryable<CWRMap> FindRelatedCWRMaps(int cropForCwrId)
+        {
+            return _cwrMapDAO.Search("WHERE taxonomy_cwr_crop_id = " + cropForCwrId);
+        }
+
         public ResultContainer AddCWRMap(CWRMap cropMap)
         {
             return _cwrMapDAO.Add(cropMap);
@@ -259,12 +265,12 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public Citation GetCitation(int id)
         {
-            return _referenceDAO.GetCitation(id);
+            return _citationDAO.Get(id);
         }
 
         public IEnumerable<Citation> FindCitations(string searchString)
         {
-            return _referenceDAO.FindCitations(searchString);
+            return _citationDAO.Search(searchString);
         }
 
         public List<Citation> FindCitations(int speciesId)
@@ -274,12 +280,12 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public IEnumerable<Citation> FindUserCitations(int cooperatorId)
         {
-            return _referenceDAO.FindCitations("WHERE tct.modified_date > DATEADD(MONTH, -1, GETDATE())");
+            return _citationDAO.Search("WHERE cit.owned_by = " + cooperatorId.ToString());
         }
 
-        public List<Citation> FindRecentCitations()
+        public IEnumerable<Citation> FindRecentCitations()
         {
-            return null;
+            return _citationDAO.Search("WHERE cit.modified_date > DATEADD(MONTH, -1, GETDATE())");
         }
 
         #endregion

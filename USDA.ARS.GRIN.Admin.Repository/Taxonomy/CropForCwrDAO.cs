@@ -337,6 +337,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 cwrMap.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                                 cwrMap.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 cwrMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                cwrMap.CWRTraitCount = GetInt(reader["taxonomy_cwr_trait_count"].ToString());
                                 cwrMapList.Add(cwrMap);
                             }
                         }

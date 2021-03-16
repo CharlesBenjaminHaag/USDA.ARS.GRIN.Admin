@@ -414,7 +414,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 citation.ID = GetInt(reader["citation_id"].ToString());
                                 citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
                                 citation.AuthorName = reader["author_name"].ToString();
-                                citation.Year = GetInt(reader["citation_year"].ToString());
+                                citation.CitationYear = reader["citation_year"].ToString();
                                 citation.Reference = reader["reference"].ToString();
                                 citation.DOIReference = reader["doi_reference"].ToString();
                                 citation.URL = reader["url"].ToString();
@@ -454,7 +454,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
                             citation.Title = reader["citation_title"].ToString();
                             citation.AuthorName = reader["author_name"].ToString();
-                            citation.Year = Int32.Parse(reader["citation_year"].ToString());
+                            citation.CitationYear = reader["citation_year"].ToString();
                         }
                     }
                 }

@@ -1,0 +1,213 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .box-body {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+</style>
+
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("CitationEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID, new { id = "hfCitationID", name = "ID" })
+    @Html.ValidationSummary()
+<div class="box box-default">
+    <div class="box-header">
+        <h3 class="box-title">
+            Detail
+        </h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-1" data-select2-id="14">
+                <div class="form-group" data-select2-id="13">
+                    <label>ID</label>
+                    <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+                </div>
+
+            </div>
+            <!-- /.col -->
+            <div class="col-md-8">
+                <!-- /.form-group -->
+                <div class="form-group">
+                    <label>Citation Title</label>
+                    @Html.TextBoxFor(x => x.CitationTitle, new { @id = "txtCitationText", @class = "form-control" })
+                </div>
+                <!-- /.form-group -->
+
+            </div>
+            <div class="col-md-3">
+                <label>Author</label>
+                @Html.TextBoxFor(x => x.AuthorName, new { @id = "txtAuthorName", @class = "form-control" })
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>DOI Reference</label>
+                @Html.TextBoxFor(x => x.DOIReference, new { @id = "txtDOIReference", @class = "form-control" })
+            </div>
+            <div class="col-md-6">
+                <label>Reference</label>
+                @Html.TextBoxFor(x => x.Reference, new { @id = "txtReference", @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                <label>Year</label>
+                @Html.TextBoxFor(x => x.Year, new { @id = "txtYear", @class = "form-control" })
+            </div>
+        </div>
+        <div class="row" style="margin-top:1em;">
+            <div class="col-md-12">
+                <label>Note</label>
+                @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                <button type="button" class="btn btn-default" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.ID > 0)
+    {
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <i class="fa fa-book"></i>
+                <h3 class="box-title">Literature</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <dl>
+                    <dt>Abbreviation</dt>
+                    <dd>A description list is perfect for defining terms.</dd>
+                    <dt>Standard Abbreviation</dt>
+                    <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+                    <dt>Reference Title</dt>
+                    <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+                </dl>
+
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-literature-search">Search Literature...</button>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    }
+        <div class="box-footer" style="border:none;">
+            <button type="submit" class="btn btn-success">Save Edits</button>
+        </div>
+    </div>
+}
+
+
+<div class="modal fade" id="modal-note-search">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Note Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchNotes" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchNotes" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-note-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="modal-literature-search">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Literature Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" id="txtSearchLiterature" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" id="btnSearchLiterature" class="btn btn-info btn-flat">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="section-literature-search-results">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script>
+    $("#btnSearchNotes").click(function () {
+        var noteContext = "taxonomy_cwr_map";
+        var url = "/Taxonomy/FindNotes/";
+        var inputSearchString = $("#txtSearchNotes").val();
+
+        $.post(url, { searchString: inputSearchString, context: noteContext })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+            });
+    });
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        $("#txtNote").val(noteText);
+    }
+
+    $("#btnSearchLiterature").click(function () {
+        var noteContext = "taxonomy_cwr_map";
+        var url = "/Taxonomy/FindLiterature/";
+        var inputSearchString = $("#txtSearchLiterature").val();
+
+        $.post(url, { searchString: inputSearchString, context: noteContext })
+            .done(function (response) {
+                $("#section-litertature-search-results").html(response);
+            });
+    });
+</script>

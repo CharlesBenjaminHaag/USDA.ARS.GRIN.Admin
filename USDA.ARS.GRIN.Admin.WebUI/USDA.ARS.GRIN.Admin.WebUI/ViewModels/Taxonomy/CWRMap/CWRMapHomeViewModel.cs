@@ -14,11 +14,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CWRMapHomeViewModel : BaseSearchViewModel
     {
-        //public CropTraitEditViewModel CropTraitViewModel { get; set; }
-
+        public CWRTraitViewModel CWRTraitViewModel { get; set; }
+ 
         public CWRMapHomeViewModel()
         {
-            // CropTraitViewModel = new CropTraitEditViewModel();
+            CWRTraitViewModel = new CWRTraitViewModel();
         }
     }
 }

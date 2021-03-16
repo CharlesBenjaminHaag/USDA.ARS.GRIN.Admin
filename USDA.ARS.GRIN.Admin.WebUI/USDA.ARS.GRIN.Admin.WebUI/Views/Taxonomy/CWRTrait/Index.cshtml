@@ -25,7 +25,7 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-records" title="CWRTraitListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
+                    <a href="#tab_1" id="tab-my-records" title="CWRTraitListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">By User</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
                     <a href="#tab_2" id="tab-recently-added" title="CWRTraitListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
@@ -36,38 +36,38 @@
                     </a>
                 </li>
             </ul>
-            <!--<div class="tab-content">-->
-                <!-- ============================================================================================== -->
-                <!-- MY-RECORDS TAB -->
-                <!-- ============================================================================================== -->
-                <!--<div class="tab-pane active" id="tab_1">
+            <div class="tab-content">
+                 @*============================================================================================== 
+                 MY-RECORDS TAB 
+                 ==============================================================================================*@ 
+                <div class="tab-pane active" id="tab_1">
                     <div class="box-body">
                         <div id="section-my-records">
                         </div>
                     </div>
-                </div>-->
+                </div>
 
-                <!-- ============================================================================================== -->
-                <!-- RECENTLY-ADDED TAB -->
-                <!-- ============================================================================================== -->
-                <!--<div class="tab-pane" id="tab_2">
+                 @*============================================================================================== 
+                 RECENTLY-ADDED TAB 
+                 ==============================================================================================*@ 
+                <div class="tab-pane" id="tab_2">
                     <div class="box-body">
                         <div id="section-recently-added">
                         </div>
                     </div>
-                </div>-->
+                </div>
 
-                <!-- ============================================================================================== -->
-                <!-- SEARCH TAB -->
-                <!-- ============================================================================================== -->
-                <!--<div class="tab-pane" id="tab_3">
+                 @*============================================================================================== 
+                 SEARCH TAB 
+                 ==============================================================================================*@ 
+                <div class="tab-pane" id="tab_3">
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <div class="col-md-7" style="padding-left:0px;">
+                                    <div class="col-md-4" style="padding-left:0px;">
                                         <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtCropName" name="CropName" placeholder="Type name ..." class="form-control">
+                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type name ..." class="form-control">
                                             <span class="input-group-btn">
                                                 <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
                                             </span>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
         </div>
         <div id="section-search-results"></div>
     </div>
@@ -145,7 +145,7 @@
 
     $(document).ready(function(){
         var link = '@Url.Action("CWRTraitListByUser", "Taxonomy")';
-        $("#section-search-results").load(link);
+        $("#section-my-records").load(link);
     });
 
     $(".selector-tab").click(function () {
@@ -159,22 +159,21 @@
         if (action != '') {
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
-            $("#section-search-results").load(link);
-
-            //$('#search-results').DataTable({
-                
-            //    'paging': true,
-            //    'lengthChange': false,
-            //    'searching': false,
-            //    'ordering': true,
-            //    'info': true,
-            //    'autoWidth': false
-            //});
+            $(displaySection).load(link);
         }
     });
 
-    $("#btnSearch").click(function () {
-        var value = $("#txtCropName").val();
+    $(document).on("click", "[id*='btnSearch']", function () {
+        var value = $("#txtSearchText").val();
+        var url = '@Url.Action("CWRTraitSearch", "Taxonomy")';
+
+        $.get(url, { searchText: value })
+        .done(function (response) {
+            $("#section-search-results").html(response);
+        });
+    });
+    @*$("#btnSearch").click(function () {
+        var value = $("#txtSearchText").val();
         var url = '@Url.Action("CWRTraitSearch", "Taxonomy")';
 
         $.get(url, { searchText: value })
@@ -191,7 +190,7 @@
                 'autoWidth': false
             });
         });
-    });
+    });*@
 
     $("#btnCreateFolderSearchResults").click(function () {
         var valueArray = [];

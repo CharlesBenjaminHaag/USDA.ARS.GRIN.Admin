@@ -59,6 +59,7 @@
     <Compile Include="GRINGlobal\OrderRequestDAO.cs" />
     <Compile Include="GRINGlobal\WebOrderRequestDAO.cs" />
     <Compile Include="Taxonomy\AccessionDAO.cs" />
+    <Compile Include="Taxonomy\CitationDAO.cs" />
     <Compile Include="Taxonomy\CwrMapDAO.cs" />
     <Compile Include="Taxonomy\CwrTraitDAO.cs" />
     <Compile Include="Taxonomy\FamilyDAO.cs" />

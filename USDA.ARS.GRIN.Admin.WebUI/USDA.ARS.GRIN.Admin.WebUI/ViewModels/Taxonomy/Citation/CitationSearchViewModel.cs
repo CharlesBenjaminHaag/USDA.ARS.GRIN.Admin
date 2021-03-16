@@ -11,6 +11,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CitationSearchViewModel
     {
-        public List<Citation> Citations { get; set; }
+        public IEnumerable<Citation> Citations { get; set; }
     }
 }

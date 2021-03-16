@@ -49,7 +49,7 @@
                                         <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@citation.ID">
                                     </td>
                                     <td>
-                                        <span class="label label-default">citation.ID</span>
+                                        <span class="label label-default">@citation.ID</span>
                                     </td>
                                     <td>
                                         @citation.Title
@@ -61,7 +61,7 @@
                                         @citation.AuthorName
                                     </td>
                                     <td>
-                                        @citation.Year
+                                        @citation.CitationYear
                                     </td>
                                     <td>
                                         <a href="@Url.Action("CitationEdit", "Taxonomy", new { id = citation.ID })" class="btn btn-primary btn-sm pull-right row-edit">

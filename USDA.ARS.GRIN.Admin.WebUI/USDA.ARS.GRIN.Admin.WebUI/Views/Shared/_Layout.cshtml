@@ -131,6 +131,23 @@
     //    }
     //});
 
+    function InitializeDataTable() {
+        $(document).ready(function () {
+            //if (!$.fn.DataTable.isDataTable('#search-results')) {
+            //$('#search-results').DataTable().destroy();
+            $('table.ggtools').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+            //}
+        });
+    }
+
     $(".menu-item-selector").click(function () {
 
         event.preventDefault();

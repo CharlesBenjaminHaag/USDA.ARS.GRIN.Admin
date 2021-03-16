@@ -23,6 +23,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
 
         public CropForCWR CropForCWR { get; set; }
         public Species Species { get; set; }
+        public int CWRTraitCount { get; set; }
         public List<CWRTrait> CWRTraits { get; set; }
 
         public CWRMap()

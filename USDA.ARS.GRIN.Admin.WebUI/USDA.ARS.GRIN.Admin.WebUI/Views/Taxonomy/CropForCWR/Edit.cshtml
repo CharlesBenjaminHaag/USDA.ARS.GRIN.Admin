@@ -75,7 +75,7 @@
                                 <label for="txtNote" class="col-sm-2 control-label">Note</label>
                                 <div class="col-sm-10">
                                     @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                    <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                                    <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
         </div>
         <div id="section-crop-map-list" class="box-body">
             <div class="row">
-                <div class="col-md-12">
+                <div id="section-cwr-map-list" class="col-md-12">
                     @{Html.RenderAction("CWRMapList", "Taxonomy", new { cropId = Model.ID });}
                 </div>
             </div>
@@ -157,7 +157,7 @@ CWR-TRAIT MODAL
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Apply CWR Trait</h4>
+                <h4 class="modal-title">Apply CWR Trait to Selected Records</h4>
             </div>
             <div class="modal-body">
                 <div class="row" style="margin-bottom:1.2rem;">
@@ -233,7 +233,7 @@ CWR-TRAIT MODAL
         var breedingTypeCode = "";
         var breedingUsageNote = "";
         var ontologyTraitIdentifier = "";
-    
+
         $('#modal-cwr-trait').modal('hide');
 
         traitClassCode = $("#CWRTraitViewModel_TraitClassCode").val();
@@ -255,7 +255,8 @@ CWR-TRAIT MODAL
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-
+                var link = '@Url.Action("CWRMapListByCWRCrop", "Taxonomy", new { cropForCwrId = Model.ID })';
+                $("#section-cwr-map-list").load(link);
             }
         });
     });

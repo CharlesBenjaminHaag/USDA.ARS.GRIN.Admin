@@ -41,58 +41,24 @@
                 <!-- ============================================================================================== -->
                 <div class="tab-pane active" id="tab_1">
                     <div class="box-body">
-
-                        <form class="form-horizontal">
-                            <div class="row">
-                                <div class="col-md-3">
-
-                                    <div class="form-group">
-                                        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-
-                                        <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-3" style="padding-left:0px;">
+                                        <div class="input-group" style="margin-left:0px;">
+                                            <select class="form-control disabled">
+                                                <option>Schori, Melanie</option>
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Filter</button>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </form>
-
-
-
-                            @*<div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-
-                                        <div class="col-md-2">
-                                            <input type="text" class="form-control" />
-                                        </div>
-
-                                        <div class="col-md-3" style="padding-left:0px;">
-                                            <div class="input-group" style="margin-left:0px;">
-                                                <select class="form-control">
-                                                    <option>Leon, Blanca</option>
-                                                    <option>Schori, Melanie</option>
-                                                </select>
-                                                <span class="input-group-btn">
-                                                    <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
-                            <div id="section-my-crops">
-                            </div>
+                        </div>
+                        <div id="section-my-crops">
+                        </div>
                     </div>
                 </div>
 
@@ -116,7 +82,7 @@
                                 <div class="form-group">
                                     <div class="col-md-7" style="padding-left:0px;">
                                         <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtCropName" name="CropName" placeholder="Type crop name ..." class="form-control">
+                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type crop name ..." class="form-control">
                                             <span class="input-group-btn">
                                                 <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
                                             </span>
@@ -214,7 +180,20 @@
         }
     });
 
-    $("#btnSearch").click(function () {
+    $(document).on("click", "[id*='btnSearch']", function () {
+        var value = $("#txtSearchText").val();
+
+        var url = '@Url.Action("CropForCWRSearch", "Taxonomy")';
+
+        $.get(url, { searchText: value })
+        .done(function (response) {
+            $("#section-search-results").html(response);
+        });
+    });
+
+
+
+    @*$("#btnSearch").click(function () {
         var value = $("#txtCropName").val();
 
         $.ajax({
@@ -232,7 +211,7 @@
 
 
 
-    });
+    });*@
 
     $("#btnCreateFolderSearchResults").click(function () {
         var valueArray = [];

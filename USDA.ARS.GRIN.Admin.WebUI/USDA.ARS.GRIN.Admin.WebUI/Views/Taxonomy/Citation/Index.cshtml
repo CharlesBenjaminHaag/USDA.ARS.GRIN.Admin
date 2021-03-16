@@ -42,7 +42,7 @@
                 <!-- ============================================================================================== -->
                 <div class="tab-pane active" id="tab_1">
                     <div class="box-body">
-                        <div id="section-my-records">
+                        <div id="section-by-user">
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
 <script>
     $(document).ready(function(){
         var link = '@Url.Action("CitationListByUser", "Taxonomy")';
-        $("#section-my-records").load(link);
+        $("#section-by-user").load(link);
     });
 
     $(".selector-tab").click(function () {
@@ -105,36 +105,22 @@
         if (action != '') {
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
+
+            //DEBUG
+            console.log(link);
+
+
             $(displaySection).load(link);
-            //$('#search-results').DataTable({
-            //    'destroy': true,
-            //    'paging': true,
-            //    'lengthChange': false,
-            //    'searching': false,
-            //    'ordering': true,
-            //    'info': true,
-            //    'autoWidth': false
-            //});
         }
     });
 
-    $("#btnSearch").click(function () {
-        var value = $("#txtCropName").val();
-        var url = '@Url.Action("CWRMapSearch", "Taxonomy")';
+    $(document).on("click", "[id*='btnSearch']", function () {
+        var value = $("#txtSearchText").val();
+        var url = '@Url.Action("CitationSearch", "Taxonomy")';
 
         $.get(url, { searchText: value })
         .done(function (response) {
             $("#section-search-results").html(response);
-
-            //$('#search-results').DataTable({
-            //    'destroy': true,
-            //    'paging': true,
-            //    'lengthChange': false,
-            //    'searching': false,
-            //    'ordering': true,
-            //    'info': true,
-            //    'autoWidth': false
-            //});
         });
     });
 </script>
