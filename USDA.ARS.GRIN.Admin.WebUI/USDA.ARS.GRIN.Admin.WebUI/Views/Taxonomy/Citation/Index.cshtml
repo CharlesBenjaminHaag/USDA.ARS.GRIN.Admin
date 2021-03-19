@@ -8,6 +8,7 @@
 <!-- TABBED VIEW -->
 <!-- ============================================================================================== -->
 <div class="box box-primary" style="padding:10px;">
+    
     <div class="box-header with-border">
         <h3 class="box-title">Citation</h3>
 
@@ -22,6 +23,9 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
+        <div class="overlay">
+            <i class="fa fa-refresh fa-spin"></i>
+        </div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
@@ -37,11 +41,13 @@
                 </li>
             </ul>
             <div class="tab-content">
+
                 <!-- ============================================================================================== -->
                 <!-- MY-RECORDS TAB -->
                 <!-- ============================================================================================== -->
                 <div class="tab-pane active" id="tab_1">
-                    <div class="box-body">
+                    <div class="xbox-body">
+
                         <div id="section-by-user">
                         </div>
                     </div>
@@ -51,7 +57,7 @@
                 <!-- RECENTLY-ADDED TAB -->
                 <!-- ============================================================================================== -->
                 <div class="tab-pane" id="tab_2">
-                    <div class="box-body">
+                    <div class="xbox-body">
                         <div id="section-recently-added">
                         </div>
                     </div>
@@ -61,7 +67,7 @@
                 <!-- SEARCH TAB -->
                 <!-- ============================================================================================== -->
                 <div class="tab-pane" id="tab_3">
-                    <div class="box-body">
+                    <div class="xbox-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -88,10 +94,34 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function(){
+<script type="text/javascript">
+
+    $(document).on({
+        ajaxStart: function () {
+            $("body").addClass("loading");
+        },
+        ajaxStop: function () {
+            alert("DEBUG AJAX STOP");
+            $(".overlay").hide();
+        }
+    });
+
+
+    $(document).ready(function () {
         var link = '@Url.Action("CitationListByUser", "Taxonomy")';
-        $("#section-by-user").load(link);
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                success:
+                    function (response) {
+                        $("#section-by-user").html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
     });
 
     $(".selector-tab").click(function () {

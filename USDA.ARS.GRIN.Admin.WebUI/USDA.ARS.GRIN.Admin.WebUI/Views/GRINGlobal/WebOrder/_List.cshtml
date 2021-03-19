@@ -26,10 +26,10 @@
 
                             @if (webOrderRequest.IsLocked)
                             {
-                                <i class="fa fa-lock" style="color:red;"></i>
+                                <i class="fa fa-eye" style="color:red;"></i>
                             }
                             <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
-                                @webOrderRequest.ID : @webOrderRequest.WebCooperator.FirstName, @webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName (@webOrderRequest.OrderDate.ToShortDateString())
+                                @webOrderRequest.ID : @webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName (@webOrderRequest.OrderDate.ToShortDateString())
                             </a>
                         </h4>
                     </div>
@@ -39,7 +39,7 @@
                                 
                                 @if (webOrderRequest.IsLocked)
                                 {
-                                <span class="label label-danger" style="margin-left:10px; font-size:1em;">Locked: @webOrderRequest.OwnedDate.ToShortDateString() as of @webOrderRequest.OwnedDate.ToShortTimeString()</span>
+                                    <span class="label label-default pull-right" style="margin-left:10px; font-size:1em;">Under Review: @webOrderRequest.OwnedByCooperatorName as of @webOrderRequest.OwnedDate.ToShortTimeString()</span>
                                 }
 
                                 <button type="button" id="btnApprove-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
@@ -49,7 +49,7 @@
                                     <i class="fa fa-thumbs-down"></i>
                                 </button>
                                 <a href="@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })" class="btn btn-default btn-sm uncheck-all-search-results">
-                                    <i class="fa fa-book"></i>&nbsp;Review
+                                    <i class="fa fa-eye"></i>&nbsp;Review
                                 </a>
                             </div>
                             <div class="row">

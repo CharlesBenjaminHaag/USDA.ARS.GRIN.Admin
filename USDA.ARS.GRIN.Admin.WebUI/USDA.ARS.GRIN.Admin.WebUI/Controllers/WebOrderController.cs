@@ -37,7 +37,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                webOrderRequests = service.GetWebOrderRequests("NRR_REVIEW");
+                webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
                 return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
             }
             catch (Exception ex)
@@ -142,22 +142,23 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         
             try
             {
-                switch (viewModel.Action)
+                WebOrderRequest webOrderRequest = new WebOrderRequest();
+                webOrderRequest.ID = viewModel.ID;
+                webOrderRequest.StatusCode = viewModel.Action;
+                webOrderRequest.Note = viewModel.Note;
+
+                if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
                 {
-                    case OrderRequestAction.NRRApprove:
-                        resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, CreatedByCooperatorID = 1 });
-                        break;
-                    case OrderRequestAction.NRRReject:
-                        resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, CreatedByCooperatorID = 1 });
-                        break;
-                    case OrderRequestAction.NRRReviewEnd:
-                        service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
-                        break;
+                    service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
+                }
+                else
+                {
+                    service.UpdateWebOrderRequest(webOrderRequest);
                 }
             }
             catch (Exception ex)
-            { 
-            
+            {
+                log.Error(ex.Message, ex);
             }
             return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
         }

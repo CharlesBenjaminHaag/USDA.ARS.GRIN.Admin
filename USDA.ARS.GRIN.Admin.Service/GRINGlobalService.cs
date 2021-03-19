@@ -62,6 +62,8 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _webOrderRequestDAO.UpdateLockStatus(id, webCooperatorId, locked);
         }
 
+        //public ResultContainer
+
         public Dictionary<string, int> GetValidationCounts()
         {
             return _accessionInventoryAttachmentDAO.GetValidationCounts();

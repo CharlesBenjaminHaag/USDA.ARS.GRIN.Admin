@@ -356,54 +356,48 @@
             @*</div>*@ <!-- tab-content -->
         </div>
     </div>
+
+    <!-- APPROVE MODAL -->
+    <div id="modal-approve" class="modal modal-success fade" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Approve Web Order <span id="web-order-request-id"></span></h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h5>This will approve this order for further processing by the designated site. Please enter any desired order action notes in the field below.</h5>
+                    <textarea id="txtApprovalNote" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-approve-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
+                    <button type="button" id="btn-approve-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-deny" class="modal modal-danger" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Deny Web Order <span id="web-order-request-id"></span></h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h5>This will flag this order and its requestor as NRR. Below is the email that the system will send to the requestor.</h5>
+                    <textarea id="txtRejectionNote" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-deny-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
+                    <button type="button" id="btn-deny-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 }
-
-<!-- APPROVE MODAL -->
-<div id="modal-approve" class="modal modal-success fade" role='dialog'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Approve Web Order <span id="web-order-request-id"></span></h4>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <h5>This will approve this order for further processing by the designated site. Please enter any desired order action notes in the field below.</h5>
-                <textarea id="txtApprovalNote" class="form-control" rows="5">
-                </textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btn-approve-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
-                <button type="button" id="btn-approve-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-deny" class="modal modal-danger" role='dialog'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Deny Web Order <span id="web-order-request-id"></span></h4>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <h5>This will flag this order and its requestor as NRR. Below is the email that the system will send to the requestor.</h5>
-                <textarea id="txtDenyNote" class="form-control" rows="15">
-                   Dear << NAME >>
-                   We are unable to process your request for the following reasons:
-                   [] REASON 1
-                   [] REASON 2
-                   Skeptically Yours,
-                   The USDA
-                </textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btn-deny-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
-                <button type="button" id="btn-deny-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
 

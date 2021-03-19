@@ -17,8 +17,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public WebOrderRequestDAO(string context)
         {
-            InsertCommmand = "";
-            UpdateCommmand = "usp_WebOrderRequestStatus_Update";
+            InsertCommmand = "usp_WebOrderRequest_Insert";
+            UpdateCommmand = "usp_WebOrderRequest_Update";
             SelectCommmand = "usp_WebOrderRequest_Select";
             _context = context;
         }

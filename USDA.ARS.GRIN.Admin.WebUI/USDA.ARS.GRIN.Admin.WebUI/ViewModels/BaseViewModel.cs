@@ -18,9 +18,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         {
             get; set;
         }
-
         public string ErrorMessage { get; set; }
         public int AuthenticatedUserCooperatorID { get; set; }
+        public int ID { get; set; }
         [AllowHtml]
         public string Note { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -61,16 +61,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
                 return sbRevisionHistoryText.ToString();
             }
         }
-
-        //public IEnumerable<SelectListItem> Citations { get; set; }
        
         public BaseViewModel()
         {
         }
-
-        //public void LoadCitations(int speciesId)
-        //{
-        //    //this._citations = _taxonomyService.FindCitations(speciesId);
-        //}
     }
 }

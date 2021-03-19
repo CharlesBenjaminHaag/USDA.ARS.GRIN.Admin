@@ -1057,6 +1057,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
         }
 
+        [HttpPost]
         public PartialViewResult CitationListByUser()
         {
             CitationSearchViewModel viewModel = new CitationSearchViewModel();
