@@ -13,12 +13,14 @@
             <input type="button" id="btn-unlock" class="btn btn-warning pull-right" style="margin-left:5px;" value="Unlock" />
             <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" style="margin-left:5px;" value="Deny" />
             <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" style="margin-left:5px;" value="Approve" />
+            <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" style="margin-left:5px;" value="Add Note" />
             <a href="@Url.Action("Index", "WebOrder")" class="btn btn-default pull-right">Return to  Home Page</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-3">
+            <!-- TIMELINE -->
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Timeline</h3>
@@ -30,7 +32,7 @@
                 </div>
                 <div class="box-body">
                     <ul class="timeline timeline-inverse">
-                        <li class="time-label">
+                        <!--<li class="time-label">
                             <span class="bg-blue">
                                 @DateTime.Now.ToShortDateString()
                             </span>
@@ -48,13 +50,13 @@
 
                                 <div class="timeline-body">
                                     This is the note words words words
-                                </div>
-                                @*<div class="timeline-footer">
-                                        <a class="btn btn-primary btn-xs">Read more</a>
-                                        <a class="btn btn-danger btn-xs">Delete</a>
-                                    </div>*@
-                            </div>
-                        </li>
+                                </div>-->
+                        @*<div class="timeline-footer">
+                                <a class="btn btn-primary btn-xs">Read more</a>
+                                <a class="btn btn-danger btn-xs">Delete</a>
+                            </div>*@
+                        <!--</div>
+                        </li>-->
 
                         @if (Model.WebOrderRequestActionGroupViewModels.Count() > 0)
                         {
@@ -68,26 +70,14 @@
 
                                 foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
                                 {
-                                    <!-- timeline item -->
                                     <li>
-                                        <!--TO DO: SET ICON AND COLOR BASED ON STATUS-->
-                                        <!--
-                                        CANCEL       fa-trash          bg-red
-                                        NRR_FLAGGED  fa-flag           bg-red
-                                        NRR_REVIEW   fa-eye            bg-yellow
-                                        NRR_APPROVE  fa-thumbs-up      bg-green
-                                        NRR_REJECT   fa-thumbs-down    bg-red
-                                        SMTAACCEPT   fa-thumbs-up      bg-green
-                                        DEFAULT      fa-info           bg-aqua
-                                        -->
-
-                                        <i class="fa fa-thumbs-up bg-green"></i>
-
+                                        <i class="@DisplayHelper.GetWebOrderRequestStatusCSSClass(webOrderRequestAction.ActionCode)"></i>
                                         <div class="timeline-item">
                                             <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
-
-                                            <h3 class="timeline-header"><a href="#">@webOrderRequestAction.CreatedByCooperatorName</a> logged <strong>@webOrderRequestAction.ActionCode</strong> action</h3>
-
+                                            <h3 class="timeline-header">
+                                                <strong>@webOrderRequestAction.Title</strong>
+                                                (<a href="#">@webOrderRequestAction.CreatedByCooperatorName</a>)
+                                            </h3>
                                             <div class="timeline-body">
                                                 @webOrderRequestAction.Note
                                             </div>
@@ -102,111 +92,15 @@
                             }
                         }
 
-                        @*timeline time label
-                            <li class="time-label">
-                                <span class="bg-black">
-                                    10 Feb. 2014 12:30 PM
-                                </span>
-                            </li>
-                             /.timeline-label
-                             timeline item
-                            <li>
-                                <i class="fa fa-envelope bg-blue"></i>
-
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-
-                                    <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                                    <div class="timeline-body">
-                                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                        quora plaxo ideeli hulu weebly balihoo...
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a class="btn btn-primary btn-xs">Read more</a>
-                                        <a class="btn btn-danger btn-xs">Delete</a>
-                                    </div>
-                                </div>
-                            </li>
-                             END timeline item
-                             timeline item
-                            <li>
-                                <i class="fa fa-user bg-aqua"></i>
-
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                                    <h3 class="timeline-header no-border">
-                                        <a href="#">Sarah Young</a> accepted your friend request
-                                    </h3>
-                                </div>
-                            </li>
-                             END timeline item
-                             timeline item
-                            <li>
-                                <i class="fa fa-comments bg-yellow"></i>
-
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                                    <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                                    <div class="timeline-body">
-                                        Take me to your leader!
-                                        Switzerland is small and neutral!
-                                        We are more like Germany, ambitious and misunderstood!
-                                    </div>
-                                    <div class="timeline-footer">
-                                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                                    </div>
-                                </div>
-                            </li>
-                             END timeline item
-                             timeline time label
-                            <li class="time-label">
-                                <span class="bg-green">
-                                    3 Jan. 2014
-                                </span>
-                            </li>
-                             /.timeline-label
-                             timeline item
-                            <li>
-                                <i class="fa fa-lock bg-purple"></i>
-
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                                    <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                                    <div class="timeline-body">
-                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                    </div>
-                                </div>
-                            </li>*@
-
                         <li>
                             <i class="fa fa-clock-o bg-gray"></i>
                         </li>
                     </ul>
                 </div>
             </div>
+        
         </div>
         <div class="col-md-9">
-            @*<ul class="nav nav-tabs">
-                    <li class="active" style="background-color:#ebebeb;">
-                        <a href="#tab_1" id="tab-my-crops" title="UserCrops" class="selector-tab" data-toggle="tab" aria-expanded="true">Detail</a>
-                    </li>
-                    <li class="" style="background-color:#ebebeb;">
-                        <a href="#tab_2" id="tab-timeline" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">Timeline</a>
-                    </li>
-                </ul>*@
-            @*<div class="tab-content">*@
-            @*<div class="tab-pane active" id="tab_1">*@
             <div class="box box-default">
                 <div class="box-header">
                     <h3 class="box-title">Cooperators</h3>
@@ -221,70 +115,47 @@
                         <thead>
                             <tr>
                                 <th>Type</th>
-                                <th>ID</th>
-                                <th>Title</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Email</th>
                                 <th>Address 1</th>
                                 <th>Address 2</th>
                                 <th>Address 3</th>
                                 <th>City</th>
                                 <th>State</th>
                                 <th>Postal Code</th>
-                                <th>Created</th>
-                                <th>Last Modified</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Web</td>
-                                <td>@Model.WebCooperator.ID</td>
-                                <td>@Model.WebCooperator.Title</td>
                                 <td>@Model.WebCooperator.FirstName</td>
                                 <td>@Model.WebCooperator.LastName</td>
+                                <td>@Model.WebCooperator.EmailAddress</td>
                                 <td>@Model.WebCooperator.Address.AddressLine1</td>
                                 <td>@Model.WebCooperator.Address.AddressLine2</td>
                                 <td>@Model.WebCooperator.Address.AddressLine3</td>
                                 <td>@Model.WebCooperator.Address.City</td>
                                 <td>@Model.WebCooperator.Address.State</td>
                                 <td>@Model.WebCooperator.Address.ZIP</td>
-                                <td>@Model.WebCooperator.CreatedDate</td>
-                                <td>@Model.WebCooperator.ModifiedDate</td>
                             </tr>
                             @if (Model.Cooperator != null)
                             {
                                 <tr>
                                     <td>Cooperator</td>
-                                    <td>@Model.Cooperator.ID</td>
-                                    <td>@Model.Cooperator.Title</td>
                                     <td>@Model.Cooperator.FirstName</td>
                                     <td>@Model.Cooperator.LastName</td>
+                                    <td>@Model.Cooperator.EmailAddress</td>
                                     <td>@Model.Cooperator.Address.AddressLine1</td>
                                     <td>@Model.Cooperator.Address.AddressLine2</td>
                                     <td>@Model.Cooperator.Address.AddressLine3</td>
                                     <td>@Model.Cooperator.Address.City</td>
                                     <td>@Model.Cooperator.Address.State</td>
                                     <td>@Model.Cooperator.Address.ZIP</td>
-                                    <td>@Model.Cooperator.CreatedDate</td>
-                                    <td>@Model.Cooperator.ModifiedDate</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-
-
-                    @*<div class="row">
-                            <div class="form-group">
-                                <label for="txtName" class="col-sm-2 control-label">Email Text</label>
-                                <div class="col-md-12">
-                                    <textarea class="form-control" rows="25">
-                                    Dear NAME,
-                                    We are unable to process your request for one or more of the following reasons:
-                                    (BOILERPLATE TEXT HERE)
-                                    </textarea>
-                                </div>
-                            </div>
-                        </div>*@
                 </div>
             </div>
             <div class="box box-default">
@@ -297,18 +168,27 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <label>Intended Use</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.IntendedUseNote
-                    </p>
-                    <label>Special Instruction</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.SpecialInstruction
-                    </p>
-                    <label>Note</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.Note
-                    </p>
+                    @if (!String.IsNullOrEmpty(Model.IntendedUseNote))
+                    {
+                        <label>Intended Use</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.IntendedUseNote
+                        </p>
+                    }
+                    @if (!String.IsNullOrEmpty(Model.SpecialInstruction))
+                    {
+                        <label>Special Instruction</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.SpecialInstruction
+                        </p>
+                    }
+                    @if (!String.IsNullOrEmpty(Model.Note))
+                    {
+                        <label>Note</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.Note
+                        </p>
+                    }
                 </div>
             </div>
             <div class="box box-default">
@@ -377,6 +257,7 @@
         </div>
     </div>
 
+    <!-- DENY MODAL -->
     <div id="modal-deny" class="modal modal-danger" role='dialog'>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -396,15 +277,38 @@
         </div>
     </div>
 
+    <!-- NOTE MODAL -->
+    <div class="modal fade" id="modal-note">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Add Note</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea id="txtNote" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id=btn-note-submit class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
 }
 
 <script>
 
-    //$("#btn-unlock").click(function () {
-    //    $("#Action").val("NRR_REVIEW_END");
-    //    $("#frmEdit").submit();
-    //});
+    $("#btn-unlock").click(function () {
+        $("#Action").val("NRR_REVIEW_END");
+        $("#frmEdit").submit();
+    });
 
     $("#btn-approve-submit").click(function () {
         $("#Action").val("NRR_APPROVE");
@@ -417,5 +321,12 @@
         $("#ActionNote").val($("#txtApprovalNote").val());
         $("#frmEdit").submit();
     });
+
+    $("#btn-note-submit").click(function () {
+        $("#Action").val("NOTE");
+        $("#ActionNote").val($("#txtNote").val());
+        $("#frmEdit").submit();
+    });
+
 
 </script>

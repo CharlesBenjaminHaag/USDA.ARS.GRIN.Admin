@@ -25,12 +25,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
 
         public IEnumerable<WebOrderRequestItem> WebOrderRequestItems { get; set; }
         public List<WebOrderRequestActionGroupViewModel> WebOrderRequestActionGroupViewModels { get; set; }
+        public IEnumerable<WebOrderRequestAction> WebOrderRequestActions { get; set; }
         public WebOrderRequestEditViewModel()
         {
             Cooperator = new Cooperator();
             WebCooperator = new Cooperator();
             WebOrderRequestAddress = new Address();
             WebOrderRequestActionGroupViewModels = new List<WebOrderRequestActionGroupViewModel>();
+            WebOrderRequestActions = new List<WebOrderRequestAction>();
         }
     }
 }

@@ -86,7 +86,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 resultContainer = service.SetReviewStatus(id, AuthenticatedUser.WebCooperatorID, true);
 
                 // Create a "review began" action record.
-                resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW_BEGUN", CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+                resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
 
                 webOrderRequest = service.GetWebOrderRequest(id);
                 viewModel.ID = webOrderRequest.ID;
@@ -119,6 +119,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         WebOrderRequestAction webOrderRequestAction = new WebOrderRequestAction();
                         webOrderRequestAction.ID = subGroup.ID;
                         webOrderRequestAction.ActionCode = subGroup.ActionCode;
+                        webOrderRequestAction.Title = subGroup.Title;
                         webOrderRequestAction.Note = subGroup.Note;
                         webOrderRequestAction.ActionDate = subGroup.ActionDateTime;
                         webOrderRequestAction.CreatedByCooperatorName = subGroup.CreatedByCooperatorName;

@@ -10,7 +10,9 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
     {
 		public int WebOrderRequestID { get; set; }
 		public string ActionCode { get; set; }
-		public DateTime ActionDateTime { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime ActionDateTime { get; set; }
 		public DateTime ActionDate { get; set; }
 	}
 }

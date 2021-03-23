@@ -80,6 +80,43 @@ namespace USDA.ARS.GRIN.Admin.WebUI
 
         }
 
+        public static string GetWebOrderRequestStatusCSSClass(string webOrderRequestStatusCode)
+        {
+            string cssClass = String.Empty;
+
+            //                 < !--TO DO: SET ICON AND COLOR BASED ON STATUS-- >
+ 
+            //      < !--
+            //      CANCEL       fa - trash          bg - red
+            //     NRR_FLAGGED fa-flag           bg - red
+            //     NRR_REVIEW fa-eye            bg - yellow
+            //     NRR_APPROVE fa-thumbs - up      bg - green
+            //     NRR_REJECT fa-thumbs - down    bg - red
+            //     SMTAACCEPT fa-thumbs - up      bg - green
+            //     DEFAULT fa-info           bg - aqua
+            //-- >
+
+            switch (webOrderRequestStatusCode)
+            {
+                case "NRR_FLAGGED":
+                    cssClass = "fa fa-flag-o bg-red";
+                    break;
+                case "NRR_REVIEW":
+                    cssClass = "fa fa-eye bg-yellow";
+                    break;
+                case "NRR_REJECT":
+                    cssClass = "fa fa-thumbs-down bg-red";
+                    break;
+                case "NRR_APPROVE":
+                    cssClass = "fa fa-thumbs-up bg-green";
+                    break;
+                default:
+                    cssClass = "fa fa-clock-o bg-aqua";
+                break;
+            }
+            return cssClass;
+        }
+
         public static string GetVersion()
         {
             Version version = null;

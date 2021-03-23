@@ -318,7 +318,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();
                                 webOrderRequest.WebCooperator.Address.City = reader["web_cooperator_address_city"].ToString();
-                                webOrderRequest.WebCooperator.Address.State = "web_cooperator_address_state";
+                                webOrderRequest.WebCooperator.Address.State = reader["web_cooperator_address_state"].ToString();
                                 webOrderRequest.WebCooperator.Address.ZIP = reader["web_cooperator_address_postal_index"].ToString();
                                 webOrderRequest.WebCooperator.CreatedDate = GetDate(reader["web_cooperator_created_date"].ToString());
                                 webOrderRequest.WebCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
@@ -425,7 +425,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 WebOrderRequestAction webOrderRequestAction = new WebOrderRequestAction();
                                 webOrderRequestAction.ID = GetInt(reader["web_order_request_action_id"].ToString());
                                 webOrderRequestAction.WebOrderRequestID = webOrderRequestId;
-                                webOrderRequestAction.ActionCode = reader["action_code"].ToString();
+                                webOrderRequestAction.Title = reader["action_title"].ToString();
                                 webOrderRequestAction.ActionDateTime = GetDate(reader["action_date"].ToString());
                                 webOrderRequestAction.ActionDate = GetDate(reader["action_date_converted"].ToString());
                                 webOrderRequestAction.Note = reader["note"].ToString();
