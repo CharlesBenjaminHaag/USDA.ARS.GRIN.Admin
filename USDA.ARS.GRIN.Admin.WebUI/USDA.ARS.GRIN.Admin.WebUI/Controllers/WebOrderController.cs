@@ -32,13 +32,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult _List()
         {
-            IQueryable<WebOrderRequest> webOrderRequests = null;
+            WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
+            webOrderRequestListViewModel.AuthenticatedUser = AuthenticatedUser;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
             try
             {
-                webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
-                return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
+                webOrderRequestListViewModel.WebOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
+                return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
             }
             catch (Exception ex)
             {
@@ -51,7 +52,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             ResultContainer resultContainer = null;
             WebOrderRequest webOrderRequest = new WebOrderRequest();
-            IQueryable<WebOrderRequest> webOrderRequests = null;
+            List<WebOrderRequest> webOrderRequests = null;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
             webOrderRequest.ID = webOrderRequestId;
@@ -95,7 +96,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.IntendedUseNote = webOrderRequest.IntendedUseNote;
                 viewModel.Note = webOrderRequest.Note;
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
-                viewModel.Cooperator = webOrderRequest.Cooperators.Where(x => x.Type == 1).FirstOrDefault();
+                //viewModel.Cooperator = webOrderRequest.Cooperators.Where(x => x.Type == 1).FirstOrDefault();
                 viewModel.WebCooperator = webOrderRequest.Cooperators.Where(x => x.Type == 2).FirstOrDefault();
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
                 viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
@@ -146,22 +147,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 WebOrderRequest webOrderRequest = new WebOrderRequest();
                 webOrderRequest.ID = viewModel.ID;
                 webOrderRequest.StatusCode = viewModel.Action;
-                webOrderRequest.Note = viewModel.Note;
+                webOrderRequest.Note = viewModel.ActionNote;
 
                 if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
                 {
                     service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
+                    return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
                 }
                 else
                 {
-                    service.UpdateWebOrderRequest(webOrderRequest);
+                    resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
+                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+                    if ((viewModel.Action == "NRR_APPROVE") || (viewModel.Action == "NRR_DENY"))
+                    {
+                        return RedirectToAction("Index", "WebOrder");
+                    }
+                    else
+                        return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
                 }
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
+                //TO DO: CHANGE
+                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
             }
-            return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
         }
     }
 }

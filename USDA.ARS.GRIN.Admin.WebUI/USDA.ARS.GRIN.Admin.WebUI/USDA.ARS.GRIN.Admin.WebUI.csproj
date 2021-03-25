@@ -407,6 +407,7 @@
     <Compile Include="ViewModels\GRINGlobal\ValidationStatisticsViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestActionGroupViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestEditViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationSearchViewModel.cs" />

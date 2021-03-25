@@ -291,8 +291,8 @@
                     <textarea id="txtNote" rows="5" class="form-control"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id=btn-note-submit class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn-note-submit" class="btn btn-primary" data-dismiss="modal">Save</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -323,7 +323,7 @@
     });
 
     $("#btn-note-submit").click(function () {
-        $("#Action").val("NOTE");
+        $("#Action").val("NRR_NOTE");
         $("#ActionNote").val($("#txtNote").val());
         $("#frmEdit").submit();
     });

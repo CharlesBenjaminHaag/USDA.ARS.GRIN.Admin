@@ -76,27 +76,27 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
                                 webOrderRequest.Cooperators.Add(webCooperator);
 
-                                if (reader["cooperator_id"] != DBNull.Value)
-                                {
-                                    Cooperator cooperator = new Cooperator();
-                                    cooperator.ID = GetInt(reader["cooperator_id"].ToString());
-                                    cooperator.Type = 1;
-                                    cooperator.Title = reader["cooperator_title"].ToString();
-                                    cooperator.LastName = reader["cooperator_last_name"].ToString();
-                                    cooperator.FirstName = reader["cooperator_first_name"].ToString();
-                                    cooperator.Organization = reader["cooperator_organization"].ToString();
-                                    cooperator.Address.AddressLine1 = reader["cooperator_address_line_1"].ToString();
-                                    cooperator.Address.AddressLine2 = reader["cooperator_address_line_2"].ToString();
-                                    cooperator.Address.AddressLine3 = reader["cooperator_address_line_3"].ToString();
-                                    cooperator.Address.City = reader["cooperator_address_city"].ToString();
-                                    cooperator.Address.ZIP = reader["cooperator_address_postal_index"].ToString();
-                                    cooperator.Address.State = reader["cooperator_address_state"].ToString();
-                                    cooperator.PrimaryPhoneNumber = reader["cooperator_primary_phone"].ToString();
-                                    cooperator.EmailAddress = reader["cooperator_email"].ToString();
-                                    cooperator.CreatedDate = GetDate(reader["cooperator_created_date"].ToString());
-                                    cooperator.ModifiedDate = GetDate(reader["cooperator_modified_date"].ToString());
-                                    webOrderRequest.Cooperators.Add(cooperator);
-                                }
+                                //if (reader["cooperator_id"] != DBNull.Value)
+                                //{
+                                //    Cooperator cooperator = new Cooperator();
+                                //    cooperator.ID = GetInt(reader["cooperator_id"].ToString());
+                                //    cooperator.Type = 1;
+                                //    cooperator.Title = reader["cooperator_title"].ToString();
+                                //    cooperator.LastName = reader["cooperator_last_name"].ToString();
+                                //    cooperator.FirstName = reader["cooperator_first_name"].ToString();
+                                //    cooperator.Organization = reader["cooperator_organization"].ToString();
+                                //    cooperator.Address.AddressLine1 = reader["cooperator_address_line_1"].ToString();
+                                //    cooperator.Address.AddressLine2 = reader["cooperator_address_line_2"].ToString();
+                                //    cooperator.Address.AddressLine3 = reader["cooperator_address_line_3"].ToString();
+                                //    cooperator.Address.City = reader["cooperator_address_city"].ToString();
+                                //    cooperator.Address.ZIP = reader["cooperator_address_postal_index"].ToString();
+                                //    cooperator.Address.State = reader["cooperator_address_state"].ToString();
+                                //    cooperator.PrimaryPhoneNumber = reader["cooperator_primary_phone"].ToString();
+                                //    cooperator.EmailAddress = reader["cooperator_email"].ToString();
+                                //    cooperator.CreatedDate = GetDate(reader["cooperator_created_date"].ToString());
+                                //    cooperator.ModifiedDate = GetDate(reader["cooperator_modified_date"].ToString());
+                                //    webOrderRequest.Cooperators.Add(cooperator);
+                                //}
                                 
                                 webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
                                 webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
@@ -285,6 +285,70 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequests.AsQueryable();
         }
 
+        public List<WebOrderRequest> SearchByStatus(string statusCode)
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequestsByStatus_Select";
+            List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@status_code", statusCode);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                WebOrderRequest webOrderRequest = new WebOrderRequest();
+                                webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
+                                webOrderRequest.IsLocked = ParseBool(reader["is_locked"].ToString());
+                                webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
+                                webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
+                                webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
+                                webOrderRequest.WebCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
+                                webOrderRequest.WebCooperator.Address.PersonFullName = reader["web_cooperator_full_name"].ToString();
+                                webOrderRequest.WebCooperator.Address.OrganizationName = reader["web_cooperator_organization"].ToString();
+                                webOrderRequest.WebCooperator.Address.AddressLine1 = reader["web_cooperator_address_line_1"].ToString();
+                                webOrderRequest.WebCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
+                                webOrderRequest.WebCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();
+                                webOrderRequest.WebCooperator.Address.City = reader["web_cooperator_address_city"].ToString();
+                                webOrderRequest.WebCooperator.Address.State = reader["web_cooperator_address_state"].ToString();
+                                webOrderRequest.WebCooperator.Address.ZIP = reader["web_cooperator_address_postal_index"].ToString();
+                                webOrderRequest.WebCooperator.CreatedDate = GetDate(reader["web_cooperator_created_date"].ToString());
+                                webOrderRequest.WebCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
+                                webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
+                                webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
+                                webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();
+                                webOrderRequest.Note = reader["note"].ToString();
+                                webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
+                                webOrderRequest.CreatedDate = GetDate(reader["created_date"].ToString());
+                                webOrderRequest.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                webOrderRequest.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                webOrderRequest.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
+                                webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
+                                webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequests.Add(webOrderRequest);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return webOrderRequests;
+        }
+
         public IQueryable<WebOrderRequest> Search(string statusCode)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestsByStatus_Select";
@@ -426,6 +490,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequestAction.ID = GetInt(reader["web_order_request_action_id"].ToString());
                                 webOrderRequestAction.WebOrderRequestID = webOrderRequestId;
                                 webOrderRequestAction.Title = reader["action_title"].ToString();
+                                webOrderRequestAction.ActionCode = reader["action_code"].ToString();
                                 webOrderRequestAction.ActionDateTime = GetDate(reader["action_date"].ToString());
                                 webOrderRequestAction.ActionDate = GetDate(reader["action_date_converted"].ToString());
                                 webOrderRequestAction.Note = reader["note"].ToString();
