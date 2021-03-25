@@ -147,7 +147,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 WebOrderRequest webOrderRequest = new WebOrderRequest();
                 webOrderRequest.ID = viewModel.ID;
                 webOrderRequest.StatusCode = viewModel.Action;
-                webOrderRequest.Note = viewModel.ActionNote;
+                //webOrderRequest.Note = viewModel.ActionNote;
 
                 if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
                 {
