@@ -20,6 +20,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         }
         public string ErrorMessage { get; set; }
         public int AuthenticatedUserCooperatorID { get; set; }
+        public int DefaultCooperatorID { get; set; }
         public int ID { get; set; }
         [AllowHtml]
         public string Note { get; set; }
@@ -32,6 +33,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int OwnedByCooperatorID { get; set; }
         public string OwnedByCooperatorName { get; set; }
         public DateTime OwnedDate { get; set; }
+        protected List<Cooperator> AuthorizedCooperators { get; set; }
+        public SelectList Cooperators { get; set; }
 
         public string RevisionHistoryText
         { 

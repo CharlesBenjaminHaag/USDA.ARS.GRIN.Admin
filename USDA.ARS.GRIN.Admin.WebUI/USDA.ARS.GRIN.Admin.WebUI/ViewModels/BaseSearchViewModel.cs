@@ -12,6 +12,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
     public abstract class BaseSearchViewModel
     {
+        public User AuthenticatedUser
+        {
+            get; set;
+        }
+        public int DefaultCooperatorID { get; set; }
         protected List<SearchComparisonOperatorViewModel> _textSearchComparisonOperators;
         protected List<SearchComparisonOperatorViewModel> _numericSearchComparisonOperators;
 

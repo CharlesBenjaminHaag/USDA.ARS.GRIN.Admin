@@ -18,5 +18,6 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string ColorCode { get; set; }
         public string ImageFileName { get; set; }
         public bool IsAuthorized { get; set; }
+        public List<Cooperator> Cooperators { get; set;}
     }
 }

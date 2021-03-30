@@ -17,10 +17,16 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult Index()
         {
             TempData["context"] = "NRR Review Tool";
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             WebOrderRequestSearchViewModel viewModel = new WebOrderRequestSearchViewModel();
 
             try
             {
+                viewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
+                viewModel.TimeFrames.Add(new ReferenceItem { ID = 1, Name = "Today" });
+                viewModel.TimeFrames.Add(new ReferenceItem { ID = 2, Name = "This Week" });
+                viewModel.TimeFrames.Add(new ReferenceItem { ID = 3, Name = "This Month" });
+                viewModel.TimeFrames.Add(new ReferenceItem { ID = 4, Name = "This Year" });
                 return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", viewModel);
             }
             catch (Exception ex)

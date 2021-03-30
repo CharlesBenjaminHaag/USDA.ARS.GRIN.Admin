@@ -14,109 +14,64 @@
 
         @if (Model.WebOrderRequests.Count() > 0)
         {
-            foreach (var webOrderRequest in Model.WebOrderRequests)
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Status</th>
+                    <th>ID</th>
+                    <th>Submitter Name</th>
+                    <th>Email</th>
+                    <th>Address 1</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Postal Code</th>
+                    <th>Items</th>
+                </tr>
+            </thead>
+            @foreach (var webOrderRequest in Model.WebOrderRequests)
             {
-                headerHrefId = "#collapse" + webOrderRequest.ID;
-                bodyId = "collapse" + webOrderRequest.ID;
+        <tr>
+            <td>
+                @if (webOrderRequest.IsLocked)
+                {
+                    <i class="fa fa-eye" style="color:red;"></i>
+                }
+            </td>
+            <td>@webOrderRequest.StatusCode</td>
+            <td><span class="badge">@webOrderRequest.ID</span></td>
+            <td>@webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName</td>
+            <td>@webOrderRequest.WebCooperator.EmailAddress</td>
+            <td>@webOrderRequest.WebCooperator.Address.AddressLine1</td>
+            <td>@webOrderRequest.WebCooperator.Address.City</td>
+            <td>@webOrderRequest.WebCooperator.Address.State</td>
+            <td>@webOrderRequest.WebCooperator.Address.ZIP</td>
+            <td>@webOrderRequest.WebOrderRequestItems.Count()</td>
+        </tr>
 
-                <div class="panel box box-default no-border">
-                    <div class="box-header with-border">
-                        
-                        <h4 class="box-title" style="font-weight:bold;">
-                            @if (webOrderRequest.IsLocked)
-                            {
-                                <i class="fa fa-eye" style="color:red;"></i>
-                            }
-                            <a data-toggle="collapse" data-parent="#accordion" href="@headerHrefId" class="collapsed" aria-expanded="false">
-                                @webOrderRequest.ID : @webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName (@webOrderRequest.OrderDate.ToShortDateString())
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="@bodyId" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                        <div class="box-body">
 
-                            <div class="mailbox-controls">
-                                @if ((webOrderRequest.IsLocked) && (Model.AuthenticatedUser.WebCooperatorID != webOrderRequest.OwnedByCooperatorID))
-                                {
-                                    <span class="label label-default" style="font-size:1em;">Under Review by <strong>@webOrderRequest.OwnedByCooperatorName</strong> as of @webOrderRequest.OwnedDate.ToShortDateString() at @webOrderRequest.OwnedDate.ToShortTimeString()</span>
-                                }
-                                else
-                                {
-                                <button type="button" id="btnApprove-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-success btn-sm check-all-search-results open-modal">
-                                    <i class="fa fa-thumbs-up"></i>
-                                </button>
-                                <button type="button" id="btnDeny-@webOrderRequest.ID-@webOrderRequest.WebCooperator.ID" class="btn btn-danger btn-sm check-all-search-results open-modal">
-                                    <i class="fa fa-thumbs-down"></i>
-                                </button>
-                                <a href="@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })" class="btn btn-default btn-sm uncheck-all-search-results">
-                                    <i class="fa fa-eye"></i>&nbsp;Review
-                                </a>
-                                }
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table table-striped" style="margin-top:15px;">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Email</th>
-                                                <th>Organization</th>
-                                                <th>Address Line 1</th>
-                                                <th>Address Line 2</th>
-                                                <th>City</th>
-                                                <th>State/Province</th>
-                                                <th>Postal Code</th>
-                                                <th>Intended Use Code</th>
-                                            </tr>
-                                        </thead>
-                                        <tr>
-                                            <td>@webOrderRequest.ID</td>
-                                            <td>@webOrderRequest.WebCooperator.EmailAddress</td>
-                                            <td>@webOrderRequest.WebCooperator.Organization</td>
-                                            <td>@webOrderRequest.WebCooperator.Address.AddressLine1</td>
-                                            <td>@webOrderRequest.WebCooperator.Address.AddressLine2</td>
-                                            <td>@webOrderRequest.WebCooperator.Address.City</td>
-                                            <td>@webOrderRequest.WebCooperator.Address.State</td>
-                                            <td>@webOrderRequest.WebCooperator.Address.ZIP</td>
-                                            <td>@webOrderRequest.IntendedUseCode</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- ORDER ITEMS -->
-                            <table class="table table-striped ggtools">
-                                <thead>
-                                    <tr>
-                                        <th>Seq.</th>
-                                        <th>Accession</th>
-                                        <th>Species</th>
-                                        <th>Status</th>
-                                        <th>Site</th>
-                                        <th>Qty. Shipped</th>
-                                        <th>Distribution Form</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var webOrderRequestItem in webOrderRequest.WebOrderRequestItems)
-                                    {
-                                        <tr>
-                                            <td>@webOrderRequestItem.SequenceNumber</td>
-                                            <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                            <td>
-                                                <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                            </td>
-                                            <td>@webOrderRequestItem.StatusCode</td>
-                                            <td>@webOrderRequestItem.Site.LongName</td>
-                                            <td>@webOrderRequestItem.QuantityShipped</td>
-                                            <td>@webOrderRequestItem.DistributionForm</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <!-- ORDER ITEMS -->
+            <!--<table class="table table-striped ggtools">
+                    <thead>
+                        <tr>
+                            <th>Seq.</th>
+                            <th>Accession</th>
+                            <th>Species</th>
+                            <th>Status</th>
+                            <th>Site</th>
+                            <th>Qty. Shipped</th>
+                            <th>Distribution Form</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>-->
             }
+            </table>
         }
         else
         {
@@ -126,7 +81,7 @@
                 There are no potential non-research requests (NRR) for your review.
             </div>
         }
-    </div>
+</div>
 
 <script>
     $('.ggtools').DataTable();

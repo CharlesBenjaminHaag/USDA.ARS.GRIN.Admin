@@ -8,6 +8,10 @@
 <!-- TABBED VIEW -->
 <!-- ============================================================================================== -->
 <div class="box box-primary" style="padding:10px;">
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+
     <div class="box-header with-border">
         <h3 class="box-title">CWR Map</h3>
 
@@ -22,6 +26,7 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
+
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
@@ -38,27 +43,20 @@
             </ul>
             <div class="tab-content">
                 <!-- ============================================================================================== -->
-                <!-- MY-RECORDS TAB -->
+                <!-- BY-USER TAB -->
                 <!-- ============================================================================================== -->
                 <div class="tab-pane active" id="tab_1">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-3" style="padding-left:0px;">
-                                        <div class="input-group" style="margin-left:0px;">
-                                            <select class="form-control disabled">
-                                                <option>Schori, Melanie</option>
-                                            </select>
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Filter</button>
-                                            </span>
-                                        </div>
-                                    </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-horizontal">
+                                    <label>Created By</label>
+                                    @Html.HiddenFor(x => Model.DefaultCooperatorID, new { id = "hfDefaultCooperatorID" })
+                                    @Html.DropDownListFor(x => x.DefaultCooperatorID, Model.Cooperators, null, new { @id = "ddlSelectCooperator", @class = "form-control" })
                                 </div>
                             </div>
                         </div>
-                        <div id="section-my-records">
+                        <div id="section-by-user">
                         </div>
                     </div>
                 </div>
@@ -219,10 +217,11 @@ CWR-TRAIT MODAL
 
 <!-- Page Script -->
 <script type="text/javascript">
-
-    $(document).ready(function(){
-        var link = '@Url.Action("CWRMapListByUser", "Taxonomy")';
-        $("#section-my-records").load(link);
+    
+    $(document).ready(function () {
+        var cooperatorId = $("#hfDefaultCooperatorID").val();
+        $("#ddlSelectCooperator").val(cooperatorId);
+        DisplayRecordsByCooperator(cooperatorId);
     });
 
     $(".selector-tab").click(function () {
@@ -315,7 +314,31 @@ CWR-TRAIT MODAL
                 $("#section-my-records").load(link);
             }
         });
+     });
+
+    $("#ddlSelectCooperator").change(function () {
+        var cooperatorId = $(this).val();
+        DisplayRecordsByCooperator(cooperatorId);
     });
 
+    function DisplayRecordsByCooperator(cooperatorId)
+    {
+        var link = '@Url.Action("CWRMapListByUser", "Taxonomy")';
+
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                data: { cooperatorId : cooperatorId },
+                success:
+                    function (response) {
+                        $("#section-by-user").html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
+    }
 
 </script>

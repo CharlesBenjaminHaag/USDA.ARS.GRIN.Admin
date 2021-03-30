@@ -48,6 +48,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     log.Info("USER LOGGED IN: " + user.UserName);
                     userSession.AuthenticatedUser = user;
                     userSession.Environment = viewModel.Environment;
+
+                    // TO DO : GET LIST OF USERS AUTHD TO ACCESS APP
+                    //userSession.AuthorizedCooperators = 
+
                     Session["USER_SESSION"] = userSession;
                 }
                 else

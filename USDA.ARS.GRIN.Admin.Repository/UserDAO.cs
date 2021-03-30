@@ -247,6 +247,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return applications;
         }
 
+        //public List<Cooperator> GetAuthorizedApplicationCooperators(string applicationName)
+        //{ 
+        
+        //}
+
         public List<Group> GetUserGroups(int userId)
         {
             const string COMMAND_TEXT = "usp_SysUserGroups_Select";

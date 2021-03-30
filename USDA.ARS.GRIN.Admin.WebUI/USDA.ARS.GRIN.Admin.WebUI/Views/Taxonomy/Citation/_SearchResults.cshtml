@@ -30,8 +30,9 @@
                     <tr>
                         <th width="5%"></th>
                         <th>ID</th>
-                        <th>Text</th>
+                        <th>Taxon Name</th>
                         <th>Reference Title</th>
+                        <th>Citation Title</th>
                         <th>Author(s)</th>
                         <th>Publication Year(s)</th>
                         <th></th>
@@ -52,10 +53,13 @@
                                         <span class="label label-default">@citation.ID</span>
                                     </td>
                                     <td>
-                                        @citation.Title
+                                        @citation.TaxonName
                                     </td>
                                     <td>
                                         @citation.LiteratureReferenceTitle
+                                    </td>
+                                    <td>
+                                        @citation.Title
                                     </td>
                                     <td>
                                         @citation.AuthorName

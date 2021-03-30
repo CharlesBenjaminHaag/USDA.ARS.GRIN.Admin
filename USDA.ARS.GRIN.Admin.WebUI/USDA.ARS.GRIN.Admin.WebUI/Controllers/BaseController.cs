@@ -8,6 +8,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using System.Data;
 using USDA.ARS.GRIN.Admin.Models;
+using USDA.ARS.GRIN.Admin.Service;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
@@ -46,6 +47,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             return userSession;
         }
+
+        //public int UpdateUserSession(string appContext)
+        //{
+        //    SecurityService securityService = new SecurityService();
+        //    try
+        //    {
+        //        UserSession userSession = GetUserSession();
+        //        if (userSession == null)
+        //        {
+        //            throw new NullReferenceException("No UserSession object in session.");
+        //        }
+        //        userSession.Application = 
+        //        Session["USER_SESSION"] = userSession;
+        //    }
+        //    catch (NullReferenceException nex)
+        //    {
+        //        return -1;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return -2;
+        //    }
+        //    return 0;
+        //}
 
         public UserSession AuthenticatedUserSession
         {

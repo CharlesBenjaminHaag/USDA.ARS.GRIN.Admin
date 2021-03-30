@@ -4,21 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Caching;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 using USDA.ARS.GRIN.Admin.Service;
-
+using USDA.ARS.GRIN.Admin.WebUI.Utilities;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class CWRMapHomeViewModel : BaseViewModel
+    public class SearchViewModel
     {
-        public CWRTraitViewModel CWRTraitViewModel { get; set; }
- 
-        public CWRMapHomeViewModel()
-        {
-            CWRTraitViewModel = new CWRTraitViewModel();
-        }
+        public SelectList Fields { get; set; }
+        public SelectList SearchOperators { get; set; }
+        public string Field1 { get; set; }
+        public string Field2 { get; set; }
+        public string Field3 { get; set; }
     }
 }

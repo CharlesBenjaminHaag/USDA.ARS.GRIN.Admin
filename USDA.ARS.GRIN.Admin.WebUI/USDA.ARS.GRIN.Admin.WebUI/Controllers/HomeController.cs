@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using System.Reflection;
+using USDA.ARS.GRIN.Admin.Models;
+using USDA.ARS.GRIN.Admin.Service;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
@@ -24,6 +26,28 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                 return View(dashboardViewModel);
             }
+        }
+
+        public ActionResult LoadApplication(string appContext)
+        {
+            UserSession userSession = null;
+            SecurityService securityService = new SecurityService(AuthenticatedUserSession.Environment);
+
+            // Get metadata and security information related to selected application.
+            if (Session["USER_SESSION"] != null)
+            {
+                userSession = Session["USER_SESSION"] as UserSession;
+            }
+
+            // Get application data and add to user session.
+            // TODO
+            userSession.Application = securityService.GetApplication(appContext);
+            if (userSession.Application == null)
+            {
+                throw new NullReferenceException("No application found matching " + appContext);
+            }
+            Session["USER_SESSION"] = userSession;
+            return RedirectToAction("Index", appContext);
         }
 
         public ActionResult _Header()

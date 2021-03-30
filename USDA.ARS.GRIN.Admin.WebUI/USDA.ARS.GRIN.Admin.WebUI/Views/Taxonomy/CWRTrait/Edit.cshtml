@@ -54,7 +54,7 @@
                     <img class="img-circle" src="" alt="User Avatar">
                 </div>*@
                     <!-- /.widget-user-image -->
-                    <h3 class="widget-user-username">@Html.Raw(@Model.Species.Name)</h3>
+                    <h3 class="widget-user-username">@Html.Raw(Model.Species.Name)</h3>
                     <h5 class="widget-user-desc"><strong>Species</strong></h5>
                 </div>
                 <div class="box-footer">
@@ -70,8 +70,10 @@
                     <p class="text-muted">
                         @Html.Raw(Model.Species.Protologue)
                     </p>
+                    <button class="btn btn-default ">Go To Species</button>
                 </div>
             </div>
+
             <div class="box box-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-orange-active">
@@ -83,18 +85,35 @@
                     <h5 class="widget-user-desc"><strong>Crop for CWR</strong></h5>
                 </div>
                 <div class="box-footer">
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
+                    @if (!String.IsNullOrEmpty(Model.CWRMap.GenepoolCode))
+                    {
+                        <strong><i class="fa fa-chain margin-r-5"></i>Genepool</strong>
+                        <p class="text-muted">
+                            @Html.Raw(Model.CWRMap.GenepoolCode)
+                        </p>
+                    }
+
+                    <strong><i class="fa fa-leaf margin-r-5"></i>Is Crop</strong>
                     <p class="text-muted">
-                        @Html.Raw(Model.Species.GenusName)
+                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsCrop))
                     </p>
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Family</strong>
+                    @if (Model.CWRMap.IsCrop)
+                    {
+                        <strong><i class="fa fa-leaf margin-r-5"></i>Common Name</strong>
+                        <p class="text-muted">
+                            @Html.Raw(Model.CWRMap.CommonName)
+                        </p>
+                    }
+                    <strong><i class="fa fa-book margin-r-5"></i>Graftstock?</strong>
                     <p class="text-muted">
-                        @Html.Raw(Model.Species.FamilyName)
+                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsGraftStock))
                     </p>
-                    <strong><i class="fa fa-book margin-r-5"></i>Place of Publication</strong>
+                    <strong><i class="fa fa-book margin-r-5"></i>Potential?</strong>
                     <p class="text-muted">
-                        @Html.Raw(Model.Species.Protologue)
+                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsPotential))
                     </p>
+                    <button class="btn btn-default ">Go To Crop</button>
+                    <button class="btn btn-default ">Go To Map</button>
                 </div>
             </div>
         </div>

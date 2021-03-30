@@ -11,6 +11,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public int ID { get; set; }
 
         public int SpeciesID { get; set; }
+        public string TaxonName { get; set; }
         public int LiteratureID { get; set; }
         public string LiteratureReferenceTitle { get; set; }
         public string CitationTitle { get; set; }

@@ -12,28 +12,114 @@
    
 </style>
 
+<div class="row">
+    <div class="col-md-3">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Order Status</h3>
 
-<div class="box box-primary" style="padding:10px;">
-    <div class="box-header with-border">
-        <h3 class="box-title">Web Orders</h3>
-        <input type="hidden" id="hidden-web-order-request-id" />
-        <input type="hidden" id="hidden-web-cooperator-id" />
-        <div class="box-tools pull-right">
-            <div class="has-feedback">
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
             </div>
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+               
+                    @foreach (var status in Model.Statuses)
+                    {
+                    <li class="active">
+                        <a href="" id="@status.Name">
+                            <i class="fa fa-leaf"></i>@status.Name
+                            <span class="label label-danger pull-right">@status.ID</span>
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </div>
+            <!-- /.box-body -->
         </div>
-        <!-- /.box-tools -->
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Time Frame</h3>
+
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="#"><i class="fa fa-circle-o text-red"></i>Today</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> This Week</a></li>
+                    <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> This Month</a></li>
+                </ul>
+            </div>
+            <!-- /.box-body -->
+        </div>
+
     </div>
-    <!-- /.box-header -->
-    <div class="box-body no-padding">
-        <div id="section-data">
-            <div class="overlay">
-                <i class="fa fa-refresh fa-spin"></i>
+    <div class="col-md-9">
+
+        <div class="box box-primary" style="padding:10px;">
+            <div class="box-header with-border">
+                <h3 class="box-title">Web Orders</h3>
+                <input type="hidden" id="hidden-web-order-request-id" />
+                <input type="hidden" id="hidden-web-cooperator-id" />
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                    </div>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active" style="background-color:#ebebeb;">
+                            <a href="#tab_1" id="tab-my-crops" title="CropForCWRListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">My Records</a>
+                        </li>
+                        <li class="" style="background-color:#ebebeb;">
+                            <a href="#tab_2" id="tab-recently-added" title="CropForCWRListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Pending Review</a>
+                        </li>
+                        <li class="" style="background-color:#ebebeb;">
+                            <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="tab_1">
+
+                        </div>
+                        <div class="tab-pane" id="tab_2">
+                        </div>
+                        <div class="tab-pane" id="tab_3">
+                        </div>
+                    </div>
+                </div>
+                @*<p style="font-size:1.3em;">
+                    <span class="label label-default">UI Design</span>
+                    <span class="label label-default">Coding</span>
+                    <span class="label label-default">Javascript</span>
+                    <span class="label label-default">PHP</span>
+                    <span class="label label-default">Node.js</span>
+                </p>*@
+                <div id="section-data">
+
+                </div>
+
             </div>
         </div>
+
     </div>
 </div>
 
@@ -91,13 +177,10 @@
             $("body").addClass("loading");
         },
         ajaxStop: function () {
-            $("body").removeClass("loading");
+            $(".overlay").hide();
         }
     });
-
-    
-
-
+   
     $(document).ready(function () {
         var link = '@Url.Action("_List", "WebOrder")';
         //$("#section-data").load(link);
@@ -140,12 +223,20 @@
         }
     });
 
-    $("#btn-deny-order").click(function () {
-        Update("NRR_DENY");
-    });
-
-    $("#btn-approve-order").click(function () {
-        Update("NRR_APPROVE");
+    $("#filterByStatusNRR").click(function () {
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                success:
+                    function (response) {
+                        $("#section-data").html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
     });
 
     function Update(status)

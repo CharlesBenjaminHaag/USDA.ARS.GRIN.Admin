@@ -16,11 +16,13 @@ namespace USDA.ARS.GRIN.Admin.Service
     public class SecurityService
     {
         protected UserDAO _userDAO;
+        protected ApplicationDAO _applicationDAO;
         protected SmtpService _smtpService;
 
         public SecurityService(string context)
         {
             _userDAO = new UserDAO(context);
+            _applicationDAO = new ApplicationDAO(context);
             _smtpService = new SmtpService();
         }
 
@@ -66,6 +68,16 @@ namespace USDA.ARS.GRIN.Admin.Service
             }
             return resultContainer;
         }
+
+        public Application GetApplication(string appContext)
+        {
+            return _applicationDAO.Get(appContext);
+        }
+
+        //public List<Cooperator> GetAuthorizedCooperators(string applicationName)
+        //{ 
+        //    //return _userDAO.G
+        //}
 
         private bool validateHashedPassword(string password, string storedSaltHash)
         {

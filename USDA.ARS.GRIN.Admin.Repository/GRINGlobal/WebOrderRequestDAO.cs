@@ -568,6 +568,42 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         #endregion
 
+        #region Web Order Request Status
 
+        public List<ReferenceItem> GetStatuses()
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequestStatuses_Select";
+            List<ReferenceItem> statuses = new List<ReferenceItem>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ReferenceItem status = new ReferenceItem { ID = GetInt(reader["web_order_request_count"].ToString()), Name = reader["status_code"].ToString() };
+                                statuses.Add(status);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return statuses;
+        }
+
+        #endregion
     }
 }

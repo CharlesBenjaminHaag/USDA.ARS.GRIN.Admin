@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationDAO.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Genesys\GenesysDAO.cs" />
     <Compile Include="GRINGlobal\AccessionDAO.cs" />

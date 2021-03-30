@@ -267,6 +267,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.Get(id);
         }
+        public IEnumerable<Citation> GetCitationsByCategory(string category)
+        {
+            return _citationDAO.GetByCategory(category);
+        }
 
         public IEnumerable<Citation> FindCitations(string searchString)
         {
@@ -289,6 +293,20 @@ namespace USDA.ARS.GRIN.Admin.Service
         }
 
         #endregion
+
+        #region Literature
+
+        public Literature GetLiterature(int id)
+        {
+            return _citationDAO.GetLiterature(id);
+        }
+
+        public List<Literature> SearchLiterature(string searchText)
+        {
+            return _citationDAO.SearchLiterature(searchText);
+        }
+
+        #endregion Literature
 
         #region Folder
         public IEnumerable<Folder> GetFolders(int cooperatorId)

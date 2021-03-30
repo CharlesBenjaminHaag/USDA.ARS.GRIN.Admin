@@ -1,0 +1,35 @@
+﻿@model USDA.ARS.GRIN.Admin.Models.Taxonomy.Literature
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <i class="fa fa-book"></i>
+        <h3 class="box-title">Literature</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl>
+                    <dt>Literature Title</dt>
+                    <dd>@Model.ReferenceTitle</dd>
+                    <dt>Abbreviation</dt>
+                    <dd>@Model.Abbreviation</dd>
+                    <dt>Standard Abbreviation</dt>
+                    <dd>@Model.StandardAbbreviation</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl>
+                    <dd></dd>
+                    <dt>Publication Year</dt>
+                    <dd>@Model.PublicationYear</dd>
+                    <dt>Publisher Name</dt>
+                    <dd>@Model.PublisherName</dd>
+                    <dt>Note</dt>
+                    <dd>@Model.Note</dd>
+                </dl>
+            </div>
+        </div>
+        <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-literature-search">Search Literature...</button>
+    </div>
+    <!-- /.box-body -->
+</div>

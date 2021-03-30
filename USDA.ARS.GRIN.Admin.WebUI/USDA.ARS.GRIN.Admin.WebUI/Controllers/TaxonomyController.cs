@@ -48,6 +48,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             TempData["context"] = "Crop For CWR Home";
             CropForCWRHomeViewModel viewModel = new CropForCWRHomeViewModel();
+            viewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
+            viewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
             return View("~/Views/Taxonomy/CropForCWR/Index.cshtml", viewModel);
         }
        
@@ -137,12 +139,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public PartialViewResult CropForCWRListByUser()
+        public PartialViewResult CropForCWRListByUser(int cooperatorId = 0)
         {
             CropForCWRSearchViewModel cropForCWRSearchViewModel = new CropForCWRSearchViewModel();
+            cropForCWRSearchViewModel.AuthenticatedUser = AuthenticatedUser;
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            cropForCWRSearchViewModel.CropsForCWR = _taxonomyService.FindUserCropsForCWR(this.AuthenticatedUser.CooperatorID);
+            cropForCWRSearchViewModel.CropsForCWR = _taxonomyService.FindUserCropsForCWR(cooperatorId);
             return PartialView(BASE_PATH + "CropForCWR/_SearchResults.cshtml", cropForCWRSearchViewModel);
         }
 
@@ -308,11 +311,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult CWRMapHome()
         {
-            TempData["context"] = "CWR Map Home";
+            CWRMapHomeViewModel cWRMapHomeViewModel = new CWRMapHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            CWRMapHomeViewModel viewModel = new CWRMapHomeViewModel();
-            viewModel.CWRTraitViewModel = new CWRTraitViewModel(taxonomyService.GetTraitClassCodes(), taxonomyService.GetBreedingTypeCodes());
-            return View(BASE_PATH +  "CWRMap/Index.cshtml", viewModel);
+
+            TempData["context"] = "CWR Map Home";
+            cWRMapHomeViewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
+            cWRMapHomeViewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
+            cWRMapHomeViewModel.CWRTraitViewModel = new CWRTraitViewModel(taxonomyService.GetTraitClassCodes(), taxonomyService.GetBreedingTypeCodes());
+            return View(BASE_PATH + "CWRMap/Index.cshtml", cWRMapHomeViewModel);
         }
 
         //[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -326,20 +332,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         //}
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public PartialViewResult CWRMapListByUser()
+        public PartialViewResult CWRMapListByUser(int cooperatorId)
         {
             CWRMapSearchViewModel viewModel = new CWRMapSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             try
             {
-                viewModel.CWRMaps = _taxonomyService.FindUserCWRMaps(AuthenticatedUser.CooperatorID);
+                viewModel.AuthenticatedUser = AuthenticatedUser;
+                viewModel.DefaultCooperatorID = cooperatorId;
+                viewModel.CWRMaps = _taxonomyService.FindUserCWRMaps(cooperatorId);
                 return PartialView("~/Views/Taxonomy/CWRMap/_SearchResults.cshtml", viewModel);
             }
             catch (Exception ex)
             {
                 return PartialView("~/Views/Error/_Error.cshtml", viewModel);
             }
+
+
+            //CropForCWRSearchViewModel cropForCWRSearchViewModel = new CropForCWRSearchViewModel();
+            //cropForCWRSearchViewModel.AuthenticatedUser = AuthenticatedUser;
+            //TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            //cropForCWRSearchViewModel.CropsForCWR = _taxonomyService.FindUserCropsForCWR(cooperatorId);
+            //return PartialView(BASE_PATH + "CropForCWR/_SearchResults.cshtml", cropForCWRSearchViewModel);
+
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
@@ -1043,7 +1060,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             TempData["context"] = "Citation Home";
             CitationHomeViewModel viewModel = new CitationHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            // TO DO: SET UP SEARCH HERE
+            SearchViewModel searchViewModel = new SearchViewModel();
+            List<Field> fields = new List<Field>();
             
+            fields.Add(new Field { Name = "citation.citation_title", Title = "Title" });
+            fields.Add(new Field { Name = "citation.author_name", Title = "Author" });
+            fields.Add(new Field { Name = "citation.citation_year", Title = "Year" });
+            searchViewModel.Fields = new SelectList(fields, "Name", "Title");
+
+            List<SearchOperator> searchOperators = new List<SearchOperator>();
+            searchOperators.Add(new SearchOperator { Title = "Starts With", SearchOperatorSyntax= "LIKE" });
+            searchOperators.Add(new SearchOperator { Title = "Matches", SearchOperatorSyntax = "=" });
+            searchOperators.Add(new SearchOperator { Title = "Ends In", SearchOperatorSyntax = "LIKE" });
+            searchViewModel.SearchOperators = new SelectList(searchOperators, "SearchOperatorSyntax","Title");
+
+            viewModel.SearchViewModel = searchViewModel;
+
             return View("~/Views/Taxonomy/Citation/Index.cshtml", viewModel);
         }
 
@@ -1058,14 +1092,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult CitationListByUser()
+        public PartialViewResult CitationList(string category)
         {
             CitationSearchViewModel viewModel = new CitationSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             try
             {
-                viewModel.Citations = _taxonomyService.FindUserCitations(AuthenticatedUser.CooperatorID);
+                viewModel.Citations = _taxonomyService.GetCitationsByCategory(category);
                 return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
             }
             catch (Exception ex)
@@ -1106,14 +1140,16 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     citation = _taxonomyService.GetCitation(id);
                     viewModel.ID = citation.ID;
                     viewModel.LiteratureID = citation.LiteratureID;
-                    viewModel.CitationTitle = citation.CitationTitle;
+                    viewModel.CitationTitle = citation.Title;
                     viewModel.AuthorName = citation.AuthorName;
                     viewModel.Year = citation.CitationYear;
                     viewModel.Reference = citation.Reference;
                     viewModel.DOIReference = citation.DOIReference;
                     viewModel.CreatedByCooperatorID = citation.CreatedByCooperatorID;
+                    viewModel.CreatedDate = citation.CreatedDate;
                     viewModel.CreatedByCooperatorName = citation.CreatedByCooperatorName;
                     viewModel.ModifiedByCooperatorID = citation.ModifiedByCooperatorID;
+                    viewModel.ModifiedDate = citation.ModifiedDate;
                     viewModel.ModifiedByCooperatorName = citation.ModifiedByCooperatorName;
                 }
                 else
@@ -1198,8 +1234,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 IEnumerable<Literature> literatureList = new List<Literature>().AsEnumerable();
-                //literatureList = _taxonomyService.FindNotes(searchString, context);
-                return PartialView("~/Views/Taxonomy/Shared/_LiteratureSearchResults.cshtml", literatureList);
+                literatureList = _taxonomyService.SearchLiterature(searchString);
+                return PartialView("~/Views/Taxonomy/Citation/_LiteratureSearchResults.cshtml", literatureList);
             }
             catch (Exception ex)
             {
@@ -1208,6 +1244,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        
+        [HttpGet]
+        public PartialViewResult _LiteratureDetail(int id)
+        {
+            Literature literature = new Literature();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                literature = taxonomyService.GetLiterature(id); 
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message);
+            }
+            return PartialView(BASE_PATH + "Citation/_LiteratureDetail.cshtml", literature);
+        }
+        
 
         #endregion Literature
 

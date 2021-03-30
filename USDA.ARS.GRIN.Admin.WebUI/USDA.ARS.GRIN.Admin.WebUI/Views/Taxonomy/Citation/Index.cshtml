@@ -8,7 +8,9 @@
 <!-- TABBED VIEW -->
 <!-- ============================================================================================== -->
 <div class="box box-primary" style="padding:10px;">
-    
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
     <div class="box-header with-border">
         <h3 class="box-title">Citation</h3>
 
@@ -23,62 +25,74 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
-        <div class="overlay">
-            <i class="fa fa-refresh fa-spin"></i>
-        </div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-records" title="CitationListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">By User</a>
+                    <a href="#tab_species" id="tab-select-species" title="species" class="selector-tab" data-toggle="tab" aria-expanded="true">Species</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="CitationListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
+                    <a href="#tab_genus" id="tab-select-genus" title="genus" class="selector-tab" data-toggle="tab" aria-expanded="true">Genus</a>
                 </li>
                 <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                    <a href="#tab_family" id="tab-select-family" title="family" class="selector-tab" data-toggle="tab" aria-expanded="false">Family</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_search" id="tab-enter-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
                         <i class="fa fa-search"></i>
                     </a>
                 </li>
             </ul>
             <div class="tab-content">
-
-                <!-- ============================================================================================== -->
-                <!-- MY-RECORDS TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane active" id="tab_1">
+                <div class="tab-pane active" id="tab_species">
                     <div class="xbox-body">
-
-                        <div id="section-by-user">
+                        <div id="section-species">
                         </div>
                     </div>
                 </div>
-
-                <!-- ============================================================================================== -->
-                <!-- RECENTLY-ADDED TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_2">
+                <div class="tab-pane" id="tab_genus">
                     <div class="xbox-body">
-                        <div id="section-recently-added">
+                        <div id="section-genus">
                         </div>
                     </div>
                 </div>
-
-                <!-- ============================================================================================== -->
-                <!-- SEARCH TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_3">
+                <div class="tab-pane" id="tab_family">
+                    <div class="xbox-body">
+                        <div id="section-family">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_search">
                     <div class="xbox-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-7" style="padding-left:0px;">
-                                        <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type name ..." class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
-                                            </span>
-                                        </div>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    @Html.DropDownListFor(x => x.SearchViewModel.Field1, Model.SearchViewModel.Fields, null, new { @class = "form-control" })
+                                </div>
+                                <div id="ddlSelectField2" class="col-md-5">
+                                    @Html.TextBoxFor(x => x.SearchViewModel.Field2, new { @placeholder = "Enter a search term", @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="btn-group btn-block">
+                                        <button type="button" class="btn btn-primary btn-flat">ADD</button>
+                                        <button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Add With AND</a></li>
+                                            <li><a href="#">Add With OR</a></li>
+                                        </ul>
                                     </div>
+                                </div>
+                            </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <br />
+                                    <label>Query</label>
+                                    <textarea rows="5" class="form-control"></textarea><br />
+                                    <input type="button" id="btnSearch" value="Search" class="btn btn-primary pull-right" />
                                 </div>
                             </div>
                         </div>
@@ -96,52 +110,14 @@
 </div>
 <script type="text/javascript">
 
-    $(document).on({
-        ajaxStart: function () {
-            $("body").addClass("loading");
-        },
-        ajaxStop: function () {
-            alert("DEBUG AJAX STOP");
-            $(".overlay").hide();
-        }
-    });
-
-
     $(document).ready(function () {
-        var link = '@Url.Action("CitationListByUser", "Taxonomy")';
-        $.ajax(
-            {
-                type: 'POST',
-                url: link,
-                success:
-                    function (response) {
-                        $("#section-by-user").html(response);
-                    },
-                error:
-                    function (response) {
-                        console.log(response);
-                    }
-            });
+        DisplayRecords("species");
     });
 
     $(".selector-tab").click(function () {
         var id = $(this).attr('id');
         var action = $(this).attr('title');
-        var link = '@Url.Action("Action", "Taxonomy")';
-        var displaySection = '';
-
-        $('.mailbox-messages input:checkbox').prop('checked', false);
-
-        if (action != '') {
-            displaySection = "#" + id.replace("tab", "section");
-            link = link.replace("Action", action);
-
-            //DEBUG
-            console.log(link);
-
-
-            $(displaySection).load(link);
-        }
+        DisplayRecords(action);
     });
 
     $(document).on("click", "[id*='btnSearch']", function () {
@@ -153,4 +129,26 @@
             $("#section-search-results").html(response);
         });
     });
+
+    function DisplayRecords(category)
+    {
+        var section = "#section-" + category;
+        var link = '@Url.Action("CitationList", "Taxonomy")';
+
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                data: { category : category },
+                success:
+                    function (response) {
+                        $(section).html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
+    }
+
 </script>

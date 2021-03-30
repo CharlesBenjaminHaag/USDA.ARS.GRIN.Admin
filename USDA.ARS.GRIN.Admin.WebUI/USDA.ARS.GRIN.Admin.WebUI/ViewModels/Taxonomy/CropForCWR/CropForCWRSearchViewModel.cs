@@ -8,7 +8,7 @@ using USDA.ARS.GRIN.Admin.Service;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class CropForCWRSearchViewModel
+    public class CropForCWRSearchViewModel : BaseViewModel
     {
         public IQueryable<CropForCWR> CropsForCWR { get; set; }
     }

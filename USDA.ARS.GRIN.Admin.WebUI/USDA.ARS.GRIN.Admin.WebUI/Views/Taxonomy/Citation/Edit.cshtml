@@ -23,153 +23,75 @@
     </div>
 }
 
-<div class="nav-tabs-custom">
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab_1" data-toggle="tab">Tab 1</a></li>
-        <li><a href="#tab_2" data-toggle="tab">Tab 2</a></li>
-        <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Dropdown <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-            </ul>
-        </li>
-        <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab_1">
-            <b>How to use:</b>
-
-            <p>
-                Exactly like the original bootstrap tabs except you should use
-                the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.
-            </p>
-            A wonderful serenity has taken possession of my entire soul,
-            like these sweet mornings of spring which I enjoy with my whole heart.
-            I am alone, and feel the charm of existence in this spot,
-            which was created for the bliss of souls like mine. I am so happy,
-            my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
-            that I neglect my talents. I should be incapable of drawing a single stroke
-            at the present moment; and yet I feel that I never was a greater artist than now.
-        </div>
-        <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_2">
-            The European languages are members of the same family. Their separate existence is a myth.
-            For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-            in their grammar, their pronunciation and their most common words. Everyone realizes why a
-            new common language would be desirable: one could refuse to pay expensive translators. To
-            achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-            words. If several languages coalesce, the grammar of the resulting language is more simple
-            and regular than that of the individual languages.
-        </div>
-        <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_3">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-            when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            It has survived not only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-            like Aldus PageMaker including versions of Lorem Ipsum.
-        </div>
-        <!-- /.tab-pane -->
-    </div>
-    <!-- /.tab-content -->
+@if (Model.ID > 0)
+{
+<div id="section-literature-detail">
+    @{Html.RenderAction("_LiteratureDetail", "Taxonomy", new { id = Model.LiteratureID });}
 </div>
-
+}
 
 @using (Html.BeginForm("CitationEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID, new { id = "hfCitationID", name = "ID" })
     @Html.ValidationSummary()
-<div class="box box-default">
-    <div class="box-header">
-        <h3 class="box-title">
-            Detail
-        </h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                <i class="fa fa-minus"></i>
-            </button>
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">
+                Detail
+            </h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="box-body">
-        <div class="row">
-            <div class="col-md-1" data-select2-id="14">
-                <div class="form-group" data-select2-id="13">
-                    <label>ID</label>
-                    <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-1" data-select2-id="14">
+                    <div class="form-group" data-select2-id="13">
+                        <label>ID</label>
+                        <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+                    </div>
+
                 </div>
+                <!-- /.col -->
+                <div class="col-md-8">
+                    <!-- /.form-group -->
+                    <div class="form-group">
+                        <label>Citation Title</label>
+                        @Html.TextBoxFor(x => x.CitationTitle, new { @id = "txtCitationText", @class = "form-control" })
+                    </div>
+                    <!-- /.form-group -->
 
-            </div>
-            <!-- /.col -->
-            <div class="col-md-8">
-                <!-- /.form-group -->
-                <div class="form-group">
-                    <label>Citation Title</label>
-                    @Html.TextBoxFor(x => x.CitationTitle, new { @id = "txtCitationText", @class = "form-control" })
                 </div>
-                <!-- /.form-group -->
-
+                <div class="col-md-3">
+                    <label>Author</label>
+                    @Html.TextBoxFor(x => x.AuthorName, new { @id = "txtAuthorName", @class = "form-control" })
+                </div>
+                <!-- /.col -->
             </div>
-            <div class="col-md-3">
-                <label>Author</label>
-                @Html.TextBoxFor(x => x.AuthorName, new { @id = "txtAuthorName", @class = "form-control" })
+            <div class="row">
+                <div class="col-md-4">
+                    <label>DOI Reference</label>
+                    @Html.TextBoxFor(x => x.DOIReference, new { @id = "txtDOIReference", @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <label>Reference</label>
+                    @Html.TextBoxFor(x => x.Reference, new { @id = "txtReference", @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <label>Year</label>
+                    @Html.TextBoxFor(x => x.Year, new { @id = "txtYear", @class = "form-control" })
+                </div>
             </div>
-            <!-- /.col -->
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <label>DOI Reference</label>
-                @Html.TextBoxFor(x => x.DOIReference, new { @id = "txtDOIReference", @class = "form-control" })
-            </div>
-            <div class="col-md-6">
-                <label>Reference</label>
-                @Html.TextBoxFor(x => x.Reference, new { @id = "txtReference", @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                <label>Year</label>
-                @Html.TextBoxFor(x => x.Year, new { @id = "txtYear", @class = "form-control" })
-            </div>
-        </div>
-        <div class="row" style="margin-top:1em;">
-            <div class="col-md-12">
-                <label>Note</label>
-                @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                <button type="button" class="btn btn-default" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+            <div class="row" style="margin-top:1em;">
+                <div class="col-md-12">
+                    <label>Note</label>
+                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <button type="button" class="btn btn-default pull-right" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                </div>
             </div>
         </div>
-    </div>
-
-    @if (Model.ID > 0)
-    {
-        <div class="box box-solid">
-            <div class="box-header with-border">
-                <i class="fa fa-book"></i>
-                <h3 class="box-title">Literature</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <dl>
-                    <dt>Abbreviation</dt>
-                    <dd>A description list is perfect for defining terms.</dd>
-                    <dt>Standard Abbreviation</dt>
-                    <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
-                    <dt>Reference Title</dt>
-                    <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
-                </dl>
-
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-literature-search">Search Literature...</button>
-            </div>
-            <!-- /.box-body -->
-        </div>
-    }
         <div class="box-footer" style="border:none;">
             <button type="submit" class="btn btn-success">Save Edits</button>
         </div>
@@ -267,9 +189,14 @@
         var url = "/Taxonomy/FindLiterature/";
         var inputSearchString = $("#txtSearchLiterature").val();
 
-        $.post(url, { searchString: inputSearchString, context: noteContext })
+        $.post(url, { searchString: inputSearchString })
             .done(function (response) {
-                $("#section-litertature-search-results").html(response);
+                $("#section-literature-search-results").html(response);
             });
     });
+
+    function SelectLiterature(id) {
+        $('#modal-literature-search').modal('hide');
+        
+    }
 </script>

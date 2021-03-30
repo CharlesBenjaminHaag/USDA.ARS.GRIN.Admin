@@ -336,7 +336,8 @@
     <Content Include="Views\Taxonomy\Citation\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Index.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Shared\_LiteratureSearchResults.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\_LiteratureSearchResults.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\_LiteratureDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -435,6 +436,7 @@
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\SearchComparisonOperatorViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\SearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\AddSubTaxaViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
     <Compile Include="ViewModels\AccountManagement\UserEditViewModel.cs" />
