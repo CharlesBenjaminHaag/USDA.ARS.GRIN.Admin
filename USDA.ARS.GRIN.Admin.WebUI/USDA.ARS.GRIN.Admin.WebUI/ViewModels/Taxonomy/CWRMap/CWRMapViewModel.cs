@@ -81,6 +81,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
             _genepoolCodes = genePoolCodes;
             _taxonomyCrops = cropsForCwr;
             _citations = new List<Citation>();
+            //Citations = new List<Citation>().AsEnumerable();
             CWRTraits = new List<CWRTrait>();
         }
     }

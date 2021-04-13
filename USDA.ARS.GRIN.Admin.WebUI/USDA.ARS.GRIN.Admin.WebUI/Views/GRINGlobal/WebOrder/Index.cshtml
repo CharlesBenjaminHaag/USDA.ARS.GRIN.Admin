@@ -9,65 +9,98 @@
     #web-order-request-id {
         font-weight: bold;
     }
+    .label {
+        font-size:1.2em;
+    }
    
 </style>
 
 <div class="row">
     <div class="col-md-3">
-        <div class="box box-solid">
-            <div class="box-header with-border">
-                <h3 class="box-title">Order Status</h3>
+        @using (Html.BeginForm("Search", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
+        {
+            @Html.HiddenFor(x => x.SelectedStatusCode)
+            @Html.HiddenFor(x => x.SelectedTimeFrameCode)
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Order Status</h3>
 
-                <div class="box-tools">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="section-user-pick-list" class="box-body no-padding">
+                    <div>
+                        <ul class="nav nav-pills nav-stacked">
+                            @foreach (var status in Model.Statuses)
+                            {
+                                <li id="@status.Name"><a href="#"><i class="fa fa-circle"></i> @status.Name</a></li>
+                            }
+                            <li id="ANY"><a href="#"><i class="fa fa-circle"></i> Any</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Submittal Time Frame</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="section-time-frame-pick-list" class="box-body no-padding">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li id="1"><a href="#"><i class="fa fa-calendar"></i>Today</a></li>
+                        <li id="2"><a href="#"><i class="fa fa-calendar"></i> The Last 7 Days</a></li>
+                        <li id="3"><a href="#"><i class="fa fa-calendar"></i> The Last 30 Days</a></li>
+                        <li id="4"><a href="#"><i class="fa fa-calendar"></i> The Last 180 Days</a></li>
+                        <li id="0"><a href="#"><i class="fa fa-calendar"></i> Any</a></li>
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Search Criteria</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="section-search-criteria" class="box-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        @Html.TextBoxFor(x => x.RequestorEmailAddress, new  { @class = "form-control" } )
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">First Name</label>
+                        @Html.TextBoxFor(x => x.RequestorFirstName, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Last Name</label>
+                        @Html.TextBoxFor(x => x.RequestorLastName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button id="btnSearch" type="button" class="btn btn-primary pull-right">Search</button>
                 </div>
             </div>
-            <div class="box-body no-padding">
-                <ul class="nav nav-pills nav-stacked">
-               
-                    @foreach (var status in Model.Statuses)
-                    {
-                    <li class="active">
-                        <a href="" id="@status.Name">
-                            <i class="fa fa-leaf"></i>@status.Name
-                            <span class="label label-danger pull-right">@status.ID</span>
-                        </a>
-                    </li>
-                    }
-                </ul>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <div class="box box-solid">
-            <div class="box-header with-border">
-                <h3 class="box-title">Time Frame</h3>
-
-                <div class="box-tools">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body no-padding">
-                <ul class="nav nav-pills nav-stacked">
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i>Today</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> This Week</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> This Month</a></li>
-                </ul>
-            </div>
-            <!-- /.box-body -->
-        </div>
-
+        }
     </div>
     <div class="col-md-9">
-
         <div class="box box-primary" style="padding:10px;">
             <div class="box-header with-border">
                 <h3 class="box-title">Web Orders</h3>
                 <input type="hidden" id="hidden-web-order-request-id" />
                 <input type="hidden" id="hidden-web-cooperator-id" />
+
                 <div class="box-tools pull-right">
                     <div class="has-feedback">
                     </div>
@@ -79,50 +112,16 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-                <div class="overlay">
-                    <i class="fa fa-refresh fa-spin"></i>
-                </div>
-                <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <li class="active" style="background-color:#ebebeb;">
-                            <a href="#tab_1" id="tab-my-crops" title="CropForCWRListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">My Records</a>
-                        </li>
-                        <li class="" style="background-color:#ebebeb;">
-                            <a href="#tab_2" id="tab-recently-added" title="CropForCWRListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Pending Review</a>
-                        </li>
-                        <li class="" style="background-color:#ebebeb;">
-                            <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
-                                <i class="fa fa-search"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane" id="tab_1">
-
-                        </div>
-                        <div class="tab-pane" id="tab_2">
-                        </div>
-                        <div class="tab-pane" id="tab_3">
-                        </div>
-                    </div>
-                </div>
-                @*<p style="font-size:1.3em;">
-                    <span class="label label-default">UI Design</span>
-                    <span class="label label-default">Coding</span>
-                    <span class="label label-default">Javascript</span>
-                    <span class="label label-default">PHP</span>
-                    <span class="label label-default">Node.js</span>
-                </p>*@
                 <div id="section-data">
-
                 </div>
-
+            </div>
+            <div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
             </div>
         </div>
-
     </div>
 </div>
-
+</div>
 <div id="modal-approve" class="modal modal-success fade" role='dialog'>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -171,101 +170,180 @@
 
 
 <script type="text/javascript">
-
     $(document).on({
         ajaxStart: function () {
-            $("body").addClass("loading");
+            $(".overlay").show();
         },
         ajaxStop: function () {
             $(".overlay").hide();
         }
     });
-   
+
     $(document).ready(function () {
-        var link = '@Url.Action("_List", "WebOrder")';
-        //$("#section-data").load(link);
-
-        $.ajax(
-            {
-                type: 'POST',
-                url: link,
-                success:
-                    function (response) {
-                        $("#section-data").html(response);
-                    },
-                error:
-                    function (response) {
-                        console.log(response);
-                    }
-            });
-
+        LoadWebOrderRequests("SUBMITTED", 1);
     });
 
-    $(document).on("click", ".open-modal", function () {
-        var id = $(this).attr('id');
-        var idValues = id.split('-');
+    $(function () {
+        $('#section-user-pick-list ul.nav li').on('click', function () {
 
-        var buttonName = idValues[0];
-        var webOrderRequestId = idValues[1];
-        var webCooperatorId = idValues[2];
+            // Highlight selected user control
+            $(this).parent().find('li.active').removeClass('active');
+            $(this).addClass('active');
 
-        $("#hidden-web-order-request-id").val(webOrderRequestId);
-        $("#hidden-web-cooperator-id").val(webCooperatorId);
-        $("#web-order-request-id").html(webOrderRequestId);
+            // Call method that retrieves details for selected user
+            var status = $(this).attr('id');
+            $("#SelectedStatusCode").val(status); 
 
-        if (buttonName == "btnApprove") {
-            var myHeading = "<p>Approve Web Order " + webOrderRequestId + "</p>";
-            $('#modal-approve').modal('show');
-        }
-        else {
-            var myHeading = "<p>Deny Web Order " + webOrderRequestId + "</p>";
-            $('#modal-deny').modal('show');
-        }
+            var timeFrameId = $("#SelectedTimeFrameCode").val();
+            LoadWebOrderRequests(status, timeFrameId);
+        });
     });
 
-    $("#filterByStatusNRR").click(function () {
-        $.ajax(
-            {
-                type: 'POST',
-                url: link,
-                success:
-                    function (response) {
-                        $("#section-data").html(response);
-                    },
-                error:
-                    function (response) {
-                        console.log(response);
-                    }
-            });
+    $(function () {
+        $('#section-time-frame-pick-list ul.nav li').on('click', function () {
+
+            // Highlight selected user control
+            $(this).parent().find('li.active').removeClass('active');
+            $(this).addClass('active');
+
+            // Call method that retrieves details for selected user
+            var timeFrameCode = $(this).attr('id');
+            $("#SelectedTimeFrameCode").val(timeFrameCode); 
+
+            var statusCode = $("#SelectedStatusCode").val();
+            LoadWebOrderRequests(statusCode, timeFrameCode);
+        });
     });
 
-    function Update(status)
+    //$("#btnSearch").click(function () {
+    //     TO DO: GET CRITERIA
+    //    var requestorEmail = "";
+    //    var requestorFirstName = "";
+    //    var requestorLastName = "";
+
+    //    try {
+    //        requestorEmail = $("#RequestorEmail").val();
+    //        requestorFirstName = $("#RequestorFirstName").val();
+    //        requestorLastName = $("#RequestorLastName").val();
+    //        SearchWebOrderRequests("", "", "", "", "", "", "");
+    //    }
+    //    catch (ex) {
+    //        console.log(ex.message);
+    //    }
+    //});
+
+    //function SearchWebOrderRequests(statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, id)
+    //{
+    //    alert("DEBUG");
+    //}
+
+    function LoadWebOrderRequests(statusCode, timeFrameCode)
     {
-        var webOrderRequestId = $("#hidden-web-order-request-id").val();
-        var webCooperatorId = $("#hidden-web-cooperator-id").val();
-        var note = '';
+        $("#SelectedStatusCode").val(statusCode); 
+        $("#SelectedTimeFrameCode").val(timeFrameCode); 
 
-        if (status == 'NRR_APPROVE') {
-            note = $("#txtApprovalNote").val();
-        }
-        else {
-            note = $("#txtDenyNote").val();
-        }
+        var $getStatusElement = $('li#' + statusCode);
+        $getStatusElement.addClass('active');
 
+        var $getTimeFrameElement = $('li#' + timeFrameCode);
+        $getTimeFrameElement.addClass('active');
+
+        var link = '@Url.Action("_List", "WebOrder")';
         $.ajax(
             {
                 type: 'POST',
-                url: '/WebOrder/Update',
-                data: { webOrderRequestId: webOrderRequestId, webCooperatorId: webCooperatorId, statusCode: status, actionNote: note },
+                url: link,
+                data: { status: statusCode, timeFrameCode: timeFrameCode },
                 success:
                     function (response) {
                         $("#section-data").html(response);
                     },
                 error:
                     function (response) {
-                        alert("Error: " + response);
+                        console.log(response);
                     }
             });
     }
 
+    //$(document).on("click", ".open-modal", function () {
+    //    var id = $(this).attr('id');
+    //    var idValues = id.split('-');
+
+    //    var buttonName = idValues[0];
+    //    var webOrderRequestId = idValues[1];
+    //    var webCooperatorId = idValues[2];
+
+    //    $("#hidden-web-order-request-id").val(webOrderRequestId);
+    //    $("#hidden-web-cooperator-id").val(webCooperatorId);
+    //    $("#web-order-request-id").html(webOrderRequestId);
+
+    //    if (buttonName == "btnApprove") {
+    //        var myHeading = "<p>Approve Web Order " + webOrderRequestId + "</p>";
+    //        $('#modal-approve').modal('show');
+    //    }
+    //    else {
+    //        var myHeading = "<p>Deny Web Order " + webOrderRequestId + "</p>";
+    //        $('#modal-deny').modal('show');
+    //    }
+    //});
+
+    //$("#filterByStatusNRR").click(function () {
+
+    //    $.ajax(
+    //        {
+    //            type: 'POST',
+    //            url: link,
+    //            success:
+    //                function (response) {
+    //                    $("#section-data").html(response);
+    //                },
+    //            error:
+    //                function (response) {
+    //                    console.log(response);
+    //                }
+    //        });
+    //});
+
+    //function Update(status)
+    //{
+    //    var webOrderRequestId = $("#hidden-web-order-request-id").val();
+    //    var webCooperatorId = $("#hidden-web-cooperator-id").val();
+    //    var note = '';
+
+    //    if (status == 'NRR_APPROVE') {
+    //        note = $("#txtApprovalNote").val();
+    //    }
+    //    else {
+    //        note = $("#txtDenyNote").val();
+    //    }
+
+    //    $.ajax(
+    //        {
+    //            type: 'POST',
+    //            url: '/WebOrder/Update',
+    //            data: { webOrderRequestId: webOrderRequestId, webCooperatorId: webCooperatorId, statusCode: status, actionNote: note },
+    //            success:
+    //                function (response) {
+    //                    $("#section-data").html(response);
+    //                },
+    //            error:
+    //                function (response) {
+    //                    alert("Error: " + response);
+    //                }
+    //        });
+    //}
+
+    //function InitializeDataTable() {
+    //    $(document).ready(function () {
+    //        $('table.ggtools').DataTable({
+    //            'destroy': true,
+    //            'paging': true,
+    //            'lengthChange': false,
+    //            'searching': false,
+    //            'ordering': true,
+    //            'info': true,
+    //            'autoWidth': false
+    //        });
+    //    });
+    //}
 </script>

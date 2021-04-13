@@ -1,6 +1,6 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement.AccountManagementHomeViewModel 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Account Management Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -62,7 +62,14 @@
         <a href="compose.html" class="btn btn-primary btn-block margin-bottom">Add New GRIN User</a>
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Users</h3>
+                <h3 class="box-title">Search and Filter</h3>
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                    </div>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
             </div>
             <div class="box-body no-padding" style="">
                 <div class="input-group" style="padding:8px;">
@@ -107,6 +114,29 @@
                     
                 </div>
                 
+                
+                
+                
+                
+                
+                
+                </div>
+            <!-- /.box-body -->
+        
+        
+        
+            <div class="box-body no-padding" style="">
+
+                
+            </div>
+        
+        </div>
+        <!-- /. box -->
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Users</h3>
+            </div>
+            <div class="box-body no-padding">
                 <div id="section-user-pick-list">
                     <ul class="nav nav-pills nav-stacked">
                         <li id="1" class="active">
@@ -132,318 +162,299 @@
             </div>
             <!-- /.box-body -->
         </div>
-        <!-- /. box -->
-        <div class="box box-solid">
-            <div class="box-header with-border">
-                <h3 class="box-title">Labels</h3>
-
-                <div class="box-tools">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body no-padding">
-                <ul class="nav nav-pills nav-stacked">
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
-                </ul>
-            </div>
-            <!-- /.box-body -->
-        </div>
         <!-- /.box -->
     </div>
     <!-- /.col -->
     <div class="col-md-9">
         <div class="callout callout-info">
-            <h4>benjamin.haag@usda.gov</h4>
-            <p>Created 4/31/2019, Last Modified 2/3/2021</p>
+            <h4>@Model.SysUser.UserName</h4>
+            <p>@Model.SysUser.CreatedDate.ToShortDateString(), Last Modified @Model.SysUser.ModifiedDate.ToShortDateString()</p>
         </div>
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Tab 1</a></li>
-                <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Tab 2</a></li>
-                <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Tab 3</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        Dropdown <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                        <li role="presentation" class="divider"></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-                    </ul>
-                </li>
-                <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                <li class="active"><a href="#tab_sys_user" data-toggle="tab" aria-expanded="true">System User</a></li>
+                <li class=""><a href="#tab_web_user" data-toggle="tab" aria-expanded="false">Web User</a></li>
+                @*<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>*@
             </ul>
-            <div id="section-cooperator" class="tab-content">
-                <div class="tab-pane active" id="tab_1">
-                    <b>How to use:</b>
-
-                    <p>
-                        Exactly like the original bootstrap tabs except you should use
-                        the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.
-                    </p>
-                    A wonderful serenity has taken possession of my entire soul,
-                    like these sweet mornings of spring which I enjoy with my whole heart.
-                    I am alone, and feel the charm of existence in this spot,
-                    which was created for the bliss of souls like mine. I am so happy,
-                    my dear friend, so absorbed in the exquisite sense of mere tranquil existence,
-                    that I neglect my talents. I should be incapable of drawing a single stroke
-                    at the present moment; and yet I feel that I never was a greater artist than now.
-                </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="tab_2">
-                    The European languages are members of the same family. Their separate existence is a myth.
-                    For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-                    in their grammar, their pronunciation and their most common words. Everyone realizes why a
-                    new common language would be desirable: one could refuse to pay expensive translators. To
-                    achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-                    words. If several languages coalesce, the grammar of the resulting language is more simple
-                    and regular than that of the individual languages.
-                </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="tab_3">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    It has survived not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-                    sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                </div>
-                <!-- /.tab-pane -->
-            </div>
-            <!-- /.tab-content -->
-        </div>
-        
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Inbox</h3>
-
-                <div class="box-tools pull-right">
-                    <div class="has-feedback">
-                        <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            <div id="section-passwords" class="tab-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Username</label>
+                        @Html.TextBoxFor(x => x.SysUser.UserName, new { @class="form-control" })
                     </div>
-                </div>
-                <!-- /.box-tools -->
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-                <div class="mailbox-controls">
-                    <!-- Check all button -->
-                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
-                        <i class="fa fa-square-o"></i>
-                    </button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                    <div class="col-md-4">
+                        <label>Password</label>
+                        @Html.TextBoxFor(x => x.SysUser.Password, new { @class = "form-control" })
                     </div>
-                    <!-- /.btn-group -->
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                    <div class="pull-right">
-                        1-50/200
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                        </div>
-                        <!-- /.btn-group -->
-                    </div>
-                    <!-- /.pull-right -->
-                </div>
-                <div class="table-responsive mailbox-messages">
-                    <table class="table table-hover table-striped">
-                        <tbody>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"></td>
-                                <td class="mailbox-date">5 mins ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">28 mins ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">11 hours ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"></td>
-                                <td class="mailbox-date">15 hours ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">Yesterday</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">2 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">2 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"></td>
-                                <td class="mailbox-date">2 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"></td>
-                                <td class="mailbox-date">2 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"></td>
-                                <td class="mailbox-date">2 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">4 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"></td>
-                                <td class="mailbox-date">12 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">12 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">14 days ago</td>
-                            </tr>
-                            <tr>
-                                <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                                <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                                <td class="mailbox-subject">
-                                    <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
-                                </td>
-                                <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                                <td class="mailbox-date">15 days ago</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- /.table -->
-                </div>
-                <!-- /.mail-box-messages -->
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer no-padding">
-                <div class="mailbox-controls">
-                    <!-- Check all button -->
-                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
-                        <i class="fa fa-square-o"></i>
-                    </button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                    </div>
-                    <!-- /.btn-group -->
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                    <div class="pull-right">
-                        1-50/200
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                        </div>
-                        <!-- /.btn-group -->
-                    </div>
-                    <!-- /.pull-right -->
                 </div>
             </div>
         </div>
-        <!-- /. box -->
-    </div>
+
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_cooperator" data-toggle="tab" aria-expanded="true">Cooperator</a></li>
+                    <li class=""><a href="#tab_web_cooperator" data-toggle="tab" aria-expanded="false">Web Cooperator</a></li>
+                    @*<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>*@
+                </ul>
+                <div id="section-cooperator" class="tab-content">
+                    <div class="tab-pane active" id="tab_cooperator">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Email</label>
+                                @Html.TextBoxFor(x => x.Cooperator.EmailAddress, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-4">
+                                <label>First Name</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>last Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_web_cooperator">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>First Name</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>last Name</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Groups</h3>
+
+                    <div class="box-tools pull-right">
+                        <div class="has-feedback">
+                            <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="mailbox-controls">
+                        <!-- Check all button -->
+                        <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                            <i class="fa fa-square-o"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                        </div>
+                        <!-- /.btn-group -->
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                        <div class="pull-right">
+                            1-50/200
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                            </div>
+                            <!-- /.btn-group -->
+                        </div>
+                        <!-- /.pull-right -->
+                    </div>
+                    <div class="table-responsive mailbox-messages">
+                        <table class="table table-hover table-striped">
+                            <tbody>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">5 mins ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">28 mins ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">11 hours ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">15 hours ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">Yesterday</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">2 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">2 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">2 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">2 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">2 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">4 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"></td>
+                                    <td class="mailbox-date">12 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">12 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">14 days ago</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                                    <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
+                                    <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                                    <td class="mailbox-subject">
+                                        <b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...
+                                    </td>
+                                    <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
+                                    <td class="mailbox-date">15 days ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- /.table -->
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer no-padding">
+                    <div class="mailbox-controls">
+                        <!-- Check all button -->
+                        <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                            <i class="fa fa-square-o"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                        </div>
+                        <!-- /.btn-group -->
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                        <div class="pull-right">
+                            1-50/200
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
+                            </div>
+                            <!-- /.btn-group -->
+                        </div>
+                        <!-- /.pull-right -->
+                    </div>
+                </div>
+            </div>
+            <!-- /. box -->
+        </div>
         <!-- /.col -->
     </div>
 

@@ -82,6 +82,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Search(searchString, includeSynonyms);
         }
 
+        public IEnumerable<Species> FindAllSpecies()
+        {
+            return _speciesDAO.FindAll();
+        }
+
         public List<Species> FindUserSpecies(int cooperatorId)
         {
             //return _speciesDAO.Find(null,"");
@@ -267,9 +272,9 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.Get(id);
         }
-        public IEnumerable<Citation> GetCitationsByCategory(string category)
+        public IEnumerable<Citation> GetCitationsByCategory(string category, int id)
         {
-            return _citationDAO.GetByCategory(category);
+            return _citationDAO.GetByCategory(category, id);
         }
 
         public IEnumerable<Citation> FindCitations(string searchString)

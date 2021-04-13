@@ -48,6 +48,7 @@
     <Compile Include="GRINGlobalService.cs" />
     <Compile Include="ReportService.cs" />
     <Compile Include="SecurityService.cs" />
+    <Compile Include="SiteManagementService.cs" />
     <Compile Include="SmtpService.cs" />
     <Compile Include="TaxonomyService.cs" />
     <Compile Include="UserService.cs" />

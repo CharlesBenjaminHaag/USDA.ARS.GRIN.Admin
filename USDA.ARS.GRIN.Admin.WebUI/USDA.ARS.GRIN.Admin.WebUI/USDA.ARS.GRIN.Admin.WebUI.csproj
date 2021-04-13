@@ -205,6 +205,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="_TEMP.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="log4net.config" />
@@ -338,6 +339,7 @@
     <Content Include="Views\Taxonomy\Citation\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_LiteratureSearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_LiteratureDetail.cshtml" />
+    <Content Include="Views\SiteManagement\CGC\_SearchResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -400,6 +402,7 @@
     <Compile Include="UserNotFoundException.cs" />
     <Compile Include="Utilities\InputValidatorGreaterThanZero.cs" />
     <Compile Include="Utilities\RequiredIfAttribute.cs" />
+    <Compile Include="ViewModels\AccountManagement\AccountManagementHomeViewModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\GRINGlobalHomeViewModel.cs" />
@@ -410,6 +413,9 @@
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestEditViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
+    <Compile Include="ViewModels\SiteManagementHomeViewModel.cs" />
+    <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentEditViewModel.cs" />
+    <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationViewModel.cs" />
@@ -580,11 +586,9 @@
     <Folder Include="Controllers\SiteManagement\" />
     <Folder Include="Logs\" />
     <Folder Include="Models\" />
-    <Folder Include="ViewModels\AccountManagement\User\" />
     <Folder Include="ViewModels\Error\" />
     <Folder Include="ViewModels\Home\" />
     <Folder Include="ViewModels\Shared\" />
-    <Folder Include="ViewModels\SiteManagement\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
     <Folder Include="Views\Taxonomy\Crop\CWRMap\" />
     <Folder Include="Views\Taxonomy\Home\" />

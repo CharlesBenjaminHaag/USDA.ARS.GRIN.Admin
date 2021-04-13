@@ -254,11 +254,22 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
         public IQueryable<WebOrderRequest> Search(Query query)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequests_Select";
-            string sqlWhereClause = String.Empty;
+            StringBuilder sbWhereClause = new StringBuilder();
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
 
             try
             {
+                // TO DO: BUILD WHERE CLAUSE
+                foreach (var queryCriterion in query.QueryCriteria)
+                {
+                    sbWhereClause.Append(" WHERE ");
+                    sbWhereClause.Append(queryCriterion.FieldName);
+                    sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+                    // TO DO: IF FIELD IS STRING, APPEND SINGLE QUOTES AND LIKE OPERATOR
+                    
+                }
+
+
                 using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -266,7 +277,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
-                        //cmd.Parameters.AddWithValue("@sql_where_clause", sqlWhereClause);
+                        cmd.Parameters.AddWithValue("@sql_where_clause", sbWhereClause.ToString());
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -285,7 +296,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequests.AsQueryable();
         }
 
-        public List<WebOrderRequest> SearchByStatus(string statusCode)
+        public List<WebOrderRequest> SearchByStatus(string statusCode, int timeFrameCode)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestsByStatus_Select";
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
@@ -300,6 +311,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
                         cmd.Parameters.AddWithValue("@status_code", statusCode);
+                        cmd.Parameters.AddWithValue("@time_frame_code", timeFrameCode);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -308,6 +320,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 WebOrderRequest webOrderRequest = new WebOrderRequest();
                                 webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
                                 webOrderRequest.IsLocked = ParseBool(reader["is_locked"].ToString());
+                                webOrderRequest.StatusCode = reader["status_code"].ToString();
                                 webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
                                 webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();

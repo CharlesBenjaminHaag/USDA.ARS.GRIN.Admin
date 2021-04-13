@@ -434,7 +434,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.ModifiedDate = cwrMap.ModifiedDate;
                     viewModel.ModifiedByCooperatorID = cwrMap.ModifiedByCooperatorID;
                     viewModel.ModifiedByCooperatorName = cwrMap.ModifiedByCooperatorName;
-                    viewModel.Citations = new SelectList(taxonomyService.FindCitations(viewModel.SpeciesID), "ID", "Title");
+                    viewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                     viewModel.CWRTraits = cwrMap.CWRTraits;
                 }
                 else
@@ -649,7 +649,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     cwrTraitViewModel.ModifiedDate = cwrTrait.ModifiedDate;
                     cwrTraitViewModel.ModifiedByCooperatorID = cwrTrait.ModifiedByCooperatorID;
                     cwrTraitViewModel.ModifiedByCooperatorName = cwrTrait.ModifiedByCooperatorName;
-                    cwrTraitViewModel.Citations = new SelectList(taxonomyService.FindCitations(cwrTraitViewModel.SpeciesID), "ID", "Title");
+                    //cwrTraitViewModel.Citations = new SelectList(taxonomyService.FindCitations(cwrTraitViewModel.SpeciesID), "ID", "Title");
+                    cwrTraitViewModel.Citations = new SelectList(new List<Citation>(), "ID", "Title");
                 }
                 else
                 {
@@ -1035,6 +1036,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return Json(speciesList, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult SpeciesCache(string prefix)
+        {
+            IEnumerable<Species> speciesList = null;
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            speciesList = taxonomyService.FindSpecies(prefix, false);
+            return Json(speciesList, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult GetCitations(int speciesId)
         {
@@ -1091,15 +1101,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
         }
 
+
+
         [HttpPost]
-        public PartialViewResult CitationList(string category)
+        public PartialViewResult CitationList(string category, int id)
         {
             CitationSearchViewModel viewModel = new CitationSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             try
             {
-                viewModel.Citations = _taxonomyService.GetCitationsByCategory(category);
+                viewModel.Citations = _taxonomyService.GetCitationsByCategory(category, id);
                 return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
             }
             catch (Exception ex)
@@ -1169,7 +1181,46 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult CitationEdit(CitationViewModel viewModel)
         {
             TempData["context"] = "Edit Citation";
-            //TO DO
+            Citation citation = new Citation();
+            ResultContainer resultContainer = null;
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                citation.ID = viewModel.ID;
+                citation.LiteratureID = viewModel.LiteratureID;
+                citation.Title = viewModel.CitationTitle;
+                citation.AuthorName = viewModel.AuthorName;
+                citation.CitationYear = viewModel.Year;
+                citation.Reference = viewModel.Reference;
+                citation.DOIReference = viewModel.DOIReference;
+                citation.CreatedByCooperatorID = viewModel.CreatedByCooperatorID;
+                citation.CreatedDate = viewModel.CreatedDate;
+                citation.CreatedByCooperatorName = viewModel.CreatedByCooperatorName;
+                citation.ModifiedByCooperatorID = viewModel.ModifiedByCooperatorID;
+                citation.ModifiedDate = viewModel.ModifiedDate;
+                citation.ModifiedByCooperatorName = viewModel.ModifiedByCooperatorName;
+
+                if (viewModel.ID > 0)
+                {
+                    citation.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    //resultContainer = _taxonomyService.upda.UpdateSpecies(species);
+                }
+                else
+                {
+                    citation.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    //resultContainer = _taxonomyService..AddSpecies(species);
+                    viewModel.ID = resultContainer.EntityID;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + ex.StackTrace);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            return View(BASE_PATH + "Citation/Edit.cshtml", viewModel);
 
             return View(BASE_PATH + "Citation/Edit.cshtml", viewModel);
 

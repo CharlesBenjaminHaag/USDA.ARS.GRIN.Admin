@@ -59,6 +59,8 @@
     <Compile Include="GRINGlobal\CooperatorDAO.cs" />
     <Compile Include="GRINGlobal\OrderRequestDAO.cs" />
     <Compile Include="GRINGlobal\WebOrderRequestDAO.cs" />
+    <Compile Include="SiteManagement\CGCDocumentDAO.cs" />
+    <Compile Include="SysUserDAO.cs" />
     <Compile Include="Taxonomy\AccessionDAO.cs" />
     <Compile Include="Taxonomy\CitationDAO.cs" />
     <Compile Include="Taxonomy\CwrMapDAO.cs" />
@@ -90,17 +92,19 @@
       <Name>USDA.ARS.GRIN.Admin.Models</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="SiteManagement\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Codes.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.SysData.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.SysStoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysTables.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Tables.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Views.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.SysViews.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.Tables.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.TriggersAndFunctions.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

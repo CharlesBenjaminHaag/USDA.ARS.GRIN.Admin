@@ -9,57 +9,15 @@
 MY FOLDERS
 ==================================================
 -->
-<h4>Reports</h4>
+<h4>My Folders</h4>
 @{Html.RenderAction("FolderList", "Taxonomy");}
 
 <!--
 ==================================================
-DASHBOARD
+ANNUAL-REPORT TOTALS Convert to folders (CBH, 4/12/2021)
 ==================================================
 -->
 @{Html.RenderAction("FiscalYearSummary", "Taxonomy");}
-
-@*<div>
-        <input type="button" id="btnToggleFamily" class="btn btn-default" value="Toggle FAMILY" />
-        <input type="button" id="btnToggleGenus" class="btn btn-default" value="Toggle GENUS" />
-    </div>*@
-
-@*@foreach (var family in Model.Families)
-    {
-        <div id="my-box-widget" class="box box-default box-solid box-family" style="margin-bottom:5px; padding-bottom:10px; border-bottom:1px; background-color: #d2d6de;">
-            <div class="box-header" style="margin-bottom:0px; padding-bottom:0px; background-color: #d2d6de;">
-                <button type="button" class="btn btn-default" data-widget="collapse">
-                    <h3 class="box-title">@family.Name</h3>
-                </button>
-                <div class="box-tools pull-right">
-                </div>
-                 /.box-tools
-            </div>
-             /.box-header
-            <div class="box-body" style="background-color: #d2d6de;">
-
-                @foreach (var genus in family.Genii)
-                {
-                <div class="box box-default box-solid box-genus" style="margin-bottom:15px; padding-bottom:0px;">
-                    <div class="box-header" style="background-color:#b5bbc8;">
-                        <button type="button" class="btn btn-default" data-widget="collapse">
-                            <h3 class="box-title">@genus.Name</h3>
-                        </button>
-                        <div class="box-tools pull-right">
-                        </div>
-                         /.box-tools
-                    </div>
-                     /.box-header
-                    <div class="box-body" style="background-color:#b5bbc8;">
-
-                    </div>
-                     /.box-body
-                </div>
-                }
-            </div>
-             /.box-body
-        </div>
-    }*@
 
 <div id="section-folder-container">
 

@@ -64,6 +64,9 @@
     <Compile Include="LoginResultEnum.cs" />
     <Compile Include="PostalAddress.cs" />
     <Compile Include="Site.cs" />
+    <Compile Include="SiteManagement\CGCDocumnent.cs" />
+    <Compile Include="SiteManagement\PVPApplication.cs" />
+    <Compile Include="SiteManagement\PVPAppplicationImportRecord.cs" />
     <Compile Include="SysUser.cs" />
     <Compile Include="Taxonomy\Accession.cs" />
     <Compile Include="Taxonomy\DemoContainer.cs" />
@@ -104,8 +107,6 @@
     <Compile Include="User.cs" />
     <Compile Include="UserSession.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SiteManagement\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

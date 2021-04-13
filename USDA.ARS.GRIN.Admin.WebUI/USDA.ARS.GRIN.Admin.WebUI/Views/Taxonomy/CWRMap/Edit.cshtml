@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
 <style>
     .checkbox-container {
@@ -74,7 +75,7 @@
                             </span>
                             @Html.ValidationMessageFor(x => x.SpeciesID, "", new { @class = "text-danger" })
                             @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -104,15 +105,19 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label>Note</label>
-                        @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                        @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @name = "txtNote", @class = "form-control" })
                         <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
                     </div>
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
+
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label>Citation</label>
                         @if (Model.ID > 0)
                         {
+                            <label>Citation</label>
                             @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
                             <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:1em;" onclick="location.href='@Url.Action("CitationEdit", "Taxonomy", new { citationId = 0, speciesId = Model.SpeciesID })'">Add Citation</button>
                         }
@@ -358,13 +363,23 @@ MODALS
 </div>
 
 <script type="text/javascript">
+ 
     $(document).ready(function () {
+        SetDefaults();
+    });
+
+    function SetDefaults()
+    {
+        // Show common name if it is pertinent to this map.
         var commonName = $("#txtCommonName").val();
-        if (commonName != '')
-        {
+        if (commonName != '') {
             $("#section-common-name").show();
         }
-    });
+
+        // Load citations related to the species component of the map.
+        var speciesId = $("#hfSpeciesID").val();
+        LoadCitations(speciesId);
+    }
 
     $(function () {
         $('.check-all-search-results').on('click', function () {
@@ -391,7 +406,7 @@ MODALS
 
     function SelectNote(noteText) {
         $('#modal-note-search').modal('hide');
-        $("#txtNote").val(noteText);
+        CKEDITOR.instances.txtNote.setData(noteText);
     }
 
     function SelectCitation(id, title) {
@@ -446,8 +461,6 @@ MODALS
         var url = "/Taxonomy/FindNotes/";
         var inputSearchString = $("#txtSearchNotes").val();
 
-        console.log("DEBUG SEARCH FOR "  + inputSearchString);
-
         $.post(url, { searchString: inputSearchString, context: noteContext })
             .done(function (response) {
                 $("#section-note-search-results").html(response);
@@ -491,8 +504,7 @@ MODALS
 
         if (speciesId != null && speciesId != '') {
             $.getJSON('@Url.Action("GetCitations")', { speciesId: speciesId }, function (citations) {
-                if (citations != null && !jQuery.isEmptyObject(citations))
-                {
+                if (citations != null && !jQuery.isEmptyObject(citations)) {
                     citationsSelect.append($('<option/>', {
                         value: null,
                         text: "Select a citation"
@@ -503,6 +515,11 @@ MODALS
                             text: citation.Title
                         }));
                     });
+                    citationsSelect.prop("disabled", false);
+                }
+                else
+                {
+                    citationsSelect.prop("disabled", true);
                 };
             });
         }

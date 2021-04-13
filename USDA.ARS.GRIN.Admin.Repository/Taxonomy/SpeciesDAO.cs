@@ -100,7 +100,30 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public IQueryable<Species> FindAll()
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT_NAME = "usp_TaxonomySpeciesAcceptedName_Select";
+
+            List<Species> speciesList = new List<Species>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT_NAME;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        speciesList.Add(new Species { ID = GetInt(reader["taxonomy_species_id"].ToString()), SpeciesName = reader["name"].ToString(), IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString()), Authority = reader["authority"].ToString() });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return speciesList.AsQueryable();
         }
 
         public IQueryable<Species> Search(Query query)

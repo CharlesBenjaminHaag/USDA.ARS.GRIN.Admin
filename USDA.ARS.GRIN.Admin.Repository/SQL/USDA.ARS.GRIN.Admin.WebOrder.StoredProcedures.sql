@@ -1,215 +1,36 @@
 ﻿USE [gringlobal]
 GO
-/****** Object:  Table [dbo].[web_order_request_item]    Script Date: 3/24/2021 8:39:12 PM ******/
-SET ANSI_NULLS ON
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestStatuses_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestStatuses_Select]
 GO
-SET QUOTED_IDENTIFIER ON
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestsByStatus_Select]
 GO
-CREATE TABLE [dbo].[web_order_request_item](
-	[web_order_request_item_id] [int] IDENTITY(1,1) NOT NULL,
-	[web_cooperator_id] [int] NOT NULL,
-	[web_order_request_id] [int] NOT NULL,
-	[sequence_number] [int] NOT NULL,
-	[accession_id] [int] NOT NULL,
-	[name] [nvarchar](200) NULL,
-	[quantity_shipped] [int] NULL,
-	[unit_of_shipped_code] [nvarchar](20) NULL,
-	[distribution_form_code] [nvarchar](20) NULL,
-	[status_code] [nvarchar](20) NULL,
-	[curator_note] [nvarchar](max) NULL,
-	[user_note] [nvarchar](max) NULL,
-	[created_date] [datetime2](7) NOT NULL,
-	[created_by] [int] NOT NULL,
-	[modified_date] [datetime2](7) NULL,
-	[modified_by] [int] NULL,
-	[owned_date] [datetime2](7) NOT NULL,
-	[owned_by] [int] NOT NULL,
- CONSTRAINT [PK_web_order_request_item] PRIMARY KEY CLUSTERED 
-(
-	[web_order_request_item_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequests_Select]
 GO
-ALTER TABLE [dbo].[web_order_request_item]  WITH CHECK ADD  CONSTRAINT [fk_wori_a] FOREIGN KEY([accession_id])
-REFERENCES [dbo].[accession] ([accession_id])
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestLock_Update]
 GO
-ALTER TABLE [dbo].[web_order_request_item] CHECK CONSTRAINT [fk_wori_a]
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestItems_Select]
 GO
-ALTER TABLE [dbo].[web_order_request_item]  WITH CHECK ADD  CONSTRAINT [fk_wori_created] FOREIGN KEY([created_by])
-REFERENCES [dbo].[web_user] ([web_user_id])
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestItem_Select]
 GO
-ALTER TABLE [dbo].[web_order_request_item] CHECK CONSTRAINT [fk_wori_created]
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestActions_Select]
 GO
-ALTER TABLE [dbo].[web_order_request_item]  WITH CHECK ADD  CONSTRAINT [fk_wori_modified] FOREIGN KEY([modified_by])
-REFERENCES [dbo].[web_user] ([web_user_id])
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestAction_Insert]
 GO
-ALTER TABLE [dbo].[web_order_request_item] CHECK CONSTRAINT [fk_wori_modified]
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequest_Update]
 GO
-ALTER TABLE [dbo].[web_order_request_item]  WITH CHECK ADD  CONSTRAINT [fk_wori_owned] FOREIGN KEY([owned_by])
-REFERENCES [dbo].[web_user] ([web_user_id])
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequest_Select]
 GO
-ALTER TABLE [dbo].[web_order_request_item] CHECK CONSTRAINT [fk_wori_owned]
-GO
-ALTER TABLE [dbo].[web_order_request_item]  WITH CHECK ADD  CONSTRAINT [fk_wori_wc] FOREIGN KEY([web_cooperator_id])
-REFERENCES [dbo].[web_cooperator] ([web_cooperator_id])
-GO
-ALTER TABLE [dbo].[web_order_request_item] CHECK CONSTRAINT [fk_wori_wc]
-GO
-ALTER TABLE [dbo].[web_order_request_item]  WITH CHECK ADD  CONSTRAINT [fk_wori_wor] FOREIGN KEY([web_order_request_id])
-REFERENCES [dbo].[web_order_request] ([web_order_request_id])
-GO
-ALTER TABLE [dbo].[web_order_request_item] CHECK CONSTRAINT [fk_wori_wor]
-GO
-
-CREATE TRIGGER [dbo].[tr_scan_web_order_items] ON [dbo].[web_order_request_item]
-AFTER INSERT
-AS
-	BEGIN TRY
-		-- Web Order Request Attributes
-		DECLARE @web_order_request_id INT
-		DECLARE @web_order_request_intended_use_code NVARCHAR(20)
-		DECLARE @web_order_request_intended_use_note NVARCHAR(MAX)
-		DECLARE @web_order_request_item_cnt INT
-		DECLARE @web_order_request_impacted_site_cnt INT
-		
-		-- Web Cooperator Attributes
-		DECLARE @web_cooperator_id INT
-		DECLARE @web_cooperator_is_verified BIT
-		DECLARE @web_cooperator_email NVARCHAR(100)
-		
-		-- Email Attributes
-		DECLARE @email_subject NVARCHAR(2000)
-		DECLARE @email_body NVARCHAR(4000)
-		DECLARE @email_sent BIT
-		DECLARE @web_order_request_action_id INT
-		DECLARE @error_code INT
-		
-		SELECT
-			@web_order_request_id = web_order_request_id,
-			@web_cooperator_id = web_cooperator_id
-		FROM
-			inserted
-
-		SELECT
-			@web_order_request_intended_use_code = intended_use_code,
-			@web_order_request_intended_use_note = intended_use_note	
-		FROM
-			web_order_request
-		WHERE
-			web_order_request_id = @web_order_request_id
-
-		SELECT
-			@web_cooperator_email = email,
-			@web_cooperator_is_verified = is_verified
-		FROM
-			web_cooperator
-		WHERE
-			web_cooperator_id = @web_cooperator_id
-
-		-- Determine the risk factors that apply to the requestor, in order of severity.
-		-- NOTE: Ideally, the most severe (cooperator flag) would cancel the order automatically.
-
-		IF (@web_cooperator_is_verified = 1)
-			BEGIN
-				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAGGED', 'Order flagged as possible NRR.', 1
-			END
-
-		-- NRR FACTOR: Past cancelled orders
-		-- TO DO
-		
-		-- NRR FACTOR: Number of distinct genera represented in accessions related to request
-
-		-- NRR FACTOR: Potantial impact (sites affected)
-		SET @web_order_request_impacted_site_cnt  = (SELECT 
-							COUNT(DISTINCT c.site_id)
-						 FROM 
-							web_order_request_item wori
-						 JOIN
-							accession a
-						 ON
-							wori.accession_id = a.accession_id
-						 JOIN
-							cooperator c
-						 ON 
-							a.owned_by = c.cooperator_id
-						 WHERE 
-							web_order_request_id IN 
-							(SELECT 
-								web_order_request_id 
-							 FROM 
-								inserted))
-
-		-- NRR FACTOR: Email address
-
-		-- NRR FACTOR: Intended use code and keywords in notes (e.g., "home gardening")
-
-
-	   IF (@web_order_request_impacted_site_cnt  > 1)
-			BEGIN
-				SET @email_sent = (SELECT is_locked FROM web_order_request WHERE web_order_request_id = @web_order_request_id)
-				IF (@email_sent = 0)
-					BEGIN
-						SET @email_subject = 'Important Notification: GRIN-Global Web Order #' + CONVERT(NVARCHAR, @web_order_request_id )
-						SET @email_body = 'Please Note:<br/><br/>Web Order <strong>' + CONVERT(NVARCHAR, @web_order_request_id ) + '<strong> is currently under NRR review. It will not appear within the Order Wizard.'
-			
-						-- Send notification email.
-						EXEC msdb.dbo.sp_send_dbmail  
-						@profile_name = 'GRIN-Global DB Mail',  
-						@recipients = 'benjamin.haag@usda.gov',  
-						@body = @email_body,  
-						@subject = @email_subject,
-						@body_format = 'HTML'; 
-					END
-
-				UPDATE 
-					web_order_request 
-				SET 
-					note = 'Order involves ' + CONVERT(NVARCHAR, @web_order_request_impacted_site_cnt) + ' sites.',
-					status_code = 'NRR_FLAGGED',
-					modified_by = 48,
-					modified_date = GETDATE()
-				WHERE 
-					web_order_request_id IN 
-					(SELECT web_order_request_id FROM inserted);
-				
-				UPDATE
-					web_order_request_item
-				SET
-					curator_note = 'Order involves ' + CONVERT(NVARCHAR, @web_order_request_impacted_site_cnt) + ' sites.',
-					status_code = 'NRR_FLAGGED'
-				WHERE
-					web_order_request_id IN (SELECT web_order_request_id FROM inserted);
-
-				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAGGED', 'Order flagged as possible NRR.', 1
-			END
-	END TRY
-	BEGIN CATCH
-		ROLLBACK;
-		INSERT INTO 
-			dbo.sys_db_error
-		VALUES
-		  (SUSER_SNAME(),
-		   ERROR_NUMBER(),
-		   ERROR_STATE(),
-		   ERROR_SEVERITY(),
-		   ERROR_LINE(),
-		   ERROR_PROCEDURE(),
-		   ERROR_MESSAGE(),
-		   GETDATE());
-	END CATCH
-
- 
-GO
-ALTER TABLE [dbo].[web_order_request_item] ENABLE TRIGGER [tr_scan_web_order_items]
-GO
-/****** Object:  Trigger [dbo].[tr_scan_web_order]    Script Date: 3/24/2021 8:42:13 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -279,7 +100,7 @@ BEGIN
 		wor.web_order_request_id = @web_order_request_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -363,7 +184,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -434,7 +255,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -482,7 +303,7 @@ ORDER BY
 	acted_date DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -526,7 +347,7 @@ WHERE
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -608,7 +429,7 @@ WHERE
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -668,7 +489,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -725,7 +546,7 @@ AND
 	wor.ordered_date > '8/1/2020'
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -736,23 +557,27 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 CREATE PROCEDURE [dbo].[usp_WebOrderRequestsByStatus_Select]
-	@status_code NVARCHAR(20)
+	@status_code NVARCHAR(20),
+	@time_frame_code INT
 AS
 BEGIN
 	SET NOCOUNT ON;
-	
-SELECT 
+	DECLARE @sql_select NVARCHAR(MAX)
+	DECLARE @sql_where NVARCHAR(MAX) = ' WHERE	wor.status_code = ''' + @status_code + ''''
+
+	SET @sql_select = 
+	'SELECT 
 		wor.web_order_request_id,
 		wor.is_locked,
 		wor.web_cooperator_id
 		,wc.last_name
 		,wc.title
 		,wc.first_name
-		,(wc.first_name + ' ' + wc.last_name) AS full_name
+		,(wc.first_name + '' '' + wc.last_name) AS full_name
 		,wc.title AS web_cooperator_title
 		,wc.last_name AS web_cooperator_last_name
 		,wc.first_name AS web_cooperator_first_name
-		,(wc.first_name + ' ' + wc.last_name) AS web_cooperator_full_name
+		,(wc.first_name + '' '' + wc.last_name) AS web_cooperator_full_name
 		,wc.organization AS web_cooperator_organization
 		,wc.address_line1 AS web_cooperator_address_line_1
 		,wc.address_line2 AS web_cooperator_address_line_2
@@ -760,7 +585,7 @@ SELECT
 		,wc.city AS web_cooperator_address_city
 		,wc.postal_index AS web_cooperator_address_postal_index
 		,wc.geography_id
-		,(SELECT adm1 FROM geography WHERE geography_id = wc.geography_id) AS web_cooperator_address_state
+		,g.adm1 AS web_cooperator_address_state
 		,wc.primary_phone AS web_cooperator_primary_phone
 		,wc.email AS web_cooperator_email
 		,wc.created_date AS web_cooperator_created_date
@@ -779,32 +604,61 @@ SELECT
 		,wor.status_code
 		,wor.note
 		,wor.special_instruction
-		,wor.created_date
-		,wor.created_by
-		,ISNULL((SELECT first_name + ' ' + last_name FROM web_cooperator WHERE web_cooperator_id = wor.created_by),'') AS created_by_name
-		,wor.modified_date
-		,wor.modified_by
-		,(SELECT first_name + ' ' + last_name FROM web_cooperator WHERE web_cooperator_id = wor.modified_by) AS modified_by_name
-		,wor.owned_date
-		,wor.owned_by
-		,(SELECT first_name + ' ' + last_name FROM web_cooperator WHERE web_cooperator_id = wor.owned_by) AS owned_by_name
+		,wor.created_date,
+		wor.created_by,
+		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.created_by) AS created_by_name,
+		wor.modified_date,
+		wor.modified_by,
+		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.modified_by) AS modified_by_name,
+		wor.owned_date,
+		wor.owned_by,
+		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.owned_by) AS owned_by_name
 FROM
     web_order_request wor
-LEFT JOIN 
+JOIN 
 	web_cooperator wc 
 ON 
 	wc.web_cooperator_id = wor.web_cooperator_id
-LEFT JOIN 
+JOIN 
 	web_order_request_address wora 
 ON 
 	wora.web_order_request_id = wor.web_order_request_id
-WHERE
-	wor.status_code LIKE @status_code + '%'
-ORDER BY
-	wor.ordered_date DESC
+JOIN
+	geography g
+ON
+	wc.geography_id = g.geography_id'
+
+IF (@time_frame_code = 1)
+	BEGIN
+		SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-1, GETDATE())'
+	END
+ELSE
+	BEGIN
+		IF (@time_frame_code = 2)
+			BEGIN
+				SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-7, GETDATE())'
+			END
+		ELSE
+			BEGIN
+				IF (@time_frame_code = 3)
+					BEGIN
+						SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-30, GETDATE())'
+					END
+				ELSE
+					BEGIN
+						IF (@time_frame_code = 4)
+							BEGIN
+								SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-180, GETDATE())'
+							END
+					END
+			END
+	END
+
+	SET @sql_select = @sql_select + @sql_where + ' ORDER BY wor.ordered_date DESC'
+	EXECUTE sp_executesql @sql_select
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebUser_Insert]    Script Date: 3/24/2021 8:39:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestStatuses_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -814,40 +668,16 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[usp_WebUser_Insert]
-	 @out_error_number INT = 0 OUTPUT,
-	 @out_web_user_id INT = 0 OUTPUT,
-	 @user_name nvarchar(50),
-	 @password nvarchar(2000),
-	 @is_enabled nvarchar(1),
-	 @web_cooperator_id int NULL
+CREATE PROCEDURE [dbo].[usp_WebOrderRequestStatuses_Select] 
 AS
 BEGIN
 	SET NOCOUNT ON;
-
-	BEGIN TRY
-		INSERT INTO web_user 
-		(
-		 user_name,
-		 password,
-		 is_enabled,
-		 web_cooperator_id,
-		 sys_lang_id,
-		 created_date
-		)
-		VALUES
-		(
-		 @user_name,
-		 @password,
-		 'Y',
-		 @web_cooperator_id,
-		 1,
-		 GETDATE()
-		)
-		SET @out_web_user_id = CAST(SCOPE_IDENTITY() AS INT)
-	END TRY
-	BEGIN CATCH
-		SELECT @out_error_number=ERROR_NUMBER()
-	END CATCH
+	SELECT
+		status_code,
+		COUNT(web_order_request_id) AS web_order_request_count
+	FROM 
+		web_order_request
+	GROUP BY 
+		status_code
 END
 GO

@@ -4,5 +4,105 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<!-- ============================================================================================== -->
+<!-- TABBED VIEW -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">CGC Documents</h3>
 
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_recent" id="tab-recently-added" title="CGCDocumentListRecent" class="selector-tab" data-toggle="tab" aria-expanded="true">Recently Modified</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_search" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_recent">
+                    <div id="section-recently-added">
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_search">
+                    <div id="section-search-results">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+
+     $(".selector-tab").click(function () {
+        var id = $(this).attr('id');
+        var action = $(this).attr('title');
+        var link = '@Url.Action("Action", "SiteManagement")';
+        var displaySection = '';
+
+        // Clear any checked items.
+        $('.mailbox-messages input:checkbox').prop('checked', false);
+
+        if (action != '') {
+            displaySection = "#" + id.replace("tab", "section");
+            link = link.replace("Action", action);
+
+            //DEBUG
+            alert(displaySection + ", " + link);
+
+            $(displaySection).load(link);
+            InitializeDataTable();
+        }
+    });
+
+    function DisplayRecent()
+    {
+        var link = '@Url.Action("CGCDocumentListRecent", "SiteManagement")';
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                success:
+                    function (response) {
+                        $("#section-recent").html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
+    }
+
+    function InitializeDataTable() {
+        $(document).ready(function () {
+            $('table.ggtools').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+            //}
+        });
+    }
+</script>

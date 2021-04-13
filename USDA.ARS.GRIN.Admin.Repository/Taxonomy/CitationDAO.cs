@@ -41,7 +41,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
 
             try
             {
-                String commandText = "usp_Citation_Select";
+                String commandText = "usp_TaxonomyCitation_Select";
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
@@ -177,7 +177,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             throw new NotImplementedException();
         }
 
-        public IQueryable<Citation> GetByCategory(string category)
+        public IQueryable<Citation> GetByCategory(string category, int id)
         {
             List<Citation> citations = new List<Citation>();
 
@@ -191,6 +191,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@source", category);
+                        cmd.Parameters.AddWithValue("@id", id);
                         SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         if (reader.HasRows)
@@ -199,11 +200,16 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                             {
                                 Citation citation = new Citation();
                                 citation.ID = Int32.Parse(reader["citation_id"].ToString());
+                                citation.TypeCode = reader["type_code"].ToString();
                                 citation.TaxonName = reader["taxon_name"].ToString();
                                 citation.Title = reader["citation_title"].ToString();
+                                citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
                                 citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
                                 citation.AuthorName = reader["author_name"].ToString();
+                                citation.Reference = reader["reference"].ToString();
                                 citation.CitationYear = reader["citation_year"].ToString();
+                                citation.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
+                                
                                 citations.Add(citation);
                             }
                         }
@@ -241,6 +247,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 citation.ID = Int32.Parse(reader["citation_id"].ToString());
                                 citation.Title = reader["citation_text"].ToString();
                                 citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
+                                citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
                                 citation.AuthorName = reader["editor_author_name"].ToString();
                                 citation.CitationYear = reader["publication_year"].ToString();
                                 citations.Add(citation);

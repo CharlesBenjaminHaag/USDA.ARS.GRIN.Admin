@@ -1,10 +1,10 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.WebOrderRequestListViewModel
 
-<style>
+@*<style>
     .table-striped th {
         background-color: #e2e4ea;
     }
-</style>
+</style>*@
 
     <div class="box-group" id="accordion">
         @{
@@ -14,19 +14,20 @@
 
         @if (Model.WebOrderRequests.Count() > 0)
         {
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped ggtools">
             <thead>
                 <tr>
                     <th></th>
                     <th>Status</th>
                     <th>ID</th>
-                    <th>Submitter Name</th>
+                    <th>Submitted</th>
+                    <th>By</th>
                     <th>Email</th>
-                    <th>Address 1</th>
                     <th>City</th>
                     <th>State</th>
                     <th>Postal Code</th>
-                    <th>Items</th>
+                    <th>Intended Use</th>
+                    <th></th>
                 </tr>
             </thead>
             @foreach (var webOrderRequest in Model.WebOrderRequests)
@@ -35,21 +36,33 @@
             <td>
                 @if (webOrderRequest.IsLocked)
                 {
-                    <i class="fa fa-eye" style="color:red;"></i>
+                    <i class="fa fa-eye" style="color:red; margin-left:.5em;"></i>
                 }
             </td>
             <td>@webOrderRequest.StatusCode</td>
             <td><span class="badge">@webOrderRequest.ID</span></td>
+            <td>@webOrderRequest.OrderDate.ToShortDateString()</td>
             <td>@webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName</td>
             <td>@webOrderRequest.WebCooperator.EmailAddress</td>
-            <td>@webOrderRequest.WebCooperator.Address.AddressLine1</td>
             <td>@webOrderRequest.WebCooperator.Address.City</td>
             <td>@webOrderRequest.WebCooperator.Address.State</td>
             <td>@webOrderRequest.WebCooperator.Address.ZIP</td>
-            <td>@webOrderRequest.WebOrderRequestItems.Count()</td>
+            <td>@webOrderRequest.IntendedUseCode</td>
+            <td>
+                @if (webOrderRequest.StatusCode.Contains("NRR"))
+                {
+                <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
+                    <i class="fa fa-eye"></i> Review
+                </button>
+                }
+                else
+                { 
+                    <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
+                        <i class="fa fa-drivers-license"></i> Detail
+                    </button>
+                }
+            </td>
         </tr>
-
-
             <!-- ORDER ITEMS -->
             <!--<table class="table table-striped ggtools">
                     <thead>
@@ -77,8 +90,8 @@
         {
             <div class="alert alert-info alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-info"></i> Alert!</h4>
-                There are no potential non-research requests (NRR) for your review.
+                <h4><i class="icon fa fa-info"></i>No Records Found</h4>
+                There are no web order requests that match your search criteria.
             </div>
         }
 </div>

@@ -4,17 +4,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .btn {
+        margin-left: 5px;
+    }
+</style>
+
 @using (Html.BeginForm("Edit", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.Action)
     @Html.HiddenFor(x => x.ActionNote)
     <div class="row">
         <div class="col-md-12" style="margin-bottom:20px;">
-            <input type="button" id="btn-unlock" class="btn btn-warning pull-right" style="margin-left:5px;" value="Unlock" />
-            <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" style="margin-left:5px;" value="Deny" />
-            <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" style="margin-left:5px;" value="Approve" />
-            <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" style="margin-left:5px;" value="Add Note" />
-            <a href="@Url.Action("Index", "WebOrder")" class="btn btn-default pull-right">Return to  Home Page</a>
+            @if (Model.IsReviewMode)
+            {
+                <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" value="Deny" />
+                <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" value="Approve" />
+                <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" value="Add Note" />
+                if (Model.IsLocked)
+                {
+                    <button type="button" id="btn-unlock" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-unlock"></i><span id="button-label">Unlock</span>
+                    </button>
+                }
+            }
+            <a href="@Url.Action("Index", "WebOrder")" class="btn btn-default">Return to  Home Page</a>
         </div>
     </div>
 
@@ -23,7 +37,7 @@
             <!-- TIMELINE -->
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Timeline</h3>
+                    <h3 class="box-title">Web Order Actions</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>
@@ -31,71 +45,51 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <ul class="timeline timeline-inverse">
-                        <!--<li class="time-label">
-                            <span class="bg-blue">
-                                @DateTime.Now.ToShortDateString()
-                            </span>
-                        </li>
-                        <li>
-                            <i class="fa fa-thumbs-up bg-blue-light"></i>
 
-                            <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i>@DateTime.Now.ToShortTimeString()</span>
-
-                                <h3 class="timeline-header">
-                                    <a href="#">Haag, Benjamin</a><br />
-                                    logged <strong>TEST</strong> action
-                                </h3>
-
-                                <div class="timeline-body">
-                                    This is the note words words words
-                                </div>-->
-                        @*<div class="timeline-footer">
-                                <a class="btn btn-primary btn-xs">Read more</a>
-                                <a class="btn btn-danger btn-xs">Delete</a>
-                            </div>*@
-                        <!--</div>
-                        </li>-->
-
-                        @if (Model.WebOrderRequestActionGroupViewModels.Count() > 0)
-                        {
-                            foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
+                    @if (Model.WebOrderRequestActionGroupViewModels.Count() > 0)
+                    {
+                        <ul class="timeline timeline-inverse">
+                            @foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
                             {
-                                <li class="time-label">
-                                    <span class="bg-aqua">
-                                        @webOrderRequestActionGroup.ActionDate.ToShortDateString()
-                                    </span>
-                                </li>
+                            <li class="time-label">
+                                <span class="bg-aqua">
+                                    @webOrderRequestActionGroup.ActionDate.ToShortDateString()
+                                </span>
+                            </li>
 
                                 foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
                                 {
-                                    <li>
-                                        <i class="@DisplayHelper.GetWebOrderRequestStatusCSSClass(webOrderRequestAction.ActionCode)"></i>
-                                        <div class="timeline-item">
-                                            <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
-                                            <h3 class="timeline-header">
-                                                <strong>@webOrderRequestAction.Title</strong>
-                                                (<a href="#">@webOrderRequestAction.CreatedByCooperatorName</a>)
-                                            </h3>
-                                            <div class="timeline-body">
-                                                @webOrderRequestAction.Note
-                                            </div>
-                                            @*<div class="timeline-footer">
-                                                    <a class="btn btn-primary btn-xs">Read more</a>
-                                                    <a class="btn btn-danger btn-xs">Delete</a>
-                                                </div>*@
-                                        </div>
-                                    </li>
-                                    <!-- END timeline item -->
+                                        <li>
+                                    <i class="@DisplayHelper.GetWebOrderRequestStatusCSSClass(webOrderRequestAction.ActionCode)"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
+                                    <h3 class="timeline-header">
+                                        <strong>@webOrderRequestAction.Title</strong>
+                                        (<a href="#">@webOrderRequestAction.CreatedByCooperatorName</a>)
+                                    </h3>
+                                    <div class="timeline-body">
+                                        @webOrderRequestAction.Note
+                                    </div>
+                                    @*<div class="timeline-footer">
+                            <a class="btn btn-primary btn-xs">Read more</a>
+                            <a class="btn btn-danger btn-xs">Delete</a>
+                        </div>*@
+                                </div>
+                            </li>
+                            <!-- END timeline item -->
                                 }
                             }
-                        }
-
-                        <li>
-                            <i class="fa fa-clock-o bg-gray"></i>
-                        </li>
-                    </ul>
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
+                    }
+                    else 
+                    { 
+                        <div class="alert alert-info">
+                            <h4 style="padding-bottom:0px; margin-bottom:0px;"><i class="icon fa fa-info"></i>No Actions Found</h4>
+                        </div>
+                    }
                 </div>
             </div>
         
@@ -103,7 +97,7 @@
         <div class="col-md-9">
             <div class="box box-default">
                 <div class="box-header">
-                    <h3 class="box-title">Cooperators</h3>
+                    <h3 class="box-title">Web Cooperator</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>
@@ -114,7 +108,6 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Type</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
@@ -124,11 +117,11 @@
                                 <th>City</th>
                                 <th>State</th>
                                 <th>Postal Code</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Web</td>
                                 <td>@Model.WebCooperator.FirstName</td>
                                 <td>@Model.WebCooperator.LastName</td>
                                 <td>@Model.WebCooperator.EmailAddress</td>
@@ -138,65 +131,45 @@
                                 <td>@Model.WebCooperator.Address.City</td>
                                 <td>@Model.WebCooperator.Address.State</td>
                                 <td>@Model.WebCooperator.Address.ZIP</td>
+                                <td><button>Flag</button></td>
                             </tr>
-                            @if (Model.Cooperator != null)
-                            {
-                                <tr>
-                                    <td>Cooperator</td>
-                                    <td>@Model.Cooperator.FirstName</td>
-                                    <td>@Model.Cooperator.LastName</td>
-                                    <td>@Model.Cooperator.EmailAddress</td>
-                                    <td>@Model.Cooperator.Address.AddressLine1</td>
-                                    <td>@Model.Cooperator.Address.AddressLine2</td>
-                                    <td>@Model.Cooperator.Address.AddressLine3</td>
-                                    <td>@Model.Cooperator.Address.City</td>
-                                    <td>@Model.Cooperator.Address.State</td>
-                                    <td>@Model.Cooperator.Address.ZIP</td>
-                                </tr>
-                            }
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="box box-default">
                 <div class="box-header">
-                    <h3 class="box-title">Request Notes</h3>
-                    <div class="box-tools pull-right">
+                    <h3 class="box-title">Request Details</h3>
+                    <div class="box-tools">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>
                         </button>
                     </div>
                 </div>
                 <div class="box-body">
-                    @if (!String.IsNullOrEmpty(Model.IntendedUseNote))
-                    {
-                        <label>Intended Use</label>
-                        <p class="text-muted well well-sm no-shadow">
-                            @Model.IntendedUseNote
-                        </p>
-                    }
-                    @if (!String.IsNullOrEmpty(Model.SpecialInstruction))
-                    {
-                        <label>Special Instruction</label>
-                        <p class="text-muted well well-sm no-shadow">
-                            @Model.SpecialInstruction
-                        </p>
-                    }
-                    @if (!String.IsNullOrEmpty(Model.Note))
-                    {
-                        <label>Note</label>
-                        <p class="text-muted well well-sm no-shadow">
-                            @Model.Note
-                        </p>
-                    }
-                </div>
-            </div>
-            <div class="box box-default">
-                <div class="box-header">
-                    <h3 class="box-title">Request Items</h3>
-                </div>
-                <div class="box-body">
+                    <!--ORDER-->
+                    <label>Web Order</label>
+                    <table class="table table-hover table-striped ggtools">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Status</th>
+                                <th>ID</th>
+                                <th>Submitted</th>
+                                <th>By</th>
+                                <th>Email</th>
+                                <th>Address 1</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Postal Code</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                     <!-- ORDER ITEMS -->
+                    <label>Web Order Items</label>
                     <table class="table table-striped ggtools">
                         <thead>
                             <tr>
@@ -228,12 +201,39 @@
                     </table>
                 </div>
             </div>
-            @*</div>*@
-            @*<div class="tab-pane" id="tab_2">
-                    <br />
-
-                </div>*@
-            @*</div>*@ <!-- tab-content -->
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Notes</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    @if (!String.IsNullOrEmpty(Model.IntendedUseNote))
+                    {
+                        <label>Intended Use</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.IntendedUseNote
+                        </p>
+                    }
+                    @if (!String.IsNullOrEmpty(Model.SpecialInstruction))
+                    {
+                        <label>Special Instruction</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.SpecialInstruction
+                        </p>
+                    }
+                    @if (!String.IsNullOrEmpty(Model.Note))
+                    {
+                        <label>Note</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.Note
+                        </p>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 

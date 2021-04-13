@@ -9,6 +9,7 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.Service;
 using DocumentFormat.OpenXml.Wordprocessing;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement;
 using USDA.ARS.GRIN.Admin.Models;
 using NLog;
 
@@ -41,7 +42,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         // GET: AccountManagement
         public ActionResult Index()
         {
-            return View("~/Views/AccountManagement/Index.cshtml");
+            UserService userService = new UserService(AuthenticatedUserSession.Environment);
+            AccountManagementHomeViewModel accountManagementHomeViewModel = new AccountManagementHomeViewModel();
+            // TO DO: LOAD SELECT LISTS
+            accountManagementHomeViewModel.ActiveUsers = userService.GetActiveUsers();
+            return View("~/Views/AccountManagement/Index.cshtml", accountManagementHomeViewModel);
         }
 
         public PartialViewResult ActiveUsers()

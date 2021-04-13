@@ -23,10 +23,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 viewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
-                viewModel.TimeFrames.Add(new ReferenceItem { ID = 1, Name = "Today" });
-                viewModel.TimeFrames.Add(new ReferenceItem { ID = 2, Name = "This Week" });
-                viewModel.TimeFrames.Add(new ReferenceItem { ID = 3, Name = "This Month" });
-                viewModel.TimeFrames.Add(new ReferenceItem { ID = 4, Name = "This Year" });
                 return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", viewModel);
             }
             catch (Exception ex)
@@ -36,7 +32,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public PartialViewResult _List()
+        public PartialViewResult _List(string status, int timeFrameCode)
         {
             WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
             webOrderRequestListViewModel.AuthenticatedUser = AuthenticatedUser;
@@ -44,7 +40,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                webOrderRequestListViewModel.WebOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
+                webOrderRequestListViewModel.WebOrderRequests = service.GetWebOrderRequests(status, timeFrameCode);
                 return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
             }
             catch (Exception ex)
@@ -67,7 +63,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             webOrderRequest.Note = actionNote;
            
             resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
-            webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
+            //webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
             return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
 
         }
@@ -79,36 +75,100 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
         }
 
+        public ActionResult View(int id)
+        {
+            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
+            TempData["context"] = "View Web Order Request #" + id;
+            viewModel = LoadViewModel(id, false);
+            return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
+        }
+
         public ActionResult Edit(int id)
         {
             TempData["context"] = "Review Web Order Request #" + id;
-            ResultContainer resultContainer = null;
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
-            WebOrderRequest webOrderRequest = null;
-            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
             try
             {
-                // Lock the web order request record.
-                resultContainer = service.SetReviewStatus(id, AuthenticatedUser.WebCooperatorID, true);
+                viewModel = LoadViewModel(id, true);
+                return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return View("~/Views/Error/_Error.cshtml");
+            }
+        }
 
-                // Create a "review began" action record.
-                resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+        [HttpPost]
+        public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
+        {
+            ResultContainer resultContainer = null;
+            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+        
+            try
+            {
+                WebOrderRequest webOrderRequest = new WebOrderRequest();
+                webOrderRequest.ID = viewModel.ID;
+                webOrderRequest.StatusCode = viewModel.Action;
+                //webOrderRequest.Note = viewModel.ActionNote;
+
+                if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
+                {
+                    service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
+                    return RedirectToAction("Index", "WebOrder");
+                }
+                else
+                {
+                    resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
+                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+                    if ((viewModel.Action == "NRR_APPROVE") || (viewModel.Action == "NRR_DENY"))
+                    {
+                        return RedirectToAction("Index", "WebOrder");
+                    }
+                    else
+                        return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                //TO DO: CHANGE
+                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
+            }
+        }
+        private WebOrderRequestEditViewModel LoadViewModel(int id, bool reviewMode)
+        {
+            ResultContainer resultContainer = null;
+            WebOrderRequest webOrderRequest = null;
+            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
+
+            try
+            {
+                if (reviewMode)
+                {
+                    resultContainer = service.SetReviewStatus(id, AuthenticatedUser.WebCooperatorID, true);
+                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+                }
 
                 webOrderRequest = service.GetWebOrderRequest(id);
+                if (webOrderRequest == null)
+                {
+                    throw new NullReferenceException(String.Format("Null web order request returned for ID {0}", id));
+                }
+                viewModel.IsReviewMode = reviewMode;
+                viewModel.IsLocked = webOrderRequest.IsLocked;
                 viewModel.ID = webOrderRequest.ID;
                 viewModel.OrderDate = webOrderRequest.OrderDate;
                 viewModel.IntendedUseCode = webOrderRequest.IntendedUseCode;
                 viewModel.IntendedUseNote = webOrderRequest.IntendedUseNote;
                 viewModel.Note = webOrderRequest.Note;
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
-                //viewModel.Cooperator = webOrderRequest.Cooperators.Where(x => x.Type == 1).FirstOrDefault();
                 viewModel.WebCooperator = webOrderRequest.Cooperators.Where(x => x.Type == 2).FirstOrDefault();
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
                 viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
                 viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;
 
-                // EXTRACT GROUPED DATA
                 var queryWebOrderRequestDates =
                     from action in webOrderRequest.WebOrderRequestActions
                     group action by action.ActionDate into webOrderRequestActionGroup
@@ -134,49 +194,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     }
                     viewModel.WebOrderRequestActionGroupViewModels.Add(webOrderRequestActionGroupViewModel);
                 }
-                return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
             }
             catch (Exception ex)
             {
-                return View("~/Views/Error/_Error.cshtml");
-            }
-        }
 
-        [HttpPost]
-        public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
+            }
+            return viewModel;
+        }
+        public PartialViewResult Search(WebOrderRequestSearchViewModel webOrderRequestSearchViewModel)
         {
-            ResultContainer resultContainer = null;
+            WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
+            webOrderRequestListViewModel.AuthenticatedUser = AuthenticatedUser;
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-        
+
             try
             {
-                WebOrderRequest webOrderRequest = new WebOrderRequest();
-                webOrderRequest.ID = viewModel.ID;
-                webOrderRequest.StatusCode = viewModel.Action;
-                //webOrderRequest.Note = viewModel.ActionNote;
+                
 
-                if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
-                {
-                    service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
-                    return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
-                }
-                else
-                {
-                    resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
-                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
-                    if ((viewModel.Action == "NRR_APPROVE") || (viewModel.Action == "NRR_DENY"))
-                    {
-                        return RedirectToAction("Index", "WebOrder");
-                    }
-                    else
-                        return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
-                }
+                // webOrderRequestListViewModel.WebOrderRequests = service.GetWebOrderRequests(status, timeFrameCode);
+                return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message, ex);
-                //TO DO: CHANGE
-                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
+                log.Error(ex.Message + ex.StackTrace);
+                return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
     }

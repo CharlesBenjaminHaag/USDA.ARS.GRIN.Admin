@@ -3,17 +3,22 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
 <style>
     .map-heading {
-        font-size:1.2em;
+        font-size: 1.2em;
     }
-   .map-attribute {
-       font-size:1.2em;
+
+    .map-attribute {
+        font-size: 1.2em;
     }
+
     .widget-user-2 .widget-user-username {
         margin-left: 0px;
     }
+
     .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
         margin-left: 0px;
     }
@@ -51,8 +56,8 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-olive-active">
                     @*<div class="widget-user-image">
-                    <img class="img-circle" src="" alt="User Avatar">
-                </div>*@
+                            <img class="img-circle" src="" alt="User Avatar">
+                        </div>*@
                     <!-- /.widget-user-image -->
                     <h3 class="widget-user-username">@Html.Raw(Model.Species.Name)</h3>
                     <h5 class="widget-user-desc"><strong>Species</strong></h5>
@@ -78,10 +83,10 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-orange-active">
                     @*<div class="widget-user-image">
-                    <img class="img-circle" src="" alt="User Avatar">
-                </div>*@
+                            <img class="img-circle" src="" alt="User Avatar">
+                        </div>*@
                     <!-- /.widget-user-image -->
-                    <h3 class="widget-user-username">@Html.Raw(@Model.CropForCWRName)</h3>
+                    <h3 class="widget-user-username">@Html.Raw(@Model.CropForCWR.CropName)</h3>
                     <h5 class="widget-user-desc"><strong>Crop for CWR</strong></h5>
                 </div>
                 <div class="box-footer">
@@ -165,6 +170,9 @@
                             <div class="col-md-12">
                                 <label>Breeding Usage Note</label>
                                 @Html.TextAreaFor(x => x.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
+                                <script>
+                                    CKEDITOR.replace('txtBreedingUsageNote');
+                                </script>
                             </div>
                         </div>
                         <div class="row" style="margin-top:1em;">
@@ -176,6 +184,9 @@
                                 @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
                                 <input id="hfNote" type="hidden" />
                                 <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                                <script>
+                                    CKEDITOR.replace('txtNote');
+                                </script>
                             </div>
                         </div>
                         <div class="row">
@@ -268,6 +279,15 @@ MODALS
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        SetDefaults();
+    });
+
+    function SetDefaults() {
+        // Load citations related to the species component of the map.
+        var speciesId = $("#SpeciesID").val();
+        LoadCitations(speciesId);
+    }
 
     $("#btnSave").click(function () {
         $("#frmEdit").submit();
@@ -276,15 +296,6 @@ MODALS
     $("#ddlTraitClassCodes").change(function () {
         var selectedValue = $(this).val();
         LoadBreedingTypeCodes(selectedValue);
-    });
-
-    /* Populate Citation DDL based on the species ID (if page is in update, vs. insert mode) */
-    $(document).ready(function(){
-        var speciesId = $("#hfSpeciesID").val();
-        if (speciesId > 0) {
-            LoadCitations(speciesId);
-            SetCitation();
-        }
     });
 
     function SetCitation() {
@@ -326,7 +337,7 @@ MODALS
 
     function SelectNote(noteText) {
         $('#modal-note-search').modal('hide');
-        $("#txtNote").val(noteText);
+        CKEDITOR.instances.txtNote.setData(noteText);
     }
 
     function SelectCitation(id, title) {
@@ -362,8 +373,7 @@ MODALS
 
         if (speciesId != null && speciesId != '') {
             $.getJSON('@Url.Action("GetCitations")', { speciesId: speciesId }, function (citations) {
-                if (citations != null && !jQuery.isEmptyObject(citations))
-                {
+                if (citations != null && !jQuery.isEmptyObject(citations)) {
                     citationsSelect.append($('<option/>', {
                         value: null,
                         text: "Select a citation"
@@ -374,6 +384,10 @@ MODALS
                             text: citation.Title
                         }));
                     });
+                    citationsSelect.prop("disabled", false);
+                }
+                else {
+                    citationsSelect.prop("disabled", true);
                 };
             });
         }

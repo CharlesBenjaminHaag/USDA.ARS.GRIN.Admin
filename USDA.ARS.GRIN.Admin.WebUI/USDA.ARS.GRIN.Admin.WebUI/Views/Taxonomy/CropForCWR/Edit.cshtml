@@ -3,7 +3,9 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
 <style>
     .alert-error {
         padding: 10px;
@@ -59,6 +61,9 @@
                 <div class="col-md-12" style="margin-top:1.0em;">
                     <label>Note</label>
                     @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
                 </div>
             </div>
         </div>
@@ -247,7 +252,7 @@ CWR-TRAIT MODAL
 
 function SelectNote(noteText) {
             $('#modal-note-search').modal('hide');
-            $("#txtNote").val(noteText);
+    CKEDITOR.instances.txtNote.setData(noteText);
         }
 
 $("#btnSearchNotes").click(function () {

@@ -43,9 +43,13 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _webOrderRequestDAO.Get(id);   
         }
 
-        public List<WebOrderRequest> GetWebOrderRequests(string statusCode)
+        public List<WebOrderRequest> GetWebOrderRequests(string statusCode, int timeFrameCode)
         {
-            return _webOrderRequestDAO.SearchByStatus(statusCode);
+            return _webOrderRequestDAO.SearchByStatus(statusCode, timeFrameCode);
+        }
+        public IQueryable<WebOrderRequest> SearchWebOrderRequests(Query query)
+        {
+            return _webOrderRequestDAO.Search(query);
         }
 
         public List<ReferenceItem> GetWebOrderRequestStatuses()

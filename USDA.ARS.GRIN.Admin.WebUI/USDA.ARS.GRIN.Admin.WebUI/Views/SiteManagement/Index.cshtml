@@ -1,8 +1,94 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.SiteManagementHomeViewModel
 @{
     ViewBag.Title = "SiteManagement";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>SiteManagement</h2>
+<!-- ============================================================================================== -->
+<!-- TABBED VIEW -->
+<!-- ============================================================================================== -->
+<div class="box box-primary" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">CGC Documents</h3>
 
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_1" id="tab-recently-modified" title="Recently Modified" class="selector-tab" data-toggle="tab" aria-expanded="true">Recently Modified</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <!-- ============================================================================================== -->
+            <!-- RECENTLY-ADDED TAB -->
+            <!-- ============================================================================================== -->
+            <div class="tab-pane" id="tab_2">
+                <div class="box-body">
+                    <div id="section-recently-added">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================================================== -->
+            <!-- SEARCH TAB -->
+            <!-- ============================================================================================== -->
+            <div class="tab-pane" id="tab_3">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-7" style="padding-left:0px;">
+                                    <div class="input-group" style="margin-left:0px;">
+                                        <input type="text" id="txtSearchText" name="SearchText" placeholder="Type name ..." class="form-control">
+                                        <span class="input-group-btn">
+                                            <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="section-search-results">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".selector-tab").click(function () {
+        var id = $(this).attr('id');
+        var action = $(this).attr('title');
+        var link = '@Url.Action("Action", "SiteManagement")';
+        var displaySection = '';
+
+        $('.mailbox-messages input:checkbox').prop('checked', false);
+
+        if (action != '') {
+            displaySection = "#" + id.replace("tab", "section");
+            link = link.replace("Action", action);
+            $(displaySection).load(link);
+        }
+    });
+
+</script>
