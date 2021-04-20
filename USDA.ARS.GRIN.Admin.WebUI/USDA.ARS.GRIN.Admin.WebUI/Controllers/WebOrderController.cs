@@ -1,8 +1,6 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
@@ -23,6 +21,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 viewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
+                viewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
                 return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", viewModel);
             }
             catch (Exception ex)
@@ -110,7 +109,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 WebOrderRequest webOrderRequest = new WebOrderRequest();
                 webOrderRequest.ID = viewModel.ID;
                 webOrderRequest.StatusCode = viewModel.Action;
-                //webOrderRequest.Note = viewModel.ActionNote;
 
                 if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
                 {
@@ -156,6 +154,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 {
                     throw new NullReferenceException(String.Format("Null web order request returned for ID {0}", id));
                 }
+                viewModel.StatusCode = webOrderRequest.StatusCode;
+                viewModel.OrderDate = webOrderRequest.OrderDate;
+                viewModel.Cooperator = webOrderRequest.Cooperators.First();
                 viewModel.IsReviewMode = reviewMode;
                 viewModel.IsLocked = webOrderRequest.IsLocked;
                 viewModel.ID = webOrderRequest.ID;
@@ -177,8 +178,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                 foreach (var group in queryWebOrderRequestDates)
                 {
-                    string DEBUG = DateTime.Parse(group.Key.ToString()).ToShortDateString();
-
                     WebOrderRequestActionGroupViewModel webOrderRequestActionGroupViewModel = new WebOrderRequestActionGroupViewModel();
                     webOrderRequestActionGroupViewModel.ActionDate = DateTime.Parse(group.Key.ToString());
                     foreach (var subGroup in group)
@@ -201,24 +200,61 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             return viewModel;
         }
-        public PartialViewResult Search(WebOrderRequestSearchViewModel webOrderRequestSearchViewModel)
+        public ActionResult Search(WebOrderRequestSearchViewModel webOrderRequestSearchViewModel)
         {
-            WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
-            webOrderRequestListViewModel.AuthenticatedUser = AuthenticatedUser;
-            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            Models.Query query = new Models.Query();
 
             try
             {
-                
+                //if (webOrderRequestSearchViewModel.SelectedStatusCode != "ANY")
+                //{
+                //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.status_code", FieldValue = webOrderRequestSearchViewModel.SelectedStatusCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
+                //    query.QueryCriteria.Add(queryCriterion);
+                //}
 
-                // webOrderRequestListViewModel.WebOrderRequests = service.GetWebOrderRequests(status, timeFrameCode);
-                return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
+                //if (webOrderRequestSearchViewModel.SelectedTimeFrameCode > 0)
+                //{
+                //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "time_frame_code", FieldValue = webOrderRequestSearchViewModel.SelectedTimeFrameCode.ToString(), SearchOperatorCode = "=", DataType = "INT" };
+                //    query.QueryCriteria.Add(queryCriterion);
+                //}
+
+                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorEmailAddress))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = webOrderRequestSearchViewModel.RequestorEmailAddress.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorFirstName))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = webOrderRequestSearchViewModel.RequestorFirstName.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorLastName))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = webOrderRequestSearchViewModel.RequestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+
+                // Re-initialize main index view model, adding search results.
+                webOrderRequestSearchViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
+                webOrderRequestSearchViewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
+                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
+                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", webOrderRequestSearchViewModel);
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message + ex.StackTrace);
-                return PartialView("~/Views/Error/_Error.cshtml");
+                return View("~/Views/Error/_Error.cshtml");
             }
+        }
+
+        public PartialViewResult _Search(string statusCode, int timeFrameCode, string requestorEmail)
+        {
+            return PartialView("~/Views/GRINGlobal/WebOrder/_DEBUG.cshtml");
+      
         }
     }
 }

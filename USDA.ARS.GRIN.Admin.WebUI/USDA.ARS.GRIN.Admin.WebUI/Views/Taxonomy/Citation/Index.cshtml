@@ -107,15 +107,29 @@
                 <div class="tab-pane" id="tab_search">
                     <div class="xbox-body">
                         <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="ddlCategories" class="form-control">
+                                        <option value="FAM">Family</option>
+                                        <option value="GEN">Genus</option>
+                                        <option value="SPC">Species</option>
+                                        <option value="ACC">Accession</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Full Text</label>
-                                    @Html.TextBoxFor(x => x.FullText, new { @class="form-control"  })    
+                                    @Html.TextBoxFor(x => x.FullText, new { @class = "form-control" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <label>Type</label>
-                                @Html.TextBoxFor(x => x.TypeCode, new { @class = "form-control" })
+                                <select id="ddlTypeCodes" class="form-control">
+                                    <option value="NODULATION">Nodulation</option>
+                                    <option value="RELATIVE">CWR</option>
+                                </select>
                             </div>
                             <div class="col-md-2">
                                 <label>Abbreviation</label>
@@ -125,9 +139,9 @@
                                 <label>Author</label>
                                 @Html.TextBoxFor(x => x.Author, new { @class = "form-control" })
                             </div>
-                            </div>
+                        </div>
                         <div class="row">
-                            <div class="col-md-1"><input type="button" class="form-control" value="Search" /></div>
+                            <div class="col-md-1"><input type="button" class="btn btn-primary" value="Search" /></div>
                         </div>                   
                         <div id="section-search-results">
                         </div>
@@ -162,7 +176,7 @@
                     data: { prefix: request.term },
                     success: function (data) {
                         response($.map(data, function (item) {
-                            return { label: item.SpeciesName, value: item.ID };
+                            return { label: item.Name, value: item.ID };
                         }))
 
                     }
@@ -187,30 +201,10 @@
 
 <script type="text/javascript">
 
-    //$(document).ready(function () {
-    //    DisplayRecords("species");
-    //});
-
-    //$(".selector-tab").click(function () {
-    //    var id = $(this).attr('id');
-    //    var action = $(this).attr('title');
-    //    DisplayRecords(action);
-    //});
-
     $("#btnSearchBySpecies").click(function () {
         var speciesId = $("#hfSpeciesID").val();
         DisplayRecords("species", speciesId);
     });
-
-    @*$(document).on("click", "[id='btnSearchBySpecies']", function () {
-        var value = $("#hfSpeciesID").val();
-        var url = '@Url.Action("CitationList", "Taxonomy")';
-
-        $.get(url, { category: "species", id: value })
-        .done(function (response) {
-            $("#section-search-results").html(response);
-        });
-    });*@
 
     function DisplayRecords(category, id)
     {

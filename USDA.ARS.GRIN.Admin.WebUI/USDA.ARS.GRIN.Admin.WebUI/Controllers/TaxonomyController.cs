@@ -24,11 +24,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult Index()
         {
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             IndexViewModel viewModel = null; 
             try
             {
                 TempData["context"] = "Taxonomy Home";
                 viewModel = new IndexViewModel();
+                taxonomyService.FindCachedSpecies();
             }
             catch (Exception ex)
             {
@@ -1041,7 +1043,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             IEnumerable<Species> speciesList = null;
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            speciesList = taxonomyService.FindSpecies(prefix, false);
+            speciesList = taxonomyService.FindSpecies(prefix,false);
             return Json(speciesList, JsonRequestBehavior.AllowGet);
         }
 

@@ -253,7 +253,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public IQueryable<WebOrderRequest> Search(Query query)
         {
-            const string COMMAND_TEXT = "usp_WebOrderRequests_Select";
+            const string COMMAND_TEXT = "usp_WebOrderRequests_Search";
+            int i = 0;
             StringBuilder sbWhereClause = new StringBuilder();
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
 
@@ -262,13 +263,47 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                 // TO DO: BUILD WHERE CLAUSE
                 foreach (var queryCriterion in query.QueryCriteria)
                 {
-                    sbWhereClause.Append(" WHERE ");
-                    sbWhereClause.Append(queryCriterion.FieldName);
-                    sbWhereClause.Append(queryCriterion.SearchOperatorCode);
-                    // TO DO: IF FIELD IS STRING, APPEND SINGLE QUOTES AND LIKE OPERATOR
-                    
-                }
+                    if (i == 0)
+                        sbWhereClause.Append(" WHERE ");
+                    else
+                        sbWhereClause.Append(" AND ");
 
+                    // Time frame code indicates the construction of a seperate SQL statement, vs.
+                    // being incorporated into the primary one. (Likely need to refactor (CBH, 4/20/2021)).
+                    if ((queryCriterion.FieldName == "time_frame_code") && (queryCriterion.FieldValue != "0"))
+                    {
+                        sbWhereClause.Append(GetSQL(queryCriterion.FieldValue));
+                    }
+                    else
+                    {
+                        sbWhereClause.Append(queryCriterion.FieldName);
+                        sbWhereClause.Append(" ");
+                        sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+
+                        if (queryCriterion.DataType == "NVARCHAR")
+                        {
+                            sbWhereClause.Append(" '");
+                        }
+
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+
+                        if (queryCriterion.DataType == "NVARCHAR")
+                        {
+                            sbWhereClause.Append("' ");
+                        }
+                    }
+                    i++;
+                }
 
                 using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
@@ -283,7 +318,38 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         {
                             while (reader.Read())
                             {
-                                // TO DO
+                                WebOrderRequest webOrderRequest = new WebOrderRequest();
+                                webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
+                                webOrderRequest.IsLocked = ParseBool(reader["is_locked"].ToString());
+                                webOrderRequest.StatusCode = reader["status_code"].ToString();
+                                webOrderRequest.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
+                                webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
+                                webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
+                                webOrderRequest.WebCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
+                                webOrderRequest.WebCooperator.Address.PersonFullName = reader["web_cooperator_full_name"].ToString();
+                                webOrderRequest.WebCooperator.Address.OrganizationName = reader["web_cooperator_organization"].ToString();
+                                webOrderRequest.WebCooperator.Address.AddressLine1 = reader["web_cooperator_address_line_1"].ToString();
+                                webOrderRequest.WebCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
+                                webOrderRequest.WebCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();
+                                webOrderRequest.WebCooperator.Address.City = reader["web_cooperator_address_city"].ToString();
+                                webOrderRequest.WebCooperator.Address.State = reader["web_cooperator_address_state"].ToString();
+                                webOrderRequest.WebCooperator.Address.ZIP = reader["web_cooperator_address_postal_index"].ToString();
+                                webOrderRequest.WebCooperator.CreatedDate = GetDate(reader["web_cooperator_created_date"].ToString());
+                                webOrderRequest.WebCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
+                                webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
+                                webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
+                                webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();
+                                webOrderRequest.Note = reader["note"].ToString();
+                                webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
+                                webOrderRequest.CreatedDate = GetDate(reader["created_date"].ToString());
+                                webOrderRequest.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                webOrderRequest.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                webOrderRequest.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
+                                webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
+                                webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequests.Add(webOrderRequest);
                             }                            }
                         }
                     }
@@ -294,6 +360,29 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                 throw ex;
             }
             return webOrderRequests.AsQueryable();
+        }
+
+        private string GetSQL(string fieldValue)
+        {
+            string sql = String.Empty;
+
+            switch(fieldValue)
+            {
+                case "1":
+                    sql = "wor.created_date >= DATEADD(day, -1, GETDATE())";
+                    break;
+                case "2":
+                    sql = "wor.created_date >= DATEADD(day,-7, GETDATE())";
+                    break;
+                case "3":
+                    sql = "wor.created_date >= DATEADD(day,-30, GETDATE())";
+                    break;
+                case "4":
+                    sql = "wor.created_date >= DATEADD(day,-180, GETDATE())";
+                    break;
+            }
+
+            return sql;
         }
 
         public List<WebOrderRequest> SearchByStatus(string statusCode, int timeFrameCode)
@@ -581,7 +670,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         #endregion
 
-        #region Web Order Request Status
+        #region Reference
 
         public List<ReferenceItem> GetStatuses()
         {
@@ -615,6 +704,40 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                 throw ex;
             }
             return statuses;
+        }
+
+        public List<ReferenceItem> GetIntendedUseCodes()
+        {
+            const string COMMAND_TEXT = "usp_CodesByGroup_Select";
+            List<ReferenceItem> intendedUseCodes = new List<ReferenceItem>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@group_name", "WEB_ORDER_INTENDED_USE");
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ReferenceItem intendedUseCode = new ReferenceItem { ID = GetInt(reader["code_value_id"].ToString()), Name = reader["value"].ToString(), Description = reader["title"].ToString() };
+                                intendedUseCodes.Add(intendedUseCode);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return intendedUseCodes;
         }
 
         #endregion

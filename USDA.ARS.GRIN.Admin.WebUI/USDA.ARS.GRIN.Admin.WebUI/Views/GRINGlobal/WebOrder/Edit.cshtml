@@ -166,6 +166,19 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td></td>
+                                <td>@Model.StatusCode</td>
+                                <td>@Model.ID</td>
+                                <td>@Model.OrderDate.ToShortDateString()</td>
+                                <td>@Model.Cooperator.FullName</td>
+                                <td>@Model.Cooperator.EmailAddress</td>
+                                <td>@Model.Cooperator.Address.AddressLine1</td>
+                                <td>@Model.Cooperator.Address.City</td>
+                                <td>@Model.Cooperator.Address.State</td>
+                                <td>@Model.Cooperator.Address.ZIP</td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                     <!-- ORDER ITEMS -->

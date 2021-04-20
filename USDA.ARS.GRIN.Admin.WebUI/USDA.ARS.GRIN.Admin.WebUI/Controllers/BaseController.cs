@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.IO;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Net.Mail;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
 
@@ -140,6 +141,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             Response.Flush();
             Response.End();
             return View("Test");
+        }
+
+        public int SendMessage()
+        {
+            MailAddress to = new MailAddress("benjamin.haag@usda.gov");
+            MailAddress from = new MailAddress("id_action_request@ars-grin.gov");
+
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = "Test Message";
+            message.Body = "TEST OF EMAIL SERVICE";
+
+            SmtpClient client = new SmtpClient("mailproxy1.usda.gov");
+
+            try
+            {
+
+                client.Send(message);
+            }
+            catch (SmtpException ex)
+            {
+                throw ex;
+                return -1;
+            }
+            return 0;
         }
     }
 }

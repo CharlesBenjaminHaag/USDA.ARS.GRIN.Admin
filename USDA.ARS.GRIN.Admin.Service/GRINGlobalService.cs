@@ -56,6 +56,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _webOrderRequestDAO.GetStatuses();
         }
+        public List<ReferenceItem> GetWebOrderRequestIntendedUseCodes()
+        {
+            return _webOrderRequestDAO.GetIntendedUseCodes();
+        }
 
         public ResultContainer AddWebOrderRequestAction(WebOrderRequestAction webOrderRequestAction)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.Caching;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 using System.CodeDom;
@@ -98,6 +99,26 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
+        public List<Species> FindAllCached()
+        {
+            string CacheKey = "SPECIES";
+            List<Species> speciesList = new List<Species>();
+
+            ObjectCache cache = MemoryCache.Default;
+
+            if (cache.Contains(CacheKey))
+                speciesList = (List<Species>)cache.Get(CacheKey);
+            else
+            {
+                speciesList = GetSpecies();
+                CacheItemPolicy cacheItemPolicy = new CacheItemPolicy();
+                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
+                cache.Add(CacheKey, speciesList, cacheItemPolicy);
+            }
+
+            return speciesList;
+        }
+
         public IQueryable<Species> FindAll()
         {
             const string COMMAND_TEXT_NAME = "usp_TaxonomySpeciesAcceptedName_Select";
@@ -124,6 +145,30 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 throw ex;
             }
             return speciesList.AsQueryable();
+        }
+
+        private List<Species> GetSpecies()
+        {
+            String commandText = "usp_TaxonomySpeciesAcceptedName_Select";
+            List<Species> speciesList = new List<Species>();
+
+            using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+            {
+                using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            speciesList.Add(new Species { ID = GetInt(reader["taxonomy_species_id"].ToString()), Name = reader["name"].ToString() });
+                        }
+                    }
+                }
+            }
+            return speciesList;
         }
 
         public IQueryable<Species> Search(Query query)
@@ -153,11 +198,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     else
                         cmd.CommandText = COMMAND_TEXT_NAME;
 
-                    cmd.Parameters.AddWithValue("@search_text", searchExpression);
+                    cmd.Parameters.AddWithValue("@search_text", searchExpression + "%");
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        speciesList.Add(new Species { ID = GetInt(reader["taxonomy_species_id"].ToString()), SpeciesName = reader["name"].ToString(), IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString()), Authority = reader["authority"].ToString() });
+                        speciesList.Add(new Species { ID = GetInt(reader["taxonomy_species_id"].ToString()), Name = reader["name"].ToString() });
                     }
                 }
             }

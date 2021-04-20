@@ -87,6 +87,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.FindAll();
         }
 
+        public List<Species> FindCachedSpecies()
+        {
+            return _speciesDAO.FindAllCached();
+        }
+
         public List<Species> FindUserSpecies(int cooperatorId)
         {
             //return _speciesDAO.Find(null,"");
