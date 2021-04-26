@@ -282,9 +282,9 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _citationDAO.GetByCategory(category, id);
         }
 
-        public IEnumerable<Citation> FindCitations(string searchString)
+        public IEnumerable<Citation> FindCitations(int searchType, Query query)
         {
-            return _citationDAO.Search(searchString);
+            return _citationDAO.Search(searchType, query);
         }
 
         public List<Citation> FindCitations(int speciesId)
@@ -292,15 +292,15 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _referenceDAO.GetCitations(speciesId);
         }
 
-        public IEnumerable<Citation> FindUserCitations(int cooperatorId)
-        {
-            return _citationDAO.Search("WHERE cit.owned_by = " + cooperatorId.ToString());
-        }
+        //public IEnumerable<Citation> FindUserCitations(int cooperatorId)
+        //{
+        //    return _citationDAO.Search("WHERE cit.owned_by = " + cooperatorId.ToString());
+        //}
 
-        public IEnumerable<Citation> FindRecentCitations()
-        {
-            return _citationDAO.Search("WHERE cit.modified_date > DATEADD(MONTH, -1, GETDATE())");
-        }
+        //public IEnumerable<Citation> FindRecentCitations()
+        //{
+        //    return _citationDAO.Search("WHERE cit.modified_date > DATEADD(MONTH, -1, GETDATE())");
+        //}
 
         #endregion
 

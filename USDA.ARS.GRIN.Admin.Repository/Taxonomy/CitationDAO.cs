@@ -223,20 +223,78 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             return citations.AsQueryable();
         }
 
-        public IQueryable<Citation> Search(string searchString)
+        public IQueryable<Citation> Search(int searchType, Query query)
         {
+            int i = 0;
+            StringBuilder sbWhereClause = new StringBuilder();
+            foreach (QueryCriterion queryCriterion in query.QueryCriteria)
+            {
+                if (i == 0)
+                    sbWhereClause.Append(" WHERE ");
+                else
+                    sbWhereClause.Append(" AND ");
+
+                sbWhereClause.Append(queryCriterion.FieldName);
+                sbWhereClause.Append(" ");
+                sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+                sbWhereClause.Append(" ");
+
+                if (queryCriterion.DataType == "NVARCHAR")
+                {
+                    if (queryCriterion.FieldValue == "NULL")
+                    {
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                    }
+                    else
+                    {
+                        sbWhereClause.Append("'");
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append("'");
+                    }
+                }
+                i++;
+            }
+           
+            return Search(searchType, sbWhereClause.ToString());
+        }
+
+        public IQueryable<Citation> Search(int searchType, string searchString)
+        {
+            String commandText = String.Empty;
             List<Citation> citations = new List<Citation>();
 
             try
             {
-                String commandText = "usp_TaxonomyCitation_Search";
+                switch (searchType)
+                {
+                    case 1:
+                        commandText = "usp_TaxonomyCitationsBySpecies_Search";
+                        break;
+                    case 2:
+                        commandText = "usp_TaxonomyCitationsByGenus_Search";
+                        break;
+                    case 3:
+                        commandText = "usp_TaxonomyCitationsByFamily_Search";
+                        break;
+                    case 4:
+                        commandText = "usp_TaxonomyCitationsByAccession_Search";
+                        break;
+                }
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
                     using (SqlCommand cmd = new SqlCommand(commandText, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@search_string", searchString);
+                        cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
                         SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         if (reader.HasRows)
@@ -245,11 +303,16 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                             {
                                 Citation citation = new Citation();
                                 citation.ID = Int32.Parse(reader["citation_id"].ToString());
-                                citation.Title = reader["citation_text"].ToString();
+                                citation.Title = reader["citation_title"].ToString();
+                                citation.TypeCode = reader["type_code"].ToString();
+                                citation.CitationYear = reader["citation_year"].ToString();
+                                citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                citation.SpeciesName = reader["species_name"].ToString();
+                                citation.TaxonName = reader["species_name"].ToString();
+                                citation.AuthorName = reader["editor_author_name"].ToString();
                                 citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
                                 citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
-                                citation.AuthorName = reader["editor_author_name"].ToString();
-                                citation.CitationYear = reader["publication_year"].ToString();
+                                citation.Note = reader["note"].ToString();
                                 citations.Add(citation);
                             }
                         }
@@ -276,6 +339,11 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             
             }
             return resultContainer;
+        }
+
+        public IQueryable<Citation> Search(string searchString)
+        {
+            throw new NotImplementedException();
         }
     }
 }

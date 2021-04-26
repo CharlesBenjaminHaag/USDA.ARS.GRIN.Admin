@@ -16,10 +16,10 @@
             {
                 <tr>
                     <td><span class="label label-default">@species.ID</span></td>
-                    <td>@species.SpeciesName</td>
+                    <td>@species.Name</td>
                     <td>@Html.Raw(DisplayHelper.GetBooleanDisplayString(species.IsAcceptedName))</td>
                     <td>@species.Authority</td>
-                    <td><button id="btnAuthor1" value="@species.SpeciesName" class="btn btn-primary btn-small proto" onclick="SelectSpecies(@species.ID, this.value);return false;">Select</button></td>
+                    <td><button id="btnAuthor1" value="@species.Name" class="btn btn-primary btn-small proto" onclick="SelectSpecies(@species.ID, this.value);return false;">Select</button></td>
                 </tr>
             }
         }

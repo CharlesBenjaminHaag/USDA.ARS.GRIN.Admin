@@ -202,7 +202,13 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        speciesList.Add(new Species { ID = GetInt(reader["taxonomy_species_id"].ToString()), Name = reader["name"].ToString() });
+                        Species species = new Species();
+                        species.ID = GetInt(reader["taxonomy_species_id"].ToString());
+                        species.Name = reader["species_name"].ToString();
+                        species.Authority = reader["species_authority"].ToString();
+                        species.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
+                        species.Note = reader["note"].ToString();
+                        speciesList.Add(species);
                     }
                 }
             }

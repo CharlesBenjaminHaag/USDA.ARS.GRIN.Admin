@@ -30,7 +30,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 TempData["context"] = "Taxonomy Home";
                 viewModel = new IndexViewModel();
-                taxonomyService.FindCachedSpecies();
+                //taxonomyService.FindCachedSpecies();
             }
             catch (Exception ex)
             {
@@ -866,7 +866,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult FindSpecies(string searchString, bool includeSynonyms, int genusId = 0)
+        public ActionResult FindSpecies(string searchString, bool includeSynonyms)
         {
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
@@ -1088,22 +1088,79 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             searchOperators.Add(new SearchOperator { Title = "Ends In", SearchOperatorSyntax = "LIKE" });
             searchViewModel.SearchOperators = new SelectList(searchOperators, "SearchOperatorSyntax","Title");
 
+            List<ReferenceItem> citationTypeCodes = new List<ReferenceItem>();
+            citationTypeCodes.Add(new ReferenceItem { ID = 1, Name = "MEDICINE", Description = "" });
+            citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "" });
+            citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "" });
+            citationTypeCodes.Add(new ReferenceItem { ID = 4, Name = "NULL", Description = "" });
+            viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "ID", "Name");
+
             viewModel.SearchViewModel = searchViewModel;
 
             return View("~/Views/Taxonomy/Citation/Index.cshtml", viewModel);
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public ActionResult CitationSearch(string searchText)
+        [HttpPost]
+        public ActionResult CitationSearch(int searchType, string speciesName="", string genusName="", string familyName="", string accessionName="", string citationTypeCode="", string abbreviation="", string note="")
         {
             TempData["context"] = "Citation Search";
             CitationSearchViewModel viewModel = new CitationSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            viewModel.Citations = _taxonomyService.FindCitations(searchText);
+            Query query = new Query();
+            QueryCriterion queryCriterion = null;
+
+            if (!String.IsNullOrEmpty(speciesName))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "ts.name", FieldValue = speciesName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(genusName))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "tg.name", FieldValue = genusName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(familyName))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "tf.name", FieldValue = familyName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(accessionName))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "a.name", FieldValue = accessionName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(abbreviation))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "l.abbreviation", FieldValue = abbreviation, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(note))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "l.abbreviation", FieldValue = note, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!citationTypeCode.Contains("Select"))
+            {
+                if (citationTypeCode == "NULL")
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = "NULL", SearchOperatorCode = "IS", DataType = "NVARCHAR" };
+                }
+                else
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = citationTypeCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
+                }
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            viewModel.Citations = _taxonomyService.FindCitations(searchType, query);
             return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
         }
-
-
 
         [HttpPost]
         public PartialViewResult CitationList(string category, int id)
@@ -1123,21 +1180,21 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public PartialViewResult CitationListRecent()
-        {
-            CitationSearchViewModel viewModel = new CitationSearchViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+        //public PartialViewResult CitationListRecent()
+        //{
+        //    CitationSearchViewModel viewModel = new CitationSearchViewModel();
+        //    TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            try
-            {
-                viewModel.Citations = _taxonomyService.FindRecentCitations();
-                return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
-            }
-            catch (Exception ex)
-            {
-                return PartialView("~/Views/Error/_Error.cshtml", viewModel);
-            }
-        }
+        //    try
+        //    {
+        //        viewModel.Citations = _taxonomyService.FindRecentCitations();
+        //        return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return PartialView("~/Views/Error/_Error.cshtml", viewModel);
+        //    }
+        //}
 
         public ActionResult CitationEdit(int id = 0)
         {
@@ -1243,7 +1300,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 log.Info("SEARCH CITATIONS: " + searchString);
-                citationList = _taxonomyService.FindCitations(searchString);
+                //citationList = _taxonomyService.FindCitations(1, );
                 log.Info("CITATIONS FOUND: " + citationList.Count());
             }
             catch (Exception ex)
