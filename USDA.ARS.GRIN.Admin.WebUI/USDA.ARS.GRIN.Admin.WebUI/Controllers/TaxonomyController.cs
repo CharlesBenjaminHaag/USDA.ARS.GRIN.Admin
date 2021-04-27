@@ -1101,7 +1101,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CitationSearch(int searchType, string speciesName="", string genusName="", string familyName="", string accessionName="", string citationTypeCode="", string abbreviation="", string note="")
+        public ActionResult CitationSearch(CitationHomeViewModel citationHomeViewModel)
         {
             TempData["context"] = "Citation Search";
             CitationSearchViewModel viewModel = new CitationSearchViewModel();
@@ -1109,57 +1109,52 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             Query query = new Query();
             QueryCriterion queryCriterion = null;
 
-            if (!String.IsNullOrEmpty(speciesName))
+            if (!String.IsNullOrEmpty(citationHomeViewModel.SpeciesName))
             {
-                queryCriterion = new QueryCriterion { FieldName = "ts.name", FieldValue = speciesName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                queryCriterion = new QueryCriterion { FieldName = "ts.name", FieldValue = citationHomeViewModel.SpeciesName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            if (!String.IsNullOrEmpty(genusName))
+            if (!String.IsNullOrEmpty(citationHomeViewModel.GenusName))
             {
-                queryCriterion = new QueryCriterion { FieldName = "tg.name", FieldValue = genusName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                queryCriterion = new QueryCriterion { FieldName = "tg.name", FieldValue = citationHomeViewModel.GenusName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            if (!String.IsNullOrEmpty(familyName))
+            if (!String.IsNullOrEmpty(citationHomeViewModel.FamilyName))
             {
-                queryCriterion = new QueryCriterion { FieldName = "tf.name", FieldValue = familyName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                queryCriterion = new QueryCriterion { FieldName = "tf.name", FieldValue = citationHomeViewModel.FamilyName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            if (!String.IsNullOrEmpty(accessionName))
+            if (!String.IsNullOrEmpty(citationHomeViewModel.Abbreviation))
             {
-                queryCriterion = new QueryCriterion { FieldName = "a.name", FieldValue = accessionName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                queryCriterion = new QueryCriterion { FieldName = "l.abbreviation", FieldValue = citationHomeViewModel.Abbreviation, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            if (!String.IsNullOrEmpty(abbreviation))
+            if (!String.IsNullOrEmpty(citationHomeViewModel.Note))
             {
-                queryCriterion = new QueryCriterion { FieldName = "l.abbreviation", FieldValue = abbreviation, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                queryCriterion = new QueryCriterion { FieldName = "cit.abbreviation", FieldValue = citationHomeViewModel.Note, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            if (!String.IsNullOrEmpty(note))
+            if (!citationHomeViewModel.TypeCode.Contains("Select"))
             {
-                queryCriterion = new QueryCriterion { FieldName = "l.abbreviation", FieldValue = note, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                query.QueryCriteria.Add(queryCriterion);
-            }
-
-            if (!citationTypeCode.Contains("Select"))
-            {
-                if (citationTypeCode == "NULL")
+                if (citationHomeViewModel.TypeCode == "NULL")
                 {
                     queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = "NULL", SearchOperatorCode = "IS", DataType = "NVARCHAR" };
                 }
                 else
                 {
-                    queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = citationTypeCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
+                    queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = citationHomeViewModel.TypeCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
                 }
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            viewModel.Citations = _taxonomyService.FindCitations(searchType, query);
-            return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
+            //viewModel.Citations = _taxonomyService.FindCitations(citationHomeViewModel.Action, query);
+            //return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
+            return RedirectToAction("CitationHome", "Taxonomy");
         }
 
         [HttpPost]

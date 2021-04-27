@@ -12,6 +12,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CitationHomeViewModel : BaseViewModel
     {
+        public string Action { get; set; }
         public SearchViewModel SearchViewModel { get; set; }
         public int SpeciesID { get; set; }
         public string SpeciesName { get; set; }
@@ -24,6 +25,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string FullText { get; set; }
         public string TypeCode { get; set; }
         public string Abbreviation { get; set; }
+        public string Reference { get; set; }
+        public string DOIReference { get; set; }
         public string Author { get; set; }
         public string Year { get; set; }
         public string Note { get; set; }
