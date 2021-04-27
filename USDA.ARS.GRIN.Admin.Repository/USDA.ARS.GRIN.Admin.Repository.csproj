@@ -97,6 +97,7 @@
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Codes.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.SysData.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.SysStoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysTables.Alter.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.SysTables.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Tables.SQL" />

@@ -15,7 +15,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         private IEnumerable<CodeValueReferenceItem> _traitClassCodes;
         private IEnumerable<CodeValueReferenceItem> _breedingTypeCodes;
         private IEnumerable<Citation> _citations;
-
+       
         public int ID { get; set; }
         public int CWRMapID { get; set; }
         public int CropForCWRID { get; set; }

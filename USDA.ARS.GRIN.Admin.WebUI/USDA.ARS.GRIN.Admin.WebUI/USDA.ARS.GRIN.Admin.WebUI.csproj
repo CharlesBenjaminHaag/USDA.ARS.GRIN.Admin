@@ -342,6 +342,7 @@
     <Content Include="Views\SiteManagement\CGC\_SearchResults.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\_DEBUG.cshtml" />
     <Content Include="Views\Taxonomy\Species\_SearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Species\_Widget.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

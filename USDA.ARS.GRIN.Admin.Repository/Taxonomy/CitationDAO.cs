@@ -63,7 +63,14 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 citation.Reference = reader["reference"].ToString();
                                 citation.DOIReference = reader["doi_reference"].ToString();
                                 citation.URL = reader["url"].ToString();
+                                citation.Title = reader["title"].ToString();
                                 citation.Description = reader["description"].ToString();
+                                citation.AccessionID = GetInt(reader["accession_id"].ToString());
+                                citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                citation.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
+                                citation.FamilyID = GetInt(reader["taxonomy_family_id"].ToString());
+                                citation.TypeCode = reader["type_code"].ToString();
+                                citation.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
                                 citation.CreatedDate = GetDate(reader["created_date"].ToString());
                                 citation.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
                                 citation.CreatedByCooperatorName = reader["created_by_name"].ToString();
@@ -328,15 +335,77 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
 
         public ResultContainer Update(Citation entity)
         {
+            const string COMMAND_TEXT = "usp_TaxonomyCitation_Update";
             ResultContainer resultContainer = new ResultContainer();
 
-            try 
-            { 
-            
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = cn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+                    cmd.Parameters.AddWithValue("@citation_id", entity.ID);
+                    cmd.Parameters.AddWithValue("@literature_id", entity.LiteratureID);
+                    
+                    if (String.IsNullOrEmpty(entity.Title))
+                        cmd.Parameters.AddWithValue("@citation_title", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@citation_title", entity.Title);
+
+                    if (String.IsNullOrEmpty(entity.AuthorName))
+                        cmd.Parameters.AddWithValue("@author_name", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@author_name", entity.AuthorName);
+
+                    if (String.IsNullOrEmpty(entity.CitationYear))
+                        cmd.Parameters.AddWithValue("@citation_year", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@citation_year", entity.CitationYear);
+
+                    if (String.IsNullOrEmpty(entity.Reference))
+                        cmd.Parameters.AddWithValue("@reference", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@reference", entity.Reference);
+
+                    if (String.IsNullOrEmpty(entity.URL))
+                        cmd.Parameters.AddWithValue("@url", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@url", entity.URL);
+
+                    cmd.Parameters.AddWithValue("@accession_id", entity.AccessionID);
+                    cmd.Parameters.AddWithValue("@taxonomy_species_id", entity.SpeciesID);
+                    cmd.Parameters.AddWithValue("@taxonomy_genus_id", entity.GenusID);
+                    cmd.Parameters.AddWithValue("@taxonomy_family_id", entity.FamilyID);
+
+                    if (String.IsNullOrEmpty(entity.TypeCode))
+                        cmd.Parameters.AddWithValue("@type_code", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@type_code", entity.TypeCode);
+
+                    cmd.Parameters.AddWithValue("@is_accepted_name", UnBool(entity.IsAcceptedName));
+
+                    if (String.IsNullOrEmpty(entity.Note))
+                        cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@note", entity.Note);
+
+                    cmd.Parameters.AddWithValue("@modified_by", entity.ModifiedByCooperatorID);
+
+                    SqlParameter errorParam = new SqlParameter();
+                    errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                    errorParam.ParameterName = "@out_error_number";
+                    errorParam.Direction = System.Data.ParameterDirection.Output;
+                    errorParam.Value = 0;
+                    cmd.Parameters.Add(errorParam);
+                    cmd.ExecuteNonQuery();
+                    resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                }
             }
-            catch (SqlException ex)
-            { 
-            
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return resultContainer;
         }

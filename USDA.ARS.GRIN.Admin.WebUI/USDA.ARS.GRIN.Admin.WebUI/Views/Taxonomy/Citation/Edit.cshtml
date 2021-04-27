@@ -4,10 +4,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 <style>
     .box-body {
         padding-left: 1em;
         padding-right: 1em;
+    }
+
+    .map-heading {
+        font-size: 1.2em;
+    }
+
+    .map-attribute {
+        font-size: 1.2em;
+    }
+
+    .widget-user-2 .widget-user-username {
+        margin-left: 0px;
+    }
+
+    .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
+        margin-left: 0px;
     }
 </style>
 
@@ -23,81 +40,130 @@
     </div>
 }
 
-@if (Model.ID > 0)
-{
-<div id="section-literature-detail">
-    @{Html.RenderAction("_LiteratureDetail", "Taxonomy", new { id = Model.LiteratureID });}
-</div>
-}
-
 @using (Html.BeginForm("CitationEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID, new { id = "hfCitationID", name = "ID" })
+    @Html.HiddenFor(x => x.LiteratureID)
+    @Html.HiddenFor(x => x.SpeciesID)
+    @Html.HiddenFor(x => x.GenusID)
+    @Html.HiddenFor(x => x.FamilyID)
+    @Html.HiddenFor(x => x.AccessionID)
     @Html.ValidationSummary()
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title">
-                Detail
-            </h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-1" data-select2-id="14">
-                    <div class="form-group" data-select2-id="13">
-                        <label>ID</label>
-                        <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
-                    </div>
 
-                </div>
-                <!-- /.col -->
-                <div class="col-md-8">
-                    <!-- /.form-group -->
-                    <div class="form-group">
-                        <label>Citation Title</label>
-                        @Html.TextBoxFor(x => x.CitationTitle, new { @id = "txtCitationText", @class = "form-control" })
-                    </div>
-                    <!-- /.form-group -->
+    string IDLabel = String.Empty;
 
+    if (Model.ID > 0)
+    {
+        IDLabel = "(" + Model.ID + ")";
+    }
+    else
+    {
+        IDLabel = String.Empty;
+    }
+  
+    <div class="row">
+        <div class="col-md-3">
+
+            @if (Model.ID > 0)
+            {
+                <div id="section-literature-detail">
+                    @{Html.RenderAction("_LiteratureDetail", "Taxonomy", new { id = Model.LiteratureID });}
                 </div>
-                <div class="col-md-3">
-                    <label>Author</label>
-                    @Html.TextBoxFor(x => x.AuthorName, new { @id = "txtAuthorName", @class = "form-control" })
+            }
+
+            <div class="box box-widget widget-user-2">
+                <div class="widget-user-header bg-olive-active">
+                    <h3 class="widget-user-username">@Html.Raw(Model.Species.Name)</h3>
+                    <h5 class="widget-user-desc"><strong>Species</strong></h5>
                 </div>
-                <!-- /.col -->
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <label>DOI Reference</label>
-                    @Html.TextBoxFor(x => x.DOIReference, new { @id = "txtDOIReference", @class = "form-control" })
-                </div>
-                <div class="col-md-6">
-                    <label>Reference</label>
-                    @Html.TextBoxFor(x => x.Reference, new { @id = "txtReference", @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>Year</label>
-                    @Html.TextBoxFor(x => x.Year, new { @id = "txtYear", @class = "form-control" })
-                </div>
-            </div>
-            <div class="row" style="margin-top:1em;">
-                <div class="col-md-12">
-                    <label>Note</label>
-                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                    <button type="button" class="btn btn-default pull-right" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                <div class="box-footer">
+                    <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
+                    <p class="text-muted">
+                        @Html.Raw(Model.Species.GenusName)
+                    </p>
+                    <strong><i class="fa fa-leaf margin-r-5"></i>Family</strong>
+                    <p class="text-muted">
+                        @Html.Raw(Model.Species.FamilyName)
+                    </p>
+                    <strong><i class="fa fa-book margin-r-5"></i>Place of Publication</strong>
+                    <p class="text-muted">
+                        @Html.Raw(Model.Species.Protologue)
+                    </p>
+                    <button class="btn btn-default ">Go To Species</button>
                 </div>
             </div>
         </div>
-        <div class="box-footer" style="border:none;">
-            <button type="submit" class="btn btn-success">Save Edits</button>
+        <div class="col-md-9">
+
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        Detail @IDLabel
+                    </h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Citation Type</label>
+                                @Html.DropDownListFor(x => x.TypeCode, Model.CitationTypeCodes, "Select a type code", new { @id = "ddlCitationTypeCodes", @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <!-- /.form-group -->
+                            <div class="form-group">
+                                <label>Citation Title</label>
+                                @Html.TextBoxFor(x => x.CitationTitle, new { @id = "txtCitationText", @class = "form-control" })
+                            </div>
+                            <!-- /.form-group -->
+
+                        </div>
+                        <div class="col-md-4">
+                            <label>Author</label>
+                            @Html.TextBoxFor(x => x.AuthorName, new { @id = "txtAuthorName", @class = "form-control" })
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>URL</label>
+                            @Html.TextBoxFor(x => x.URL, new { @id = "txtURL", @class = "form-control" })
+                        </div>
+                        <div class="col-md-6">
+                            <label>Reference</label>
+                            @Html.TextBoxFor(x => x.Reference, new { @id = "txtReference", @class = "form-control" })
+                        </div>
+                        <div class="col-md-2">
+                            <label>Year</label>
+                            @Html.TextBoxFor(x => x.Year, new { @id = "txtYear", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:1em;">
+                        <div class="col-md-12">
+                            <label>Note</label>
+                            @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                            <button type="button" class="btn btn-default pull-right" style="margin-top:1em;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                        </div>
+                        <script>
+                            CKEDITOR.replace('txtNote');
+                        </script>
+                    </div>
+                </div>
+                <div class="box-footer" style="border:none;">
+                    <button type="submit" class="btn btn-success">Save Edits</button>
+                </div>
+            </div>
         </div>
     </div>
 }
-
 
 <div class="modal fade" id="modal-note-search">
     <div class="modal-dialog">
@@ -131,7 +197,6 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
 
 <div class="modal fade" id="modal-literature-search">
     <div class="modal-dialog modal-lg">
@@ -197,6 +262,6 @@
 
     function SelectLiterature(id) {
         $('#modal-literature-search').modal('hide');
-        
+
     }
 </script>

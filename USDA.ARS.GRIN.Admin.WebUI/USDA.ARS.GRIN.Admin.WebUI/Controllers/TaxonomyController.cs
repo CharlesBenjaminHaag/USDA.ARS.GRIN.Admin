@@ -1211,22 +1211,37 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     citation = _taxonomyService.GetCitation(id);
                     viewModel.ID = citation.ID;
                     viewModel.LiteratureID = citation.LiteratureID;
-                    viewModel.CitationTitle = citation.Title;
+                    viewModel.LiteratureReferenceTitle = citation.LiteratureReferenceTitle;
+                    viewModel.CitationTitle = citation.CitationTitle;
                     viewModel.AuthorName = citation.AuthorName;
                     viewModel.Year = citation.CitationYear;
                     viewModel.Reference = citation.Reference;
                     viewModel.DOIReference = citation.DOIReference;
+                    viewModel.URL = citation.URL;
+                    viewModel.CitationTitle = citation.Title;
+                    viewModel.Description = citation.Description;
+                    viewModel.AccessionID = citation.AccessionID;
+                    viewModel.SpeciesID = citation.SpeciesID;
+                    viewModel.GenusID = citation.GenusID;
+                    viewModel.FamilyID = citation.FamilyID;
+                    viewModel.TypeCode = citation.TypeCode;
                     viewModel.CreatedByCooperatorID = citation.CreatedByCooperatorID;
                     viewModel.CreatedDate = citation.CreatedDate;
                     viewModel.CreatedByCooperatorName = citation.CreatedByCooperatorName;
                     viewModel.ModifiedByCooperatorID = citation.ModifiedByCooperatorID;
                     viewModel.ModifiedDate = citation.ModifiedDate;
                     viewModel.ModifiedByCooperatorName = citation.ModifiedByCooperatorName;
+                    viewModel.Species = _taxonomyService.GetSpecies(citation.SpeciesID);
                 }
                 else
                 {
                     TempData["context"] = "Add  Citation";
                 }
+                List<ReferenceItem> citationTypeCodes = new List<ReferenceItem>();
+                citationTypeCodes.Add(new ReferenceItem { ID = 1, Name = "MEDICINE", Description = "MEDICINE" });
+                citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "NODULATION" });
+                citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "RELATIVE" });
+                viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "Name", "Description");
             }
             catch (Exception ex)
             {
@@ -1252,7 +1267,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 citation.AuthorName = viewModel.AuthorName;
                 citation.CitationYear = viewModel.Year;
                 citation.Reference = viewModel.Reference;
-                citation.DOIReference = viewModel.DOIReference;
+                citation.URL = viewModel.URL;
+                citation.AccessionID = viewModel.AccessionID;
+                citation.SpeciesID = viewModel.SpeciesID;
+                citation.GenusID = viewModel.GenusID;
+                citation.FamilyID = viewModel.FamilyID;
+                citation.TypeCode = viewModel.TypeCode;
                 citation.CreatedByCooperatorID = viewModel.CreatedByCooperatorID;
                 citation.CreatedDate = viewModel.CreatedDate;
                 citation.CreatedByCooperatorName = viewModel.CreatedByCooperatorName;
@@ -1263,25 +1283,21 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 if (viewModel.ID > 0)
                 {
                     citation.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
-                    //resultContainer = _taxonomyService.upda.UpdateSpecies(species);
+                    resultContainer = _taxonomyService.UpdateCitation(citation);
                 }
                 else
                 {
                     citation.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
-                    //resultContainer = _taxonomyService..AddSpecies(species);
+                    resultContainer = _taxonomyService.AddCitation(citation);
                     viewModel.ID = resultContainer.EntityID;
                 }
-
-
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message + ex.StackTrace);
                 return RedirectToAction("InternalServerError", "Error");
             }
-            return View(BASE_PATH + "Citation/Edit.cshtml", viewModel);
-
-            return View(BASE_PATH + "Citation/Edit.cshtml", viewModel);
+            return RedirectToAction("CitationEdit", "Taxonomy", new { id = citation.ID });
 
         }
 

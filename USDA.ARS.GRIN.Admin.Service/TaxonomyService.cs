@@ -291,17 +291,15 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _referenceDAO.GetCitations(speciesId);
         }
+        public ResultContainer AddCitation(Citation citation)
+        {
+            return _citationDAO.Add(citation);
+        }
 
-        //public IEnumerable<Citation> FindUserCitations(int cooperatorId)
-        //{
-        //    return _citationDAO.Search("WHERE cit.owned_by = " + cooperatorId.ToString());
-        //}
-
-        //public IEnumerable<Citation> FindRecentCitations()
-        //{
-        //    return _citationDAO.Search("WHERE cit.modified_date > DATEADD(MONTH, -1, GETDATE())");
-        //}
-
+        public ResultContainer UpdateCitation(Citation citation)
+        {
+            return _citationDAO.Update(citation);
+        }
         #endregion
 
         #region Literature

@@ -3,19 +3,70 @@ USE [gringlobal]
 DELETE FROM code_value
 WHERE value LIKE 'NRR%'
 
-INSERT INTO code_value
-(group_name, value, created_by, created_date, owned_by, owned_date)
-VALUES ('ORDER_REQUEST_ACTION','NRR_REVIEW',48,GETDATE(),48,GETDATE())
+DECLARE	@return_value int
 
-INSERT INTO code_value
-(group_name, value, created_by, created_date, owned_by, owned_date)
-VALUES ('ORDER_REQUEST_ACTION','NRR_APPROVE',48,GETDATE(),48,GETDATE())
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_NOTE',
+		@title = N'NRR Review Note',
+		@description = N'NRR Review Note'
+SELECT	'Return Value' = @return_value
 
-INSERT INTO code_value
-(group_name, value, created_by, created_date, owned_by, owned_date)
-VALUES ('ORDER_REQUEST_ACTION','NRR_REJECT',48,GETDATE(),48,GETDATE())
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_FLAG_HISTORY',
+		@title = N'Order History Flag',
+		@description = N'Order History Flag'
+SELECT	'Return Value' = @return_value
 
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_REJECT',
+		@title = N'Order Classified as NRR',
+		@description = N'Order Classified as NRR'
+SELECT	'Return Value' = @return_value
 
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_APPROVE',
+		@title = N'Determined Not to Be NRR',
+		@description = N'Determined Not to Be NRR'
+SELECT	'Return Value' = @return_value
+
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_FLAG_EMAIL',
+		@title = N'Non-Official Email Address',
+		@description = N'Non-Official Email Address'
+SELECT	'Return Value' = @return_value
+
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_FLAG_COOP',
+		@title = N'Cooperator Flagged',
+		@description = N'Cooperator Flagged'
+SELECT	'Return Value' = @return_value
+
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_FLAG_GENERA',
+		@title = N'Genera Count Flag',
+		@description = N'Genera Count Flag'
+SELECT	'Return Value' = @return_value
+
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_FLAG_SITES',
+		@title = N'Site Impact Flag',
+		@description = N'Site Impact Flag'
+SELECT	'Return Value' = @return_value
+
+EXEC	@return_value = [dbo].[usp_Code_Insert]
+		@group_name = N'WEB_ORDER_REQUEST_STATUS',
+		@code_value = N'NRR_FLAG_USE',
+		@title = N'Intended Use Flag',
+		@description = N'Intended Use Flag'
+SELECT	'Return Value' = @return_value
 
 DELETE FROM 
 	sys_group_user_map

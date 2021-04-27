@@ -12,9 +12,9 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string SpeciesName { get; set; }
         public int FamilyID { get; set; }
         public string FamilyName { get; set; }
-        public string GenusID { get; set; }
+        public int GenusID { get; set; }
         public string GenusName { get; set; }
-        public string AccessionID { get; set; }
+        public int AccessionID { get; set; }
         public string AccessionName { get; set; }
         public string TaxonName { get; set; }
         public int LiteratureID { get; set; }
