@@ -251,10 +251,47 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public PartialViewResult _Search(string statusCode, int timeFrameCode, string requestorEmail)
+        public PartialViewResult _Search(string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange)
         {
-            return PartialView("~/Views/GRINGlobal/WebOrder/_DEBUG.cshtml");
-      
+            WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            Models.Query query = new Models.Query();
+
+            try
+            {
+                if (!String.IsNullOrEmpty(requestorEmail))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = requestorEmail, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(requestorFirstName))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = requestorFirstName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(requestorLastName))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = requestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(intendedUseCode))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.intended_use_code", FieldValue = intendedUseCode, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
+
+                return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message + ex.StackTrace);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
         }
     }
 }

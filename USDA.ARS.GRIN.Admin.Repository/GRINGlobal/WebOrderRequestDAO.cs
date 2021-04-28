@@ -385,7 +385,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return sql;
         }
 
-        public List<WebOrderRequest> SearchByStatus(string statusCode, int timeFrameCode)
+        public IQueryable<WebOrderRequest> SearchByStatus(string statusCode, int timeFrameCode)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestsByStatus_Select";
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
@@ -448,7 +448,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             {
                 throw ex;
             }
-            return webOrderRequests;
+            return webOrderRequests.AsQueryable();
         }
 
         public IQueryable<WebOrderRequest> Search(string statusCode)

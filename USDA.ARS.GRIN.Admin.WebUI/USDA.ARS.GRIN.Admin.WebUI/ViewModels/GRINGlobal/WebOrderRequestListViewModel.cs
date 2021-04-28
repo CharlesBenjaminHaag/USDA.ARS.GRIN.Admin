@@ -10,6 +10,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
 {
     public class WebOrderRequestListViewModel : BaseViewModel
     {
-        public List<WebOrderRequest> WebOrderRequests { get; set; }
+        public IQueryable<WebOrderRequest> WebOrderRequests { get; set; }
     }
 }

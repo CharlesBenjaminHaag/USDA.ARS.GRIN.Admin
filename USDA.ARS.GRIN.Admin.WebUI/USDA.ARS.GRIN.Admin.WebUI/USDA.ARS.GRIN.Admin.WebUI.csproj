@@ -387,7 +387,6 @@
     <Compile Include="Controllers\GRINGlobalController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\SiteManagementController.cs" />
-    <Compile Include="Controllers\Taxonomy\SpeciesController.cs" />
     <Compile Include="Controllers\TaxonomyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UtilitiesController.cs" />
@@ -582,11 +581,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\AccountManagement\" />
-    <Folder Include="Controllers\Error\" />
-    <Folder Include="Controllers\GRINGlobal\" />
-    <Folder Include="Controllers\Home\" />
-    <Folder Include="Controllers\SiteManagement\" />
+    <Folder Include="Controllers\Taxonomy\" />
     <Folder Include="Logs\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\Error\" />

@@ -9,12 +9,16 @@
     #web-order-request-id {
         font-weight: bold;
     }
-    .label {
-        font-size:1.2em;
-    }
-   
-</style>
 
+    .label {
+        font-size: 1.2em;
+    }
+</style>
+<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <div class="row">
     <div class="col-md-3">
         <div class="nav-tabs-custom">
@@ -101,6 +105,24 @@
                                     <label for="exampleInputEmail1">Intended Use</label>
                                     @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Select a code", new { @class = "form-control" })
                                 </div>
+                                <div class="form-group">
+                                    <label>Submitted</label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="datepicker">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @Html.HiddenFor(x => x.SelectedDateRange)
+                                        <input type="text" class="form-control pull-right" id="txtOrderDateRange" name="OrderDateRange">
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
@@ -137,10 +159,10 @@
                 <div id="section-data">
                 </div>
             </div>
-            
-            @*<div class="overlay">
+
+            <div class="overlay">
                 <i class="fa fa-refresh fa-spin"></i>
-            </div>*@
+            </div>
 
         </div>
     </div>
@@ -194,18 +216,36 @@
 
 
 <script type="text/javascript">
-    //$(document).on({
-    //    ajaxStart: function () {
-    //        $(".overlay").show();
-    //    },
-    //    ajaxStop: function () {
-    //        $(".overlay").hide();
-    //    }
-    //});
+    $(document).on({
+        ajaxStart: function () {
+            $(".overlay").show();
+        },
+        ajaxStop: function () {
+            $(".overlay").hide();
+        }
+    });
 
-    //$(document).ready(function () {
-    //    LoadWebOrderRequests("SUBMITTED", 1);
-    //});
+    $(function () {
+        //Date picker
+        $('#datepicker').datepicker({
+            autoclose: true
+        })
+        //Date range picker
+        //$('#txtOrderDateRange').daterangepicker()
+    });
+
+    $(function () {
+        $('input[name="OrderDateRange"]').daterangepicker({
+            opens: 'left'
+        }, function (start, end, label) {
+                $("#SelectedDateRange").val(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+
+    $(document).ready(function () {
+        LoadWebOrderRequests("SUBMITTED", 1);
+    });
 
     $(function () {
         $('#section-user-pick-list ul.nav li').on('click', function () {
@@ -247,24 +287,25 @@
         var requestorFirstName = "";
         var requestorLastName = "";
         var intendedUseCode = "";
+        var selectedDateRange = "";
         var id = 0;
 
         try {
             statusCode = $("#SelectedStatusCode").val();
             timeFrameCode = $("#SelectedTimeFrameCode").val();
             requestorEmail = $("#RequestorEmailAddress").val();
-            //requestorFirstName = $("#RequestorFirstName").val();
-            //requestorLastName = $("#RequestorLastName").val();
-            //intendedUseCode = $("#IntendedUseCode").val();
-
-            SearchWebOrderRequests(statusCode, timeFrameCode, requestorEmail, requestorFirstName, requestorLastName, intendedUseCode, 0);
+            requestorFirstName = $("#RequestorFirstName").val();
+            requestorLastName = $("#RequestorLastName").val();
+            intendedUseCode = $("#IntendedUseCode").val();
+            selectedDateRange = $("#SelectedDateRange").val();
+            SearchWebOrderRequests(statusCode, timeFrameCode, requestorEmail, requestorFirstName, requestorLastName, intendedUseCode, selectedDateRange);
         }
         catch (ex) {
             console.log(ex.message);
         }
     });
 
-    function SearchWebOrderRequests(statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, id)
+    function SearchWebOrderRequests(statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, selectedDateRange)
     {
         $("#SelectedStatusCode").val(statusCode);
         $("#SelectedTimeFrameCode").val(timeFrameCode);
@@ -283,7 +324,7 @@
             {
                 type: 'GET',
                 url: link,
-                data: { statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email },
+                data: { statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName : lastName, intendedUseCode : intendedUseCode, selectedDateRange: selectedDateRange },
                 success:
                     function (response) {
                         $("#section-data").html(response);
