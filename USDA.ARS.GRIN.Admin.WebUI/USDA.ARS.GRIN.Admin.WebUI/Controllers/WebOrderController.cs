@@ -146,7 +146,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         if (viewModel.Action == "NRR_REJECT")
                         {
                             // EMAIL TO REQUESTOR
-                            emailMessage.RecipientAddress = webOrderRequest.WebCooperator.EmailAddress;
+                            emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
                             emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
 
                             System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
