@@ -125,7 +125,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
                 else
                 {
-                    resultContainer = grinGlobalService.UpdateWebOrderRequest(webOrderRequest);
+                    if (viewModel.Action != "NRR_NOTE")
+                    {
+                        resultContainer = grinGlobalService.UpdateWebOrderRequest(webOrderRequest);
+                    }
                     resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
 
                     EmailMessage emailMessage = new EmailMessage();
@@ -142,13 +145,33 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     else
                         if (viewModel.Action == "NRR_REJECT")
                         {
+                            // EMAIL TO REQUESTOR
+                            emailMessage.RecipientAddress = webOrderRequest.WebCooperator.EmailAddress;
+                            emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
+
+                            System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
+                            sbEmailBody.Append("Dear Germplasm Requestor,<p>Thank you for your interest in our germplasm collection.The mission of the National Plant Germplasm System(NPGS)");
+                            sbEmailBody.Append("is to provide materials in small quantities to research and education entities when genetic diversity or genetic standards are a");
+                            sbEmailBody.Append("requirement.The accessions maintained by NPGS are not intended for home or personal use that can");
+                            sbEmailBody.Append("be better served by commercially - available varieties.");
+                            sbEmailBody.Append("*** PLACEHOLDER FOR TEMPLATE TEXT ***");
+                            emailMessage.Body = sbEmailBody.ToString();
+                            smtpService.SendMessage(emailMessage);
+                 
+                            // EMAIL TO CURATORS
                             emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
                             emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
                             smtpService.SendMessage(emailMessage);
-                            //return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
                         }
                 }
-                return RedirectToAction("Index", "WebOrder");
+                if (viewModel.Action != "NRR_NOTE")
+                {
+                    return RedirectToAction("Index", "WebOrder");
+                }
+                else
+                {
+                    return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
+                }
             }
             catch (Exception ex)
             {
