@@ -1,0 +1,170 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.WebOrderRequestEditViewModel
+@{
+    ViewBag.Title = "EditEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .ck-editor__editable {
+        min-height: 500px !important;
+    }
+</style>
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<div class="row">
+    <!--<div class="col-md-3">
+        <a href="mailbox.html" class="btn btn-primary btn-block margin-bottom">Back to Inbox</a>
+
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Folders</h3>
+
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                        <a href="mailbox.html">
+                            <i class="fa fa-inbox"></i> Inbox
+                            <span class="label label-primary pull-right">12</span>
+                        </a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
+                    <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
+                    <li>
+                        <a href="#"><i class="fa fa-filter"></i> Junk <span class="label label-warning pull-right">65</span></a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
+                </ul>
+            </div>-->
+    <!-- /.box-body -->
+    <!--</div>-->
+    <!-- /. box -->
+    <!--<div class="box box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title">Labels</h3>
+
+            <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>-->
+    <!-- /.box-header -->
+    <!--<div class="box-body no-padding">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
+        </ul>
+    </div>-->
+    <!-- /.box-body -->
+    <!--</div>-->
+    <!-- /.box -->
+    <!--</div>-->
+    <!-- /.col -->
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Requestor Email</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="form-group">
+                    <input class="form-control" placeholder="To:" value="@Model.WebCooperator.EmailAddress">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Subject:" value="Cancellation of Web Order Request #@Model.ID">
+                </div>
+                <div class="form-group">
+                    <textarea id="txtEmailBody" rows="500" class="form-control">
+                        Dear Germplasm Requestor,
+                        <p>
+                            Thank you for your interest in our germplasm collection. The mission of the National Plant Germplasm System (NPGS) 
+                            is to provide materials in small
+                            quantities to research and education entities when genetic diversity or genetic standards are a
+                            requirement. The accessions maintained by NPGS are not intended for home or personal use that can
+                            be better served by commercially-available varieties. Many of our accessions are wild or landrace types
+                            having great variation and may not be marketable or edible. Many require special handling to flower
+                            and produce seed. For that reason, NPGS is unable to supply you with the plant materials that you
+                            requested.
+                        </p>
+                        <p>
+                            For more information on NPGS, we have a 6-minute video online that outlines its mission and purpose
+                            at <a href="https://www.youtube.com/watch?v=uHOclGNELuw">https://www.youtube.com/watch?v=uHOclGNELuw</a>.
+                        </p>
+                    <p>
+                            Standard crop varieties are available from many commercial sources. You can find information on
+                            sources of plant materials from Plant Information Online, administered by the University of Minnesota
+                            (<a href="https://plantinfo.umn.edu/">https://plantinfo.umn.edu/</a>).
+                        </p>
+                    <p>Most states have a Cooperative Extension System that can provide abundant information on crops and 
+                        varieties best adapted to your location. Other sources of information on gardening in your area include 
+                        Master Gardener organizations, local gardening clubs, public gardens, and local plant nurseries and 
+                        garden centers.</p> 
+                    <p>If you believe that you have received this letter in error, please provide additional information 
+                        regarding your project to justify the use of specific NPGS germplasm instead of commercially available 
+                        germplasm.</p>
+                        Sincerely,
+
+                    <table border="0">
+                    <tr>
+                    <td>
+                    <strong>Lisa Burke</strong><br />
+                                    Seed Storage Manager<br />
+                                    Agronomist, USDA, ARS - PIRU<br />
+                                    Phone: (515) 294-1378<br />
+                                    Email: Lisa.Burke@ars.usda.gov<br />
+                                </td>
+                    <td>
+                    <strong>Candice Gardner</strong><br />
+                                    Research Leader, USDA, ARS - PIRU<br />
+                                    Phone: (515) 294-7967<br />
+                                Email: Candice.Gardner@ars.usda.gov
+                            </td>
+                        </tr>
+                    <tr>
+                    <td>
+                    <strong>Stacey Estrada</strong><br />
+                                    Germplasm Program Assistant, USDA, ARS - PIRU<br />
+                                    Phone: (515) 294-3802<br />
+                                    Email: Stacey.Estrada@ars.usda.gov<br />
+                                    North Central Regional Plant Introduction Station<br />
+                                    1305 State Avenue<br />
+                                    Ames, IA 50014-1170<br />
+                                    Fax: (515) 294-190<br />
+                                </td>
+                    <td></td>
+                            </tr>
+                        </table>
+                    </textarea>
+                    <script>
+                        CKEDITOR.replace('txtEmailBody');
+                    </script>
+                </div>
+                @*<div class="form-group">
+                    <div class="btn btn-default btn-file">
+                        <i class="fa fa-paperclip"></i> Attachment
+                        <input type="file" name="attachment">
+                    </div>
+                    <p class="help-block">Max. 32MB</p>
+                </div>*@
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="pull-right">
+                    @*<button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>*@
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
+                </div>
+                @*<button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>*@
+            </div>
+            <!-- /.box-footer -->
+        </div>
+        <!-- /. box -->
+    </div>
+    <!-- /.col -->
+</div>

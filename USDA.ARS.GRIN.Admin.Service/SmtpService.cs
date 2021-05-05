@@ -5,33 +5,33 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.CodeDom;
+using USDA.ARS.GRIN.Admin.Models;
 
 namespace USDA.ARS.GRIN.Admin.Service
 {
     public class SmtpService
     {
-        public int SendTestMessage()
+        public ResultContainer SendMessage(EmailMessage emailMessage)
         {
-            MailAddress to = new MailAddress("benjamin.haag@usda.gov");
-            MailAddress from = new MailAddress("id_action_request@ars-grin.gov");
-
+            MailAddress to = new MailAddress(emailMessage.RecipientAddress);
+            MailAddress from = new MailAddress(emailMessage.SenderAddress);
             MailMessage message = new MailMessage(from, to);
-            message.Subject = "Test Message";
-            message.Body = "TEST OF EMAIL SERVICE";
-
+            message.Subject = emailMessage.Subject;
+            message.Body = emailMessage.Body;
+            message.IsBodyHtml = emailMessage.IsHtmlFormat;
             SmtpClient client = new SmtpClient("mailproxy1.usda.gov");
+            ResultContainer resultContainer = new ResultContainer();
 
             try
             {
-
                 client.Send(message);
             }
             catch (SmtpException ex)
             {
-                throw ex;
-                return -1;
+                resultContainer.ResultDescription = ex.Message;
             }
-            return 0;
+            resultContainer.ResultCode = "OK";
+            return resultContainer;
         }
     }
 }

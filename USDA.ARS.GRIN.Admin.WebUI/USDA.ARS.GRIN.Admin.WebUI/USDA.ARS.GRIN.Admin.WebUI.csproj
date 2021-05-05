@@ -343,6 +343,7 @@
     <Content Include="Views\GRINGlobal\WebOrder\_DEBUG.cshtml" />
     <Content Include="Views\Taxonomy\Species\_SearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Species\_Widget.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\EditEmail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -402,6 +403,7 @@
     </Compile>
     <Compile Include="TextUtility.cs" />
     <Compile Include="UserNotFoundException.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="Utilities\InputValidatorGreaterThanZero.cs" />
     <Compile Include="Utilities\RequiredIfAttribute.cs" />
     <Compile Include="ViewModels\AccountManagement\AccountManagementHomeViewModel.cs" />

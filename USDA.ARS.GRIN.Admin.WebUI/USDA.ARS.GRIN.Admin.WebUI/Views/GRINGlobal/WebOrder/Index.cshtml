@@ -105,7 +105,7 @@
                                     <label for="exampleInputEmail1">Intended Use</label>
                                     @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Select a code", new { @class = "form-control" })
                                 </div>
-                                <div class="form-group">
+                                @*<div class="form-group">
                                     <label>Submitted</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
@@ -122,16 +122,12 @@
                                         @Html.HiddenFor(x => x.SelectedDateRange)
                                         <input type="text" class="form-control pull-right" id="txtOrderDateRange" name="OrderDateRange">
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                             <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button id="btnSearch" type="submit" class="btn btn-primary pull-right">Search</button>
-
-                            </div>
                         </div>
                     }
-                    <button id="btnDEBUG" type="button" class="btn btn-danger">DEBUG</button>
+                    <button id="btnSearch" type="button" class="btn btn-primary">Search</button>
                 </div>
                 <!-- /.tab-pane -->
             </div>
@@ -214,7 +210,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     $(document).on({
         ajaxStart: function () {
@@ -244,7 +239,7 @@
     });
 
     $(document).ready(function () {
-        LoadWebOrderRequests("SUBMITTED", 1);
+        LoadWebOrderRequests("NRR_FLAGGED", 2);
     });
 
     $(function () {
@@ -279,8 +274,7 @@
         });
     });
 
-    $("#btnDEBUG").click(function () {
-         //TO DO: GET CRITERIA
+    $("#btnSearch").click(function () {
         var statusCode = "";
         var timeFrameCode = "";
         var requestorEmail = "";
@@ -307,6 +301,8 @@
 
     function SearchWebOrderRequests(statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, selectedDateRange)
     {
+        var link = "";
+
         $("#SelectedStatusCode").val(statusCode);
         $("#SelectedTimeFrameCode").val(timeFrameCode);
 
@@ -316,24 +312,30 @@
         //var $getTimeFrameElement = $('li#' + timeFrameCode);
         //$getTimeFrameElement.addClass('active');
 
-        var link = '@Url.Action("_Search", "WebOrder")';
+        try {
 
-        console.log("DEBUG " + statusCode + ", " + timeFrameCode + ", " + email + ", ");
 
-        $.ajax(
-            {
-                type: 'GET',
-                url: link,
-                data: { statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName : lastName, intendedUseCode : intendedUseCode, selectedDateRange: selectedDateRange },
-                success:
-                    function (response) {
-                        $("#section-data").html(response);
-                    },
-                error:
-                    function (response) {
-                        console.log(response);
-                    }
-            });
+            link = '@Url.Action("_Search", "WebOrder")';
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: link,
+                    data: { statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName: lastName, intendedUseCode: intendedUseCode, selectedDateRange: selectedDateRange },
+                    success:
+                        function (response) {
+                            $("#section-data").html(response);
+                        },
+                    error:
+                        function (response) {
+                            console.log(response);
+                        }
+                });
+        }
+        catch (ex)
+        {
+            console.log(ex.message);
+        }
     }
 
     function LoadWebOrderRequests(statusCode, timeFrameCode)

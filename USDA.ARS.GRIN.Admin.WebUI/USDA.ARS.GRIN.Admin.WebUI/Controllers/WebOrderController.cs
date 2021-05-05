@@ -98,12 +98,21 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        public ActionResult EditEmail(int webOrderRequestId)
+        {
+            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
+            viewModel = LoadViewModel(webOrderRequestId, true);
+            return View("~/Views/GRINGlobal/WebOrder/EditEmail.cshtml", viewModel);
+        }
+
+
         [HttpPost]
         public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
         {
             ResultContainer resultContainer = null;
-            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-        
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            SmtpService smtpService = new SmtpService();
+
             try
             {
                 WebOrderRequest webOrderRequest = new WebOrderRequest();
@@ -112,20 +121,34 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                 if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
                 {
-                    service.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
-                    return RedirectToAction("Index", "WebOrder");
+                    grinGlobalService.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
                 }
                 else
                 {
-                    resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
-                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
-                    if ((viewModel.Action == "NRR_APPROVE") || (viewModel.Action == "NRR_DENY"))
+                    resultContainer = grinGlobalService.UpdateWebOrderRequest(webOrderRequest);
+                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+
+                    EmailMessage emailMessage = new EmailMessage();
+                    emailMessage.SenderAddress = "gringlobal.orders@usda.gov";
+                    emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
+                    emailMessage.IsHtmlFormat = true;
+
+                    if (viewModel.Action == "NRR_APPROVE")
                     {
-                        return RedirectToAction("Index", "WebOrder");
+                        emailMessage.Subject = "NRR Review Update: Order #" + webOrderRequest.ID + " Approved";
+                        emailMessage.Body = "Order # " + webOrderRequest.ID + " has been approved. You may now process it normally via the Order Wizard.";
+                        smtpService.SendMessage(emailMessage);
                     }
                     else
-                        return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
+                        if (viewModel.Action == "NRR_REJECT")
+                        {
+                            emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
+                            emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
+                            smtpService.SendMessage(emailMessage);
+                            //return RedirectToAction("Edit", "WebOrder", new { id = viewModel.ID });
+                        }
                 }
+                return RedirectToAction("Index", "WebOrder");
             }
             catch (Exception ex)
             {
