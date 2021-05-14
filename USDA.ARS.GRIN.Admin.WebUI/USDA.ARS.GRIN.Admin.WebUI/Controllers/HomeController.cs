@@ -17,6 +17,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             dashboardViewModel.AuthenticatedUser = this.AuthenticatedUser;
             string destinationView = "Index.cshtml";
 
+            TempData["context"] = "My Profile";
+
             if (!String.IsNullOrEmpty(appContext))
             {
                 return RedirectToAction("Index", appContext);
@@ -68,28 +70,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 userViewModel.AppName2 = "Taxon";
                 userViewModel.AppAbbrev = "TT";
             }
-            else
+            if (requestedUrl.ToLower().Contains("sitemanagement"))
             {
-                if (requestedUrl.ToLower().Contains("sitemanagement"))
-                {
-                    userViewModel.ActiveContext = "sitemanagement";
-                    userViewModel.AppName1 = "Grin";
-                    userViewModel.AppName2 = "CMS";
-                    userViewModel.AppAbbrev = "CMS";
-                }
-                else
-                {
-                    if (requestedUrl.ToLower().Contains("accountmanagement"))
-                    {
-                        userViewModel.ActiveContext = "accountmanagement";
-                        userViewModel.AppName1 = "Account";
-                        userViewModel.AppName2 = "Manager";
-                        userViewModel.AppAbbrev = "AM";
-                    }
-                }
+                userViewModel.ActiveContext = "sitemanagement";
+                userViewModel.AppName1 = "ARS-GRIN";
+                userViewModel.AppName2 = "CMS";
+                userViewModel.AppAbbrev = "CMS";
             }
 
-                userViewModel.AuthenticatedUser = this.AuthenticatedUser;
+            if (requestedUrl.ToLower().Contains("accountmanagement"))
+            {
+                userViewModel.ActiveContext = "accountmanagement";
+                userViewModel.AppName1 = "You";
+                userViewModel.AppName2 = "ser";
+                userViewModel.AppAbbrev = "AM";
+            }
+
+            if (requestedUrl.ToLower().Contains("weborder"))
+            {
+                userViewModel.ActiveContext = "weborder";
+                userViewModel.AppName1 = "NRR";
+                userViewModel.AppName2 = "-B-GONE";
+                userViewModel.AppAbbrev = "NRR";
+            }
+
+            userViewModel.AuthenticatedUser = this.AuthenticatedUser;
             return PartialView("~/Views/Shared/_Header.cshtml", userViewModel);
         }
 

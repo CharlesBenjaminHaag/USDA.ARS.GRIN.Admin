@@ -11,6 +11,7 @@ namespace USDA.ARS.GRIN.Admin.Models
     {
         public int EntityID { get; set; }
         public string ResultCode { get; set; }
+        public string ResultMessage { get; set; }
         public string ResultDescription { get; set; }
 
         public string GetUserFriendlyDescription(string errorCode)

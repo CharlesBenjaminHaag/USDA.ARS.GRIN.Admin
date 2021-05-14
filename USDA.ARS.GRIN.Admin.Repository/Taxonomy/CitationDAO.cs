@@ -143,7 +143,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                     using (SqlCommand cmd = new SqlCommand(commandText, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@search_string", searchText);
+                        cmd.Parameters.AddWithValue("@sql_where_clause", searchText);
                         SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         if (reader.HasRows)
@@ -161,7 +161,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 literature.PublisherName = reader["publisher_name"].ToString();
                                 literature.URL = reader["url"].ToString();
                                 literature.Note = reader["note"].ToString();
+                                literature.CitationCount = GetInt(reader["citation_count"].ToString());
                                 literatures.Add(literature);
+
                             }
                         }
                     }
@@ -172,6 +174,49 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                 throw ex;
             }
             return literatures;
+        }
+
+        public List<Literature> SearchLiterature(Query query)
+        {
+            int i = 0;
+            StringBuilder sbWhereClause = new StringBuilder();
+            foreach (QueryCriterion queryCriterion in query.QueryCriteria)
+            {
+                if (i == 0)
+                    sbWhereClause.Append(" WHERE ");
+                else
+                    sbWhereClause.Append(" AND ");
+
+                sbWhereClause.Append(queryCriterion.FieldName);
+                sbWhereClause.Append(" ");
+                sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+                sbWhereClause.Append(" ");
+
+                if (queryCriterion.DataType == "NVARCHAR")
+                {
+                    if (queryCriterion.FieldValue == "NULL")
+                    {
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                    }
+                    else
+                    {
+                        sbWhereClause.Append("'");
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append("'");
+                    }
+                }
+                i++;
+            }
+
+            return SearchLiterature(sbWhereClause.ToString());
         }
 
         public ResultContainer Remove(Citation entity)

@@ -15,6 +15,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
         private string _context;
         public UserDAO(string contextName)
         {
+            InsertCommmand = "usp_AcctMgmtSysUser_Insert";
+            UpdateCommmand = "usp_AcctMgmtSysUser_Update";
+            DeleteCommmand = "usp_AcctMgmtSysUser_Delete";
+            SelectCommmand = "usp_AcctMgmtSysUser_Select";
+            
             _context = contextName;
         }
         
@@ -82,7 +87,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public User Search(string userName)
         {
-            const string COMMAND_TEXT = "usp_User_Search";
+            const string COMMAND_TEXT = "usp_AcctMgmtUser_Search";
             string connectionType = _context;
             User user = new User();
 
@@ -205,7 +210,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public List<Application> GetUserApplications(int userId)
         {
-            const string COMMAND_TEXT = "usp_UserApplications_Select";
+            const string COMMAND_TEXT = "usp_AcctMgmtUserApplications_Select";
             List<Application> applications = new List<Application>();
 
             try
@@ -254,7 +259,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public List<Group> GetUserGroups(int userId)
         {
-            const string COMMAND_TEXT = "usp_SysUserGroups_Select";
+            const string COMMAND_TEXT = "usp_AcctMgmtSysUserGroups_Select";
             List<Group> userGroups = new List<Group>();
 
             try

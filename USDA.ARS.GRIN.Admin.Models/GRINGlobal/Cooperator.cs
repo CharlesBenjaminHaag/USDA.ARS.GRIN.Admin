@@ -16,6 +16,7 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string LastName { get; set; }
         public string FullName { get; set; }
         public string Organization { get; set; }
+        public string Job { get; set; }
         public string EmailAddress { get; set; }
         public string PrimaryPhoneNumber { get; set; }
         public string SecondaryPhoneNumber { get; set; }

@@ -17,5 +17,6 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string PublicationYear { get; set; }
         public string PublisherName { get; set; }
         public string URL { get; set; }
+        public int CitationCount { get; set; }
     }
 }

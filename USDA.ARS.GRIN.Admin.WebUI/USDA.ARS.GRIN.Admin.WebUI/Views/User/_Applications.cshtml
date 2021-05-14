@@ -1,48 +1,28 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.UserApplicationsViewModel
 
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">Applications</h3>
-    </div>
-    <!-- /.box-header -->
+<div class="col-md-12">
 
-    <div class="box-body">
-        <ul class="timeline timeline-inverse">
-            @foreach (var application in Model.Applications)
-            { 
-                <li>
-                    @*<i class="fa fa-user bg-aqua"></i>*@
-                    <div class="timeline-item" >
-                        <span class="time">
-
-                            <span class="label label-default" style="display:inline-block; font-size: 12px; margin-bottom: .3em;"><a href="" style="color:white;">Version 1.0.0</a></span>
-
-                            @*Version @application.ApplicationCode*@
-
-
-                        </span>
-                        
-                        <h3 class="timeline-header" style="background-color:#ebebeb;">@application.Title</h3>
-                        <div class="timeline-body">
-                            @application.Description 
-                        </div>
-                        <div class="timeline-footer">
-                            @if (application.IsAuthorized)
-                            {
-                                <a class="btn btn-success btn-xs" href="@Url.Action("LoadApplication", "Home", new { appContext = application.URL })">Launch Application</a>
-                                @*<a class="btn btn-warning btn-xs disabled" href="http://arsmdbe33ws1.usda.net:8080/trac/GG/query?component=ARS-GRIN+Site&col=id&col=summary&col=status&col=type&col=priority&col=milestone&col=component&report=46&order=priority">View Trac Tickets</a>*@
-                            }
-                            else
-                            { 
-                                <a class="btn btn-danger btn-xs" href="mailto:benjamin.haag@usda.gov?subject=GGADmin Application Access&body=Request access to @application.Title">Request Access</a>
-                            }
-                        </div>
-                    </div>
-
-                </li>            
-            }
-        </ul>
-    </div>
-    <!-- /.box-body -->
 </div>
+
+@foreach (var application in Model.Applications)
+{
+    <div class="info-box">
+        <span class="info-box-icon bg-blue-active"><i class="fa fa-gears"></i></span>
+        <div class="info-box-content">
+            <span class="info-box-number">
+                @if (application.IsAuthorized)
+                {
+                    <a href="@Url.Action("LoadApplication", "Home", new { appContext = application.URL })">@application.Title</a>
+                }
+                else
+                {
+                    @application.Title <button class="btn btn-sm">Request Access</button>
+                }
+            </span>
+            <span class="info-box-text">@application.Description</span>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+}
+
 

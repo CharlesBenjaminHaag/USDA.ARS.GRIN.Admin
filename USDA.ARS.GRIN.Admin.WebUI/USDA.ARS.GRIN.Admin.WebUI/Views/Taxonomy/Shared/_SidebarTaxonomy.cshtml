@@ -16,13 +16,13 @@
             <li class="header">MAIN NAVIGATION</li>
             <li class="@Url.IsLinkActive("Index", "Home")">
                 <a href="@Url.Action("Index","Home")">
-                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/icon-home.png" />
+                    <i class="fa fa-home"></i>
                     <span>GGTools Home</span>
                 </a>
             </li>
             <li class="@Url.IsLinkActive("Index", "Taxonomy")">
                 <a href="@Url.Action("Index","Taxonomy")">
-                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-tree.png" />
+                    <i class="fa fa-tree"></i>
                     <span>TurboTaxon Home</span>
                 </a>
             </li>
@@ -30,7 +30,7 @@
             <!-- CROP -->
             <li class="treeview menu-open">
                 <a href="#">
-                    <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                    <i class="fa fa-circle-o"></i>
                     <span>TAXONOMY</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -39,32 +39,32 @@
                 <ul class="treeview-menu" style="display: block;">
                     <li>
                         <a href="@Url.Action("FamilyHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />Family
+                            <i class="fa fa-table"></i>Family
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("GenusHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />Genus
+                            <i class="fa fa-table"></i>Genus
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("SpeciesHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />Species
+                            <i class="fa fa-table"></i>Species
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("CropForCWRHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />Crop for CWR
+                            <i class="fa fa-table"></i>Crop for CWR
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("CWRMapHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />CWR Map
+                            <i class="fa fa-table"></i>CWR Map
                         </a>
                     </li>
                     <li>
                         <a href="@Url.Action("CWRTraitHome", "Taxonomy")">
-                            <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />CWR Trait
+                            <i class="fa fa-table"></i>CWR Trait
                         </a>
                     </li>
                 </ul>
@@ -73,7 +73,7 @@
         <!-- REFERENCE -->
         <li class="treeview menu-open">
             <a href="#">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                <i class="fa fa-circle-o"></i>
                 <span>REFERENCE</span>
                 <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
@@ -82,20 +82,26 @@
             <ul class="treeview-menu" style="display: block;">
                 <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
+                        <i class="fa fa-table"></i>
                         <span>Regulation</span>
                     </a>
                 </li>
                 <li class="@Url.IsLinkActive("RegulationMapHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationMapHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
+                        <i class="fa fa-table"></i>
                         <span>Regulation Map</span>
                     </a>
                 </li>
                 <li class="@Url.IsLinkActive("CitationHome", "Taxonomy")">
                     <a href="@Url.Action("CitationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
+                        <i class="fa fa-table"></i>
                         <span>Citations</span>
+                    </a>
+                </li>
+                <li class="@Url.IsLinkActive("LiteratureHome", "Taxonomy")">
+                    <a href="@Url.Action("LiteratureHome", "Taxonomy")">
+                        <i class="fa fa-table"></i>
+                        <span>Literature</span>
                     </a>
                 </li>
             </ul>
@@ -104,9 +110,9 @@
         <li class="header">REPORTS</li>
 
         <!-- REPORTS -->
-        <li class="treeview menu-open">
+        @*<li class="treeview menu-open">
             <a href="#">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
+                <i class="fa fa-circle-o"></i>
                 <span>SEASONAL</span>
                 <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
@@ -115,12 +121,12 @@
             <ul class="treeview-menu" style="display: block;">
                 <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
                     <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/fa-table.png" class="toolbar-icon" />
+                        <i class="fa fa-book"></i>
                         <span>ISTA</span>
                     </a>
                 </li>
             </ul>
-        </li>
+        </li>*@
 
         <!-- VALIDATION -->
         @*<li class="treeview menu-open">

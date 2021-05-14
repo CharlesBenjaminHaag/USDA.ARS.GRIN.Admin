@@ -313,6 +313,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.SearchLiterature(searchText);
         }
+        public List<Literature> SearchLiterature(Query query)
+        {
+            return _citationDAO.SearchLiterature(query);
+        }
 
         #endregion Literature
 
@@ -377,7 +381,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         #endregion
 
         #region Reference
-
+        public List<CodeValueReferenceItem> GetCodeValues(string groupName)
+        {
+            return _referenceDAO.GetCodeValues(groupName);
+        }
         public List<CodeValueReferenceItem> GetGenePoolCodes()
         {
            return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_GENEPOOL").ToList();

@@ -10,37 +10,39 @@ namespace USDA.ARS.GRIN.Admin.WebUI
 {
     public class DisplayHelper
     {
+        public Application GetApplication()
+        {
+            Application application = new Application();
+           
+
+            return application;
+        }
         public static string GetCurrentSkin(string url)
         {
             string appName = String.Empty;
             string appVersion = String.Empty;
-            string mainCssClass = String.Empty;
+            string mainCssClass = "hold-transition skin-blue sidebar-mini";
 
-            
-            
-            if (HttpContext.Current.Request.Url.ToString().Contains("Taxonomy"))
+            if (HttpContext.Current.Request.Url.ToString().Contains("taxonomy"))
             {
                 mainCssClass = "hold-transition skin-green sidebar-mini";
-                
             }
-            else
+
+            if (HttpContext.Current.Request.Url.ToString().Contains("sitemanagement"))
             {
-                if (HttpContext.Current.Request.Url.ToString().Contains("SiteManagement"))
-                {
-                    mainCssClass = "hold-transition skin-red sidebar-mini";
-                }
-                else
-                {
-                    if (HttpContext.Current.Request.Url.ToString().Contains("AccountManagement"))
-                    {
-                        mainCssClass = "hold-transition skin-purple sidebar-mini";
-                    }
-                    else
-                    {
-                        mainCssClass = "hold-transition skin-blue sidebar-mini";
-                    }
-                }
+                mainCssClass = "hold-transition skin-red sidebar-mini";
             }
+
+            if (HttpContext.Current.Request.Url.ToString().Contains("accountmanagement"))
+            {
+                mainCssClass = "hold-transition skin-purple sidebar-mini";
+            }
+
+            if (HttpContext.Current.Request.Url.ToString().ToLower().Contains("weborder"))
+            {
+                mainCssClass = "hold-transition skin-red sidebar-mini";
+            }
+
             return mainCssClass;
         }
 

@@ -1,7 +1,9 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.UserProfileViewModel
+<a href="#" class="btn btn-primary btn-block disabled"><b>Edit Profile</b></a>
+<br />
 <div class="box box-primary">
     <div class="box-header with-border">
-        <h3 class="box-title">My Profile</h3>
+        <h3 class="box-title">My Cooperator Record</h3>
     </div>
     <div class="box-body box-profile">
         <img class="profile-user-img img-responsive img-circle" src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/user-default.png" alt="User profile picture">
@@ -21,7 +23,7 @@
                 <b>Site</b> <a class="pull-right">@Model.AuthenticatedUser.Site.ShortName</a>
             </li>
         </ul>
-        
+
         <strong><i class="fa fa-map-marker margin-r-5"></i>Address</strong>
 
         <p class="text-muted"><a href=""></a></p>
@@ -31,9 +33,14 @@
             @Model.AuthenticatedUser.Addresses.First().AddressLine3<br />
             @Model.AuthenticatedUser.Addresses.First().City, @Model.AuthenticatedUser.Addresses.First().State   @Model.AuthenticatedUser.Addresses.First().ZIP<br />
         </p>
-
-        <hr>
-
+    </div>
+    <!-- /.box-body -->
+</div>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">My Groups</h3>
+    </div>
+    <div class="box-body box-profile">
         <strong><i class="fa fa-pencil margin-r-5"></i>Member of</strong>
 
         <p>
@@ -42,10 +49,6 @@
                 <span class="label label-info" style="display:inline-block; font-size: 12px; margin-bottom: .3em;"><a href="" style="color:white;">@group.GroupTag</a></span>
             }
         </p>
-        <hr>
-        <a href="#" class="btn btn-primary btn-block disabled"><b>Edit Profile</b></a>
     </div>
-    <!-- /.box-body -->
-
 </div>
 

@@ -6,15 +6,18 @@ using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
 using USDA.ARS.GRIN.Admin.Service;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal;
+using NLog;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     [GrinGlobalAuthentication]
     public class WebOrderController : BaseController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public ActionResult Index()
         {
-            TempData["context"] = "NRR Review Tool";
+            TempData["context"] = "Home";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             WebOrderRequestSearchViewModel viewModel = new WebOrderRequestSearchViewModel();
 
@@ -51,6 +54,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult Update(int webOrderRequestId, int webCooperatorId, string statusCode, string actionNote)
         {
+            TempData["context"] = "Review";
             ResultContainer resultContainer = null;
             WebOrderRequest webOrderRequest = new WebOrderRequest();
             List<WebOrderRequest> webOrderRequests = null;
@@ -133,11 +137,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                     EmailMessage emailMessage = new EmailMessage();
                     emailMessage.SenderAddress = "gringlobal.orders@usda.gov";
-                    emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
                     emailMessage.IsHtmlFormat = true;
 
                     if (viewModel.Action == "NRR_APPROVE")
                     {
+                        emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
                         emailMessage.Subject = "NRR Review Update: Order #" + webOrderRequest.ID + " Approved";
                         emailMessage.Body = "Order # " + webOrderRequest.ID + " has been approved. You may now process it normally via the Order Wizard.";
                         smtpService.SendMessage(emailMessage);
@@ -146,7 +150,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         if (viewModel.Action == "NRR_REJECT")
                         {
                             // EMAIL TO REQUESTOR
-                            emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
+                            //emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
+                            emailMessage.RecipientAddress = "c.benjamin.haag@outlook.com";
                             emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
 
                             System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
@@ -157,8 +162,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                             sbEmailBody.Append("*** PLACEHOLDER FOR TEMPLATE TEXT ***");
                             emailMessage.Body = sbEmailBody.ToString();
                             smtpService.SendMessage(emailMessage);
-                 
+
                             // EMAIL TO CURATORS
+                            emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
                             emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
                             emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
                             smtpService.SendMessage(emailMessage);
@@ -215,6 +221,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
                 viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
                 viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;
+                viewModel.WebOrderRequestAddresses = webOrderRequest.Addresses;
 
                 var queryWebOrderRequestDates =
                     from action in webOrderRequest.WebOrderRequestActions

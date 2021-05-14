@@ -1174,23 +1174,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        //public PartialViewResult CitationListRecent()
-        //{
-        //    CitationSearchViewModel viewModel = new CitationSearchViewModel();
-        //    TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-        //    try
-        //    {
-        //        viewModel.Citations = _taxonomyService.FindRecentCitations();
-        //        return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return PartialView("~/Views/Error/_Error.cshtml", viewModel);
-        //    }
-        //}
-
         public ActionResult CitationEdit(int id = 0)
         {
             TempData["context"] = "Edit Citation";
@@ -1347,6 +1330,95 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         #endregion
 
         #region Literature
+
+        public ActionResult LiteratureHome()
+        {
+            TempData["context"] = "Literature";
+            LiteratureHomeViewModel literatureHomeViewModel = new LiteratureHomeViewModel();
+
+            try
+            {
+                TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+                List<CodeValueReferenceItem> literatureTypeCodes = taxonomyService.GetCodeValues("LITERATURE_TYPE");
+                literatureHomeViewModel.LiteratureTypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
+                return View(BASE_PATH + "Literature/Index.cshtml", literatureHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult LiteratureSearch(LiteratureHomeViewModel literatureHomeViewModel)
+        {
+            TempData["context"] = "Citation Search";
+            CitationSearchViewModel viewModel = new CitationSearchViewModel();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            Query query = new Query();
+            QueryCriterion queryCriterion = null;
+            try
+            {
+                if (!String.IsNullOrEmpty(literatureHomeViewModel.Abbreviation))
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "abbreviation", FieldValue = literatureHomeViewModel.Abbreviation, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(literatureHomeViewModel.ReferenceTitle))
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "reference_title", FieldValue = literatureHomeViewModel.ReferenceTitle, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(literatureHomeViewModel.Author))
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "editor_author_name", FieldValue = literatureHomeViewModel.Author, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(literatureHomeViewModel.Year))
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "publication_year", FieldValue = literatureHomeViewModel.Year, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+
+                if (!String.IsNullOrEmpty(literatureHomeViewModel.TypeCode))
+                {
+                    if (!literatureHomeViewModel.TypeCode.Contains("Select"))
+                    {
+                        if (literatureHomeViewModel.TypeCode == "NULL")
+                        {
+                            queryCriterion = new QueryCriterion { FieldName = "literature_type_code", FieldValue = "NULL", SearchOperatorCode = "IS", DataType = "NVARCHAR" };
+                        }
+                        else
+                        {
+                            queryCriterion = new QueryCriterion { FieldName = "literature_type_code", FieldValue = literatureHomeViewModel.TypeCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
+                        }
+                        query.QueryCriteria.Add(queryCriterion);
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(literatureHomeViewModel.Note))
+                {
+                    queryCriterion = new QueryCriterion { FieldName = "note", FieldValue = literatureHomeViewModel.Note, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+                List<CodeValueReferenceItem> literatureTypeCodes = taxonomyService.GetCodeValues("LITERATURE_TYPE");
+                literatureHomeViewModel.LiteratureTypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
+                literatureHomeViewModel.LiteratureResults = _taxonomyService.SearchLiterature(query);
+                return View(BASE_PATH + "Literature/Index.cshtml", literatureHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
 
         public ActionResult FindLiterature(string searchString)
         {

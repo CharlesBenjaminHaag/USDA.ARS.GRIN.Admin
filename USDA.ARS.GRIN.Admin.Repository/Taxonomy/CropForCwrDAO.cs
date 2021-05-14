@@ -371,7 +371,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public List<CodeValueReferenceItem> GetAllCodeValueReferenceItems()
         {
-            const string COMMAND_TEXT = "usp_CodeValues_Select";
+            const string COMMAND_TEXT = "usp_DataMgmtCodeValues_Select";
             List<CodeValueReferenceItem> codeValueReferenceItems = new List<CodeValueReferenceItem>();
 
             try

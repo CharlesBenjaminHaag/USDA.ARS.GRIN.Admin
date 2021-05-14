@@ -26,7 +26,7 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
-
+        @Html.HiddenFor(x => x.DataSourceName)
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
@@ -148,6 +148,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

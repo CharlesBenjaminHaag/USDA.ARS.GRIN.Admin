@@ -62,23 +62,26 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
                                 webCooperator.Organization = reader["web_cooperator_organization"].ToString();
+                                webCooperator.Job = reader["web_cooperator_job"].ToString();
+                                webCooperator.PrimaryPhoneNumber = reader["web_cooperator_primary_phone"].ToString();
+                                webCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
+                                webCooperator.CreatedDate = GetDate(reader["web_cooperator_created_date"].ToString());
+                                webCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
                                 webCooperator.Address.AddressLine1 = reader["web_cooperator_address_line_1"].ToString();
                                 webCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
                                 webCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();
                                 webCooperator.Address.City = reader["web_cooperator_address_city"].ToString();
                                 webCooperator.Address.ZIP = reader["web_cooperator_address_postal_index"].ToString();
                                 webCooperator.Address.State = reader["web_cooperator_address_state"].ToString();
-                                webCooperator.PrimaryPhoneNumber = reader["web_cooperator_primary_phone"].ToString();
-                                webCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
-                                webCooperator.CreatedDate = GetDate(reader["web_cooperator_created_date"].ToString());
-                                webCooperator.ModifiedDate = GetDate(reader["web_cooperator_modified_date"].ToString());
                                 webOrderRequest.Cooperators.Add(webCooperator);
+
                                 webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
                                 webOrderRequest.StatusCode = reader["status_code"].ToString();
                                 webOrderRequest.IntendedUseCode = reader["intended_use_code"].ToString();
                                 webOrderRequest.IntendedUseNote = reader["intended_use_note"].ToString();
                                 webOrderRequest.Note = reader["note"].ToString();
                                 webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
+                                webOrderRequest.Addresses = GetAddresses(webOrderRequest.ID);
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
                                 webOrderRequest.WebOrderRequestActions = SearchActions(webOrderRequest.ID);
                                 
@@ -475,6 +478,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
+                                webOrderRequest.Addresses = GetAddresses(webOrderRequest.ID);
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
                                 webOrderRequests.Add(webOrderRequest);
                             }
@@ -633,6 +637,51 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         }
 
+        #region Web Order Request Addresses
+
+        public List<Address> GetAddresses(int webOrderRequestId)
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequestAddresses_Select";
+            List<Address> addresses = new List<Address>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@web_order_request_id", webOrderRequestId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Address address = new Address();
+                                address.AddressLine1 = reader["address_line1"].ToString();
+                                address.AddressLine2 = reader["address_line2"].ToString();
+                                address.AddressLine3 = reader["address_line3"].ToString();
+                                address.City = reader["city"].ToString();
+                                address.State = reader["adm1"].ToString();
+                                address.ZIP = reader["postal_index"].ToString();
+                                addresses.Add(address);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return addresses;
+        }
+
+        #endregion
+
         ResultContainer IRepository<WebOrderRequest>.Add(WebOrderRequest entity)
         {
             throw new NotImplementedException();
@@ -684,7 +733,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public List<ReferenceItem> GetIntendedUseCodes()
         {
-            const string COMMAND_TEXT = "usp_CodesByGroup_Select";
+            const string COMMAND_TEXT = "usp_DataMgmtCodesByGroup_Select";
             List<ReferenceItem> intendedUseCodes = new List<ReferenceItem>();
 
             try

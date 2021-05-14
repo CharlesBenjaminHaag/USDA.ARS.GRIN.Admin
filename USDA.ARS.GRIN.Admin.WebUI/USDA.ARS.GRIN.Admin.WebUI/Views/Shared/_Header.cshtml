@@ -3,9 +3,9 @@
     @* BEGIN Logo *@
     <a href="@Url.Action("Index", "Home")" class="logo">
         @* Mini logo for sidebar 50x50 pixels *@
-        <span class="logo-mini"><b>GGT</b></span>
+        <span class="logo-mini"><b>@Model.AppAbbrev</b></span>
         @* Logo for regular state and mobile devices *@
-        <span class="logo-lg"><b>GGTools</b>@DisplayHelper.GetVersion()</span>
+        <span class="logo-lg"><b>@Model.AppName1</b>@Model.AppName2</span>
     </a>
     @* END Logo *@
     @* BEGIN Header *@
@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                             </li>*@
-                            <li class="user-footer">
+                            <li class="user-footer" style="background-color:darkgray;">
                                 <div class="pull-left">
                                     @*<a href=@Url.Action("Edit", "User", new { userName = Html.Encode(Model.AuthenticatedUser.UserName) }) class="btn btn-default btn-flat">Profile</a>*@
                                 </div>

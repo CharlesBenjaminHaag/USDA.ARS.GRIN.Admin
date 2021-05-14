@@ -122,6 +122,39 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return searchResults;
         }
 
+        public List<CodeValueReferenceItem> GetCodeValues(string groupName)
+        {
+            List<CodeValueReferenceItem> referenceItems = new List<CodeValueReferenceItem>();
+
+            try
+            {
+                String commandText = "usp_DataMgmtCodesByGroup_Select";
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@group_name", groupName);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                referenceItems.Add(new CodeValueReferenceItem { CodeValueID = GetInt(reader["code_value_id"].ToString()), CodeValue = reader["value"].ToString(), Title = reader["title"].ToString(), Description = reader["description"].ToString() });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return referenceItems;
+        }
+
         //public DataTable Find(string sql)
         //{
         //    const string COMMAND_TEXT = "usp_Search";

@@ -98,6 +98,12 @@
 
         </div>
         <div class="col-md-9">
+
+            <!--
+            ===============================================================================================
+            WEB COOPERATOR
+            ===============================================================================================
+            -->
             <div class="box box-default">
                 <div class="box-header">
                     <h3 class="box-title">Web Cooperator</h3>
@@ -111,33 +117,107 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>Title</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
-                                <th>Address 1</th>
-                                <th>Address 2</th>
-                                <th>Address 3</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Postal Code</th>
+                                <th>Phone</th>
+                                <th>Job</th>
+                                <th>Organization</th>
+                                <th>Created</th>
+                                <th>Last Modified</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td>@Model.WebCooperator.Title</td>
                                 <td>@Model.WebCooperator.FirstName</td>
                                 <td>@Model.WebCooperator.LastName</td>
                                 <td>@Model.WebCooperator.EmailAddress</td>
-                                <td>@Model.WebCooperator.Address.AddressLine1</td>
-                                <td>@Model.WebCooperator.Address.AddressLine2</td>
-                                <td>@Model.WebCooperator.Address.AddressLine3</td>
-                                <td>@Model.WebCooperator.Address.City</td>
-                                <td>@Model.WebCooperator.Address.State</td>
-                                <td>@Model.WebCooperator.Address.ZIP</td>
-                             </tr>
+                                <td>@Model.WebCooperator.PrimaryPhoneNumber</td>
+                                <td>@Model.WebCooperator.Job</td>
+                                <td>@Model.WebCooperator.Organization</td>
+                                <td>@Model.WebCooperator.CreatedDate.ToShortDateString()</td>
+                                <td>@Model.WebCooperator.ModifiedDate.ToShortDateString()</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <!--
+            ===============================================================================================
+            ADDRESSES
+            ===============================================================================================
+            -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab_1" id="tab-shipping-address" title="ShippingAddress" class="selector-tab" data-toggle="tab" aria-expanded="true">Shipping Address</a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_2" id="tab-address" title="Address" class="selector-tab" data-toggle="tab" aria-expanded="false">Web Cooperator Address</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="box-body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>Address 3</th>
+                                        <th>City</th>
+                                        <th>State/Province</th>
+                                        <th>Postal Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var address in Model.WebOrderRequestAddresses)
+                                    {
+                                        <tr>
+                                            <td>@address.AddressLine1</td>
+                                            <td>@address.AddressLine2</td>
+                                            <td>@address.AddressLine3</td>
+                                            <td>@address.City</td>
+                                            <td>@address.State</td>
+                                            <td>@address.ZIP</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        <div class="box-body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>Address 3</th>
+                                        <th>City</th>
+                                        <th>State/Province</th>
+                                        <th>Postal Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.WebCooperator.Address.AddressLine1</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine2</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine3</td>
+                                        <td>@Model.WebCooperator.Address.City</td>
+                                        <td>@Model.WebCooperator.Address.State</td>
+                                        <td>@Model.WebCooperator.Address.ZIP</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="box box-default">
                 <div class="box-header">
                     <h3 class="box-title">Request Details</h3>
@@ -176,6 +256,7 @@
                                 <td>@Model.OrderDate.ToShortDateString()</td>
                                 <td>@Model.WebCooperator.LastName, @Model.WebCooperator.FirstName</td>
                                 <td>@Model.WebCooperator.EmailAddress</td>
+                                <td>@Model.WebCooperator.Address.AddressLine1</td>
                                 <td>@Model.WebCooperator.Address.City</td>
                                 <td>@Model.WebCooperator.Address.State</td>
                                 <td>@Model.WebCooperator.Address.ZIP</td>
@@ -199,21 +280,22 @@
                         <tbody>
                             @foreach (var webOrderRequestItem in Model.WebOrderRequestItems)
                             {
-                            <tr>
-                                <td>@webOrderRequestItem.SequenceNumber</td>
-                                <td>@webOrderRequestItem.StatusCode</td>
-                                <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                <td>
-                                    <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                </td>
-                                <td>@webOrderRequestItem.Site.LongName</td>
-                                <td>@webOrderRequestItem.DistributionForm</td>
-                            </tr>
+                                <tr>
+                                    <td>@webOrderRequestItem.SequenceNumber</td>
+                                    <td>@webOrderRequestItem.StatusCode</td>
+                                    <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                    <td>
+                                        <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                    </td>
+                                    <td>@webOrderRequestItem.Site.LongName</td>
+                                    <td>@webOrderRequestItem.DistributionForm</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
+
             <div class="box box-default">
                 <div class="box-header">
                     <h3 class="box-title">Notes</h3>

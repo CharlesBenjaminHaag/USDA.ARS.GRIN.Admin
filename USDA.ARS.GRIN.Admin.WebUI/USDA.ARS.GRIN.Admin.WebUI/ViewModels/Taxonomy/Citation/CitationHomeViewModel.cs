@@ -29,7 +29,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string DOIReference { get; set; }
         public string Author { get; set; }
         public string Year { get; set; }
-        public string Note { get; set; }
         public string Title { get; set; }
         public SelectList CitationTypeCodes { get; set;}
     }
