@@ -347,6 +347,8 @@
     <Content Include="Views\Taxonomy\Literature\Index.cshtml" />
     <Content Include="Views\Taxonomy\Literature\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_FolderEditModal.cshtml" />
+    <Content Include="Views\Taxonomy\Geography\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Geography\Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -446,6 +448,7 @@
     <Compile Include="ViewModels\AccountManagement\LoginViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderItemListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Literature\LiteratureEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Literature\LiteratureHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
@@ -588,7 +591,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\Taxonomy\" />
     <Folder Include="Logs\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\Error\" />

@@ -832,7 +832,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public PartialViewResult RecentSpecies()
+        public PartialViewResult SpeciesListRecent()
         {
             SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -840,7 +840,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
         }
 
-        public PartialViewResult UserSpecies()
+        public PartialViewResult SpeciesListByUser()
         {
             SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -1016,6 +1016,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        public ActionResult SpeciesGeographyEdit()
+        {
+            return View(BASE_PATH + "Geography/Search.cshtml");
+        }
+
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult SpeciesSearch(string searchText)
         {
@@ -1024,8 +1029,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             List<Species> species = new List<Species>();
             SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
 
-            viewModel.SearchData.QueryCriteria.Add(new QueryCriterion { FieldName = "SpeciesName", FieldValue = searchText, SearchOperatorCode = "CNT" });
-            viewModel.Species = _taxonomyService.FindSpecies(searchText, false);
+            //TODO: CONVERT TO COMPLEX SEARCH
+            //viewModel.SearchData.QueryCriteria.Add(new QueryCriterion { FieldName = "SpeciesName", FieldValue = searchText, SearchOperatorCode = "CNT" });
+            
+            viewModel.Species = _taxonomyService.FindSpecies(searchText);
             return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
         }
 
@@ -1139,22 +1146,32 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 query.QueryCriteria.Add(queryCriterion);
             }
 
-            if (!citationHomeViewModel.TypeCode.Contains("Select"))
+            if (!String.IsNullOrEmpty(citationHomeViewModel.TypeCode))
             {
-                if (citationHomeViewModel.TypeCode == "NULL")
+                if (!citationHomeViewModel.TypeCode.Contains("Select"))
                 {
-                    queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = "NULL", SearchOperatorCode = "IS", DataType = "NVARCHAR" };
+                    if (citationHomeViewModel.TypeCode == "NULL")
+                    {
+                        queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = "NULL", SearchOperatorCode = "IS", DataType = "NVARCHAR" };
+                    }
+                    else
+                    {
+                        queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = citationHomeViewModel.TypeCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
+                    }
+                    query.QueryCriteria.Add(queryCriterion);
                 }
-                else
-                {
-                    queryCriterion = new QueryCriterion { FieldName = "cit.type_code", FieldValue = citationHomeViewModel.TypeCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
-                }
-                query.QueryCriteria.Add(queryCriterion);
             }
-
-            //viewModel.Citations = _taxonomyService.FindCitations(citationHomeViewModel.Action, query);
+            citationHomeViewModel.Citations = _taxonomyService.FindCitations(1,query);
             //return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
-            return RedirectToAction("CitationHome", "Taxonomy");
+
+            List<ReferenceItem> citationTypeCodes = new List<ReferenceItem>();
+            citationTypeCodes.Add(new ReferenceItem { ID = 1, Name = "MEDICINE", Description = "" });
+            citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "" });
+            citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "" });
+            citationTypeCodes.Add(new ReferenceItem { ID = 4, Name = "NULL", Description = "" });
+            citationHomeViewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "ID", "Name");
+
+            return View(BASE_PATH + "Citation/Index.cshtml", citationHomeViewModel);
         }
 
         [HttpPost]
@@ -1350,10 +1367,73 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
+        public ActionResult LiteratureEdit(int id)
+        {
+            LiteratureEditViewModel literatureEditViewModel = new LiteratureEditViewModel();
+            Literature literature = null;
+            try 
+            {
+                TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+                List<CodeValueReferenceItem> literatureTypeCodes = taxonomyService.GetCodeValues("LITERATURE_TYPE");
+                literatureEditViewModel.LiteratureTypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
+
+                if (id > 0)
+                {
+                    TempData["context"] = "Edit Literature";
+                    literature = taxonomyService.GetLiterature(id);
+                    literatureEditViewModel.ID = literature.ID;
+                    literatureEditViewModel.Abbreviation = literature.Abbreviation;
+                    literatureEditViewModel.StandardAbbreviation = literature.StandardAbbreviation;
+                    literatureEditViewModel.ReferenceTitle = literature.ReferenceTitle;
+                    literatureEditViewModel.Author = literature.EditorAuthorName;
+                    literatureEditViewModel.TypeCode = literature.TypeCode;
+                    literatureEditViewModel.Year = literature.PublicationYear;
+                    literatureEditViewModel.URL = literature.URL;
+
+                    if (!String.IsNullOrEmpty(literature.URL))
+                    {
+                        FileMetaData fileMetaData = taxonomyService.GetFileMetaData(literature.URL);
+                        literatureEditViewModel.URLIsValid = fileMetaData.IsValid;
+                    }
+                    literatureEditViewModel.CreatedDate = literature.CreatedDate;
+                    literatureEditViewModel.CreatedByCooperatorID = literature.CreatedByCooperatorID;
+                    literatureEditViewModel.CreatedByCooperatorName = literature.CreatedByCooperatorName;
+                    literatureEditViewModel.ModifiedDate = literature.ModifiedDate;
+                    literatureEditViewModel.ModifiedByCooperatorID = literature.ModifiedByCooperatorID;
+                    literatureEditViewModel.ModifiedByCooperatorName = literature.ModifiedByCooperatorName;
+                    literatureEditViewModel.Citations = taxonomyService.GetCitationsByLiterature(literatureEditViewModel.ID);
+                }
+                else
+                {
+                    TempData["context"] = "Add Literature";
+                }
+
+                return View(BASE_PATH + "Literature/Edit.cshtml", literatureEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult LiteratureEdit(LiteratureEditViewModel literatureEditViewModel)
+        {
+            try 
+            {
+                return RedirectToAction("LiteratureEdit", "Taxonomy", new { id = literatureEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
         [HttpPost]
         public ActionResult LiteratureSearch(LiteratureHomeViewModel literatureHomeViewModel)
         {
-            TempData["context"] = "Citation Search";
             CitationSearchViewModel viewModel = new CitationSearchViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             Query query = new Query();
@@ -1411,6 +1491,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 List<CodeValueReferenceItem> literatureTypeCodes = taxonomyService.GetCodeValues("LITERATURE_TYPE");
                 literatureHomeViewModel.LiteratureTypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
                 literatureHomeViewModel.LiteratureResults = _taxonomyService.SearchLiterature(query);
+
+                //TEST
+                foreach (var literature in literatureHomeViewModel.LiteratureResults)
+                {
+                    if (!String.IsNullOrEmpty(literature.URL))
+                    {
+                        FileMetaData fileMetaData = GetFileMetaData(literature.URL);
+                        literature.UrlIsValid = fileMetaData.IsValid;
+                    }
+                }
+
                 return View(BASE_PATH + "Literature/Index.cshtml", literatureHomeViewModel);
             }
             catch (Exception ex)
@@ -1490,7 +1581,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View(BASE_PATH + "Folder/Edit.cshtml", viewModel);
         }
 
-        public JsonResult AddToFolder(int folderId, string folderTitle, string dataSource, string values)
+        public JsonResult AddToFolder(int folderId, string folderTitle, string folderCategory, string folderDescription, Boolean isShared, string dataSource, string values)
         {
             Folder folder = new Folder();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -1498,6 +1589,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             if (folderId == 0)
             {
                 folder.Title = folderTitle;
+                folder.Category = folderCategory;
+                folder.Note = folderDescription;
+                folder.IsShared = isShared;
                 folder.DataSource = dataSource;
                 folder.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
                 folder.ItemList = values;
@@ -1742,7 +1836,16 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #region Reference
 
-        
+
+        #endregion
+
+        #region Geography
+
+        public ActionResult Search()
+        {
+            return View(BASE_PATH + "Geography/Search.cshtml");
+        }
+
         #endregion
     }
 }

@@ -118,6 +118,12 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 literature.PublisherName = reader["publisher_name"].ToString();
                                 literature.URL = reader["url"].ToString();
                                 literature.Note = reader["note"].ToString();
+                                literature.CreatedDate = GetDate(reader["created_date"].ToString());
+                                literature.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                literature.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                literature.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                literature.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                literature.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                             }
                         }
                     }
@@ -275,6 +281,52 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             return citations.AsQueryable();
         }
 
+        public IQueryable<Citation> GetByLiterature(int literatureId)
+        {
+            List<Citation> citations = new List<Citation>();
+
+            try
+            {
+                String commandText = "usp_TaxonomyCitationsByLiterature_Select";
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@literature_id", literatureId );
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Citation citation = new Citation();
+                                citation.ID = Int32.Parse(reader["citation_id"].ToString());
+                                citation.Title = reader["citation_title"].ToString();
+                                citation.TypeCode = reader["type_code"].ToString();
+                                citation.DOIReference = reader["doi_reference"].ToString();
+                                citation.CitationYear = reader["citation_year"].ToString();
+                                citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                citation.SpeciesName = reader["species_name"].ToString();
+                                citation.TaxonName = reader["species_name"].ToString();
+                                citation.AuthorName = reader["editor_author_name"].ToString();
+                                citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
+                                citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
+                                citation.Note = reader["note"].ToString();
+                                citations.Add(citation);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return citations.AsQueryable();
+        }
+
         public IQueryable<Citation> Search(int searchType, Query query)
         {
             int i = 0;
@@ -327,6 +379,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             {
                 switch (searchType)
                 {
+                    case 0:
+                        commandText = "usp_TaxonomyCitationsByLiterature_Select";
+                        break;
                     case 1:
                         commandText = "usp_TaxonomyCitationsBySpecies_Search";
                         break;
@@ -357,6 +412,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 citation.ID = Int32.Parse(reader["citation_id"].ToString());
                                 citation.Title = reader["citation_title"].ToString();
                                 citation.TypeCode = reader["type_code"].ToString();
+                                citation.DOIReference = reader["doi_reference"].ToString();
                                 citation.CitationYear = reader["citation_year"].ToString();
                                 citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
                                 citation.SpeciesName = reader["species_name"].ToString();

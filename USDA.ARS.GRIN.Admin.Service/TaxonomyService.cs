@@ -82,6 +82,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Search(searchString, includeSynonyms);
         }
 
+        public IQueryable<Species> FindSpecies(string searchText)
+        {
+            return _speciesDAO.Search("WHERE species_name LIKE '%" + searchText + "%'");
+        }
+
         public IEnumerable<Species> FindAllSpecies()
         {
             return _speciesDAO.FindAll();
@@ -92,16 +97,14 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.FindAllCached();
         }
 
-        public List<Species> FindUserSpecies(int cooperatorId)
+        public IEnumerable<Species> FindUserSpecies(int cooperatorId)
         {
-            //return _speciesDAO.Find(null,"");
-            return null;
+            return _speciesDAO.Search("WHERE ts.created_by = " + cooperatorId);
         }
 
-        public List<Species> FindRecentSpecies()
+        public IEnumerable<Species> FindRecentSpecies()
         {
-            //return _speciesDAO.Search(.FindRecentSpecies();
-            return null;
+            return _speciesDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())");
         }
 
         public ResultContainer AddSpecies(Species species)
@@ -280,6 +283,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         public IEnumerable<Citation> GetCitationsByCategory(string category, int id)
         {
             return _citationDAO.GetByCategory(category, id);
+        }
+        public IEnumerable<Citation> GetCitationsByLiterature(int literatureId)
+        {
+            return _citationDAO.GetByLiterature(literatureId);
         }
 
         public IEnumerable<Citation> FindCitations(int searchType, Query query)

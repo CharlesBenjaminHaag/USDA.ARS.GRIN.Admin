@@ -38,10 +38,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 Folder folder = new Folder();
                                 folder.ID = GetInt(reader["taxonomy_folder_id"].ToString());
                                 folder.Title = reader["title"].ToString();
+                                folder.Category = reader["category"].ToString();
                                 folder.Description = reader["description"].ToString();
                                 folder.DataSource = reader["data_source"].ToString();
                                 folder.Note = reader["note"].ToString();
                                 folder.IsShared = ParseBool(reader["is_shared"].ToString());
+                                folder.CreatedDate = GetDate(reader["created_date"].ToString());
                                 folder.TotalItems = GetInt(reader["item_count"].ToString());
                                 folders.Add(folder);
                             }
@@ -115,6 +117,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@title", folder.Title);
+
+                        if (String.IsNullOrEmpty(folder.Category))
+                            cmd.Parameters.AddWithValue("@category", "General");
+                        else
+                            cmd.Parameters.AddWithValue("@category", folder.Category);
+
                         if (String.IsNullOrEmpty(folder.Description))
                             cmd.Parameters.AddWithValue("@description", DBNull.Value);
                         else
@@ -124,7 +132,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             cmd.Parameters.AddWithValue("@note", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@note", folder.Note);
-                        cmd.Parameters.AddWithValue("@data_source", GetDataSource(folder.DataSource));
+                        
+                        //TODO: REFACTOR
+                        //cmd.Parameters.AddWithValue("@data_source", GetDataSource(folder.DataSource));
+                        
+                        cmd.Parameters.AddWithValue("@data_source", folder.DataSource);
                         cmd.Parameters.AddWithValue("@is_shared", folder.IsShared);
                         cmd.Parameters.AddWithValue("@created_by", folder.CreatedByCooperatorID);
 
@@ -193,7 +205,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     {
                         cmd.Connection = conn;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = dataSource;
+                        cmd.CommandText = "usp_TaxonomyFolderCropForCWRItems_Select";
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
 
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))

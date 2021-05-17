@@ -1,8 +1,255 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.LiteratureEditViewModel
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+        </div>
+    </div>
+}
 
-<h2>Edit</h2>
+<style>
+    .url-validator-isvalid {
+        background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;);
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-size: 16px 18px;
+        background-position: 98% 50%;
+        cursor: auto;
+        color: #00a65a;
+    }
 
+    .url-validator-isinvalid {
+        background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;);
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-size: 16px 18px;
+        background-position: 98% 50%;
+        cursor: auto;
+        color: #dd4b39;
+    }
+</style>
+
+<div class="box box-primary">
+
+    <div class="box-header with-border">
+        <h3 class="box-title">Details</h3>
+
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+        <!-- /.box-tools -->
+    </div>
+    <!-- /.box-header -->
+
+
+    @using (Html.BeginForm("LiteratureEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+    {
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Abbrev.</label>
+                    @Html.TextBoxFor(x => x.Abbreviation, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <label>Title</label>
+                    @Html.TextBoxFor(x => x.ReferenceTitle, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    <label>Author(s)</label>
+                    @Html.TextBoxFor(x => x.Author, new { @class = "form-control" })
+                </div>
+                <div class="col-md-1">
+                    <label>Year</label>
+                    @Html.TextBoxFor(x => x.Year, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <label>Literature Type</label>
+                    @Html.DropDownListFor(x => x.TypeCode, Model.LiteratureTypeCodes, "Select a type code", new { @id = "ddlLiteratureTypeCodes", @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @if (!String.IsNullOrEmpty(Model.URL))
+                    {
+                        if (Model.URLIsValid)
+                        {
+                            <div class="form-group has-success">
+                                <label class="control-label" for="inputSuccess"><i class="fa fa-check"></i> URL Verified</label>
+                                @Html.TextBoxFor(x => x.URL, new { @class = "form-control url-validator-isvalid" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group has-error">
+                                <label class="control-label" for="inputError">
+                                    <i class="fa fa-times-circle-o"></i>URL is Invalid
+                                </label>
+                                @Html.TextBoxFor(x => x.URL, new { @class = "form-control url-validator-isinvalid" })
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label>URL</label>
+                            @Html.TextBoxFor(x => x.URL, new { @class = "form-control" })
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label>Note</label>
+                    @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default">Save Edits</button>
+                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+<!-- SEARCH RESULTS -->
+<div id="section-search-results-container" class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Citations</h3>
+    </div>
+    <div class="box-body">
+
+        <div style="margin-top:15px;">
+            <div class="mailbox-controls">
+                <button type="button" class="btn btn-success btn-sm check-all-search-results disabled">
+                    <i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results disabled">
+                    <i class="fa fa-check-circle-o"></i>
+                </button>
+                <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm disabled" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
+                    <i class="fa fa-folder"></i>
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CitationEdit", "Taxonomy", new { id = 0 })'">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <div class="pull-right">
+                    <button type="button" disabled class="btn btn-default btn-sm">
+                        Export
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive mailbox-messages">
+
+                @if (Model.Citations != null)
+                {
+                    if (Model.Citations.Count() > 0)
+                    {
+                        <table class="table table-hover table-striped ggtools">
+                            <thead>
+                                <tr>
+                                    <th width="5%"></th>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                    <th>Taxon Name</th>
+                                    <th>Lit. Abbrev.</th>
+                                    <th>Reference Title</th>
+                                    <th>Author(s)</th>
+                                    <th>Publication Year(s)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.Citations.Count() > 0)
+                                    {
+                                        foreach (var citation in Model.Citations)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@citation.ID">
+                                                </td>
+                                                <td>
+                                                    <span class="label label-default">@citation.ID</span>
+                                                </td>
+                                                <td>
+                                                    @citation.TypeCode
+                                                </td>
+                                                <td>
+                                                    @citation.TaxonName
+                                                </td>
+                                                <td>
+                                                    @citation.LiteratureAbbreviation
+                                                </td>
+                                                <td>
+                                                    @citation.LiteratureReferenceTitle
+                                                </td>
+                                                <td>
+                                                    @citation.AuthorName
+                                                </td>
+                                                <td>
+                                                    @citation.CitationYear
+                                                </td>
+                                                <td>
+                                                    <a href="@Url.Action("CitationEdit", "Taxonomy", new { id = citation.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                            Your search returned no matches.
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    InitializeDataTable();
+
+    function InitializeDataTable() {
+        $(document).ready(function () {
+            //if (!$.fn.DataTable.isDataTable('#search-results')) {
+            //$('#search-results').DataTable().destroy();
+            $('table.ggtools').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
+            //}
+        });
+    }
+</script>

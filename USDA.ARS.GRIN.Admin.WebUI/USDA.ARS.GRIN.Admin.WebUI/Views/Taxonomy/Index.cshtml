@@ -9,15 +9,24 @@
 MY FOLDERS
 ==================================================
 -->
-<h4>My Folders</h4>
+<h2 class="page-header">My Folders</h2>
 @{Html.RenderAction("FolderList", "Taxonomy");}
+
+<!--
+MY SAVED SEARCHES
+-->
+<h2 class="page-header">My Saved Searches</h2>
+<div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+    You currently have no saved searches.
+</div>
 
 <!--
 ==================================================
 ANNUAL-REPORT TOTALS Convert to folders (CBH, 4/12/2021)
 ==================================================
 -->
-@{Html.RenderAction("FiscalYearSummary", "Taxonomy");}
+@*@{Html.RenderAction("FiscalYearSummary", "Taxonomy");}*@
 
 <div id="section-folder-container">
 

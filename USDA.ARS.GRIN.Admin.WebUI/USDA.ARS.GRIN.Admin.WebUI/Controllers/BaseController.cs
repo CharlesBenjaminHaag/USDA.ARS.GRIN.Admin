@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.IO;
+using System.Net;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Net.Mail;
@@ -165,6 +166,36 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return -1;
             }
             return 0;
+        }
+
+        public FileMetaData GetFileMetaData(string url)
+        {
+            FileMetaData fileMetaData = new FileMetaData();
+
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.Method = "HEAD";
+
+            try
+            {
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    fileMetaData.IsValid = true;
+                    fileMetaData.FileSize = response.ContentLength;
+                    fileMetaData.LastModified = response.LastModified;
+                }
+                else
+                {
+                    fileMetaData.IsValid = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                fileMetaData.IsValid = false;
+            }
+            return fileMetaData;
         }
     }
 }

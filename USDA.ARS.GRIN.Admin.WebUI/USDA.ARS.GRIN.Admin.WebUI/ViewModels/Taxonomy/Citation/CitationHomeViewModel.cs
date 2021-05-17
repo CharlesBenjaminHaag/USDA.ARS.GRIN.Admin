@@ -31,5 +31,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string Year { get; set; }
         public string Title { get; set; }
         public SelectList CitationTypeCodes { get; set;}
+        public IEnumerable<Citation> Citations { get; set; }
     }
 }
