@@ -361,12 +361,43 @@
                     <h4 class="modal-title">Deny Web Order <span id="web-order-request-id"></span></h4>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <h5>This will <strong>cancel</strong> this order as NRR.</h5>
+                    <h5>This will <strong>cancel</strong> this order.</h5>
+                    <label>Note</label>
                     <textarea id="txtRejectionNote" rows="5" class="form-control"></textarea>
+                    <br />
+                    <div class="box box-danger collapsed-box box-solid">
+                        <div class="box-header">
+                            <h3 class="box-title">Preview Email</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" style="background-color:#d33724;" data-widget="collapse">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body" style="background-color:#dd4b39;">
+                            <p>Preview the email that the requestor will receive.</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea id="txtEmail" rows="15" class="form-control" disabled>Dear Germplasm Requestor,
+The purpose of the National Plant Germplasm System is to provide plant materials in small quantities to research and education entities when genetic diversity or genetic standards are a requirement. The accessions maintained by NPGS are not intended for home or personal use.
+For more information on NPGS, we have a 6-minute video online that outlines its mission and purpose at <a href="https://www.youtube.com/watch?v=uHOclGNELuw">https://www.youtube.com/watch?v=uHOclGNELuw</a>.
+If you believe that you have received this letter in error, please provide additional information regarding your project to justify the use of specific NPGS germplasm instead of commercially available germplasm. Send an email to gringlobal.feedback@usda.gov citing your web order number and the additional information.
+Thank you.
+
+NPGS Germplasm Requests Review Committee
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btn-deny-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
-                    <button type="button" id="btn-deny-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-deny-cancel" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -402,6 +433,10 @@
     $("#btn-unlock").click(function () {
         $("#Action").val("NRR_REVIEW_END");
         $("#frmEdit").submit();
+    });
+
+    $("#btn-preview-email").click(function () {
+        $("#section-preview-email").show();
     });
 
     $("#btnEditEmail").click(function () {

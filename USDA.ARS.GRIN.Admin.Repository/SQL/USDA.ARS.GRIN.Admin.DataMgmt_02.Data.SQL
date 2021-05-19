@@ -5,63 +5,63 @@ WHERE value LIKE 'NRR%'
 
 DECLARE	@return_value int
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_NOTE',
 		@title = N'NRR Review Note',
 		@description = N'NRR Review Note'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_FLAG_HISTORY',
 		@title = N'Order History Flag',
 		@description = N'Order History Flag'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_REJECT',
 		@title = N'Order Classified as NRR',
 		@description = N'Order Classified as NRR'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_APPROVE',
 		@title = N'Determined Not to Be NRR',
 		@description = N'Determined Not to Be NRR'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_FLAG_EMAIL',
 		@title = N'Non-Official Email Address',
 		@description = N'Non-Official Email Address'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_FLAG_COOP',
 		@title = N'Cooperator Flagged',
 		@description = N'Cooperator Flagged'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_FLAG_GENERA',
 		@title = N'Genera Count Flag',
 		@description = N'Genera Count Flag'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_FLAG_SITES',
 		@title = N'Site Impact Flag',
 		@description = N'Site Impact Flag'
 SELECT	'Return Value' = @return_value
 
-EXEC	@return_value = [dbo].[usp_Code_Insert]
+EXEC	@return_value = [dbo].[usp_DataMgmtCode_Insert]
 		@group_name = N'WEB_ORDER_REQUEST_STATUS',
 		@code_value = N'NRR_FLAG_USE',
 		@title = N'Intended Use Flag',
@@ -121,182 +121,6 @@ GO
 INSERT [dbo].[sys_application] ([code], [title], [description], [url], [color_code], [image_file_name]) VALUES (N'GGTOOLS_ORDERS', N'GRIN-Global NRR Review Tool', N'Enables curators to review and approve, or reject, web orders that have been flagged as potential Non-Research Requests (NRR)Supports the review and editing of GRIN-Global reference data.', N'weborder', N'black', N'cog.png')
 GO
 
-UPDATE sys_application SET sys_group_id = (SELECT sys_group_id FROM sys_group WHERE group_tag = sys_application.code)
-
--- VERIFY
-SELECT * 
-FROM 
-	sys_group
-WHERE 
-	group_tag LIKE 'GGTOOLS%'
-
-SELECT *
-FROM
-	sys_group_user_map
-WHERE
-	sys_group_id IN
-	(SELECT sys_group_id 
-	 FROM 
-		sys_group
-	 WHERE 
-		group_tag 
-	 LIKE 'GGTOOLS%')
-
-SELECT *
-FROM
-	sys_application
-WHERE
-	code LIKE 'GGTOOLS%'
-
-
-
--- ===================================================================================================================
--- SET DEFAULT ROLES
--- ===================================================================================================================
-DELETE FROM 
-	sys_group_user_map
-WHERE
-	sys_group_id IN
-	(SELECT sys_group_id FROM sys_group
-	 WHERE group_tag LIKE 'GGTOOLS%')
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ACCOUNTS'),
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_TAXONOMY'),
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-
-
-
-
-
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_SITE'),
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_GRINGLOBAL'),
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
-	488,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
-	204,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
-
-INSERT INTO sys_group_user_map
-(
-	 sys_group_id,
-	 sys_user_id,
-	 created_date,
-	 created_by,
-	 owned_date,
-	 owned_by
-)
-VALUES
-(
-	(SELECT sys_group_id FROM sys_group WHERE group_tag = 'GGTOOLS_ORDERS'),
-	44,
-	GETDATE(),
-	48,
-	GETDATE(),
-	48
-)
 
 
 

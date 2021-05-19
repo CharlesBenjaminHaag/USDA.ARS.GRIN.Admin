@@ -104,6 +104,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult EditEmail(int webOrderRequestId)
         {
+            TempData["context"] = "Edit Email Templates";
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
             viewModel = LoadViewModel(webOrderRequestId, true);
             return View("~/Views/GRINGlobal/WebOrder/EditEmail.cshtml", viewModel);

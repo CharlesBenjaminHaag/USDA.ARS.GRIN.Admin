@@ -1,36 +1,42 @@
-﻿USE [gringlobal]
+﻿USE [training]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestStatuses_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestStatuses_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestStatuses_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestsByStatus_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequests_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Search]    Script Date: 5/18/2021 10:36:43 PM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequests_Search]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestLock_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestItems_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestItem_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAddresses_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
+DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestAddresses_Select]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestActions_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequestAction_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequest_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_WebOrderRequest_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -54,6 +60,7 @@ BEGIN
 		,wc.first_name AS web_cooperator_first_name
 		,(wc.first_name + ' ' + wc.last_name) AS web_cooperator_full_name
 		,wc.organization AS web_cooperator_organization
+		,wc.job AS web_cooperator_job
 		,wc.address_line1 AS web_cooperator_address_line_1
 		,wc.address_line2 AS web_cooperator_address_line_2
 		,wc.address_line3 AS web_cooperator_address_line_3
@@ -66,6 +73,7 @@ BEGIN
 		,wc.created_date AS web_cooperator_created_date
 		,wc.modified_date AS web_cooperator_modified_date
 		,wc.status_code AS web_cooperator_status_code
+		,wc.note As web_cooperator_note
 		,wora.address_line1 AS web_order_request_address_line_1
 		,wora.address_line2 AS web_order_request_address_line_2
 		,wora.address_line3 AS web_order_request_address_line_3
@@ -100,7 +108,7 @@ BEGIN
 		wor.web_order_request_id = @web_order_request_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequest_Update]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -184,7 +192,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAction_Insert]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -255,7 +263,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestActions_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -303,7 +311,45 @@ ORDER BY
 	acted_date DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestAddresses_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[usp_WebOrderRequestAddresses_Select]
+	@web_order_request_id INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT
+		wora.web_order_request_address_id,
+		wora.address_line1,
+		wora.address_line2,
+		wora.address_line3,
+		wora.city,
+		wora.geography_id,
+		g.adm1,
+		g.adm2,
+		g.adm3,
+		wora.postal_index,
+		wora.carrier,
+		wora.carrier_account
+FROM 
+	web_order_request_address wora
+JOIN
+	geography g
+ON
+	wora.geography_id = g.geography_id
+WHERE
+	web_order_request_id = @web_order_request_id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItem_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -347,7 +393,7 @@ WHERE
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestItems_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -429,7 +475,7 @@ WHERE
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestLock_Update]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -489,7 +535,92 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Search]    Script Date: 5/18/2021 10:36:43 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[usp_WebOrderRequests_Search]
+	@sql_where_clause NVARCHAR(2000)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @sql_select NVARCHAR(MAX)
+
+	SET @sql_select = 
+	'SELECT 
+		wor.web_order_request_id,
+		wor.is_locked,
+		wor.web_cooperator_id
+		,wc.last_name
+		,wc.title
+		,wc.first_name
+		,(wc.first_name + '' '' + wc.last_name) AS full_name
+		,wc.title AS web_cooperator_title
+		,wc.last_name AS web_cooperator_last_name
+		,wc.first_name AS web_cooperator_first_name
+		,(wc.first_name + '' '' + wc.last_name) AS web_cooperator_full_name
+		,wc.organization AS web_cooperator_organization
+		,wc.address_line1 AS web_cooperator_address_line_1
+		,wc.address_line2 AS web_cooperator_address_line_2
+		,wc.address_line3 AS web_cooperator_address_line_3
+		,wc.city AS web_cooperator_address_city
+		,wc.postal_index AS web_cooperator_address_postal_index
+		,wc.geography_id
+		,g.adm1 AS web_cooperator_address_state
+		,wc.primary_phone AS web_cooperator_primary_phone
+		,wc.email AS web_cooperator_email
+		,wc.created_date AS web_cooperator_created_date
+		,wc.modified_date AS web_cooperator_modified_date
+		,wora.address_line1
+		,wora.address_line2
+		,wora.address_line3
+		,wora.city
+		,wora.postal_index
+		,wora.geography_id
+		,wc.primary_phone
+		,wc.email
+		,wor.ordered_date
+		,wor.intended_use_code
+		,wor.intended_use_note
+		,wor.status_code
+		,wor.note
+		,wor.special_instruction
+		,wor.created_date,
+		wor.created_by,
+		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.created_by) AS created_by_name,
+		wor.modified_date,
+		wor.modified_by,
+		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.modified_by) AS modified_by_name,
+		wor.owned_date,
+		wor.owned_by,
+		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.owned_by) AS owned_by_name
+	FROM
+		web_order_request wor
+	JOIN 
+		web_cooperator wc 
+	ON 
+		wc.web_cooperator_id = wor.web_cooperator_id
+	JOIN 
+		web_order_request_address wora 
+	ON 
+		wora.web_order_request_id = wor.web_order_request_id
+	JOIN
+		geography g
+	ON
+		wc.geography_id = g.geography_id'
+	SET @sql_select = @sql_select + @sql_where_clause + ' ORDER BY wor.ordered_date DESC'
+
+	--SELECT @sql_select
+	EXECUTE sp_executesql @sql_select
+END
+GO
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequests_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -546,7 +677,7 @@ AND
 	wor.ordered_date > '8/1/2020'
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestsByStatus_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -563,7 +694,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	DECLARE @sql_select NVARCHAR(MAX)
-	DECLARE @sql_where NVARCHAR(MAX) = ' WHERE	wor.status_code = ''' + @status_code + ''''
+	DECLARE @sql_where NVARCHAR(2000) = ''
 
 	SET @sql_select = 
 	'SELECT 
@@ -613,52 +744,72 @@ BEGIN
 		wor.owned_date,
 		wor.owned_by,
 		(SELECT first_name + '' '' + last_name FROM cooperator WHERE cooperator_id = wor.owned_by) AS owned_by_name
-FROM
-    web_order_request wor
-JOIN 
-	web_cooperator wc 
-ON 
-	wc.web_cooperator_id = wor.web_cooperator_id
-JOIN 
-	web_order_request_address wora 
-ON 
-	wora.web_order_request_id = wor.web_order_request_id
-JOIN
-	geography g
-ON
-	wc.geography_id = g.geography_id'
+	FROM
+		web_order_request wor
+	JOIN 
+		web_cooperator wc 
+	ON 
+		wc.web_cooperator_id = wor.web_cooperator_id
+	JOIN 
+		web_order_request_address wora 
+	ON 
+		wora.web_order_request_id = wor.web_order_request_id
+	JOIN
+		geography g
+	ON
+		wc.geography_id = g.geography_id'
 
-IF (@time_frame_code = 1)
-	BEGIN
-		SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-1, GETDATE())'
-	END
-ELSE
-	BEGIN
-		IF (@time_frame_code = 2)
-			BEGIN
-				SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-7, GETDATE())'
-			END
+	IF (@status_code != 'ANY') OR (@time_frame_code > 0)
+		BEGIN
+			IF (@status_code != 'ANY')
+				BEGIN
+					SET @sql_where = @sql_where + ' WHERE wor.status_code = ''' + @status_code + ''''
+				END
+
+			IF (@time_frame_code > 0)
+				BEGIN
+					IF LEN(@sql_where) > 0
+						BEGIN
+							SET @sql_where = @sql_where + ' AND '
+						END
+					ELSE
+						BEGIN
+							SET @sql_where = @sql_where + ' WHERE '
+						END
+				END
+
+			IF (@time_frame_code = 1)
+				BEGIN
+					SET @sql_where = @sql_where + ' wor.created_date >= DATEADD(day,-1, GETDATE())'
+				END
 		ELSE
 			BEGIN
-				IF (@time_frame_code = 3)
+				IF (@time_frame_code = 2)
 					BEGIN
-						SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-30, GETDATE())'
+						SET @sql_where = @sql_where +  ' wor.created_date >= DATEADD(day,-7, GETDATE())'
 					END
 				ELSE
 					BEGIN
-						IF (@time_frame_code = 4)
+						IF (@time_frame_code = 3)
 							BEGIN
-								SET @sql_where = @sql_where + ' AND wor.created_date >= DATEADD(day,-180, GETDATE())'
+								SET @sql_where = @sql_where +  ' wor.created_date >= DATEADD(day,-30, GETDATE())'
+							END
+						ELSE
+							BEGIN
+								IF (@time_frame_code = 4)
+									BEGIN
+										SET @sql_where = @sql_where +  ' wor.created_date >= DATEADD(day,-180, GETDATE())'
+									END
 							END
 					END
 			END
-	END
-
-	SET @sql_select = @sql_select + @sql_where + ' ORDER BY wor.ordered_date DESC'
+			SET @sql_select = @sql_select + @sql_where + ' ORDER BY wor.ordered_date DESC'
+		END
+	--SELECT @sql_select
 	EXECUTE sp_executesql @sql_select
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestStatuses_Select]    Script Date: 4/9/2021 11:58:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_WebOrderRequestStatuses_Select]    Script Date: 5/18/2021 10:36:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

@@ -94,18 +94,20 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Codes.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysData.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysStoredProcedures.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysTables.Alter.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysTables.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Tables.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy.Views.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.SysViews.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.Tables.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.TriggersAndFunctions.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_04.SysData.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.UserMgmt_01.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.DataMgmt_01.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.DataMgmt_02.Data.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_03.SysStoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_01.SysTables.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy_03.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy_01.Tables.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy_02.Views.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_02.SysViews.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.UserMgmt_02.Data.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_02.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_01.Tables.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_03.TriggersAndFunctions.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

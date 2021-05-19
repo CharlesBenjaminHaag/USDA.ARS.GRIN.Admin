@@ -38,7 +38,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public Application Get(string context)
         {
-            const string COMMAND_TEXT = "usp_SysApplicationByURL_Select";
+            const string COMMAND_TEXT = "usp_AcctMgmtSysApplicationByURL_Select";
             Application application = new Application();
 
             try
@@ -81,7 +81,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public List<Cooperator> GetCooperators(int id)
         {
-            const string COMMAND_TEXT = "usp_SysApplicationCooperators_Select";
+            const string COMMAND_TEXT = "usp_AcctMgmtSysApplicationCooperators_Select";
             List<Cooperator> cooperators = new List<Cooperator>();
 
             try

@@ -1018,6 +1018,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult SpeciesGeographyEdit()
         {
+            TempData["context"] = "Geography";
             return View(BASE_PATH + "Geography/Search.cshtml");
         }
 
