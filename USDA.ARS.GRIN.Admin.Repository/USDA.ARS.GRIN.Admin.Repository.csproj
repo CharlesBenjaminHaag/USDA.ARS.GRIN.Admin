@@ -95,6 +95,8 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_04.SysData.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_04.SysFunctions.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.BASE_05.SysTriggers.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.UserMgmt_01.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.DataMgmt_01.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.DataMgmt_02.Data.SQL" />
