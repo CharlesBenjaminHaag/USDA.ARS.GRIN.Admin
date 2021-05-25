@@ -10,12 +10,14 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.Inventory;
 using USDA.ARS.GRIN.Utilities;
 using System.ComponentModel;
+using NLog;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     public class GRINGlobalController : BaseController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         public ActionResult Index()
         {
             GRINGlobalHomeViewModel viewModel = new GRINGlobalHomeViewModel();
@@ -110,7 +112,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ", " + ex.StackTrace);
+                Log.Error(ex, ex.Message);
             }
             return PartialView("~/Views/GRINGlobal/Inventory/AccessionInventoryAttachment/_ValidationStatistics.cshtml", viewModel);
         }

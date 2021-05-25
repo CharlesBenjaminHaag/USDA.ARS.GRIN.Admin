@@ -5,7 +5,11 @@ using System.Web;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class CWRTraitHomeViewModel
+    public class CWRTraitHomeViewModel: BaseViewModel
     {
+        public CWRTraitHomeViewModel()
+        {
+            this.DataSourceName = "taxonomy_cwr_trait";
+        }
     }
 }

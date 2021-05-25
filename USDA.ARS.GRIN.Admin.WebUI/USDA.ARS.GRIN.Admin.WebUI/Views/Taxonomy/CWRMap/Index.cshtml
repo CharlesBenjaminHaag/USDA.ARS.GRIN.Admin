@@ -27,6 +27,7 @@
     <!-- /.box-header -->
     <div class="box-body no-padding">
         @Html.HiddenFor(x => x.DataSourceName)
+        @Html.HiddenFor(x => x.DataSourceTitle)
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active" style="background-color:#ebebeb;">
@@ -253,14 +254,22 @@ CWR-TRAIT MODAL
 
     $("#btnCreateFolderSearchResults").click(function () {
         var valueArray = [];
-        var title = "";
-        var category = "Crop";
-        var source = "";
-
+        var folderTitle = "";
+        var folderCategory = "";
+        var folderDescription = "";
+        var isShared = false;
+        var dataSourceName = "";
+        var dataSourceTitle = "";
+      
         $('#modal-add-search-results-to-folder').modal('hide');
 
-        title = $("#txtSearchResultsFolderTitle").val();
-
+        folderTitle = $("#txtSearchResultsFolderTitle").val();
+        //TODO folderCategory = ;
+        //TODO folderDescription = ;
+        //TODO isShared = ;
+        dataSourceName = $("#DataSourceName").val();
+        dataSourceTitle = $("#DataSourceTitle").val();
+        
         $(".active input:checked").each(function () {
             var id = $(this).attr("id");
             valueArray.push(id);
@@ -270,7 +279,7 @@ CWR-TRAIT MODAL
         $.ajax({
             url: '@Url.Action("AddToFolder","Taxonomy")',
             type: "GET",
-            data: {folderId: 0, folderTitle: title, dataSource: 'taxonomy_cwr_map', values:valueArray.toString() },
+            data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared: isShared, dataSourceName: dataSourceName, dataSourceTitle: dataSourceTitle, values:valueArray.toString() },
             cache: false,
             contentType: "application/json; charset=utf-8",
             dataType: "json",

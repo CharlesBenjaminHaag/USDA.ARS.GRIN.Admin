@@ -29,7 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
@@ -47,7 +47,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
@@ -182,8 +182,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message, ex);
-                //TO DO: CHANGE
+                Log.Error(ex, ex.Message);
+                //TODO: CHANGE
                 return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
             }
         }
@@ -300,8 +300,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
-                return View("~/Views/Error/_Error.cshtml");
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
             }
         }
 
@@ -343,7 +343,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }

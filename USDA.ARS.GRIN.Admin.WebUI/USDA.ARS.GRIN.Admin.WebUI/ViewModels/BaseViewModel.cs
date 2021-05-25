@@ -14,7 +14,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
     public class BaseViewModel
     {
+        public SysTable SysTable { get; set; }
         public string DataSourceName { get; set; }
+        public string DataSourceTitle { get; set; }
         public User AuthenticatedUser
         {
             get; set;

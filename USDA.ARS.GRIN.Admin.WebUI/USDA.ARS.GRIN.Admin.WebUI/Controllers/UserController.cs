@@ -45,7 +45,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 resultContainer = _securityService.Login(viewModel.UserName, viewModel.Password, out User user);
                 if (resultContainer.ResultCode == LoginResult.SUCCESS.ToString())
                 {
-                    log.Info("USER LOGGED IN: " + user.UserName);
                     userSession.AuthenticatedUser = user;
                     userSession.Environment = viewModel.Environment;
 

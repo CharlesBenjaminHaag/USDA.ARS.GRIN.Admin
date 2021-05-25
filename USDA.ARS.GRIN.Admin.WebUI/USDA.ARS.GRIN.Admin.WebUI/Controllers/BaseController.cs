@@ -16,8 +16,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     public class BaseController : Controller
     {
-        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        
         public User AuthenticatedUser
         {
             get

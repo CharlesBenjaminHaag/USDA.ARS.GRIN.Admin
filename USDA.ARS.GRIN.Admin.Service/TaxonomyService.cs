@@ -45,15 +45,6 @@ namespace USDA.ARS.GRIN.Admin.Service
         // GENUS
         // ****************************************************************************
 
-        public DemoContainer Demo()
-        {
-            DemoContainer demoContainer = new DemoContainer();
-            demoContainer.CropsForCWR = _cropForCwrDAO.Demo();
-            demoContainer.Species = _speciesDAO.Demo();
-            demoContainer.CWRTraits = _cwrTraitDAO.Demo();
-            return demoContainer;
-        }
-
         #region Genus
         public IQueryable<Genus> GetGenera()
         {
@@ -391,6 +382,11 @@ namespace USDA.ARS.GRIN.Admin.Service
         public List<CodeValueReferenceItem> GetCodeValues(string groupName)
         {
             return _referenceDAO.GetCodeValues(groupName);
+        }
+
+        public SysTable GetSysTable(int id)
+        {
+            return _referenceDAO.GetSysTable(id);
         }
         public List<CodeValueReferenceItem> GetGenePoolCodes()
         {

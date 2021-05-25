@@ -155,25 +155,85 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return referenceItems;
         }
 
-        //public DataTable Find(string sql)
-        //{
-        //    const string COMMAND_TEXT = "usp_Search";
-        //    DataTable results = new DataTable();
-        //    SqlCommand cmd = new SqlCommand();
-        //    SqlDataAdapter adapter = null;
-        //    SqlConnection conn = null;
+        public List<SysTable> GetSysTables()
+        {
+            string CacheKey = "TableNameReferenceItems";
+            List<SysTable> sysTables = new List<SysTable>();
+            ObjectCache cache = MemoryCache.Default;
 
-        //    using (conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-        //    {
-        //        cmd.Connection = conn;
-        //        cmd.CommandType = CommandType.StoredProcedure;
-        //        cmd.CommandText = COMMAND_TEXT;
-        //        cmd.Parameters.AddWithValue("@sql_statement", sql);
-        //        adapter = new SqlDataAdapter(cmd);
-        //        adapter.Fill(results);
-        //    }
-        //    return results;
-        //}
+            if (cache.Contains(CacheKey))
+                sysTables = (List<SysTable>)cache.Get(CacheKey);
+            else
+            {
+                sysTables = GetAllSysTables();
+                CacheItemPolicy cacheItemPolicy = new CacheItemPolicy();
+                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
+                cache.Add(CacheKey, sysTables, cacheItemPolicy);
+            }
+            return sysTables;
+        }
+
+        public SysTable GetSysTable(int id)
+        {
+            SysTable sysTable = new SysTable();
+            return GetSysTables().Where(x => x.ID == id).FirstOrDefault();
+        }
+
+        public List<CodeValueReferenceItem> GetAllCodeValueReferenceItems()
+        {
+            const string COMMAND_TEXT = "usp_DataMgmtCodeValues_Select";
+            List<CodeValueReferenceItem> codeValueReferenceItems = new List<CodeValueReferenceItem>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        codeValueReferenceItems.Add(new CodeValueReferenceItem { GroupName = reader["group_name"].ToString(), CodeValueID = Int32.Parse(reader["code_value_id"].ToString()), CodeValue = reader["value"].ToString(), Title = reader["title"].ToString(), Description = reader["description"].ToString() });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return codeValueReferenceItems;
+        }
+
+        public List<SysTable> GetAllSysTables()
+        {
+            const string COMMAND_TEXT = "usp_DataMgmtSysTables_Select";
+            List<SysTable> sysTables = new List<SysTable>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        sysTables.Add(new SysTable { ID = GetInt(reader["sys_table_id"].ToString()), Name = reader["table_name"].ToString(), Title = reader["title"].ToString() });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return sysTables;
+        }
+
+
 
         protected string GetSearchSyntax(string searchOperatorCode, string searchCriterion)
         {

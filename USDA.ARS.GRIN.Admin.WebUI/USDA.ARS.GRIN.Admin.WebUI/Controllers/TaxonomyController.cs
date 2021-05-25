@@ -90,7 +90,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return View("~/Views/Taxonomy/CropForCWR/Edit.cshtml", cropForCWRViewModel);
@@ -135,7 +135,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
@@ -316,22 +316,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             CWRMapHomeViewModel cWRMapHomeViewModel = new CWRMapHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            TempData["context"] = "CWR Map Home";
-            cWRMapHomeViewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
-            cWRMapHomeViewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
-            cWRMapHomeViewModel.CWRTraitViewModel = new CWRTraitViewModel(taxonomyService.GetTraitClassCodes(), taxonomyService.GetBreedingTypeCodes());
-            return View(BASE_PATH + "CWRMap/Index.cshtml", cWRMapHomeViewModel);
+            try
+            {
+                cWRMapHomeViewModel.SysTable = taxonomyService.GetSysTable(242);
+                cWRMapHomeViewModel.DataSourceName = cWRMapHomeViewModel.SysTable.Name;
+                cWRMapHomeViewModel.DataSourceTitle = cWRMapHomeViewModel.SysTable.Title;
+                TempData["context"] = "CWR Map Home";
+
+                cWRMapHomeViewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
+                cWRMapHomeViewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
+                cWRMapHomeViewModel.CWRTraitViewModel = new CWRTraitViewModel(taxonomyService.GetTraitClassCodes(), taxonomyService.GetBreedingTypeCodes());
+                return View(BASE_PATH + "CWRMap/Index.cshtml", cWRMapHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
-
-        //[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        //public PartialViewResult RecentCWRMaps()
-        //{
-        //    CWRMapSearchViewModel viewModel = new CWRMapSearchViewModel();
-        //    TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-        //    viewModel.CWRMaps = _taxonomyService.FindRecentCWRMaps();
-        //    return PartialView("~/Views/Taxonomy/Crop/CWRMap/_SearchResults.cshtml", viewModel);
-        //}
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public PartialViewResult CWRMapListByUser(int cooperatorId)
@@ -447,13 +449,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     TempData["context"] = "Add CWR Map";
                 }
                 viewModel.Genera = new SelectList(taxonomyService.GetGenera(), "ID","Name");
+                return View("~/Views/Taxonomy/CWRMap/Edit.cshtml", viewModel);
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
-            return View("~/Views/Taxonomy/CWRMap/Edit.cshtml", viewModel);
         }
 
         [HttpPost]
@@ -500,26 +502,20 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         throw new Exception(resultContainer.ResultDescription);
                     }
                 }
+                return RedirectToAction("CWRMapEdit", "Taxonomy", new { cropForCwrId = cwrMap.CropForCWRID, cwrMapId = cwrMap.ID });
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message); 
                 return RedirectToAction("InternalServerError", "Error");
-
             }
-            return RedirectToAction("CWRMapEdit", "Taxonomy", new { cropForCwrId = cwrMap.CropForCWRID, cwrMapId = cwrMap.ID });
         }
 
         public ActionResult Manager()
         {
             TempData["context"] = "Crop Mapper";
             ManagerViewModel managerViewModel = new ManagerViewModel();
-            DemoContainer demoContainer = new DemoContainer();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            demoContainer = taxonomyService.Demo();
-            managerViewModel.CropsForCWR = demoContainer.CropsForCWR;
-            managerViewModel.Species = demoContainer.Species;
-            managerViewModel.CWRTraits = demoContainer.CWRTraits;
             return View("~/Views/Taxonomy/CWRMap/Manager.cshtml", managerViewModel);
         }
 
@@ -666,7 +662,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return View("~/Views/Taxonomy/CWRTrait/Edit.cshtml", cwrTraitViewModel);
@@ -716,7 +712,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return RedirectToAction("CWRTraitEdit", "Taxonomy", new { speciesId = viewModel.SpeciesID, cropForCwrId = viewModel.CropForCWRID, cwrMapId = viewModel.CWRMapID, cwrTraitId = viewModel.ID });
@@ -787,7 +783,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ", " + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error", new { loginStatus = LoginStatusEnum.ERROR });
             }
         }
@@ -861,7 +857,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
@@ -878,7 +874,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("_Error", "Error");
             }
         }
@@ -1241,7 +1237,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return View(BASE_PATH + "Citation/Edit.cshtml", viewModel);
@@ -1290,7 +1286,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return RedirectToAction("CitationEdit", "Taxonomy", new { id = citation.ID });
@@ -1311,13 +1307,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                log.Info("SEARCH CITATIONS: " + searchString);
-                //citationList = _taxonomyService.FindCitations(1, );
-                log.Info("CITATIONS FOUND: " + citationList.Count());
+                //TODO
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
             }
             return PartialView("~/Views/Taxonomy/Citation/_List.cshtml", citationList);
         }
@@ -1332,15 +1326,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                log.Info("NOTES SEARCH: " + searchString + ", " + context);
                 IEnumerable<Note> noteList = new List<Note>().AsEnumerable();
                 noteList = _taxonomyService.FindNotes(searchString, context);
-                log.Info("NOTES FOUND: " + noteList.Count());
                 return PartialView("~/Views/Taxonomy/Shared/_NoteList.cshtml", noteList);
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message); 
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
@@ -1524,7 +1516,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
@@ -1542,7 +1534,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message);
+                Log.Error(ex, ex.Message);
             }
             return PartialView(BASE_PATH + "Citation/_LiteratureDetail.cshtml", literature);
         }
@@ -1573,16 +1565,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             folder = _taxonomyService.GetFolder(folderId);
             viewModel.ID = folder.ID;
             viewModel.Title = folder.Title;
+            viewModel.Category = folder.Category;
             viewModel.Description = folder.Description;
-            viewModel.DataSource = folder.DataSource;
-            viewModel.Note = folder.Note;
+            viewModel.DataSourceName = folder.DataSourceName;
+            viewModel.DataSourceTitle = folder.DataSourceTitle;
             viewModel.IsShared = folder.IsShared;
             viewModel.ModifiedByCooperatorID = folder.ModifiedByCooperatorID;
             viewModel.SearchResults = folder.SearchResults;
             return View(BASE_PATH + "Folder/Edit.cshtml", viewModel);
         }
 
-        public JsonResult AddToFolder(int folderId, string folderTitle, string folderCategory, string folderDescription, Boolean isShared, string dataSource, string values)
+        public JsonResult AddToFolder(int folderId, string folderTitle, string folderCategory, string folderDescription, Boolean isShared, string dataSourceName, string dataSourceTitle, string values)
         {
             Folder folder = new Folder();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -1591,9 +1584,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 folder.Title = folderTitle;
                 folder.Category = folderCategory;
+                folder.Description = folderDescription;
                 folder.Note = folderDescription;
                 folder.IsShared = isShared;
-                folder.DataSource = dataSource;
+                folder.DataSourceName = dataSourceName;
+                folder.DataSourceTitle = dataSourceTitle;
                 folder.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
                 folder.ItemList = values;
                 folderId = _taxonomyService.AddFolder(folder);
@@ -1636,22 +1631,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             TempData["context"] = "Edit Folder";
 
-            folder = _taxonomyService.GetFolder(id);
-            viewModel.ID = folder.ID;
-            viewModel.Title = folder.Title;
-            viewModel.Description = folder.Description;
-            viewModel.DataSource = folder.DataSource;
-            viewModel.IsShared = folder.IsShared;
-            viewModel.Note = folder.Note;
-            viewModel.SearchResults = folder.SearchResults;
-            viewModel.CreatedDate = folder.CreatedDate;
-            viewModel.CreatedByCooperatorID = folder.CreatedByCooperatorID;
-            viewModel.CreatedByCooperatorName = folder.CreatedByCooperatorName;
-            viewModel.ModifiedDate = folder.ModifiedDate;
-            viewModel.ModifiedByCooperatorID = folder.ModifiedByCooperatorID;
-            viewModel.ModifiedByCooperatorName = folder.ModifiedByCooperatorName;
-
-            return View(BASE_PATH + "Folder/Edit.cshtml", viewModel);
+            try
+            {
+                folder = _taxonomyService.GetFolder(id);
+                viewModel.ID = folder.ID;
+                viewModel.Title = folder.Title;
+                viewModel.Category = folder.Category;
+                viewModel.Description = folder.Description;
+                viewModel.DataSourceName = folder.DataSourceName;
+                viewModel.DataSourceTitle = folder.DataSourceTitle;
+                viewModel.IsShared = folder.IsShared;
+                viewModel.SearchResults = folder.SearchResults;
+                viewModel.CreatedDate = folder.CreatedDate;
+                viewModel.CreatedByCooperatorID = folder.CreatedByCooperatorID;
+                viewModel.CreatedByCooperatorName = folder.CreatedByCooperatorName;
+                viewModel.ModifiedDate = folder.ModifiedDate;
+                viewModel.ModifiedByCooperatorID = folder.ModifiedByCooperatorID;
+                viewModel.ModifiedByCooperatorName = folder.ModifiedByCooperatorName;
+                return View(BASE_PATH + "Folder/Edit.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         [HttpPost]
@@ -1665,16 +1668,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 folder.ID = viewModel.ID;
                 folder.Title = viewModel.Title;
+                folder.Category = viewModel.Category;
                 folder.Description = viewModel.Description;
-                folder.DataSource = viewModel.DataSource;
-                folder.Note = viewModel.Note;
+                folder.DataSourceName = viewModel.DataSourceName;
+                folder.DataSourceTitle = viewModel.DataSourceTitle;
                 folder.IsShared = viewModel.IsShared;
                 folder.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
                 retVal = _taxonomyService.UpdateFolder(folder);
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return RedirectToAction("FolderEdit", "Taxonomy", new { @id = viewModel.ID } );
@@ -1691,7 +1695,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return RedirectToAction("Index", "Taxonomy");
@@ -1713,7 +1717,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
@@ -1734,7 +1738,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
             }
 
             partialViewName = GetViewName(dataSource);
@@ -1759,7 +1763,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
@@ -1768,10 +1772,22 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             switch (dataSource)
             {
-                case "usp_TaxonomyFolderCropForCWRItems_Select":
+                case "taxonomy_cwr_crop":
                     return "_CropForCWRItemList.cshtml";
-                case "usp_TaxonomyFolderCWRMapItems_Select":
+                case "taxonomy_cwr_map":
                     return "_CWRMapItemList.cshtml";
+                case "taxonomy_cwr_trait":
+                    return "_CWRTraitItemList.cshtml";
+                case "taxonomy_species":
+                    return "_SpeciesItemList.cshtml";
+                case "taxonomy_genus":
+                    return "_GenusItemList.cshtml";
+                case "taxonomy_family":
+                    return "_FamilyItemList.cshtml";
+                case "citation":
+                    return "_CitationItemList.cshtml";
+                case "literature":
+                    return "_LiteratureItemList.cshtml";
                 default:
                     return String.Empty;
             }

@@ -7,11 +7,12 @@
 @using (Html.BeginForm("FolderEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID, new { @name = "hfFolderID" })
-    @Html.HiddenFor(x => x.DataSource)
+    @Html.HiddenFor(x => x.DataSourceName)
+    @Html.HiddenFor(x => x.DataSourceTitle)
     <div class="row">
         <div class="col-md-12">
             <div class="callout callout-info" style="margin-bottom: 0!important;">
-              
+
                 @Html.Raw(Model.RevisionHistoryText)
             </div>
             <br />
@@ -46,6 +47,12 @@
                                 <div class="col-sm-10">
                                     @Html.TextBoxFor(x => x.Title, new { @id = "txtTitle", @class = "form-control" })
                                     @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtName" class="col-sm-2 control-label">Catgeory</label>
+                                <div class="col-sm-10">
+                                    <!-- TODO -->
                                 </div>
                             </div>
                             <div class="form-group">
@@ -87,7 +94,7 @@
         </div>
     </div>
     <div id="section-folder-item-container" class="box-body no-padding">
-        @{ Html.RenderAction("FolderItemList", "Taxonomy", new { targetFolderId = Model.ID, dataSource = Model.DataSource });}
+        @{ Html.RenderAction("FolderItemList", "Taxonomy", new { targetFolderId = Model.ID, dataSource = Model.DataSourceName });}
     </div>
     <!-- /.box-body -->
     <div class="box-footer no-padding">

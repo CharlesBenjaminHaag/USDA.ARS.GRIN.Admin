@@ -69,6 +69,7 @@
     <Compile Include="SiteManagement\CGCDocumnent.cs" />
     <Compile Include="SiteManagement\PVPApplication.cs" />
     <Compile Include="SiteManagement\PVPAppplicationImportRecord.cs" />
+    <Compile Include="SysTable.cs" />
     <Compile Include="SysUser.cs" />
     <Compile Include="Taxonomy\Accession.cs" />
     <Compile Include="Taxonomy\DemoContainer.cs" />

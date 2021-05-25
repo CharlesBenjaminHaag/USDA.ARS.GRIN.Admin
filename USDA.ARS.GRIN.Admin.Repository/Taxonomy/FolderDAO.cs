@@ -40,8 +40,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 folder.Title = reader["title"].ToString();
                                 folder.Category = reader["category"].ToString();
                                 folder.Description = reader["description"].ToString();
-                                folder.DataSource = reader["data_source"].ToString();
-                                folder.Note = reader["note"].ToString();
+                                folder.DataSourceName = reader["data_source_name"].ToString();
+                                folder.DataSourceTitle = reader["data_source_title"].ToString();
                                 folder.IsShared = ParseBool(reader["is_shared"].ToString());
                                 folder.CreatedDate = GetDate(reader["created_date"].ToString());
                                 folder.TotalItems = GetInt(reader["item_count"].ToString());
@@ -80,10 +80,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                     folder = new Folder();
                                     folder.ID = GetInt(reader["taxonomy_folder_id"].ToString());
                                     folder.Title = reader["title"].ToString();
+                                    folder.Category = reader["category"].ToString();
                                     folder.Description = reader["description"].ToString();
-                                    folder.DataSource = reader["data_source"].ToString();
-                                    folder.Note = reader["note"].ToString();
-                                    folder.IsShared = ParseBool(reader["is_shared"].ToString());
+                                    folder.DataSourceName = reader["data_source_name"].ToString();
+                                    folder.DataSourceTitle = reader["data_source_title"].ToString();
+                                    folder.IsShared = ParseBool(reader["is_shared"].ToString());                                    
                                     folder.CreatedDate = GetDate(reader["created_date"].ToString());
                                     folder.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
                                     folder.CreatedByCooperatorName = reader["created_by_name"].ToString();
@@ -128,17 +129,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         else
                             cmd.Parameters.AddWithValue("@description", folder.Description);
                        
-                        if(String.IsNullOrEmpty(folder.Note))
-                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
-                        else
-                            cmd.Parameters.AddWithValue("@note", folder.Note);
-                        
-                        //TODO: REFACTOR
-                        //cmd.Parameters.AddWithValue("@data_source", GetDataSource(folder.DataSource));
-                        
-                        cmd.Parameters.AddWithValue("@data_source", folder.DataSource);
                         cmd.Parameters.AddWithValue("@is_shared", folder.IsShared);
                         cmd.Parameters.AddWithValue("@created_by", folder.CreatedByCooperatorID);
+                        cmd.Parameters.AddWithValue("@data_source_name", folder.DataSourceName);
+                        cmd.Parameters.AddWithValue("@data_source_title", folder.DataSourceTitle);
 
                         SqlParameter retErrorParam = new SqlParameter();
                         retErrorParam.SqlDbType = System.Data.SqlDbType.Int;
@@ -164,7 +158,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             foreach (var folderItemId in folderItemIdList)
                             {
                                 int convertedFolderItemId = Int32.Parse(folderItemId);
-                                FolderItem folderItem = new FolderItem { FolderID = taxonomyFolderId, ItemID = convertedFolderItemId, DataSource = folder.DataSource, CreatedByCooperatorID = folder.CreatedByCooperatorID };
+                                FolderItem folderItem = new FolderItem { FolderID = taxonomyFolderId, ItemID = convertedFolderItemId, DataSource = folder.DataSourceName, CreatedByCooperatorID = folder.CreatedByCooperatorID };
                                 AddFolderItemMap(folderItem);
                             }
                         }

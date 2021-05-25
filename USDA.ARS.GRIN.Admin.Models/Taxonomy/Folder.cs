@@ -5,7 +5,8 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
     public class Folder : BaseModel
     {
         public int ID { get; set; }
-        public string DataSource { get; set; }
+        public string DataSourceName { get; set; }
+        public string DataSourceTitle { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }

@@ -23,5 +23,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string URL { get; set; }
         public SelectList LiteratureTypeCodes { get; set; }
         public List<Literature> LiteratureResults { get; set; }
+        public LiteratureHomeViewModel()
+        {
+            this.DataSourceName = "literature";
+        }
     }
 }

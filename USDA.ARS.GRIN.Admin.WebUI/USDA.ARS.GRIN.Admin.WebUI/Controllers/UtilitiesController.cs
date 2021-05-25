@@ -12,26 +12,26 @@ using System.Web.UI.WebControls;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Data;
+using NLog;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     public class UtilitiesController : BaseController
     {
-        // GET: Utilities
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         public ActionResult Index()
         {
             IndexViewModel viewModel = new IndexViewModel();
 
             try
             {
-               
+                return View("~/Views/Utilities/Index.cshtml", viewModel);
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
-            return View("~/Views/Utilities/Index.cshtml", viewModel);
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                log.Error(ex.Message + ex.StackTrace);
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
             return null;
