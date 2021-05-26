@@ -24,6 +24,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected ReferenceDAO _referenceDAO = null;
         protected RegulationDAO _regulationDAO = null;
         protected ReportDAO _reportDAO = null;
+        protected GeographyDAO geographyDAO = null;
 
         public TaxonomyService(string context)
         {
@@ -39,6 +40,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             this._referenceDAO = new ReferenceDAO(context);
             this._regulationDAO = new RegulationDAO(context);
             this._reportDAO = new ReportDAO(context);
+            this.geographyDAO = new GeographyDAO(context);
         }
 
         // ****************************************************************************
@@ -95,7 +97,7 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public IEnumerable<Species> FindRecentSpecies()
         {
-            return _speciesDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())");
+            return _speciesDAO.Search("WHERE ts.modified_date > DATEADD(MONTH, -1, GETDATE())");
         }
 
         public ResultContainer AddSpecies(Species species)
@@ -411,6 +413,25 @@ namespace USDA.ARS.GRIN.Admin.Service
         }
 
         #endregion Reference
+
+        #region Geography
+
+        public List<Region> SearchRegions(string idList)
+        {
+            return geographyDAO.SearchRegions(idList);
+        }
+
+        public List<Country> SearchCountries(string idList)
+        {
+            return geographyDAO.SearchCountries(idList);
+        }
+
+        public List<Geography> SearchMunicipalities(string countryCodeList)
+        {
+            return geographyDAO.SearchMunicipalities(countryCodeList);
+        }
+
+        #endregion Geography
 
         #region Reports
 

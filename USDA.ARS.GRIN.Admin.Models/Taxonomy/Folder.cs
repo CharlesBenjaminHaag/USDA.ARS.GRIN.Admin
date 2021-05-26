@@ -11,6 +11,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string Description { get; set; }
         public string Category { get; set; }
         public bool IsShared { get; set; }
+        public bool IsFavorite { get; set; }
         public int TotalItems { get; set; }
         public string ItemList { get; set; }
         public string QuerySQL { get; set; }

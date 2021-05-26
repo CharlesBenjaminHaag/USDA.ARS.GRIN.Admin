@@ -85,6 +85,7 @@
         </div>
     </div>
 </div>
+@Html.Partial("~/Views/Taxonomy/Geography/_Search.cshtml");
 
 <!-- Page Script -->
 <script type="text/javascript">
@@ -124,6 +125,99 @@
                 'info': true,
                 'autoWidth': false
             });
+        });
+    });
+
+    $("#select-continents input:checkbox").click(function () {
+        var valueArray = [];
+
+        $("#select-continents input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+        }
+        );
+
+        $.ajax({
+            url: '@Url.Action("GetRegions","Taxonomy")',
+            type: "GET",
+            data: { continentIds:valueArray.toString() },
+            contentType: "application/json;",
+            dataType: 'json',
+            success: function (result) {
+                var items = '';
+
+                $("#select-regions").empty();
+
+                $.each(result, function (i, item) {
+                    var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Name + "<span class='label pull-right'><input id=" + item.ID + " type='checkbox' /></span></a></li>";
+                    $("#select-regions").append(liItem);
+                });
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on("click", "#select-regions input:checked", function () {
+        var valueArray = [];
+
+        $("#select-regions input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+        }
+        );
+
+        $.ajax({
+            url: '@Url.Action("GetCountries","Taxonomy")',
+            type: "GET",
+            data: { regionIds:valueArray.toString() },
+            contentType: "application/json;",
+            dataType: 'json',
+            success: function (result) {
+                var items = '';
+
+                $("#select-countries").empty();
+
+                $.each(result, function (i, item) {
+                    var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Title + "<span class='label pull-right'><input id=" + item.Code + " type='checkbox' /></span></a></li>";
+                    $("#select-countries").append(liItem);
+                });
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on("click", "#select-countries input:checked", function () {
+        var valueArray = [];
+
+        $("#select-countries input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+        }
+        );
+
+        $.ajax({
+            url: '@Url.Action("GetMunicipalities","Taxonomy")',
+            type: "GET",
+            data: { countryCodes:valueArray.toString() },
+            contentType: "application/json;",
+            dataType: 'json',
+            success: function (result) {
+                var items = '';
+
+                $("#select-municipalities").empty();
+
+                $.each(result, function (i, item) {
+                    var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Name + "<span class='label pull-right'><input id=" + item.ID + " type='checkbox' /></span></a></li>";
+                    $("#select-municipalities").append(liItem);
+                });
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
         });
     });
 </script>

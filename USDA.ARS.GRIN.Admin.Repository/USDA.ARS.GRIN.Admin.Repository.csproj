@@ -73,6 +73,7 @@
     <Compile Include="GRINGlobal\InventoryDAO.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Taxonomy\GeographyDAO.cs" />
     <Compile Include="Taxonomy\ReferenceDAO.cs" />
     <Compile Include="Taxonomy\RegulationDAO.cs" />
     <Compile Include="Taxonomy\ReportDAO.cs" />

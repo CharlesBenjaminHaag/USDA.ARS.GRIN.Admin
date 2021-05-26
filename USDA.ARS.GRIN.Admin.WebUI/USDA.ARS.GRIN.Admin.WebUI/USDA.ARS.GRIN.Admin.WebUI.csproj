@@ -357,6 +357,8 @@
     <Content Include="Views\Taxonomy\Folder\_FamilyItemList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_GenusItemList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_RegulationMapItemList.cshtml" />
+    <Content Include="Views\Taxonomy\Folder\_Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Geography\_Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -455,6 +457,7 @@
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\AccountManagement\LoginViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderItemListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Geography\GeographySearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\IndexViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Literature\LiteratureEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Literature\LiteratureHomeViewModel.cs" />

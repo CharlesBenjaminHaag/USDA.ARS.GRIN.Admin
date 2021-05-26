@@ -1,0 +1,163 @@
+﻿<style>
+    #select-continents li {
+        display:inline;
+   
+    }
+    .nav-stacked {
+        min-height: 320px;
+    }
+  
+</style>
+
+<!-- ============================================================================================== -->
+<!-- ADD-TO-FOLDER MODAL -->
+<!-- ============================================================================================== -->
+<div class="modal fade" id="modal-geography-search">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <input type="hidden" id="hfFolderCategory" value="" />
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Geography Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary box-solid">
+                            <div class="box-header with-border">
+                                <input type="checkbox" />&nbsp;&nbsp;<h3 class="box-title">Continents</h3>
+                            </div>
+                            <div class="box-body">
+                                <ul id="select-continents" class="nav nav-pills">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Antarctic
+                                            <span class="label pull-right"><input id="113" type="checkbox" /></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Asia - Tropical
+                                            <input id="128" type="checkbox" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Australasia
+                                            <input id="131" type="checkbox" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Europe
+                                            <input id="137" type="checkbox" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Northern America
+                                            <input id="148" type="checkbox" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Pacific
+                                            <input id="153" type="checkbox" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Southern America
+                                            <input id="160" type="checkbox" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-globe"></i> Eurasia
+                                            <input id="164" type="checkbox" />
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row main-section">
+                    <div class="col-md-4">
+                        <div class="box box-primary box-solid">
+                            <div class="box-header with-border">
+                                <input type="checkbox" /> &nbsp;&nbsp;<h3 class="box-title">Regions</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body pre-scrollable">
+                                <ul id="select-regions" class="nav nav-pills nav-stacked">
+                                   
+                                </ul>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-primary box-solid">
+                            <div class="box-header with-border">
+                                <input type="checkbox" />&nbsp;&nbsp;<h3 class="box-title">Countries</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body pre-scrollable">
+                                <ul id="select-countries"class="nav nav-pills nav-stacked">
+                                </ul>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-primary box-solid">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">States/Provinces</h3>
+                            </div>
+                            <div class="box-body pre-scrollable">
+                                <ul id="select-municipalities" class="nav nav-pills nav-stacked">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Selected Taxa</h4>
+                        <div class="table-responsive mailbox-messages ggtools">
+                                <table id="search-results" class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Accepted?</th>
+                                            <th>Authority</th>
+                                            <th>Nomen No.</th>
+                                            <th>Protologue</th>
+                                            <th>Accessions</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                      
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Generate Maps</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

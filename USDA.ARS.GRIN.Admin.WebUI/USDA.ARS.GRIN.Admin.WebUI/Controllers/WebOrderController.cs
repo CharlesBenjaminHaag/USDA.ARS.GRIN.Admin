@@ -90,7 +90,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             TempData["context"] = "Review Web Order Request #" + id;
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
-
+            
             try
             {
                 viewModel = LoadViewModel(id, true);
@@ -130,7 +130,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
                 else
                 {
-                    if (viewModel.Action != "NRR_NOTE")
+                    if ((viewModel.Action != "NRR_NOTE") && (viewModel.Action != "NRR_INFO"))
                     {
                         resultContainer = grinGlobalService.UpdateWebOrderRequest(webOrderRequest);
                     }
@@ -149,29 +149,36 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     }
                     else
                         if (viewModel.Action == "NRR_REJECT")
+                    {
+                        emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
+                        emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
+
+                        System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
+                        sbEmailBody.Append("Dear Germplasm Requestor,<p>Thank you for your interest in our germplasm collection.The mission of the National Plant Germplasm System(NPGS)");
+                        sbEmailBody.Append("is to provide materials in small quantities to research and education entities when genetic diversity or genetic standards are a");
+                        sbEmailBody.Append("requirement.The accessions maintained by NPGS are not intended for home or personal use that can");
+                        sbEmailBody.Append("be better served by commercially - available varieties.");
+                        sbEmailBody.Append("*** PLACEHOLDER FOR TEMPLATE TEXT ***");
+                        emailMessage.Body = sbEmailBody.ToString();
+                        smtpService.SendMessage(emailMessage);
+
+                        // EMAIL TO CURATORS
+                        emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
+                        emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
+                        emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
+                        smtpService.SendMessage(emailMessage);
+                    }
+                    else
+                        if (viewModel.Action == "NRR_INFO")
                         {
-                            // EMAIL TO REQUESTOR
-                            //emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
-                            emailMessage.RecipientAddress = "c.benjamin.haag@outlook.com";
-                            emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
-
-                            System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
-                            sbEmailBody.Append("Dear Germplasm Requestor,<p>Thank you for your interest in our germplasm collection.The mission of the National Plant Germplasm System(NPGS)");
-                            sbEmailBody.Append("is to provide materials in small quantities to research and education entities when genetic diversity or genetic standards are a");
-                            sbEmailBody.Append("requirement.The accessions maintained by NPGS are not intended for home or personal use that can");
-                            sbEmailBody.Append("be better served by commercially - available varieties.");
-                            sbEmailBody.Append("*** PLACEHOLDER FOR TEMPLATE TEXT ***");
-                            emailMessage.Body = sbEmailBody.ToString();
-                            smtpService.SendMessage(emailMessage);
-
-                            // EMAIL TO CURATORS
-                            emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
-                            emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
-                            emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
-                            smtpService.SendMessage(emailMessage);
-                        }
+                        emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
+                        emailMessage.Subject = "Request For Additional Information: Order " + webOrderRequest.ID;
+                        emailMessage.Body = viewModel.InformationRequestText;
+                        smtpService.SendMessage(emailMessage);
+                            
+                    }
                 }
-                if (viewModel.Action != "NRR_NOTE")
+                if ((viewModel.Action != "NRR_NOTE") && (viewModel.Action != "NRR_INFO"))
                 {
                     return RedirectToAction("Index", "WebOrder");
                 }
@@ -209,7 +216,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
                 viewModel.StatusCode = webOrderRequest.StatusCode;
                 viewModel.OrderDate = webOrderRequest.OrderDate;
-                viewModel.Cooperator = webOrderRequest.Cooperators.First();
+                viewModel.WebCooperator = webOrderRequest.Cooperators.First();
                 viewModel.IsReviewMode = reviewMode;
                 viewModel.IsLocked = webOrderRequest.IsLocked;
                 viewModel.ID = webOrderRequest.ID;
@@ -217,8 +224,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.IntendedUseCode = webOrderRequest.IntendedUseCode;
                 viewModel.IntendedUseNote = webOrderRequest.IntendedUseNote;
                 viewModel.Note = webOrderRequest.Note;
+
+                viewModel.InformationRequestText = "Germplasm Requestor:";
+                viewModel.InformationRequestText += "The U.S.National Plant Germplasm System(NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.";
+                viewModel.InformationRequestText += "Please provide additional relevant information about your project to justify the need for specific NPGS germplasm, instead of using commercially available plant material.";
+                viewModel.InformationRequestText += "Send your email to gringlobal.feedback @usda.gov, and include the web order number.";
+                viewModel.InformationRequestText += "For more information about the NPGS, please view a 6 - minute video that describes our mission and purpose at https://www.youtube.com/watch?v=uHOclGNELuw.";
+                viewModel.InformationRequestText += "Thank you.";
+                
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
-                viewModel.WebCooperator = webOrderRequest.Cooperators.Where(x => x.Type == 2).FirstOrDefault();
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
                 viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
                 viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;

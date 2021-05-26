@@ -59,11 +59,11 @@
         }
 
         <div class="login-box-body">
-            <div id="btn-container" style="margin-bottom:20px;">
+            @*<div id="btn-container" style="margin-bottom:20px;">
                 <button class="btn btn-default btn-block btn-sm btn-flat" data-toggle="modal" data-target="#modal-release-notes">
                     Release @DisplayHelper.GetVersion() Notes
                 </button>
-            </div>
+            </div>*@
 
             @*<p class="login-box-msg">Log in using your <strong>GRIN-Global Admin</strong> user name and password.</p>*@
             @if (!String.IsNullOrEmpty(Model.Status) && Model.Status != USDA.ARS.GRIN.Admin.Service.LoginResult.SUCCESS.ToString())

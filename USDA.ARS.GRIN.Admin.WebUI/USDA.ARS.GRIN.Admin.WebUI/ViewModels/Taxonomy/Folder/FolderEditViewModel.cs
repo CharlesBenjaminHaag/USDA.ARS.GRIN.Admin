@@ -20,6 +20,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string DataSourceName { get; set; }
         public string DataSourceTitle { get; set; }
         public bool IsShared { get; set; }
+        public bool IsFavorite { get; set; }
         public DataTable SearchResults { get; set; }
     }
 }

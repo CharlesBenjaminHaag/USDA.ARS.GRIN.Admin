@@ -1012,12 +1012,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult SpeciesGeographyEdit()
-        {
-            TempData["context"] = "Geography";
-            return View(BASE_PATH + "Geography/Search.cshtml");
-        }
-
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult SpeciesSearch(string searchText)
         {
@@ -1344,11 +1338,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult LiteratureHome()
         {
             TempData["context"] = "Literature";
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             LiteratureHomeViewModel literatureHomeViewModel = new LiteratureHomeViewModel();
-
+            literatureHomeViewModel.SysTable = taxonomyService.GetSysTable(48);
+            literatureHomeViewModel.DataSourceName = literatureHomeViewModel.SysTable.Name;
+            literatureHomeViewModel.DataSourceTitle = literatureHomeViewModel.SysTable.Title;
+         
             try
             {
-                TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
                 List<CodeValueReferenceItem> literatureTypeCodes = taxonomyService.GetCodeValues("LITERATURE_TYPE");
                 literatureHomeViewModel.LiteratureTypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
                 return View(BASE_PATH + "Literature/Index.cshtml", literatureHomeViewModel);
@@ -1575,6 +1572,59 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View(BASE_PATH + "Folder/Edit.cshtml", viewModel);
         }
 
+        #region Geography
+        public ActionResult GeographySearch()
+        {
+            TempData["context"] = "Geography Search";
+            GeographySearchViewModel geographySearchViewModel = new GeographySearchViewModel();
+
+            try
+            {
+                // TO DO
+
+                return View(BASE_PATH + "Geography/Search.cshtml", geographySearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message + ex.StackTrace);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        public JsonResult MapGeography(string keyValues = "")
+        {
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetRegions(string continentIds)
+        {
+            List<Region> regions = new List<Region>();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            regions = _taxonomyService.SearchRegions(continentIds);
+            return Json(regions, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCountries(string regionIds)
+        {
+            List<Country> countries = new List<Country>();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            countries = _taxonomyService.SearchCountries(regionIds);
+            return Json(countries, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetMunicipalities(string countryCodes)
+        {
+            List<Geography> geographies = new List<Geography>();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            geographies = _taxonomyService.SearchMunicipalities(countryCodes);
+            return Json(geographies, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion Geography
+
         public JsonResult AddToFolder(int folderId, string folderTitle, string folderCategory, string folderDescription, Boolean isShared, string dataSourceName, string dataSourceTitle, string values)
         {
             Folder folder = new Folder();
@@ -1641,6 +1691,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.DataSourceName = folder.DataSourceName;
                 viewModel.DataSourceTitle = folder.DataSourceTitle;
                 viewModel.IsShared = folder.IsShared;
+                viewModel.IsFavorite = folder.IsFavorite;
                 viewModel.SearchResults = folder.SearchResults;
                 viewModel.CreatedDate = folder.CreatedDate;
                 viewModel.CreatedByCooperatorID = folder.CreatedByCooperatorID;
@@ -1673,6 +1724,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 folder.DataSourceName = viewModel.DataSourceName;
                 folder.DataSourceTitle = viewModel.DataSourceTitle;
                 folder.IsShared = viewModel.IsShared;
+                folder.IsFavorite = viewModel.IsFavorite;
                 folder.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
                 retVal = _taxonomyService.UpdateFolder(folder);
             }

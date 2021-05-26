@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Country.cs" />
     <Compile Include="EmailMessage.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Genesys\PassportDataExport.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Taxonomy\Accession.cs" />
     <Compile Include="Taxonomy\DemoContainer.cs" />
     <Compile Include="Taxonomy\Family.cs" />
+    <Compile Include="Taxonomy\Region.cs" />
     <Compile Include="Taxonomy\Regulation.cs" />
     <Compile Include="ResultContainer.cs" />
     <Compile Include="Taxonomy\CWRMap.cs" />

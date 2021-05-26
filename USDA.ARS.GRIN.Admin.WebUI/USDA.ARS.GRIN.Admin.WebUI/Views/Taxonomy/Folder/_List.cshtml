@@ -14,23 +14,27 @@ else
     {
         <div class="col-md-4">
             <div class="info-box">
-                <span class="info-box-icon bg-gray"><i class="fa fa-folder"></i></span>
+                <span class="info-box-icon bg-gray"><i class="fa fa-folder-open"></i></span>
                 <div class="info-box-content" style="padding-bottom:1px;">
                     <span class="info-box-text" style="font-weight:bold;">
+                        @if (folder.IsFavorite)
+                        {
+                            <i class="fa text-yellow fa-star"></i>
+                        }
                         <a href="@Url.Action("FolderEdit","Taxonomy", new { id = folder.ID })">@folder.Title (Created @folder.CreatedDate.ToShortDateString())</a>
                     </span>
                     @if (!String.IsNullOrEmpty(folder.Description))
                     {
                         <span class="info-box-text" style="font-style:italic; font-size:.98em;">@folder.Description</span>
                     }
-                    <div style="margin-top: .5em;">
-                        <span class="badge bg-blue-active" style="margin-left: 2px;">@folder.Category</span>
-                        <span class="badge bg-blue" style="margin-left:2px;">@folder.DataSourceTitle</span>
-                        @*@if (folder.IsShared)
-                        {
-                            <span class="badge bg-yellow-active" style="margin-left:2px;">SHARED</span>
-                        }*@
-                    </div>
+                <div style="margin-top: .5em;">
+                    <span class="badge bg-black-active" style="margin-left: 2px;">@folder.Category</span>
+                    <span class="badge bg-gray-active" style="margin-left:2px;">@folder.DataSourceTitle</span>
+                    @*@if (folder.IsShared)
+        {
+            <span class="badge bg-yellow-active" style="margin-left:2px;">SHARED</span>
+        }*@
+                </div>
                 </div>
                 <!-- /.info-box-content -->
             </div>

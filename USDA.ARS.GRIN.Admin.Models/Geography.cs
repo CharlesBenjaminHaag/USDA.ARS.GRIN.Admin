@@ -10,6 +10,7 @@ namespace USDA.ARS.GRIN.Admin.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Code { get; set; }
         public string CountryCode { get; set; }
         public string StatusCode { get; set; }
         public string CitationTitle { get; set; }

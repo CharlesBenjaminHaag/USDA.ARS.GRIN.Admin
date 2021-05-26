@@ -43,6 +43,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 folder.DataSourceName = reader["data_source_name"].ToString();
                                 folder.DataSourceTitle = reader["data_source_title"].ToString();
                                 folder.IsShared = ParseBool(reader["is_shared"].ToString());
+                                folder.IsFavorite = ParseBool(reader["is_favorite"].ToString());
                                 folder.CreatedDate = GetDate(reader["created_date"].ToString());
                                 folder.TotalItems = GetInt(reader["item_count"].ToString());
                                 folders.Add(folder);
@@ -84,7 +85,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                     folder.Description = reader["description"].ToString();
                                     folder.DataSourceName = reader["data_source_name"].ToString();
                                     folder.DataSourceTitle = reader["data_source_title"].ToString();
-                                    folder.IsShared = ParseBool(reader["is_shared"].ToString());                                    
+                                    folder.IsShared = ParseBool(reader["is_shared"].ToString()); 
+                                    folder.IsFavorite = ParseBool(reader["is_favorite"].ToString());
                                     folder.CreatedDate = GetDate(reader["created_date"].ToString());
                                     folder.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
                                     folder.CreatedByCooperatorName = reader["created_by_name"].ToString();
@@ -173,14 +175,26 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return returnCode;
         }
 
-        private string GetDataSource(string key)
+        private string GetStoredProcedureName(string key)
         {
             switch (key)
             {
-                case "taxonomy_cwr_map":
-                    return "usp_TaxonomyFolderCWRMapItems_Select";
                 case "taxonomy_cwr_crop":
                     return "usp_TaxonomyFolderCropForCWRItems_Select";
+                case "taxonomy_cwr_map":
+                    return "usp_TaxonomyFolderCWRMapItems_Select";
+                case "taxonomy_cwr_trait":
+                    return "usp_TaxonomyFolderCWRTraitItems_Select";
+                case "taxonomy_species":
+                    return "usp_TaxonomyFolderSpeciesItems_Select";
+                case "taxonomy_genus":
+                    return "usp_TaxonomyFolderGenusItems_Select";
+                case "taxonomy_family":
+                    return "usp_TaxonomyFolderFamilyItems_Select";
+                case "citation":
+                    return "usp_TaxonomyFolderCitationItems_Select";
+                case "literature":
+                    return "usp_TaxonomyFolderLiteratureItems_Select";
                 default:
                     return "";
             }
@@ -199,7 +213,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     {
                         cmd.Connection = conn;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = "usp_TaxonomyFolderCropForCWRItems_Select";
+                        cmd.CommandText = GetStoredProcedureName(dataSource);
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
 
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
@@ -276,7 +290,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folder.ID);
                         cmd.Parameters.AddWithValue("@title", folder.Title);
-
+                        cmd.Parameters.AddWithValue("@category", folder.Category);
                         if (String.IsNullOrEmpty(folder.Description))
                         {
                             cmd.Parameters.AddWithValue("@description", DBNull.Value);
@@ -296,6 +310,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         }
                         
                         cmd.Parameters.AddWithValue("is_shared", ConvertBool(folder.IsShared));
+                        cmd.Parameters.AddWithValue("is_favorite", ConvertBool(folder.IsFavorite));
                         cmd.Parameters.AddWithValue("modified_by", folder.ModifiedByCooperatorID);
 
                         SqlParameter errorParam = new SqlParameter();
