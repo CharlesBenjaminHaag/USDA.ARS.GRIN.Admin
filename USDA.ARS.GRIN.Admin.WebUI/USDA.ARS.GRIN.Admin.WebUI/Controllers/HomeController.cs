@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Reflection;
+using NLog;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
 
@@ -9,24 +11,33 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     public class HomeController : BaseController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         [GrinGlobalAuthentication]
         [HttpGet]
         public ActionResult Index(string appContext = "")
         {
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
-            dashboardViewModel.AuthenticatedUser = this.AuthenticatedUser;
             string destinationView = "Index.cshtml";
 
-            TempData["context"] = "My Profile";
-
-            if (!String.IsNullOrEmpty(appContext))
+            try
             {
-                return RedirectToAction("Index", appContext);
+                dashboardViewModel.AuthenticatedUser = this.AuthenticatedUser;
+                TempData["context"] = "My Profile";
+
+                if (!String.IsNullOrEmpty(appContext))
+                {
+                    return RedirectToAction("Index", appContext);
+                }
+                else
+                {
+                    return View(dashboardViewModel);
+                }
             }
-            else
+            catch (Exception ex)
             {
-
-                return View(dashboardViewModel);
+                Log.Error(ex, "Error Occurred");
+                return RedirectToAction("InternalServerError", "Error");
             }
         }
 
@@ -55,7 +66,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult _Header()
         {
             string requestedUrl = String.Empty;
-            UserViewModel userViewModel = new UserViewModel();
+            UserEditViewModel userViewModel = new UserEditViewModel();
             userViewModel.AppName1 = "GRINGlobal";
             userViewModel.AppName2 = "Admin";
             userViewModel.AppAbbrev = "GGA";

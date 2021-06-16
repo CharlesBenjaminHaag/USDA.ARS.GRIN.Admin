@@ -7,20 +7,20 @@
     </div>
     <div class="box-body box-profile">
         <img class="profile-user-img img-responsive img-circle" src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/user-default.png" alt="User profile picture">
-        <h3 class="profile-username text-center">@Model.AuthenticatedUser.FirstName  @Model.AuthenticatedUser.LastName</h3>
-        <p class="text-muted text-center">@Model.AuthenticatedUser.JobTitle</p>
+        <h3 class="profile-username text-center">@Model.AuthenticatedUser.Cooperator.FirstName  @Model.AuthenticatedUser.Cooperator.LastName</h3>
+        <p class="text-muted text-center">@Model.AuthenticatedUser.Cooperator.Job</p>
         <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
-                <b>Email</b> <a class="pull-right">@Model.AuthenticatedUser.Email</a>
+                <b>Email</b> <a class="pull-right">@Model.AuthenticatedUser.Cooperator.EmailAddress</a>
             </li>
             <li class="list-group-item">
-                <b>Primary Phone</b> <a class="pull-right">@Model.AuthenticatedUser.PrimaryPhone</a>
+                <b>Primary Phone</b> <a class="pull-right">@Model.AuthenticatedUser.Cooperator.PrimaryPhoneNumber</a>
             </li>
             <li class="list-group-item">
-                <b>Organization</b> <a class="pull-right">@Model.AuthenticatedUser.OrganizationName</a>
+                <b>Organization</b> <a class="pull-right">@Model.AuthenticatedUser.Cooperator.Organization</a>
             </li>
             <li class="list-group-item">
-                <b>Site</b> <a class="pull-right">@Model.AuthenticatedUser.Site.ShortName</a>
+                <b>Site</b> <a class="pull-right">@Model.AuthenticatedUser.Cooperator.Site.ShortName</a>
             </li>
         </ul>
 
@@ -28,10 +28,10 @@
 
         <p class="text-muted"><a href=""></a></p>
         <p>
-            @Model.AuthenticatedUser.Addresses.First().AddressLine1<br />
-            @Model.AuthenticatedUser.Addresses.First().AddressLine2<br />
-            @Model.AuthenticatedUser.Addresses.First().AddressLine3<br />
-            @Model.AuthenticatedUser.Addresses.First().City, @Model.AuthenticatedUser.Addresses.First().State   @Model.AuthenticatedUser.Addresses.First().ZIP<br />
+            @Model.AuthenticatedUser.Cooperator.Address.AddressLine1<br />
+            @Model.AuthenticatedUser.Cooperator.Address.AddressLine2<br />
+            @Model.AuthenticatedUser.Cooperator.Address.AddressLine3<br />
+            @Model.AuthenticatedUser.Cooperator.Address.City, @Model.AuthenticatedUser.Cooperator.Address.State   @Model.AuthenticatedUser.Cooperator.Address.ZIP<br />
         </p>
     </div>
     <!-- /.box-body -->

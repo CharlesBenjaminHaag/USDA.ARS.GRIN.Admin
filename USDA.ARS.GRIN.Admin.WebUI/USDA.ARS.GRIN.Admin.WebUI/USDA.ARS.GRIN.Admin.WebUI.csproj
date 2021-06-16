@@ -257,7 +257,6 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Index.cshtml" />
     <Content Include="Views\SiteManagement\Index.cshtml" />
     <Content Include="Views\Taxonomy\Reports\Index.cshtml" />
@@ -306,7 +305,6 @@
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_List.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ValidatedList.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ValidationStatistics.cshtml" />
-    <Content Include="Views\AccountManagement\User\_Profile.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ErrorList.cshtml" />
     <Content Include="Views\User\_Applications.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_CropForCWRItemList.cshtml" />
@@ -359,6 +357,7 @@
     <Content Include="Views\Taxonomy\Folder\_RegulationMapItemList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_Edit.cshtml" />
     <Content Include="Views\Taxonomy\Geography\_Search.cshtml" />
+    <Content Include="Views\AccountManagement\User\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -418,10 +417,10 @@
     </Compile>
     <Compile Include="TextUtility.cs" />
     <Compile Include="UserNotFoundException.cs" />
-    <Compile Include="UserService.cs" />
     <Compile Include="Utilities\InputValidatorGreaterThanZero.cs" />
     <Compile Include="Utilities\RequiredIfAttribute.cs" />
     <Compile Include="ViewModels\AccountManagement\AccountManagementHomeViewModel.cs" />
+    <Compile Include="ViewModels\AccountManagement\UserListViewModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\EmailEditViewModel.cs" />
@@ -471,9 +470,9 @@
     <Compile Include="ViewModels\AccountManagement\UserEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesSearchViewModel.cs" />
-    <Compile Include="ViewModels\UserApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\AccountManagement\UserApplicationsViewModel.cs" />
     <Compile Include="ViewModels\SysUserListViewModel.cs" />
-    <Compile Include="ViewModels\UserProfileViewModel.cs" />
+    <Compile Include="ViewModels\AccountManagement\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\Utilities\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

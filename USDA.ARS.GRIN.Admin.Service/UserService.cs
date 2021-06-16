@@ -24,23 +24,23 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _userDAO.Find(searchObject, sql);
         }
 
-        public IQueryable<SysUser> GetActiveUsers()
-        {
-            return _userDAO.FindAll();
-        }
-
-        public User GetUser(string userName)
-        {
-            User user = new User();
-            user = _userDAO.Search(userName);
-            user.Applications = _userDAO.GetUserApplications(user.ID);
-            user.Groups = _userDAO.GetUserGroups(user.ID);
-            return user;
-        }
+        //public User GetUser(string userName)
+        //{
+        //    User user = new User();
+        //    user = _userDAO.Search(userName);
+        //    user.Applications = _userDAO.GetUserApplications(user.ID);
+        //    user.Groups = _userDAO.GetUserGroups(user.ID);
+        //    return user;
+        //}
 
         public User GetUser(int id)
         {
             return _userDAO.Get(id);
+        }
+
+        public IQueryable<User> Search(Query query)
+        {
+            return _userDAO.Search(query);        
         }
     }
 }

@@ -7,7 +7,7 @@ using System.DirectoryServices;
 using System.Runtime.CompilerServices;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.Service;
-using DocumentFormat.OpenXml.Wordprocessing;
+//using DocumentFormat.OpenXml.Wordprocessing;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement;
 using USDA.ARS.GRIN.Admin.Models;
@@ -15,9 +15,10 @@ using NLog;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
+    [GrinGlobalAuthentication]
     public class AccountManagementController : BaseController
     {
-        UserService _sysUserService = null;
+        const string BASE_PATH = "~/Views/AccountManagement/";
         SmtpService _smtpService = new SmtpService();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -44,27 +45,96 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             UserService userService = new UserService(AuthenticatedUserSession.Environment);
             AccountManagementHomeViewModel accountManagementHomeViewModel = new AccountManagementHomeViewModel();
-            // TO DO: LOAD SELECT LISTS
-            accountManagementHomeViewModel.ActiveUsers = userService.GetActiveUsers();
-            return View("~/Views/AccountManagement/Index.cshtml", accountManagementHomeViewModel);
+            // Query query = new Query();
+
+
+            //accountManagementHomeViewModel.Users = userService.Search(query);
+            return View(BASE_PATH + "Index.cshtml", accountManagementHomeViewModel);
         }
 
-        public PartialViewResult ActiveUsers()
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public PartialViewResult _RecentlyAdded()
         {
-            SysUserListViewModel viewModel = new SysUserListViewModel();
-            try
+            UserService userService = new UserService(AuthenticatedUserSession.Environment);
+            UserListViewModel userListViewModel = new UserListViewModel();
+
+            Query query = new Query();
+            query.QueryCriteria.Add(new QueryCriterion { FieldName = "su.created_date", SearchOperatorCode = ">=", DataType="DATETIME", FieldValue = "DATEADD(DAY, -30, GETDATE())" });
+            userListViewModel.Users = userService.Search(query);
+            return PartialView(BASE_PATH + "User/_List.cshtml", userListViewModel);
+        }
+
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public PartialViewResult _RecentlyModified()
+        {
+            UserService userService = new UserService(AuthenticatedUserSession.Environment);
+            UserListViewModel userListViewModel = new UserListViewModel();
+
+            Query query = new Query();
+            query.QueryCriteria.Add(new QueryCriterion { FieldName = "su.created_date", SearchOperatorCode = ">=", DataType = "DATETIME", FieldValue = "DATEADD(DAY, -30, GETDATE())" });
+            userListViewModel.Users = userService.Search(query);
+            return PartialView(BASE_PATH + "User/_List.cshtml", userListViewModel);
+        }
+
+        public ActionResult UserEdit(int id)
+        {
+            UserService userService = new UserService(AuthenticatedUserSession.Environment);
+            UserEditViewModel userEditViewModel = new UserEditViewModel();
+            User user = new User();
+
+            try 
             {
-                _sysUserService = new UserService(this.GetUserSession().Environment);
-                viewModel.SysUsers = _sysUserService.GetActiveUsers();
-                return PartialView("~/Views/AccountManagement/User/_List.cshtml", viewModel);
+                user = userService.GetUser(id);
+                userEditViewModel.SysUserID = user.ID;
+                userEditViewModel.SysUserName = user.UserName;
+                userEditViewModel.SysUserPassword = user.Password;
+                userEditViewModel.ID = user.ID;
+                userEditViewModel.Title = user.Cooperator.Job;
+                userEditViewModel.FirstName = user.Cooperator.FirstName;
+                userEditViewModel.LastName = user.Cooperator.LastName;
+                userEditViewModel.EmailAddress = user.Cooperator.EmailAddress;
+                userEditViewModel.PrimaryPhoneNumber = user.Cooperator.PrimaryPhoneNumber;
+                userEditViewModel.SelectedGroups = user.Groups;
             }
             catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return PartialView("~/Error/_Error.cshtml");
-            }
+            { }
+            return View(BASE_PATH + "User/Edit.cshtml", userEditViewModel);
         }
 
+        [HttpPost]
+        public ActionResult UserEdit(UserEditViewModel userEditViewModel)
+        {
+            UserService userService = new UserService(AuthenticatedUserSession.Environment);
+            ResultContainer resultContainer = new ResultContainer();
+
+            try 
+            { 
+                //resultContainer = userService.
+            }
+            catch (Exception ex)
+            { }
+            return View(BASE_PATH + "");
+        }
+
+        [HttpGet]
+        public ActionResult GeneratePassword()
+        {
+            string password = String.Empty;
+            SecurityService securityService = new SecurityService(AuthenticatedUserSession.Environment);
+            password = securityService.GenerateRandomPassword(8);
+            return Json(password, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdatePassword(int userId, string userName, string password)
+        {
+            ResultContainer resultContainer = new ResultContainer();
+            SecurityService securityService = new SecurityService(AuthenticatedUserSession.Environment);
+            User user = new User { ID = userId, UserName = userName, Password = password };
+            resultContainer = securityService.UpdatePassword(user);
+            return Json(resultContainer, JsonRequestBehavior.AllowGet);
+        }
+
+        #region Active Directory
         private string GetCurrentDomainPath()
         {
             DirectoryEntry de =
@@ -126,12 +196,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public USDA.ARS.GRIN.Admin.Models.Cooperator FindCooperator(string emailAddress)
-        {
-            USDA.ARS.GRIN.Admin.Models.Cooperator cooperator = new Models.Cooperator();
-            return cooperator;
-        }
-
         private DirectorySearcher BuildUserSearcher(DirectoryEntry de)
         {
             DirectorySearcher ds = null;
@@ -152,6 +216,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             return ds;
         }
-
+        #endregion Active Directory
     }
 }

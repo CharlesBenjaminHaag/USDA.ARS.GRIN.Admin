@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
 //using log4net;
@@ -15,15 +16,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
     public class UserController : BaseController
     {
+        const string BASE_PATH = "~/Views/User/";
         SecurityService _securityService = null;
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public UserController()
         {
-            //UserService _userService = new UserService(this.GetUserSession().Environment);
         }
 
-        // GET: User
         [HttpGet]
         public ActionResult Login(string loginStatus = "")
         {
@@ -46,11 +46,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 if (resultContainer.ResultCode == LoginResult.SUCCESS.ToString())
                 {
                     userSession.AuthenticatedUser = user;
+                    userSession.AuthenticatedUser.Cooperator.FirstName = user.Cooperator.FirstName;
+                    userSession.AuthenticatedUser.Cooperator.LastName = user.Cooperator.LastName;
+                    userSession.AuthenticatedUser.Cooperator.EmailAddress = user.Cooperator.EmailAddress;
                     userSession.Environment = viewModel.Environment;
-
-                    // TO DO : GET LIST OF USERS AUTHD TO ACCESS APP
-                    //userSession.AuthorizedCooperators = 
-
                     Session["USER_SESSION"] = userSession;
                 }
                 else
@@ -78,10 +77,20 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View();
         }
 
-        public ActionResult Edit(string userName)
+        public ActionResult Edit(int id)
         {
-            // TO DO
-            return View();
+            UserEditViewModel userEditViewModel = new UserEditViewModel();
+
+            try 
+            {
+                // TO DO
+                return View(BASE_PATH + "Edit.cshtml", userEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error Occurred");
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         [HttpPost]
@@ -96,7 +105,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(UserViewModel userViewModel)
+        public ActionResult Edit(UserEditViewModel userViewModel)
         {
             return View(userViewModel);
         }
@@ -112,15 +121,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult _Profile()
         {
             UserProfileViewModel viewModel = new UserProfileViewModel();
-            viewModel.AuthenticatedUser = AuthenticatedUser;
-            return PartialView("~/Views/User/_Profile.cshtml", viewModel);
+
+            try
+            {
+                viewModel.AuthenticatedUser = AuthenticatedUser;
+                return PartialView("~/Views/User/_Profile.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("_Error", "Error");
+            }
         }
 
         public ActionResult _Applications()
         {
             UserApplicationsViewModel viewModel = new UserApplicationsViewModel();
-            viewModel.Applications = AuthenticatedUser.Applications;
-            return PartialView("~/Views/User/_Applications.cshtml", viewModel);
+
+            try
+            {
+                viewModel.Applications = AuthenticatedUser.Applications;
+                return PartialView("~/Views/User/_Applications.cshtml", viewModel);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("_Error", "Error");
+            }
         }
        
     }

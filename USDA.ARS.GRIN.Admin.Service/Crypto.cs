@@ -260,6 +260,24 @@ namespace GrinGlobal.Core
 		/// </summary>
 		/// <param name="plainText"></param>
 		/// <returns></returns>
+
+		/// <summary>
+		/// Returns the SHA1 hash of the given text in base64 encoded format.  Use Crypto.Hash instead if calling several times.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		public static string HashText(string text)
+		{
+			if (String.IsNullOrEmpty(text))
+			{
+				return null;
+			}
+			else
+			{
+				return new Crypto().Hash(text);
+			}
+		}
+
 		public string HexEncode(string plainText)
 		{
 			byte[] plainBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
@@ -316,23 +334,6 @@ namespace GrinGlobal.Core
 			byte[] plainBytes = Convert.FromBase64String(base64Text);
 			string ret = System.Text.Encoding.UTF8.GetString(plainBytes);
 			return ret;
-		}
-
-		/// <summary>
-		/// Returns the SHA1 hash of the given text in base64 encoded format.  Use Crypto.Hash instead if calling several times.
-		/// </summary>
-		/// <param name="text"></param>
-		/// <returns></returns>
-		public static string HashText(string text)
-		{
-			if (String.IsNullOrEmpty(text))
-			{
-				return null;
-			}
-			else
-			{
-				return new Crypto().Hash(text);
-			}
 		}
 
 		/// <summary>

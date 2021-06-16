@@ -11,7 +11,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement
 {
     public class AccountManagementHomeViewModel
     {
-        public IQueryable<SysUser> ActiveUsers { get; set; }
+        public IQueryable<User> Users { get; set; }
         public SysUser SysUser { get; set; }
         public User WebUser { get; set; }
         public Cooperator Cooperator { get; set; }
@@ -21,7 +21,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement
 
         public AccountManagementHomeViewModel()
         {
-            ActiveUsers = new List<SysUser>().AsQueryable();
+            SysUser = new SysUser();
+            WebUser = new User();
+            Cooperator = new Cooperator();
+            Users = new List<User>().AsQueryable();
             SelectedGroups = new List<Group>();
         }
     }

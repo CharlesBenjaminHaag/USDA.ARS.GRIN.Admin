@@ -8,7 +8,6 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
 {
     public class WebCooperator : BaseModel, IPerson, IEntity
     {
-        public int ID { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

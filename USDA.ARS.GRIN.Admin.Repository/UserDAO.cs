@@ -25,7 +25,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
         
         public User Get(int id)
         {
-            const string COMMAND_TEXT = "usp_User_Select";
+            const string COMMAND_TEXT = "usp_AcctMgmtSysUser_Select";
             User user = new User();
 
             try
@@ -46,29 +46,36 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             user.ID = GetInt(reader["sys_user_id"].ToString());
                             user.UserName = reader["user_name"].ToString();
                             user.Password = reader["password"].ToString();
+                            //is_enabled
+                            user.CreatedDate = GetDate(reader["created_date"].ToString());
+                            //created_by
+                            user.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                            //modified_by
+                            user.WebUserID = GetInt(reader["web_user_id"].ToString());
+                            user.WebUserName = reader["web_user_name"].ToString();
                             user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
+                            user.Cooperator.ID = user.CooperatorID;
                             user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
-                            user.FirstName = reader["first_name"].ToString();
-                            user.LastName = reader["last_name"].ToString();
-                            user.Email = reader["email"].ToString();
-                            user.PrimaryPhone = reader["primary_phone"].ToString();
-                            user.OrganizationName = reader["organization"].ToString();
-                            user.OrganizationAbbreviation = reader["organization_abbrev"].ToString();
-                            user.JobTitle = reader["job"].ToString();
+                            user.Cooperator.FirstName = reader["first_name"].ToString();
+                            user.Cooperator.LastName = reader["last_name"].ToString();
+                            user.Cooperator.EmailAddress = reader["email"].ToString();
+                            user.Cooperator.Organization = reader["organization"].ToString();
+                            //org abbrev
+                            //org region code
+                            user.Cooperator.Job = reader["job"].ToString();
+                            user.Cooperator.Address.AddressLine1 = reader["address_line1"].ToString();
+                            user.Cooperator.Address.AddressLine2 = reader["address_line2"].ToString();
+                            user.Cooperator.Address.AddressLine3 = reader["address_line3"].ToString();
+                            user.Cooperator.Address.City = reader["city"].ToString();
+                            // geo id
+                            user.Cooperator.Address.State = reader["state"].ToString();
+                            user.Cooperator.Address.ZIP = reader["postal_index"].ToString();
 
-                            user.Site.ID = GetInt(reader["site_id"].ToString());
-                            user.Site.ShortName = reader["site_short_name"].ToString();
-                            user.Site.LongName = reader["site_long_name"].ToString();
-
-                            // TO DO: ALLOW FOR MULT. ADDRESSES (?)
-                            Address address = new Address();
-                            address.AddressLine1 = reader["address_line1"].ToString();
-                            address.AddressLine2 = reader["address_line2"].ToString();
-                            address.AddressLine3 = reader["address_line3"].ToString();
-                            address.City = reader["city"].ToString();
-                            address.State = reader["state"].ToString();
-                            address.ZIP = reader["postal_index"].ToString();
-                            user.Addresses.Add(address);
+                            if (user.ID > 0)
+                            {
+                                user.Applications = GetUserApplications(user.ID);
+                                user.Groups = GetUserGroups(user.ID);
+                            }
                         }
                     }
                     if (user.ID > 0)
@@ -85,68 +92,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return user;
         }
 
-        public User Search(string userName)
-        {
-            const string COMMAND_TEXT = "usp_AcctMgmtUser_Search";
-            string connectionType = _context;
-            User user = new User();
-
-            try
-            {
-                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, cn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@user_name", userName);
-                       
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                user.ID = GetInt(reader["sys_user_id"].ToString());
-                                user.UserName = reader["user_name"].ToString();
-                                user.Password = reader["password"].ToString();
-                                user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
-                                user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
-                                user.FirstName = reader["first_name"].ToString();
-                                user.LastName = reader["last_name"].ToString();
-                                user.Email = reader["email"].ToString();
-                                user.PrimaryPhone = reader["primary_phone"].ToString();
-                                user.OrganizationName = reader["organization"].ToString();
-                                user.OrganizationAbbreviation = reader["organization_abbrev"].ToString();
-                                user.JobTitle = reader["job"].ToString();
-
-                                user.Site.ID = GetInt(reader["site_id"].ToString());
-                                user.Site.ShortName = reader["site_short_name"].ToString();
-                                user.Site.LongName = reader["site_long_name"].ToString();
-
-                                // TO DO: ALLOW FOR MULT. ADDRESSES (?)
-                                Address address = new Address();
-                                address.AddressLine1 = reader["address_line1"].ToString();
-                                address.AddressLine2 = reader["address_line2"].ToString();
-                                address.AddressLine3 = reader["address_line3"].ToString();
-                                address.City = reader["city"].ToString();
-                                address.State = reader["state"].ToString();
-                                address.ZIP = reader["postal_index"].ToString();
-                                user.Addresses.Add(address);
-                            }
-                        }
-                        if (user.ID > 0)
-                        {
-                            user.Applications = GetUserApplications(user.ID);
-                            user.Groups = GetUserGroups(user.ID);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return user;
-        }
-   
         public int AddREFACTOR(User entity)
         {
             throw new NotImplementedException();
@@ -157,14 +102,48 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
-        public int Update(User entity)
+        public ResultContainer Update(User entity)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_AcctMgmtSysUser_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@sys_user_id", entity.ID);
+                        cmd.Parameters.AddWithValue("@user_name", entity.UserName);
+                        cmd.Parameters.AddWithValue("@password", entity.Password);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+                        cmd.ExecuteNonQuery();
+
+                        resultContainer.EntityID = entity.ID;
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
         }
 
         public IQueryable<SysUser> FindAll()
         {
-            const string COMMAND_TEXT = "usp_Users_Select";
+            const string COMMAND_TEXT = "usp_AcctMgmtSysUsers_Select";
             List<SysUser> sysUsers = new List<SysUser>();
 
             try
@@ -183,18 +162,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 sysUser.ID = GetInt(reader["sys_user_id"].ToString());
                                 sysUser.UserName = reader["user_name"].ToString();
                                 sysUser.Password = reader["password"].ToString();
-
-                                // TO DO: ADD RELATED COOP DATA HERE? (2/3/2021)
-                                //        user.ID = GetInt(reader["sys_user_id"].ToString());
-                                //        user.UserName = reader["user_name"].ToString();
-                                //        //user.Password = reader["password"].ToString();
-                                //        //user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
-                                //        user.FirstName = reader["first_name"].ToString();
-                                //        user.LastName = reader["last_name"].ToString();
-                                //        //user.Email = reader["email"].ToString();
-                                //        //user.OrganizationName = reader["organization"].ToString();
-                                //        //user.OrganizationAbbreviation = reader["organization_abbrev"].ToString();
-
                                 sysUsers.Add(sysUser);
                             }
                         }
@@ -252,11 +219,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return applications;
         }
 
-        //public List<Cooperator> GetAuthorizedApplicationCooperators(string applicationName)
-        //{ 
-        
-        //}
-
         public List<Group> GetUserGroups(int userId)
         {
             const string COMMAND_TEXT = "usp_AcctMgmtSysUserGroups_Select";
@@ -298,7 +260,71 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public IQueryable<User> Search(Query query)
         {
-            throw new NotImplementedException();
+            String commandText = "usp_AcctMgmtSysUsers_Search";
+            List<User> users = new List<User>();
+            string sqlWhereClause = string.Empty;
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@sql_where_clause", sqlWhereClause);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                User user = new User();
+                                user.ID = GetInt(reader["sys_user_id"].ToString());
+                                user.UserName = reader["user_name"].ToString();
+                                user.Password = reader["password"].ToString();
+                                //is_enabled
+                                user.CreatedDate = GetDate(reader["created_date"].ToString());
+                                //created_by
+                                user.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                //modified_by
+                                user.WebUserID = GetInt(reader["web_user_id"].ToString());
+                                user.WebUserName = reader["web_user_name"].ToString();
+                                user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
+                                user.Cooperator.ID = user.CooperatorID;
+                                user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
+                                user.Cooperator.FirstName = reader["first_name"].ToString();
+                                user.Cooperator.LastName = reader["last_name"].ToString();
+                                user.Cooperator.EmailAddress = reader["email"].ToString();
+                                user.Cooperator.Organization = reader["organization"].ToString();
+                                //org abbrev
+                                //org region code
+                                user.Cooperator.Job = reader["job"].ToString();
+                                user.Cooperator.Address.AddressLine1 = reader["address_line1"].ToString();
+                                user.Cooperator.Address.AddressLine2 = reader["address_line2"].ToString();
+                                user.Cooperator.Address.AddressLine3 = reader["address_line3"].ToString();
+                                user.Cooperator.Address.City = reader["city"].ToString();
+                                // geo id
+                                user.Cooperator.Address.State = reader["state"].ToString();
+                                user.Cooperator.Address.ZIP = reader["postal_index"].ToString();
+                             
+                                if (user.ID > 0)
+                                {
+                                    user.Applications = GetUserApplications(user.ID);
+                                    user.Groups = GetUserGroups(user.ID);
+                                }
+                                users.Add(user);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return users.AsQueryable();
         }
 
         public IQueryable<User> Search(int parentId)

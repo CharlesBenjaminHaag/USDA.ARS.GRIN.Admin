@@ -34,16 +34,31 @@ namespace USDA.ARS.GRIN.Admin.Service
             return Convert.ToBase64String(tokenBuffer);
         }
 
+        public ResultContainer UpdatePassword(User user)
+        {
+            string hashedPassword = String.Empty;
+
+            Crypto crypto = new Crypto();
+            ResultContainer resultContainer = new ResultContainer();
+            hashedPassword = new Crypto().Hash(user.Password);
+            hashedPassword = Crypto.HashText(hashedPassword);
+            user.Password = hashedPassword;
+            resultContainer = _userDAO.Update(user);
+            return resultContainer;
+        }
+
         public ResultContainer Login(string userName, string password, out User user)
         {
             string hashedPassword = String.Empty;
+            Query query = new Query();
             ResultContainer resultContainer = new ResultContainer();
             bool passwordIsValid = false;
             user = null;
            
             try
             {
-                user = _userDAO.Search(userName);
+                query.QueryCriteria.Add(new QueryCriterion { FieldName = "su.user_name", SearchOperatorCode = "LIKE", DataType="NVARCHAR", FieldValue = userName });
+                user = _userDAO.Search(query).FirstOrDefault();
                 if (user.ID == 0)
                 {
                     resultContainer.ResultCode = LoginResult.USER_NOT_FOUND.ToString();

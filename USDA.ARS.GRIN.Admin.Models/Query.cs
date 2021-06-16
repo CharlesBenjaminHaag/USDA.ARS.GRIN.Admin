@@ -18,5 +18,54 @@ namespace USDA.ARS.GRIN.Admin.Models
         {
             this.QueryCriteria = new List<QueryCriterion>();
         }
+
+        public string GetSQLSyntax()
+        {
+            int i = 0;
+            StringBuilder sbWhereClause = new StringBuilder();
+            foreach (QueryCriterion queryCriterion in QueryCriteria)
+            {
+                if (i == 0)
+                    sbWhereClause.Append(" WHERE ");
+                else
+                    sbWhereClause.Append(" AND ");
+
+                sbWhereClause.Append(queryCriterion.FieldName);
+                sbWhereClause.Append(" ");
+                sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+                sbWhereClause.Append(" ");
+
+                if (queryCriterion.DataType == "NVARCHAR")
+                {
+                    if (queryCriterion.FieldValue == "NULL")
+                    {
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                    }
+                    else
+                    {
+                        sbWhereClause.Append("'");
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append("'");
+                    }
+                }
+                else
+                {
+                    if (queryCriterion.DataType == "DATETIME")
+                    {
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                    }
+                }
+                i++;
+            }
+            return sbWhereClause.ToString();
+        }
     }
 }

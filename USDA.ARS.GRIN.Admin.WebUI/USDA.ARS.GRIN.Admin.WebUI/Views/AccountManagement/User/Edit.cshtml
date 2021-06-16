@@ -1,0 +1,208 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement.UserEditViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">User</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Username</label>
+                        @Html.HiddenFor(x => x.ID)
+                        @Html.TextBoxFor(x => x.SysUserName, new { @class="form-control disabled" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Password</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(x => x.SysUserPassword, new { @class = "form-control" })
+                            <span class="input-group-btn">
+                                <button type="button" id="btnGeneratePassword" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button id="btnSaveUser" type="button" class="btn btn-default">
+                        <i class="fa fa-save"></i>
+                        Save Edits
+                    </button>
+                </div>
+           
+        </div>
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">Groups</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <p>
+                    @foreach (var group in Model.SelectedGroups)
+                    {
+                        <span class="label label-info" style="display:inline-block; font-size: 14px; margin-bottom: .3em;"><a href="" style="color:white;">@group.GroupTag</a></span>
+                    }
+                </p>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default">
+                    <i class="fa fa-edit"></i>
+                    Edit...</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+
+        @using (Html.BeginForm("UserEdit", "AccountManagement", FormMethod.Post, new { id = "frmCooperatorEdit" }))
+        {
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" style="background-color:#ebebeb;">
+                    <a href="#tab_1" id="tab-recently-created" title="RecentlyCreated" class="selector-tab" data-toggle="tab" aria-expanded="true">Cooperator</a>
+                </li>
+                <li class="" style="background-color:#ebebeb;">
+                    <a href="#tab_2" id="tab-recently-modified" title="RecentlyModified" class="selector-tab" data-toggle="tab" aria-expanded="false">Web Cooperator</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Title</label>
+                                @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-2">
+                                <label>First Name</label>
+                                @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-2">
+                                <label>Last Name</label>
+                                @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <label>Email</label>
+                                @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <label>Organization</label>
+                                @Html.TextBoxFor(x => x.Organization, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:1em;">
+                            <div class="col-md-3">
+                                <label>Address 1</label>
+                                @Html.TextBoxFor(x => x.AddressLine1, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <label>Address 2</label>
+                                @Html.TextBoxFor(x => x.AddressLine2, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <label>Address 3</label>
+                                @Html.TextBoxFor(x => x.AddressLine3, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:1em;">
+                            <div class="col-md-2">
+                                <label>City</label>
+                                @Html.TextBoxFor(x => x.AddressLine1, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-2">
+                                <label>State/Province</label>
+                                @Html.TextBoxFor(x => x.AddressLine2, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-2">
+                                <label>Postal Code/ZIP</label>
+                                @Html.TextBoxFor(x => x.ZIP, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_2">
+                    <div class="box-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default">
+                    <i class="fa fa-save"></i>
+                    Save Edits
+                </button>
+            </div>
+        </div>
+        }
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">Cooperator</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+               
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#btnGeneratePassword").click(function () {
+        var password = "";
+
+        try
+        {
+            $.getJSON('@Url.Action("GeneratePassword")', function (password) {
+            if (password != null && !jQuery.isEmptyObject(password))
+            {
+                $("#SysUserPassword").val(password);
+            };
+        });
+
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    });
+
+    $("#btnSaveUser").click(function () {
+        var returnCode = "";
+        var inputUserId = 0;
+        var inputUserName = "";
+        var inputPassword = "";
+        try
+        {
+            inputUserId = $("#ID").val();
+            inputUserName = $("#SysUserName").val();
+            inputPassword = $("#SysUserPassword").val();
+
+            $.getJSON('@Url.Action("UpdatePassword")', { userId: inputUserId, userName: inputUserName, password: inputPassword }, function (returnCode) {
+                if (returnCode != null && !jQuery.isEmptyObject(returnCode))
+                {
+                    //DEBUG
+                    alert("DEBUG " + returnCode);
+                };
+            });
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    });
+</script>

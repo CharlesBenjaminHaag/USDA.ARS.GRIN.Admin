@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using USDA.ARS.GRIN.Admin.Models.GRINGlobal;
 
 namespace USDA.ARS.GRIN.Admin.Models
-//namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
 {
     public class Cooperator : BaseModel, IEntity
     {
@@ -21,14 +21,14 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string PrimaryPhoneNumber { get; set; }
         public string SecondaryPhoneNumber { get; set; }
         public bool IsActive { get; set; }
-        public User User { get; set; }
-        
+        public WebCooperator WebCooperator { get; set; }
         public Address Address { get; set; }
-
+        public Site Site { get; set; }
         public Cooperator()
         {
-            User = new User();
+            WebCooperator = new WebCooperator();
             Address = new Address();
+            Site = new Site();
         }
     }
 }

@@ -15,7 +15,6 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 {
-    //[RoutePrefix("taxonomy")]
     [GrinGlobalAuthentication]
     public class TaxonomyController : BaseController
     {
