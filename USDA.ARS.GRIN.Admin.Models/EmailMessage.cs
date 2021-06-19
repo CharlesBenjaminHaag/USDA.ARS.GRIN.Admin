@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 
 namespace USDA.ARS.GRIN.Admin.Models
 {
-    public class EmailMessage
+    public class EmailMessage : BaseModel
     {
-        public string RecipientAddress { get; set; }
-        public string SenderAddress { get; set; }
+        //,[email_from]
+        //,[email_to]
+        //,[email_cc]
+        //,[email_bcc]
+        //,[email_reply_to]
+
+        public string From { get; set; }
+        public string To { get; set; }
+        public string CC { get; set; }
+        public string BCC { get; set; }
+        public string ReplyTo { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
-        public bool IsHtmlFormat { get; set; }
+        public bool IsHtml { get; set; }
     }
 }

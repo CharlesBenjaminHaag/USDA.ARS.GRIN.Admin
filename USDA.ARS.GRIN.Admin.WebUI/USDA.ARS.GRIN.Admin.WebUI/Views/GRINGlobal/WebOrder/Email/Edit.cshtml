@@ -1,0 +1,71 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.EmailTemplateEditViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<div class="row">
+    <div class="col-md-2">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Folders</h3>
+
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="section-item-pick-list" class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    @foreach (var emailTemplate in Model.EmailTemplates)
+                    {
+                    <li id="@emailTemplate.ID">
+                        <a href="#">
+                            <i class="fa fa-file-text-o"></i> @emailTemplate.Title
+                            @*<span class="pull-right">Standard rejection template</span>*@
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    <div id="section-edit" class="col-md-10">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#section-item-pick-list ul.nav li').on('click', function () {
+
+            $(this).parent().find('li.active').removeClass('active');
+            $(this).addClass('active');
+
+            var itemId = $(this).attr('id');
+            alert("DEBUG " + itemId);
+            //LoadEmailTemplate(itemId);
+            //LoadWebOrderRequests(status, timeFrameId);
+        });
+    });
+
+    function LoadEmailTemplate(int emailTemplateId)
+    {
+        var link = '@Url.Action("_EmailTemplateEdit", "WebOrder")';
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                data: { id: emailTemplateId },
+                success:
+                    function (response) {
+                        $("#section-edit").html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
+    }
+</script>

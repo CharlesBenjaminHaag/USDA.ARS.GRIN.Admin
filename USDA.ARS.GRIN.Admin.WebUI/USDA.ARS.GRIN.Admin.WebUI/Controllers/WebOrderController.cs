@@ -102,14 +102,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult EditEmail(int webOrderRequestId)
+        public ActionResult EmailTemplateHome()
         {
             TempData["context"] = "Edit Email Templates";
-            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
-            viewModel = LoadViewModel(webOrderRequestId, true);
-            return View("~/Views/GRINGlobal/WebOrder/EditEmail.cshtml", viewModel);
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
+            emailTemplateEditViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
+
+            return View("~/Views/GRINGlobal/WebOrder/Email/Edit.cshtml", emailTemplateEditViewModel);
         }
 
+        public PartialViewResult _EmailTemplateEdit(int id)
+        {
+            try 
+            {
+                GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+                EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
+                //emailTemplateEditViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+            return null;
+        }
 
         [HttpPost]
         public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
@@ -137,12 +154,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
 
                     EmailMessage emailMessage = new EmailMessage();
-                    emailMessage.SenderAddress = "gringlobal.orders@usda.gov";
-                    emailMessage.IsHtmlFormat = true;
+                    emailMessage.From = "gringlobal.orders@usda.gov";
+                    emailMessage.IsHtml = true;
 
                     if (viewModel.Action == "NRR_APPROVE")
                     {
-                        emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
+                        emailMessage.To = "benjamin.haag@usda.gov";
                         emailMessage.Subject = "NRR Review Update: Order #" + webOrderRequest.ID + " Approved";
                         emailMessage.Body = "Order # " + webOrderRequest.ID + " has been approved. You may now process it normally via the Order Wizard.";
                         smtpService.SendMessage(emailMessage);
@@ -150,7 +167,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     else
                         if (viewModel.Action == "NRR_REJECT")
                     {
-                        emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
+                        emailMessage.To = viewModel.WebCooperator.EmailAddress;
                         emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
 
                         System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
@@ -163,7 +180,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         smtpService.SendMessage(emailMessage);
 
                         // EMAIL TO CURATORS
-                        emailMessage.RecipientAddress = "benjamin.haag@usda.gov";
+                        emailMessage.To = "benjamin.haag@usda.gov";
                         emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
                         emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
                         smtpService.SendMessage(emailMessage);
@@ -171,7 +188,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     else
                         if (viewModel.Action == "NRR_INFO")
                         {
-                        emailMessage.RecipientAddress = viewModel.WebCooperator.EmailAddress;
+                        emailMessage.To = viewModel.WebCooperator.EmailAddress;
                         emailMessage.Subject = "Request For Additional Information: Order " + webOrderRequest.ID;
                         emailMessage.Body = viewModel.InformationRequestText;
                         smtpService.SendMessage(emailMessage);
@@ -319,7 +336,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public PartialViewResult _Search(string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange)
+        public PartialViewResult _Search(string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange, string startDate, string endDate)
         {
             WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
@@ -349,6 +366,19 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 {
                     QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.intended_use_code", FieldValue = intendedUseCode, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
                     query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(selectedDateRange))
+                {
+                    string[] dateRangeTokens = selectedDateRange.Replace(" to ", "_").Split('_');
+                    if (dateRangeTokens != null)
+                    {
+                        QueryCriterion queryCriterionStart = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[0], SearchOperatorCode = ">=", DataType = "DATETIME" };
+                        query.QueryCriteria.Add(queryCriterionStart);
+
+                        QueryCriterion queryCriterionEnd = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[1], SearchOperatorCode = "<=", DataType = "DATETIME" };
+                        query.QueryCriteria.Add(queryCriterionEnd);
+                    }
                 }
 
                 webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);

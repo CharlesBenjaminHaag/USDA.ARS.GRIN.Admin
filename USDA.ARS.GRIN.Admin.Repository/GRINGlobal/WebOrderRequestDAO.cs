@@ -233,56 +233,12 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
         public IQueryable<WebOrderRequest> Search(Query query)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequests_Search";
-            int i = 0;
-            StringBuilder sbWhereClause = new StringBuilder();
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
+            string sqlWhereClause = String.Empty;
 
             try
             {
-                // TO DO: BUILD WHERE CLAUSE
-                foreach (var queryCriterion in query.QueryCriteria)
-                {
-                    if (i == 0)
-                        sbWhereClause.Append(" WHERE ");
-                    else
-                        sbWhereClause.Append(" AND ");
-
-                    // Time frame code indicates the construction of a seperate SQL statement, vs.
-                    // being incorporated into the primary one. (Likely need to refactor (CBH, 4/20/2021)).
-                    if ((queryCriterion.FieldName == "time_frame_code") && (queryCriterion.FieldValue != "0"))
-                    {
-                        sbWhereClause.Append(GetSQL(queryCriterion.FieldValue));
-                    }
-                    else
-                    {
-                        sbWhereClause.Append(queryCriterion.FieldName);
-                        sbWhereClause.Append(" ");
-                        sbWhereClause.Append(queryCriterion.SearchOperatorCode);
-
-                        if (queryCriterion.DataType == "NVARCHAR")
-                        {
-                            sbWhereClause.Append(" '");
-                        }
-
-                        if (queryCriterion.SearchOperatorCode == "LIKE")
-                        {
-                            sbWhereClause.Append("%");
-                        }
-
-                        sbWhereClause.Append(queryCriterion.FieldValue);
-
-                        if (queryCriterion.SearchOperatorCode == "LIKE")
-                        {
-                            sbWhereClause.Append("%");
-                        }
-
-                        if (queryCriterion.DataType == "NVARCHAR")
-                        {
-                            sbWhereClause.Append("' ");
-                        }
-                    }
-                    i++;
-                }
+                sqlWhereClause = query.GetSQLSyntax();
 
                 using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
@@ -291,7 +247,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
-                        cmd.Parameters.AddWithValue("@sql_where_clause", sbWhereClause.ToString());
+                        cmd.Parameters.AddWithValue("@sql_where_clause", sqlWhereClause);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {

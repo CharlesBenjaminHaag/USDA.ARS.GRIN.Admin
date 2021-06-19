@@ -93,6 +93,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 userEditViewModel.FirstName = user.Cooperator.FirstName;
                 userEditViewModel.LastName = user.Cooperator.LastName;
                 userEditViewModel.EmailAddress = user.Cooperator.EmailAddress;
+                userEditViewModel.Organization = user.Cooperator.Organization;
+                //abbrev
+                userEditViewModel.Job = user.Cooperator.Job;
+                userEditViewModel.AddressLine1 = user.Cooperator.Address.AddressLine1;
+                userEditViewModel.AddressLine2 = user.Cooperator.Address.AddressLine2;
+                userEditViewModel.AddressLine3 = user.Cooperator.Address.AddressLine3;
+                userEditViewModel.City = user.Cooperator.Address.City;
+                userEditViewModel.State = user.Cooperator.Address.State;
+                userEditViewModel.ZIP = user.Cooperator.Address.ZIP; 
                 userEditViewModel.PrimaryPhoneNumber = user.Cooperator.PrimaryPhoneNumber;
                 userEditViewModel.SelectedGroups = user.Groups;
             }

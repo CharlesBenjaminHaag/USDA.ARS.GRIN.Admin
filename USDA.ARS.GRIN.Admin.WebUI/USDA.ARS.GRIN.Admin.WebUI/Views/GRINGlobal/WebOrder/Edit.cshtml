@@ -19,15 +19,16 @@
 </style>
 
 @using (Html.BeginForm("Edit", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
-{@Html.HiddenFor(x => x.ID)
-@Html.HiddenFor(x => x.Action)
-@Html.HiddenFor(x => x.ActionNote)
-@Html.HiddenFor(x => x.WebCooperator.ID)
-@Html.HiddenFor(x => x.WebCooperator.EmailAddress)
-<div class="row">
-    <div class="col-md-12" style="margin-bottom:20px;">
-        @if (Model.IsReviewMode)
-        {
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.Action)
+    @Html.HiddenFor(x => x.ActionNote)
+    @Html.HiddenFor(x => x.WebCooperator.ID)
+    @Html.HiddenFor(x => x.WebCooperator.EmailAddress)
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom:20px;">
+            @if (Model.IsReviewMode)
+            {
             <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" value="Deny..." />
             @*<input type="button" id="btnEditEmail" class="btn btn-danger pull-right" value="Edit Requestor Email" />*@
             <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" value="Approve..." />

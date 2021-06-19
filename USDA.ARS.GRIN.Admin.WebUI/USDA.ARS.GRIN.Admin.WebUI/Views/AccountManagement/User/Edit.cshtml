@@ -24,13 +24,16 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Password</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(x => x.SysUserPassword, new { @class = "form-control" })
+                            @Html.TextBoxFor(x => x.SysUserPassword, new { @id="txtPassword", @class = "form-control", @type = "password" })
                             <span class="input-group-btn">
                                 <button type="button" id="btnGeneratePassword" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             </span>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="txtPasswordVisible" disabled="" class="form-control" value="@Model.SysUserPassword" />
                     </div>
                 </div>
                 <div class="box-footer">
@@ -99,40 +102,52 @@
                                 @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
                             </div>
                             <div class="col-md-3">
+                                <label>Job Title</label>
+                                @Html.TextBoxFor(x => x.Job, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:1em;">
+                            <div class="col-md-3">
                                 <label>Organization</label>
                                 @Html.TextBoxFor(x => x.Organization, new { @class = "form-control" })
                             </div>
-                        </div>
-                        <div class="row" style="margin-top:1em;">
                             <div class="col-md-3">
-                                <label>Address 1</label>
-                                @Html.TextBoxFor(x => x.AddressLine1, new { @class = "form-control" })
-                            </div>
-                            <div class="col-md-3">
-                                <label>Address 2</label>
-                                @Html.TextBoxFor(x => x.AddressLine2, new { @class = "form-control" })
-                            </div>
-                            <div class="col-md-3">
-                                <label>Address 3</label>
-                                @Html.TextBoxFor(x => x.AddressLine3, new { @class = "form-control" })
+                                <label>Organization Abbrev.</label>
+                                
                             </div>
                         </div>
-                        <div class="row" style="margin-top:1em;">
-                            <div class="col-md-2">
-                                <label>City</label>
-                                @Html.TextBoxFor(x => x.AddressLine1, new { @class = "form-control" })
+
+                            <div class="row" style="margin-top:1em;">
+                                <div class="col-md-3">
+                                    <label>Address 1</label>
+                                    @Html.TextBoxFor(x => x.AddressLine1, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Address 2</label>
+                                    @Html.TextBoxFor(x => x.AddressLine2, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Address 3</label>
+                                    @Html.TextBoxFor(x => x.AddressLine3, new { @class = "form-control" })
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                <label>State/Province</label>
-                                @Html.TextBoxFor(x => x.AddressLine2, new { @class = "form-control" })
-                            </div>
-                            <div class="col-md-2">
-                                <label>Postal Code/ZIP</label>
-                                @Html.TextBoxFor(x => x.ZIP, new { @class = "form-control" })
+                            <div class="row" style="margin-top:1em;">
+                                <div class="col-md-2">
+                                    <label>City</label>
+                                    @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    <label>State/Province</label>
+                                    @Html.TextBoxFor(x => x.State, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Postal Code/ZIP</label>
+                                    @Html.TextBoxFor(x => x.ZIP, new { @class = "form-control" })
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <div class="tab-pane" id="tab_2">
                     <div class="box-body">
 
@@ -164,6 +179,14 @@
     </div>
 </div>
 <script type="text/javascript">
+    $("#txtPassword").on('blur', function () {
+        $("#txtPasswordVisible").val($(this).val())
+    });
+
+    $("#txtPassword").on('keyup', function () {
+        $("#txtPasswordVisible").val($(this).val())
+    });
+
     $("#btnGeneratePassword").click(function () {
         var password = "";
 
@@ -172,7 +195,8 @@
             $.getJSON('@Url.Action("GeneratePassword")', function (password) {
             if (password != null && !jQuery.isEmptyObject(password))
             {
-                $("#SysUserPassword").val(password);
+                $("#txtPassword").val(password);
+                $("#txtPasswordVisible").val(password);
             };
         });
 

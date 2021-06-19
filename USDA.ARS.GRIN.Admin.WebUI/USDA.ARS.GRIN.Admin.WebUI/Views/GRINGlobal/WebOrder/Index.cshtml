@@ -105,16 +105,8 @@
                                     <label for="exampleInputEmail1">Intended Use</label>
                                     @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Select a code", new { @class = "form-control" })
                                 </div>
-                                @*<div class="form-group">
-                                    <label>Submitted</label>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" id="datepicker">
-                                    </div>
-                                </div>
                                 <div class="form-group">
+                                    <label>Order Submitted</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
@@ -122,12 +114,13 @@
                                         @Html.HiddenFor(x => x.SelectedDateRange)
                                         <input type="text" class="form-control pull-right" id="txtOrderDateRange" name="OrderDateRange">
                                     </div>
-                                </div>*@
+                                </div>
                             </div>
                             <!-- /.box-body -->
                         </div>
                     }
                     <button id="btnSearch" type="button" class="btn btn-primary">Search</button>
+                    <button id="btnReset" type="button" class="btn btn-primary">Reset</button>
                 </div>
                 <!-- /.tab-pane -->
             </div>
@@ -231,7 +224,7 @@
 
     $(function () {
         $('input[name="OrderDateRange"]').daterangepicker({
-            opens: 'left'
+            opens: 'right'
         }, function (start, end, label) {
                 $("#SelectedDateRange").val(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
@@ -240,6 +233,7 @@
 
     $(document).ready(function () {
         LoadWebOrderRequests("NRR_FLAGGED", 2);
+        $("#txtOrderDateRange").val("");
     });
 
     $(function () {
@@ -299,6 +293,11 @@
         }
     });
 
+    $("#btnReset").click(function () {
+        $("#section-search-criteria input").val("");
+        $("select").each(function () { this.selectedIndex = 0 });
+    });
+
     function SearchWebOrderRequests(statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, selectedDateRange)
     {
         var link = "";
@@ -306,17 +305,8 @@
         $("#SelectedStatusCode").val(statusCode);
         $("#SelectedTimeFrameCode").val(timeFrameCode);
 
-        //var $getStatusElement = $('li#' + statusCode);
-        //$getStatusElement.addClass('active');
-
-        //var $getTimeFrameElement = $('li#' + timeFrameCode);
-        //$getTimeFrameElement.addClass('active');
-
         try {
-
-
             link = '@Url.Action("_Search", "WebOrder")';
-
             $.ajax(
                 {
                     type: 'GET',

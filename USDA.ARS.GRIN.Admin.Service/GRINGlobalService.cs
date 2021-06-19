@@ -14,11 +14,13 @@ namespace USDA.ARS.GRIN.Admin.Service
     {
         protected AccessionInventoryAttachmentDAO _accessionInventoryAttachmentDAO = null;
         protected WebOrderRequestDAO _webOrderRequestDAO = null;
+        protected EmailTemplateDAO _emailTemplateDAO = null;
         
         public GRINGlobalService(string context)
         {
-           _accessionInventoryAttachmentDAO = new AccessionInventoryAttachmentDAO(context);
-            _webOrderRequestDAO = new WebOrderRequestDAO(context);   
+            _accessionInventoryAttachmentDAO = new AccessionInventoryAttachmentDAO(context);
+            _webOrderRequestDAO = new WebOrderRequestDAO(context);
+            _emailTemplateDAO = new EmailTemplateDAO(context);
         }
 
         public AccessionInventoryAttachment GetAccessionInventoryAttachment(int id)
@@ -79,5 +81,14 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _accessionInventoryAttachmentDAO.GetValidationCounts();
         }
+
+        #region Email
+
+        public IQueryable<EmailTemplate> GetEmailTemplates()
+        {
+            return _emailTemplateDAO.FindAll(); 
+        }
+
+        #endregion Email
     }
 }

@@ -341,7 +341,6 @@
     <Content Include="Views\GRINGlobal\WebOrder\_DEBUG.cshtml" />
     <Content Include="Views\Taxonomy\Species\_SearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Species\_Widget.cshtml" />
-    <Content Include="Views\GRINGlobal\WebOrder\EditEmail.cshtml" />
     <Content Include="Views\Taxonomy\Literature\Index.cshtml" />
     <Content Include="Views\Taxonomy\Literature\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_FolderEditModal.cshtml" />
@@ -358,6 +357,9 @@
     <Content Include="Views\Taxonomy\Folder\_Edit.cshtml" />
     <Content Include="Views\Taxonomy\Geography\_Search.cshtml" />
     <Content Include="Views\AccountManagement\User\Edit.cshtml" />
+    <Content Include="Views\GRINGlobal\Shared\_SidebarWebOrder.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\Email\Edit.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\Email\_Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -423,7 +425,7 @@
     <Compile Include="ViewModels\AccountManagement\UserListViewModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\EmailEditViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\EmailTemplateEditViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\GRINGlobalHomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\AccessionInventoryAttachmentListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\HomeViewModel.cs" />

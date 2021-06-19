@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization
 @using WebHelpers.Mvc5.Enum
+@using USDA.ARS.GRIN.Admin.Models;
 
 <!DOCTYPE html>
 <html>
@@ -37,16 +38,15 @@
         }
 
         .validation-summary-errors {
-            background-color:red;
-            color:white;
-            font-weight:bold;
-            padding:10px;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
         }
 
-        .text-danger  {
-            color:red;
+        .text-danger {
+            color: red;
         }
-       
     </style>
 
     @Styles.Render("~/Bundles/css")
@@ -55,7 +55,7 @@
         rel="stylesheet" type='text/css'>*@
     <!-- DataTables -->
     @*<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">*@
-    
+
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -73,12 +73,18 @@
     <div class="wrapper">
         @{Html.RenderAction("_Header", "Home");}
         @{Html.RenderAction("_Sidebar", "Home"); }
+
+        @{
+            UserSession userSession = Session["USER_SESSION"] as UserSession;
+        }
+
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
                     @TempData["context"]
                     @*@ViewContext.RouteData.Values["controller"].ToString() -- @ViewContext.RouteData.Values["action"].ToString()*@
                     <small>GGTools @DisplayHelper.GetVersion()</small>
+                    &nbsp;<span class="badge bg-red-active">@userSession.Environment</span>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i>@ViewContext.RouteData.Values["controller"].ToString()</a></li>
@@ -105,7 +111,7 @@
     @RenderSection("ViewSpecificJavascript", required: false)
     <script src="//cdn.jsdelivr.net/jquery.dirtyforms/2.0.0/jquery.dirtyforms.min.js" type="text/javascript"></script>
     @*<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>*@
-    
+
 </body>
 </html>
 

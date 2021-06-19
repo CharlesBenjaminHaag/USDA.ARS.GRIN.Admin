@@ -128,6 +128,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     sideBarPath = "~/Views/GRINGlobal/Shared/_SidebarGRINGlobal.cshtml";
                 }
 
+                if (requestedUrl.ToLower().Contains("weborder"))
+                {
+                    sideBarPath = "~/Views/GRINGlobal/Shared/_SidebarWebOrder.cshtml";
+                }
 
             }
             catch (Exception ex)

@@ -60,7 +60,9 @@ namespace USDA.ARS.GRIN.Admin.Models
                 {
                     if (queryCriterion.DataType == "DATETIME")
                     {
+                        sbWhereClause.Append("'");
                         sbWhereClause.Append(queryCriterion.FieldValue);
+                        sbWhereClause.Append("'");
                     }
                 }
                 i++;

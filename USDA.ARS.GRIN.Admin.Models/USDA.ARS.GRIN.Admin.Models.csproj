@@ -45,6 +45,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="EmailMessage.cs" />
+    <Compile Include="EmailTemplate.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Genesys\PassportDataExport.cs" />
     <Compile Include="Genesys\MCPDAccession.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="CodeValueReferenceItem.cs" />
     <Compile Include="FileMetaData.cs" />
+    <Compile Include="GRINGlobal\InventoryMaintenancePolicy.cs" />
     <Compile Include="GRINGlobal\OrderRequestAction.cs" />
     <Compile Include="GRINGlobal\WebOrderRequestAction.cs" />
     <Compile Include="GRINGlobal\Cooperator.cs" />
@@ -96,7 +98,6 @@
     <Compile Include="Taxonomy\CropWildRelative.cs" />
     <Compile Include="Taxonomy\Genus.cs" />
     <Compile Include="Geography.cs" />
-    <Compile Include="GeographyMap.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IReferencedEntity.cs" />
     <Compile Include="Taxonomy\ISTAReportRecord.cs" />
