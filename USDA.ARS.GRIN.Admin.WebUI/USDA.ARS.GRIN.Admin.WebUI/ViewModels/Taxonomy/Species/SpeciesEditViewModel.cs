@@ -10,7 +10,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
     public class SpeciesEditViewModel : BaseViewModel
     {
-        public int ID { get; set; }
         public int CurrentTaxonomySpeciesID { get; set; }
         public int NomenNumber { get; set; }
         public bool IsSpecificHybrid { get; set; }
@@ -52,5 +51,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public IEnumerable<CommonName> CommonNames { get; set; }
         public IEnumerable<Usage> Usages { get; set; }
         public IEnumerable<RegulationMapping> RegulationMappings { get; set; }
+
+        public SpeciesEditViewModel()
+        {
+            Citations = new List<Citation>().AsEnumerable();
+            Usages = new List<Usage>().AsEnumerable();
+            RegulationMappings = new List<RegulationMapping>().AsEnumerable();
+
+        }
     }
 }

@@ -8,6 +8,7 @@
 <!-- TABBED VIEW -->
 <!-- ============================================================================================== -->
 <div class="box box-primary" style="padding:10px;">
+    @Html.HiddenFor(x => x.DataSourceName)
     <div class="box-header with-border">
         <h3 class="box-title">Species</h3>
         <div class="box-tools pull-right">
@@ -84,11 +85,25 @@
             </div>
         </div>
     </div>
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
 </div>
+@Html.Partial("~/Views/Taxonomy/Folder/_Edit.cshtml")
 @Html.Partial("~/Views/Taxonomy/Geography/_Search.cshtml");
 
 <!-- Page Script -->
 <script type="text/javascript">
+
+    $(document).on({
+        ajaxStart: function () {
+            $(".overlay").show();
+        },
+        ajaxStop: function () {
+            $(".overlay").hide();
+        }
+    });
+
     $(document).ready(function(){
         var link = '@Url.Action("SpeciesListByUser", "Taxonomy")';
         $("#section-my-records").load(link);

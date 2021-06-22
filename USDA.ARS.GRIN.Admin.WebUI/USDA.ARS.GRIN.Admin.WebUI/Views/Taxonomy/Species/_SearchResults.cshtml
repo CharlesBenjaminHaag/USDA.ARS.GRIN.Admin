@@ -7,7 +7,7 @@
         <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
             <i class="fa fa-check-circle-o"></i>
         </button>
-        <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
+        <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-items-to-folder">
             <i class="fa fa-folder"></i>
         </button>
         <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("SpeciesEdit", "Taxonomy")'">
@@ -22,10 +22,10 @@
             </button>
         </div>
     </div>
-    <div class="table-responsive mailbox-messages ggtools">
+    <div class="table-responsive mailbox-messages">
         @if (Model.Species.Count() > 0)
         {
-            <table id="search-results" class="table table-hover table-striped">
+            <table id="search-results" class="table table-hover table-striped ggtools">
                 <thead>
                     <tr>
                         <th></th>
@@ -61,7 +61,7 @@
                             }
                         </td>
                         <td>
-                            <a href="@Url.Action("Edit", "Taxonomy/Species", new { id = species.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = species.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </td>
@@ -82,21 +82,21 @@
 </div>
 
 <script>
-
-    if ($.fn.dataTable.isDataTable('#search-results')) {
-        table = $('#search-results').DataTable();
-    }
-    else {
-        table = $('#search-results').DataTable({
-            'destroy': true,
-            'paging': true,
-            'lengthChange': false,
-            'searching': false,
-            'ordering': true,
-            'info': true,
-            'autoWidth': false
-        });
-    }
+    $('#search-results').DataTable();
+    //if ($.fn.dataTable.isDataTable('#search-results')) {
+    //    table = $('#search-results').DataTable();
+    //}
+    //else {
+    //    table = $('#search-results').DataTable({
+    //        'destroy': true,
+    //        'paging': true,
+    //        'lengthChange': false,
+    //        'searching': false,
+    //        'ordering': true,
+    //        'info': true,
+    //        'autoWidth': false
+    //    });
+    //}
 
     $(function () {
         $('.check-all-search-results').on('click', function () {

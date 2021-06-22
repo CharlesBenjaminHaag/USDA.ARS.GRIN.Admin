@@ -29,7 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 
         public CWRMapSearchViewModel()
         {
-           // _taxonomyService = new TaxonomyService();
+            DataSourceName = "taxonomy_cwr_map";
         }
 
         public IQueryable<CWRMap> CWRMaps 

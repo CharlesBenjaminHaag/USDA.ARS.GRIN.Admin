@@ -360,6 +360,7 @@
     <Content Include="Views\GRINGlobal\Shared\_SidebarWebOrder.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Email\Edit.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Email\_Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\_NoteSearchResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -8,6 +8,7 @@
 <!-- TABBED VIEW -->
 <!-- ============================================================================================== -->
 <div class="box box-primary" style="padding:10px;">
+    @Html.HiddenFor(x => x.DataSourceName)
     <div class="box-header with-border">
         <h3 class="box-title">Crop For CWR</h3>
         <div class="box-tools pull-right">
@@ -97,55 +98,7 @@
     </div>
 </div>
 
-<!-- ============================================================================================== -->
-<!-- ADD-TO-FOLDER MODAL -->
-<!-- ============================================================================================== -->
-<div class="modal fade" id="modal-add-search-results-to-folder">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <input type="hidden" id="hfFolderCategory" value="" />
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Add to Folder</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab_new_folder" data-toggle="tab" aria-expanded="true">New Folder</a></li>
-                                <li class=""><a href="#tab_select_folder" data-toggle="tab" aria-expanded="false">Saved Folders</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab_new_folder">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <input type="text" id="txtSearchResultsFolderTitle" class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnCreateFolderSearchResults" class="btn btn-info btn-flat">Create</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tab_select_folder">
-                                    <div class="alert alert-warning">
-                                        <h4><i class="icon fa fa-warning"></i>Please Note</h4>
-                                        This functionality will be available in the next release.
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
+@Html.Partial("~/Views/Taxonomy/Folder/_Edit.cshtml")
 
 <!-- Page Script -->
 <script type="text/javascript">
@@ -208,36 +161,6 @@
 
 
     });*@
-
-    $("#btnCreateFolderSearchResults").click(function () {
-        var valueArray = [];
-        var title = "";
-        var category = "Crop";
-        var source = "";
-
-        $('#modal-add-search-results-to-folder').modal('hide');
-
-        title = $("#txtSearchResultsFolderTitle").val();
-
-        //$("#section-search-results input:checked").each(function () {
-        $(".active input:checked").each(function () {
-            var id = $(this).attr("id");
-            valueArray.push(id);
-            }
-        );
-
-        $.ajax({
-            url: '@Url.Action("AddToFolder","Taxonomy")',
-            type: "GET",
-            data: {folderId: 0, folderTitle: title, dataSource: 'taxonomy_cwr_crop', values:valueArray.toString() },
-            cache: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-            }
-        });
-    });
 
     function DisplayRecordsByCooperator(cooperatorId)
     {

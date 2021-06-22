@@ -46,13 +46,13 @@
                                     @Html.Raw(citation.Title)
                                 </td>
                                 <td>
-                                    @citation.CitationLiterature.ReferenceTitle
+                                    @citation.Literature.ReferenceTitle
                                 </td>
                                 <td>
                                     @*<a href="@Url.Action("SpeciesCitationDelete", "Taxonomy", new { cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitId = trait.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
                                         <img class="img-action-button" src="~/Content/img/fa-trash.png" style="width:18px; height:18px;" />
-                                    </a>*@
-                                    @*<a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                    </a>
+                                    <a href="@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                                         <img class="img-action-button" src="~/Content/img/fa-edit.png" style="width:18px; height:18px;" />
                                     </a>*@
                                 </td>

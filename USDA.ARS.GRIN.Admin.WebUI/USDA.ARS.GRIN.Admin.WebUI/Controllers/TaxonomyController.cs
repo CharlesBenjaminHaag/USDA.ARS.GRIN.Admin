@@ -674,12 +674,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             CWRTrait cropTrait = new CWRTrait();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            // TO DO: HANDLE VALIDATION
-            //if (!ModelState.IsValid)
-            //{
-            //    return View("~/Views/Taxonomy/Crop/Trait/Edit.cshtml", viewModel);
-            //}
-
             try
             {
                 cropTrait.ID = viewModel.ID;
@@ -1033,6 +1027,57 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             speciesList = taxonomyService.FindSpecies(searchText, false);
             return Json(speciesList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SpeciesProtologueSearch(string searchText)
+        {
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
+            
+            try
+            {
+                referenceItems = taxonomyService.FindSpeciesNotes(searchText);
+                return PartialView(BASE_PATH + "Species/_NoteSearchResults.cshtml", referenceItems);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error");
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult SpeciesNameAuthoritySearch(string searchText)
+        {
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
+
+            try
+            {
+                referenceItems = taxonomyService.FindSpeciesAuthors(searchText);
+                return PartialView(BASE_PATH + "Species/_NoteSearchResults.cshtml", referenceItems);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error");
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult SpeciesNoteSearch(string searchText)
+        {
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
+
+            try
+            {
+                referenceItems = taxonomyService.FindSpeciesNotes(searchText);
+                return PartialView(BASE_PATH + "Species/_NoteSearchResults.cshtml", referenceItems);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error");
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
         }
 
         [HttpPost]
@@ -1409,8 +1454,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpPost]
         public ActionResult LiteratureEdit(LiteratureEditViewModel literatureEditViewModel)
         {
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            Literature literature = new Literature();
             try 
             {
+                literature.ID = literatureEditViewModel.ID;
+
+
+                taxonomyService.UpdateLiterature(literature);
                 return RedirectToAction("LiteratureEdit", "Taxonomy", new { id = literatureEditViewModel.ID });
             }
             catch (Exception ex)

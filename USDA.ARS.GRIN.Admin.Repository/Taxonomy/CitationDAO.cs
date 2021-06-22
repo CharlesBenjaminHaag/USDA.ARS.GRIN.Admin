@@ -88,143 +88,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             }
             return citation;
         }
-
-        public Literature GetLiterature(int id)
-        {
-            Literature literature = new Literature();
-            try
-            {
-                String commandText = "usp_TaxonomyLiterature_Select";
-
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@literature_id", id);
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                literature.ID = GetInt(reader["literature_id"].ToString());
-                                literature.Abbreviation = reader["abbreviation"].ToString();
-                                literature.StandardAbbreviation = reader["standard_abbreviation"].ToString();
-                                literature.ReferenceTitle = reader["reference_title"].ToString();
-                                literature.EditorAuthorName = reader["editor_author_name"].ToString();
-                                literature.TypeCode = reader["literature_type_code"].ToString();
-                                literature.PublicationYear = reader["publication_year"].ToString();
-                                literature.PublisherName = reader["publisher_name"].ToString();
-                                literature.URL = reader["url"].ToString();
-                                literature.Note = reader["note"].ToString();
-                                literature.CreatedDate = GetDate(reader["created_date"].ToString());
-                                literature.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
-                                literature.CreatedByCooperatorName = reader["created_by_name"].ToString();
-                                literature.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                                literature.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
-                                literature.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return literature;
-        }
-
-        public List<Literature> SearchLiterature(string searchText)
-        {
-            List<Literature> literatures = new List<Literature>();
-
-            try
-            {
-                String commandText = "usp_TaxonomyLiterature_Search";
-
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@sql_where_clause", searchText);
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                Literature literature = new Literature();
-                                literature.ID = GetInt(reader["literature_id"].ToString());
-                                literature.Abbreviation = reader["abbreviation"].ToString();
-                                literature.StandardAbbreviation = reader["standard_abbreviation"].ToString();
-                                literature.ReferenceTitle = reader["reference_title"].ToString();
-                                literature.EditorAuthorName = reader["editor_author_name"].ToString();
-                                literature.TypeCode = reader["literature_type_code"].ToString();
-                                literature.PublicationYear = reader["publication_year"].ToString();
-                                literature.PublisherName = reader["publisher_name"].ToString();
-                                literature.URL = reader["url"].ToString();
-                                literature.Note = reader["note"].ToString();
-                                literature.CitationCount = GetInt(reader["citation_count"].ToString());
-                                literatures.Add(literature);
-
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return literatures;
-        }
-
-        public List<Literature> SearchLiterature(Query query)
-        {
-            int i = 0;
-            StringBuilder sbWhereClause = new StringBuilder();
-            foreach (QueryCriterion queryCriterion in query.QueryCriteria)
-            {
-                if (i == 0)
-                    sbWhereClause.Append(" WHERE ");
-                else
-                    sbWhereClause.Append(" AND ");
-
-                sbWhereClause.Append(queryCriterion.FieldName);
-                sbWhereClause.Append(" ");
-                sbWhereClause.Append(queryCriterion.SearchOperatorCode);
-                sbWhereClause.Append(" ");
-
-                if (queryCriterion.DataType == "NVARCHAR")
-                {
-                    if (queryCriterion.FieldValue == "NULL")
-                    {
-                        sbWhereClause.Append(queryCriterion.FieldValue);
-                    }
-                    else
-                    {
-                        sbWhereClause.Append("'");
-                        if (queryCriterion.SearchOperatorCode == "LIKE")
-                        {
-                            sbWhereClause.Append("%");
-                        }
-                        sbWhereClause.Append(queryCriterion.FieldValue);
-                        if (queryCriterion.SearchOperatorCode == "LIKE")
-                        {
-                            sbWhereClause.Append("%");
-                        }
-                        sbWhereClause.Append("'");
-                    }
-                }
-                i++;
-            }
-
-            return SearchLiterature(sbWhereClause.ToString());
-        }
-
+     
         public ResultContainer Remove(Citation entity)
         {
             throw new NotImplementedException();
@@ -515,5 +379,155 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
         {
             throw new NotImplementedException();
         }
+
+        #region Literature
+
+        public Literature GetLiterature(int id)
+        {
+            Literature literature = new Literature();
+            try
+            {
+                String commandText = "usp_TaxonomyLiterature_Select";
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@literature_id", id);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                literature.ID = GetInt(reader["literature_id"].ToString());
+                                literature.Abbreviation = reader["abbreviation"].ToString();
+                                literature.StandardAbbreviation = reader["standard_abbreviation"].ToString();
+                                literature.ReferenceTitle = reader["reference_title"].ToString();
+                                literature.EditorAuthorName = reader["editor_author_name"].ToString();
+                                literature.TypeCode = reader["literature_type_code"].ToString();
+                                literature.PublicationYear = reader["publication_year"].ToString();
+                                literature.PublisherName = reader["publisher_name"].ToString();
+                                literature.URL = reader["url"].ToString();
+                                literature.Note = reader["note"].ToString();
+                                literature.CreatedDate = GetDate(reader["created_date"].ToString());
+                                literature.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                literature.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                literature.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                literature.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                literature.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return literature;
+        }
+
+        public ResultContainer InsertLiterature(Literature literature)
+        {
+            return null;
+        }
+        public ResultContainer UpdateLiterature(Literature literature)
+        {
+            return null;
+        }
+
+        public List<Literature> SearchLiterature(string searchText)
+        {
+            List<Literature> literatures = new List<Literature>();
+
+            try
+            {
+                String commandText = "usp_TaxonomyLiterature_Search";
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@sql_where_clause", searchText);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Literature literature = new Literature();
+                                literature.ID = GetInt(reader["literature_id"].ToString());
+                                literature.Abbreviation = reader["abbreviation"].ToString();
+                                literature.StandardAbbreviation = reader["standard_abbreviation"].ToString();
+                                literature.ReferenceTitle = reader["reference_title"].ToString();
+                                literature.EditorAuthorName = reader["editor_author_name"].ToString();
+                                literature.TypeCode = reader["literature_type_code"].ToString();
+                                literature.PublicationYear = reader["publication_year"].ToString();
+                                literature.PublisherName = reader["publisher_name"].ToString();
+                                literature.URL = reader["url"].ToString();
+                                literature.Note = reader["note"].ToString();
+                                literature.CitationCount = GetInt(reader["citation_count"].ToString());
+                                literatures.Add(literature);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return literatures;
+        }
+
+        public List<Literature> SearchLiterature(Query query)
+        {
+            int i = 0;
+            StringBuilder sbWhereClause = new StringBuilder();
+            foreach (QueryCriterion queryCriterion in query.QueryCriteria)
+            {
+                if (i == 0)
+                    sbWhereClause.Append(" WHERE ");
+                else
+                    sbWhereClause.Append(" AND ");
+
+                sbWhereClause.Append(queryCriterion.FieldName);
+                sbWhereClause.Append(" ");
+                sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+                sbWhereClause.Append(" ");
+
+                if (queryCriterion.DataType == "NVARCHAR")
+                {
+                    if (queryCriterion.FieldValue == "NULL")
+                    {
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                    }
+                    else
+                    {
+                        sbWhereClause.Append("'");
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append(queryCriterion.FieldValue);
+                        if (queryCriterion.SearchOperatorCode == "LIKE")
+                        {
+                            sbWhereClause.Append("%");
+                        }
+                        sbWhereClause.Append("'");
+                    }
+                }
+                i++;
+            }
+
+            return SearchLiterature(sbWhereClause.ToString());
+        }
+
+
+        #endregion
     }
 }

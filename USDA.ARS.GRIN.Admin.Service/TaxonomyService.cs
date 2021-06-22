@@ -100,6 +100,21 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Search("WHERE ts.modified_date > DATEADD(MONTH, -1, GETDATE())");
         }
 
+        public List<ReferenceItem> FindSpeciesAuthors(string searchText)
+        {
+            return _speciesDAO.FindSpeciesAuthors(searchText);
+        }
+
+        public List<ReferenceItem> FindSpeciesProtologues(string searchText)
+        {
+            return _speciesDAO.FindSpeciesProtologues(searchText);
+        }
+
+        public List<ReferenceItem> FindSpeciesNotes(string searchText)
+        {
+            return _speciesDAO.FindSpeciesNotes(searchText);
+        }
+
         public ResultContainer AddSpecies(Species species)
         {
             return _speciesDAO.Add(species);
@@ -308,6 +323,16 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.GetLiterature(id);
         }
+
+        public ResultContainer AddLiterature(Literature literature)
+        {
+            return _citationDAO.InsertLiterature(literature);
+        }
+        public ResultContainer UpdateLiterature(Literature literature)
+        {
+            return _citationDAO.UpdateLiterature(literature);
+        }
+
 
         public List<Literature> SearchLiterature(string searchText)
         {

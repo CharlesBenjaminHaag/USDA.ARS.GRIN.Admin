@@ -1,258 +1,258 @@
 ﻿USE [gringlobal]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyTraitTypes_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyTraitTypes_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyTraitTypes_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesSynonym_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesSynonym_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesSynonym_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesRelatedSpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesRelatedSpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesRelatedSpecies_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesNameAndSynonym_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesNameAndSynonym_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesNameAndSynonym_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesName_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesName_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesName_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByUser_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByUser_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesByUser_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByName_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByName_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesByName_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesAcceptedName_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpeciesAcceptedName_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpecies_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpecies_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpecies_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomySpecies_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationsByWeek_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationsByWeek_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulationsByWeek_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulations_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulations_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulationMap_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulationMap_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulation_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulation_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegulation_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegions_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegions_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyRegions_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyNote_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyNote_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyNote_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyMunicipalities_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyMunicipalities_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyMunicipalities_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyLiterature_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyLiterature_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyGenii_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyGenii_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenera_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenera_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyGenera_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFoldersByUser_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFoldersByUser_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFoldersByUser_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderLiteratureItems_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderLiteratureItems_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderLiteratureItems_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMaps_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMaps_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderItemMaps_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderItemMap_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderItemMap_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemCropMaps_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemCropMaps_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderItemCropMaps_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCWRMapItems_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCWRMapItems_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderCWRMapItems_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCropForCWRItems_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCropForCWRItems_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolderCropForCWRItems_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolder_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolder_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolder_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFolder_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFiscalYearTotals_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFiscalYearTotals_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFiscalYearTotals_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFamilies_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyFamilies_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrTraits_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrTraits_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrTrait_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrTrait_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrTrait_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrTrait_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMapsByCrop_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMapsByCrop_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMapsByCrop_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMaps_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMaps_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMap_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMap_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMap_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrMap_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByWeek_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByWeek_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCropsByWeek_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByUser_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByUser_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCropsByUser_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByMonth_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByMonth_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCropsByMonth_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrops_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrops_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrops_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrop_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrop_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrop_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCwrCrop_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCountries_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCountries_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCountries_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyContinents_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyContinents_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyContinents_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCommonNames_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCommonNames_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCommonNames_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsBySpecies_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsBySpecies_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByLiterature_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByLiterature_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsByLiterature_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByGenus_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByGenus_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsByGenus_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByFamily_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByFamily_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsByFamily_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByCategory_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByCategory_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsByCategory_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByAccession_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByAccession_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitationsByAccession_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitations_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitations_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitations_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitation_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitation_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitation_Search]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyCitation_Insert]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyAccessionsBySpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyAccessionsBySpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxonomyAccessionsBySpecies_Select]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxnonomyGeniiSelect]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxnonomyGeniiSelect]    Script Date: 6/19/2021 2:02:06 PM ******/
 DROP PROCEDURE IF EXISTS [dbo].[usp_TaxnonomyGeniiSelect]
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxnonomyGeniiSelect]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxnonomyGeniiSelect]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -275,7 +275,7 @@ BEGIN
 		tg.taxonomy_family_id = @taxonomy_family_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyAccessionsBySpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyAccessionsBySpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -327,7 +327,7 @@ AND
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -444,7 +444,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -497,7 +497,7 @@ BEGIN
 	)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -551,7 +551,7 @@ BEGIN
 		c.citation_id = @citation_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitation_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -636,7 +636,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitations_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitations_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -741,7 +741,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByAccession_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByAccession_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -818,7 +818,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByCategory_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByCategory_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -930,7 +930,7 @@ BEGIN
 			END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByFamily_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByFamily_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1007,7 +1007,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByGenus_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByGenus_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1084,7 +1084,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByLiterature_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsByLiterature_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1132,7 +1132,7 @@ BEGIN
 		cit.literature_id = @literature_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1214,7 +1214,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCitationsBySpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1261,7 +1261,7 @@ BEGIN
 		cit.taxonomy_species_id = @taxonomy_species_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCommonNames_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCommonNames_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1296,7 +1296,7 @@ BEGIN
 	WHERE taxonomy_species_id = @taxonomy_species_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyContinents_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyContinents_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1326,7 +1326,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCountries_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCountries_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1376,7 +1376,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1397,7 +1397,7 @@ BEGIN
 		taxonomy_cwr_crop_id = @taxonomy_cwr_crop_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1421,7 +1421,7 @@ AS
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1449,7 +1449,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrop_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1472,7 +1472,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1493,7 +1493,7 @@ BEGIN
 		taxonomy_cwr_crop_id IN (@taxonomy_cwr_crop_id_list)
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1555,7 +1555,7 @@ BEGIN
 	--FROM @Results
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCrops_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1585,7 +1585,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByMonth_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByMonth_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1617,7 +1617,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByUser_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByUser_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1649,7 +1649,7 @@ BEGIN
 		owned_by = @cooperator_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByWeek_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrCropsByWeek_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1680,7 +1680,7 @@ BEGIN
 		created_date > DATEADD(DAY, -7, GETDATE()) 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1707,7 +1707,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1765,7 +1765,7 @@ BEGIN
 --END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1805,7 +1805,7 @@ BEGIN
 		taxonomy_cwr_map_id = @taxonomy_cwr_map_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMap_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1851,7 +1851,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1877,7 +1877,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMaps_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1924,7 +1924,7 @@ BEGIN
    EXECUTE sp_executesql @sql_statement
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMapsByCrop_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrMapsByCrop_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1966,7 +1966,7 @@ BEGIN
 		crop_common_name ASC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1993,7 +1993,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2046,7 +2046,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2095,7 +2095,7 @@ BEGIN
 		tct.taxonomy_cwr_trait_id = @taxonomy_cwr_trait_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTrait_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2139,7 +2139,7 @@ BEGIN
 	END CATCH
 	END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2201,7 +2201,7 @@ BEGIN
    EXECUTE sp_executesql @sqlStatement
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyCwrTraits_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2256,7 +2256,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2293,7 +2293,7 @@ FROM
    EXECUTE sp_executesql @sql_statement
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFamilies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2314,7 +2314,7 @@ BEGIN
 		tf.family_name
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFiscalYearTotals_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFiscalYearTotals_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2530,7 +2530,7 @@ and t.modified_by = @cooperator_id
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2559,7 +2559,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2612,7 +2612,7 @@ BEGIN
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2649,7 +2649,7 @@ BEGIN
 		taxonomy_folder_id = @taxonomy_folder_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolder_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2695,7 +2695,7 @@ END
 
 UPDATE taxonomy_folder SET modified_by = 48, modified_date = GETDATE()
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCropForCWRItems_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCropForCWRItems_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2735,7 +2735,7 @@ WHERE
 	tfim.taxonomy_folder_id = @taxonomy_folder_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCWRMapItems_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderCWRMapItems_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2783,7 +2783,7 @@ WHERE
 	tfim.taxonomy_folder_id = @taxonomy_folder_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemCropMaps_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemCropMaps_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2829,7 +2829,7 @@ WHERE
 	tfim.taxonomy_folder_id = @taxonomy_folder_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Delete]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Delete]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2858,7 +2858,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMap_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2901,7 +2901,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMaps_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderItemMaps_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2928,7 +2928,7 @@ BEGIN
 		taxonomy_folder_id = @taxonomy_folder_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderLiteratureItems_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFolderLiteratureItems_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2972,7 +2972,7 @@ AND
 	tfim.taxonomy_folder_id = @taxonomy_folder_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFoldersByUser_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyFoldersByUser_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3013,7 +3013,7 @@ BEGIN
 		is_favorite DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenera_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenera_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3059,7 +3059,7 @@ BEGIN
 		tg.genus_name
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3117,7 +3117,7 @@ BEGIN
 		subseries_name LIKE '%' + @search_string + '%'
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyGenii_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3164,7 +3164,7 @@ BEGIN
 		taxonomy_family_id = @taxonomy_family_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3214,7 +3214,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyLiterature_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3253,7 +3253,7 @@ BEGIN
 		literature_id = @literature_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyMunicipalities_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyMunicipalities_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3305,7 +3305,7 @@ AND
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyNote_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyNote_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3327,7 +3327,7 @@ BEGIN
 	EXECUTE sp_executesql @sql_statement
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegions_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegions_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3366,7 +3366,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3398,7 +3398,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3438,7 +3438,7 @@ BEGIN
 		taxonomy_regulation_id = @taxonomy_regulation_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulation_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3471,7 +3471,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3501,7 +3501,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationMap_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3533,7 +3533,7 @@ BEGIN CATCH
 END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3579,7 +3579,7 @@ BEGIN
 	
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulations_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3616,7 +3616,7 @@ BEGIN
 		tr.geography_id = g.geography_id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationsByWeek_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyRegulationsByWeek_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3655,7 +3655,7 @@ BEGIN
 		tr.created_date > DATEADD(DAY, -7, GETDATE()) 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Insert]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Insert]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3771,7 +3771,7 @@ BEGIN
 	--END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3869,7 +3869,7 @@ BEGIN
 	EXECUTE sp_executesql @sql_statement
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4041,7 +4041,7 @@ where t.taxonomy_species_id = @taxonomy_species_id
 	--	taxonomy_species_id = @taxonomy_species_id 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Update]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpecies_Update]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4123,7 +4123,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4169,7 +4169,7 @@ BEGIN
 		note LIKE '%' + @search_text + '%'
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesAcceptedName_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4196,7 +4196,7 @@ BEGIN
 	ORDER BY name
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByName_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByName_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4237,7 +4237,7 @@ BEGIN
 		alternate_name LIKE '%' + @search_string + '%' 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByUser_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesByUser_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4335,7 +4335,7 @@ BEGIN
 		ts.owned_by = @cooperator_id 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesName_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesName_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4429,7 +4429,7 @@ BEGIN
 		ts.species_name LIKE '%' + @search_text + '%')
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesNameAndSynonym_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesNameAndSynonym_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4537,7 +4537,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesRelatedSpecies_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesRelatedSpecies_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4575,7 +4575,7 @@ ORDER BY
 	synonym_code, name
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesSynonym_Search]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomySpeciesSynonym_Search]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4683,7 +4683,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[usp_TaxonomyTraitTypes_Select]    Script Date: 5/26/2021 9:23:07 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_TaxonomyTraitTypes_Select]    Script Date: 6/19/2021 2:02:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

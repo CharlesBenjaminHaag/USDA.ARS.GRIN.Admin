@@ -8,5 +8,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class SpeciesHomeViewModel : BaseViewModel
     {
+        public SpeciesHomeViewModel()
+        {
+            DataSourceName = "taxonomy_species";
+        }
+
     }
 }

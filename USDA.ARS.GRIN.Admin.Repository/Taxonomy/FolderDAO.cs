@@ -134,7 +134,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@is_shared", folder.IsShared);
                         cmd.Parameters.AddWithValue("@created_by", folder.CreatedByCooperatorID);
                         cmd.Parameters.AddWithValue("@data_source_name", folder.DataSourceName);
-                        cmd.Parameters.AddWithValue("@data_source_title", folder.DataSourceTitle);
 
                         SqlParameter retErrorParam = new SqlParameter();
                         retErrorParam.SqlDbType = System.Data.SqlDbType.Int;

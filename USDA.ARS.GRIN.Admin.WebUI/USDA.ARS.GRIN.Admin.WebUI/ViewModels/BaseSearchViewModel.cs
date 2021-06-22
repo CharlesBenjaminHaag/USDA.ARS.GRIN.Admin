@@ -10,7 +10,7 @@ using USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
-    public abstract class BaseSearchViewModel
+    public abstract class BaseSearchViewModel: BaseViewModel
     {
         public User AuthenticatedUser
         {

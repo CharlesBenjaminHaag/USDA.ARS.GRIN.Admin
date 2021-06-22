@@ -32,10 +32,10 @@
     </div>
 }
 
-@using (Html.BeginForm("Edit", "Taxonomy/Species", FormMethod.Post, new { id = "frmEdit" }))
+@using (Html.BeginForm("SpeciesEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.ValidationSummary(true)
-   
+
     <!-- DETAILS SECTION -->
     <div class="box box-default">
         <div class="box-header" style="background-color:#ebebeb;">
@@ -70,20 +70,27 @@
             <div class="row">
                 <div class="col-md-12">
                     <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
-                    <input type="button" class="btn btn-default pull-right" style="margin-right:5px;" value="Add Subtaxa" onclick="location.href='@Url.Action("AddSubTaxa", "Taxonomy/Species", new { id = Model.ID })'" />
-                    <input type="button" class="btn btn-default pull-right" style="margin-right:5px;" value="Add Basionym" />
+                    @if (Model.ID > 0)
+                    {
+                        <input type="button" class="btn btn-default pull-right" disabled="" style="margin-right:5px;" value="Add Subtaxa" onclick="location.href='@Url.Action("AddSubTaxa", "Taxonomy/Species", new { id = Model.ID })'" />
+                        <input type="button" class="btn btn-default pull-right" disabled="" style="margin-right:5px;" value="Add Basionym" />
+                    }
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-horizontal">
                         <div class="box-body">
-                            <div class="form-group my-auto">
-                                <label for="txtGenus" class="col-sm-2 control-label">ID</label>
-                                <div class="col-sm-1">
-                                    <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+
+                            @if (Model.ID > 0)
+                            {
+                                <div class="form-group my-auto">
+                                    <label for="txtGenus" class="col-sm-2 control-label">ID</label>
+                                    <div class="col-sm-1">
+                                        <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div>
                                 <div class="form-group">
                                     <label for="txtGenus" class="col-sm-2 control-label">Genus</label>
@@ -190,10 +197,10 @@
 }
 
 <!--
-       =====================================================================================
-           MODALS
-       =====================================================================================
-       -->
+=====================================================================================
+MODALS
+=====================================================================================
+-->
 <div class="modal fade" id="modal-genus-search">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -328,7 +335,11 @@
     <!-- /.modal-dialog -->
 </div>
 
-
+<!--
+=====================================================================================
+CITATIONS
+=====================================================================================
+-->
 @if (Model.ID > 0)
 {
     <!--
@@ -463,10 +474,10 @@
 
     $("#btnSearchProtologues").click(function () {
 
-        var url = "/Species/FindProtologues/";
-        var inputSearchString = $("#txtSearchProtologues").val();
+        var url = "/Taxonomy/SpeciesProtologueSearch/";
+        var inputSearchText = $("#txtSearchProtologues").val();
 
-        $.post(url, { searchString: inputSearchString })
+        $.post(url, { searchText: inputSearchText })
             .done(function (response) {
                 $("#section-protologue-search-results").html(response);
             });
@@ -474,10 +485,10 @@
 
     $("#btnSearchAuthors").click(function () {
 
-        var url = "/Species/FindAuthors/";
-        var inputSearchString = $("#txtSearchAuthors").val();
+        var url = "/Taxonomy/SpeciesNameAuthoritySearch/";
+        var inputSearchText = $("#txtSearchAuthors").val();
 
-        $.post(url, { searchString: inputSearchString })
+        $.post(url, { searchText: inputSearchText })
             .done(function (response) {
                 $("#section-author-search-results").html(response);
             });
@@ -485,10 +496,10 @@
 
     $("#btnSearchNotes").click(function () {
 
-        var url = "/Species/FindNotes/";
-        var inputSearchString = $("#txtSearchNotes").val();
+        var url = "/Taxonomy/SpeciesNoteSearch/";
+        var inputSearchText = $("#txtSearchNotes").val();
 
-        $.post(url, { searchString: inputSearchString })
+        $.post(url, { searchText: inputSearchText })
             .done(function (response) {
                 $("#section-note-search-results").html(response);
             });

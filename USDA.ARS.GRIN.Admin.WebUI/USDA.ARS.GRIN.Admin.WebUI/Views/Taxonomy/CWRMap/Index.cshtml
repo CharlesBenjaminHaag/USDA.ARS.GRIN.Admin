@@ -9,8 +9,8 @@
 <!-- ============================================================================================== -->
 <div class="box box-primary" style="padding:10px;">
     @*<div class="overlay">
-        <i class="fa fa-refresh fa-spin"></i>
-    </div>*@
+            <i class="fa fa-refresh fa-spin"></i>
+        </div>*@
 
     <div class="box-header with-border">
         <h3 class="box-title">CWR Map</h3>
@@ -103,59 +103,7 @@
         </div>
     </div>
 </div>
-
-<!-- ============================================================================================== -->
-<!-- ADD-TO-FOLDER MODAL -->
-<!-- ============================================================================================== -->
-<div class="modal fade" id="modal-add-search-results-to-folder">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <input type="hidden" id="hfFolderCategory" value="" />
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Add to Folder</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab_new_folder" data-toggle="tab" aria-expanded="true">New Folder</a></li>
-                                <li class=""><a href="#tab_select_folder" data-toggle="tab" aria-expanded="false">Saved Folders</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab_new_folder">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <input type="text" id="txtSearchResultsFolderTitle" class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnCreateFolderSearchResults" class="btn btn-info btn-flat">Create</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tab_select_folder">
-                                    <div class="alert alert-warning">
-                                        <h4><i class="icon fa fa-warning"></i>Please Note</h4>
-                                        This functionality will be available in the next release.
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+@Html.Partial("~/Views/Taxonomy/Folder/_Edit.cshtml")
 <!--
 =====================================================================================
 CWR-TRAIT MODAL
@@ -219,7 +167,7 @@ CWR-TRAIT MODAL
 
 <!-- Page Script -->
 <script type="text/javascript">
-    
+
     $(document).ready(function () {
         var cooperatorId = $("#hfDefaultCooperatorID").val();
         $("#ddlSelectCooperator").val(cooperatorId);
@@ -260,7 +208,7 @@ CWR-TRAIT MODAL
         var isShared = false;
         var dataSourceName = "";
         var dataSourceTitle = "";
-      
+
         $('#modal-add-search-results-to-folder').modal('hide');
 
         folderTitle = $("#txtSearchResultsFolderTitle").val();
@@ -269,7 +217,7 @@ CWR-TRAIT MODAL
         //TODO isShared = ;
         dataSourceName = $("#DataSourceName").val();
         dataSourceTitle = $("#DataSourceTitle").val();
-        
+
         $(".active input:checked").each(function () {
             var id = $(this).attr("id");
             valueArray.push(id);

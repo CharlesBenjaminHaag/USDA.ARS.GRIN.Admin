@@ -39,9 +39,6 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public DateTime NameVerifiedDate { get; set; }
         public string Name { get; set; }
         public string ProtologueVirtualPath { get; set; }
-
-        public string Note { get; set; }
-
         public string AlternateName { get; set; }
         public int AccessionCount { get; set; }
        
@@ -52,6 +49,14 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public List<Usage> Usages { get; set; }
         public List<Accession> Accessions { get; set; }
 
-        public List<Species> RelatedSpecies { get; set; }
+        public Species()
+        {
+            Citations = new List<Citation>();
+            CommonNames = new List<CommonName>().AsEnumerable();
+            Geographies = new List<Geography>();
+            RegulationMappings = new List<RegulationMapping>();
+            Usages = new List<Usage>();
+            Accessions = new List<Accession>();
+        }
     }
 }
