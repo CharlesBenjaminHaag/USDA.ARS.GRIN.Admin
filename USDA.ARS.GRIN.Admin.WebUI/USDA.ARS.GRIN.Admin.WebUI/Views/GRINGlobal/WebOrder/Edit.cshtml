@@ -284,7 +284,8 @@
                             <th>Status</th>
                             <th>Accession</th>
                             <th>Species</th>
-                            <th>Site</th>
+                            <th>Site Long Name</th>
+                            <th>Site Short Name</th>
                             <th>Distribution Form</th>
                         </tr>
                     </thead>
@@ -299,6 +300,7 @@
                                     <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
                                 </td>
                                 <td>@webOrderRequestItem.Site.LongName</td>
+                                <td>@webOrderRequestItem.Site.ShortName</td>
                                 <td>@webOrderRequestItem.DistributionForm</td>
                             </tr>
                         }

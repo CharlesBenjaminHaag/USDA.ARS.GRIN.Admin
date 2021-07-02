@@ -8,8 +8,8 @@ namespace USDA.ARS.GRIN.Admin.Models
 {
     public class Site : BaseModel, IEntity
     {
-        public int ID { get; set; }
         public string ShortName { get; set; }
         public string LongName { get; set; }
+        public string EmailAddressList { get; set; }
     }
 }

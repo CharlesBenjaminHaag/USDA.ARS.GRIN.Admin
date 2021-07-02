@@ -21,8 +21,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
         [AllowHtml]
         public string InformationRequestText { get; set; }
         public string SpecialInstruction { get; set; }
-
         public bool IsReviewMode { get; set; }
+        public string EmailAddressList { get; set; }
         public bool IsLocked { get; set; }
         public Cooperator Cooperator { get; set; }
         public Cooperator WebCooperator { get; set; } 

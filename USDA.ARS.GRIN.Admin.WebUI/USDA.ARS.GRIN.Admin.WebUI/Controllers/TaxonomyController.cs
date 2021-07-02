@@ -877,7 +877,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View();
         }
 
-        public ActionResult SpeciesEdit(int id = 0)
+        public ActionResult SpeciesEdit(int id = 0, int currentId=0, string synonymCode = "")
         {
             Species species = null;
             SpeciesEditViewModel viewModel = null;
@@ -886,6 +886,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
+                // TODO
+                // SYN CODE
+                // =, A, B, I, S
+                // 1. Show parent species widget (see trait page)
+                // 2. Configure edit section for new-record addition
+ 
                 if (id > 0)
                 {
                     TempData["context"] = "Edit Species";
@@ -929,8 +935,19 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
                 else
                 {
-                    TempData["context"] = "Add Species";
-                    viewModel = new SpeciesEditViewModel();
+                    if (currentId > 0)
+                    {
+                        // TODO: GET PARENT SPECIES DATA
+                        viewModel.ParentSpecies = _taxonomyService.GetSpecies(currentId);
+                    }
+                    else
+                    {
+
+                        TempData["context"] = "Add Species";
+                        viewModel = new SpeciesEditViewModel();
+                        viewModel.CurrentTaxonomySpeciesID = currentId;
+                        viewModel.SynonymCode = synonymCode;
+                    }
                 }
             }
             catch (Exception ex)

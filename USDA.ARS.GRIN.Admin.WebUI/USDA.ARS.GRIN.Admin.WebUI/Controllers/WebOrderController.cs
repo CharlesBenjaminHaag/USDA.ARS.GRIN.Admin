@@ -102,7 +102,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult EmailTemplateHome()
+        public ActionResult EmailTemplateEdit(int id = 0)
         {
             TempData["context"] = "Edit Email Templates";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
@@ -119,13 +119,27 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
                 EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
                 //emailTemplateEditViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
+                return PartialView("~/Views/GRINGlobal/WebOrder/Email/_Detail.cshtml", emailTemplateEditViewModel);
             }
             catch (Exception ex)
             {
                 Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
-            return null;
+        }
+
+        [HttpPost]
+        public ActionResult EmailTemplateEdit(EmailTemplateEditViewModel emailTemplateEditViewModel)
+        {
+            try 
+            {
+                return RedirectToAction("EmailTemplateEdit","WebOrder", new { id = emailTemplateEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         [HttpPost]
@@ -241,7 +255,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.IntendedUseCode = webOrderRequest.IntendedUseCode;
                 viewModel.IntendedUseNote = webOrderRequest.IntendedUseNote;
                 viewModel.Note = webOrderRequest.Note;
+                viewModel.EmailAddressList = webOrderRequest.EmailAddressList;
 
+                // TODO: Refactor; use stored template BH 7/2/21
                 viewModel.InformationRequestText = "Germplasm Requestor:";
                 viewModel.InformationRequestText += "The U.S.National Plant Germplasm System(NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.";
                 viewModel.InformationRequestText += "Please provide additional relevant information about your project to justify the need for specific NPGS germplasm, instead of using commercially available plant material.";
@@ -281,7 +297,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, ex.Message);
             }
             return viewModel;
         }
@@ -390,6 +406,67 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 Log.Error(ex, ex.Message);
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
+        }
+
+        protected string GetEmailAddressList(int emailCategory, string siteShortName)
+        {
+            string emailAddressList = String.Empty;
+
+            // TODO
+
+            //         CASE s.site_short_name
+            //   when 'BRW' then 'lj.grauke@ars.usda.gov'
+            //  -- when 'CLO' then 'merrelyn.spinks@ars.usda.gov'
+            //   when 'COR' then 'Missy.Fix@ars.usda.gov'
+            //   when 'COT' then 'james.frelichowski@ars.usda.gov;janna.love@ars.usda.gov'
+            //   when 'DAV' then 'ordersNCGR.davis@ars.usda.gov'
+            //   when 'DBMU' then 'benjamin.haag@usda.gov'
+            //   when 'DLEG' then 'mjohnson@ag.arizona.edu'
+            //  -- when 'FLAX' then 'nc7mb@ars-grin.gov'
+            //  -- when 'FRA' then 'esnake@mis.net'
+            //   when 'GEN' then 'dawn.dellefave@ars.usda.gov;ben.gutierrez@ars.usda.gov'
+            //   --grin:
+            //         --gsho:
+            //   when 'GSOR' then 'lorie.bernhardt@ars.usda.gov'
+            //   when 'GSPI' then 'barbara.hellier@ars.usda.gov;alec.mccall@wsu.edu;stoutd@wsu.edu;lisa.taylor@usda.gov'
+            //   --gstr:
+            //         when 'GSZE' then 'maize@uiuc.edu'
+            //   when 'HILO' then 'Carol.MayoRiley@ars.usda.gov;Tracie.Matsumoto@ars.usda.gov'
+            //   when 'MAY' then 'tomas.ayala-silva@usda.gov;ricardo.goenaga@usda.gov'
+            //   when 'MIA' then 'Mike.Winterstein@usda.gov;Ricardo.Goenaga@usda.gov'
+            //   when 'NA' then 'kevin.conrad@ars.usda.gov'
+            //   when 'NC7' then 'nc7orders@ars.usda.gov;lisa.burke@ars.usda.gov'
+            //   when 'NE9' then 'Joanne.Labate@ARS.USDA.GOV;sherri.tennies@ars.usda.gov'
+            //   when 'NR6' then 'jesse.schartner@ars.usda.gov;mwmarti1@wisc.edu'
+            //   when 'NSGC' then 'harold.bockelman@ars.usda.gov'
+            //   when 'NSSL' then 'renee.white@ars.usda.gov'
+            //   when 'OPGC' then 'stieve.1@osu.edu'
+            //   --orders:
+            //         --when 'PALM' then 'danny.barney@ars.usda.gov'
+            //   when 'PARL' then 'Claire.Heinitz@ars.usda.gov'
+            //   when 'PEO' then 'karen.williams@ars.usda.gov'
+            //  -- when 'PGQO' then 'steven.a.king@aphis.usda.gov'
+            //   --puborder:
+            //         when 'RIV' then 'Robert.krueger@ars.usda.gov'
+            //   when 'SBML' then 'melanie.schori@ars.usda.gov'
+            //   when 'SOY' then 'Todd.Bedford@ars.usda.gov;esther.peregrine@ars.usda.gov'
+            //   when 'S9' then 'tiffany.fields@ars.usda.gov;ARS-S9Orders@ars.usda.gov'
+            //   when 'TGRC' then 'trchetelat@ucdavis.edu'
+            //   when 'TOB' then 'jessica_nifong@ncsu.edu'
+            //   when 'W6' then 'stoutd@wsu.edu;barbara.hellier@ars.usda.gov;lisa.taylor@usda.gov;david.vanklaveren@wsu.edu;alec.mccall@wsu.edu;'
+            //   else 'benjamin.haag@usda.gov'
+            //END AS email,
+            return emailAddressList;
+        }
+
+        protected ResultContainer SendEmail(int emailCategory, WebOrderRequest webOrderRequest)
+        {
+            ResultContainer resultContainer = new ResultContainer();
+
+            // TODO
+
+
+            return resultContainer;
         }
     }
 }

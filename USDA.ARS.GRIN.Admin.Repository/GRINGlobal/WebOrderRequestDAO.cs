@@ -35,6 +35,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public WebOrderRequest Get(int id)
         {
+            string emailAddressList = String.Empty;
             WebOrderRequest webOrderRequest = new WebOrderRequest();
 
             try
@@ -82,9 +83,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.Note = reader["note"].ToString();
                                 webOrderRequest.SpecialInstruction = reader["special_instruction"].ToString();
                                 webOrderRequest.Addresses = GetAddresses(webOrderRequest.ID);
-                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequest.WebOrderRequestActions = SearchActions(webOrderRequest.ID);
-                                
+                                webOrderRequest.EmailAddressList = emailAddressList;
                             }
                         }
                     }
@@ -233,6 +234,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
         public IQueryable<WebOrderRequest> Search(Query query)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequests_Search";
+            string emailAddressList = String.Empty;
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
             string sqlWhereClause = String.Empty;
 
@@ -283,7 +285,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                                 webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
-                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequests.Add(webOrderRequest);
                             }                            }
                         }
@@ -323,6 +325,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
         public IQueryable<WebOrderRequest> SearchByStatus(string statusCode, int timeFrameCode)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestsByStatus_Select";
+            string emailAddressList = String.Empty;
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
 
             try
@@ -371,7 +374,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                                 webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
-                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequests.Add(webOrderRequest);
                             }
                         }
@@ -389,6 +392,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
         public IQueryable<WebOrderRequest> Search(string statusCode)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestsByStatus_Select";
+            string emailAddressList = String.Empty;
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
 
             try
@@ -435,7 +439,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
                                 webOrderRequest.Addresses = GetAddresses(webOrderRequest.ID);
-                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID);
+                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequests.Add(webOrderRequest);
                             }
                         }
@@ -454,9 +458,11 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         #region Web Order Request Items
 
-        public IQueryable<WebOrderRequestItem> SearchItems(int webOrderRequestId)
+        public IQueryable<WebOrderRequestItem> SearchItems(int webOrderRequestId, ref string emailAddressList)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestItems_Select";
+            string unparsedEmailAddressList = String.Empty;
+            StringBuilder sbEmailAddressList = new StringBuilder();
             List<WebOrderRequestItem> webOrderRequestItems = new List<WebOrderRequestItem>();
 
             try
@@ -481,7 +487,31 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequestItem.Accession.Descriptor = reader["accession_text"].ToString();
                                 webOrderRequestItem.StatusCode = reader["status_code"].ToString();
                                 webOrderRequestItem.Site.ID = GetInt(reader["site_id"].ToString());
+                                webOrderRequestItem.Site.ShortName = reader["site_short_name"].ToString();
                                 webOrderRequestItem.Site.LongName = reader["site_long_name"].ToString();
+                                
+                                unparsedEmailAddressList = reader["email"].ToString();
+                                if (unparsedEmailAddressList.Contains(";"))
+                                {
+                                    string[] emailAddressCollection = unparsedEmailAddressList.Split(';');
+                                    foreach (var emailAddress in emailAddressCollection)
+                                    {
+                                        if (!sbEmailAddressList.ToString().Contains(emailAddress))
+                                        {
+                                            sbEmailAddressList.Append(emailAddress + ",");
+                                        }
+                                    }
+                                }
+                                else 
+                                {
+                                    if (!sbEmailAddressList.ToString().Contains(unparsedEmailAddressList))
+                                    {
+                                        sbEmailAddressList.Append(unparsedEmailAddressList + ",");
+                                    }
+                                }
+                                emailAddressList = sbEmailAddressList.ToString();
+
+                                webOrderRequestItem.Site.EmailAddressList = unparsedEmailAddressList;
                                 webOrderRequestItem.QuantityShipped = GetInt(reader["quantity_shipped"].ToString());
                                 webOrderRequestItem.UnitShipped = reader["unit_of_shipped"].ToString();
                                 webOrderRequestItem.DistributionForm = reader["distribution_form"].ToString();

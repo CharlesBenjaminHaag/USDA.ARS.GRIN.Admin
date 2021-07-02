@@ -13,12 +13,16 @@ namespace USDA.ARS.GRIN.Admin.Service
     {
         public ResultContainer SendMessage(EmailMessage emailMessage)
         {
-            MailAddress to = new MailAddress(emailMessage.To);
-            MailAddress from = new MailAddress(emailMessage.From);
-            MailMessage message = new MailMessage(from, to);
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(emailMessage.From);
+
+            // TODO: ADD MULT ADDRESSES HERE
+
             message.Subject = emailMessage.Subject;
             message.Body = emailMessage.Body;
             message.IsBodyHtml = emailMessage.IsHtml;
+            
+            
             SmtpClient client = new SmtpClient("mailproxy1.usda.gov");
             ResultContainer resultContainer = new ResultContainer();
 

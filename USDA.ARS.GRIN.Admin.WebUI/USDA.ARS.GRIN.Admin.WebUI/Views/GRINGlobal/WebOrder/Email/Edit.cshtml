@@ -4,11 +4,15 @@
 }
 
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+
+
+
 <div class="row">
     <div class="col-md-2">
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Folders</h3>
+                <h3 class="box-title">Templates</h3>
 
                 <div class="box-tools">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -33,6 +37,7 @@
         </div>
     </div>
     <div id="section-edit" class="col-md-10">
+
     </div>
 </div>
 
@@ -42,15 +47,12 @@
 
             $(this).parent().find('li.active').removeClass('active');
             $(this).addClass('active');
-
             var itemId = $(this).attr('id');
-            alert("DEBUG " + itemId);
-            //LoadEmailTemplate(itemId);
-            //LoadWebOrderRequests(status, timeFrameId);
+            LoadEmailTemplate(itemId);
         });
     });
 
-    function LoadEmailTemplate(int emailTemplateId)
+    function LoadEmailTemplate(emailTemplateId)
     {
         var link = '@Url.Action("_EmailTemplateEdit", "WebOrder")';
         $.ajax(

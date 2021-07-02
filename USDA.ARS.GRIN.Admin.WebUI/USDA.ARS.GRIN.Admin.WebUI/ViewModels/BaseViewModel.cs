@@ -14,6 +14,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
     public class BaseViewModel
     {
+        public string Action { get; set; }
         public SysTable SysTable { get; set; }
         public string DataSourceName { get; set; }
         public string DataSourceTitle { get; set; }

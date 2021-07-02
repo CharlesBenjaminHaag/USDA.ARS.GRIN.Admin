@@ -10,6 +10,22 @@
         color: white;
         padding: 5px;
     }
+
+    .map-heading {
+        font-size: 1.2em;
+    }
+
+    .map-attribute {
+        font-size: 1.2em;
+    }
+
+    .widget-user-2 .widget-user-username {
+        margin-left: 0px;
+    }
+
+    .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
+        margin-left: 0px;
+    }
 </style>
 
 @if (Model.ID > 0)
@@ -37,153 +53,201 @@
     @Html.ValidationSummary(true)
 
     <!-- DETAILS SECTION -->
-    <div class="box box-default">
-        <div class="box-header" style="background-color:#ebebeb;">
-            <h3 class="box-title">Detail</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-
-        @Html.HiddenFor(x => x.CreatedByCooperatorID)
-        @Html.HiddenFor(x => x.VerifierCooperatorID)
-        @Html.HiddenFor(x => x.ModifiedByCooperatorID)
-        @Html.HiddenFor(x => x.OwnedByCooperatorID)
-        @Html.HiddenFor(x => x.ID)
-        @Html.HiddenFor(x => x.Name)
-        @Html.HiddenFor(x => x.CurrentTaxonomySpeciesID)
-
-        <div class="box-body">
-            @if (Model.ID > 0)
+    <div class="row">
+        @{ 
+            string columnCssClass = String.Empty;
+            if (Model.CurrentTaxonomySpeciesID > 0)
             {
-                @*<div class="row">
-                        <div class="col-md-12">
-                            <div class="callout callout-info" style="vertical-align:middle;">
-                                <img src="~/Content/img/info.png" style="margin:0px;" />
-                                <label>Created by&nbsp;&nbsp;</label>@Model.CreatedByCooperatorID on @Model.CreatedDate, <label>Last Modified by </label> @Model.ModifiedByCooperatorID on @Model.ModifiedDate
-                            </div>
-                        </div>
-                    </div>*@
+                columnCssClass = "col-md-9";
+            }                     
+            else
+            {
+                columnCssClass = "col-md-12";
             }
-            <div class="row">
-                <div class="col-md-12">
-                    <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
-                    @if (Model.ID > 0)
-                    {
-                        <input type="button" class="btn btn-default pull-right" disabled="" style="margin-right:5px;" value="Add Subtaxa" onclick="location.href='@Url.Action("AddSubTaxa", "Taxonomy/Species", new { id = Model.ID })'" />
-                        <input type="button" class="btn btn-default pull-right" disabled="" style="margin-right:5px;" value="Add Basionym" />
-                    }
+        }
+
+        @if (Model.CurrentTaxonomySpeciesID > 0)
+        {
+            <div class="col-md-3">
+                <!-- SPECIES WIDGET -->
+                <div class="box box-widget widget-user-2">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-olive-active">
+                        @*<div class="widget-user-image">
+                        <img class="img-circle" src="" alt="User Avatar">
+                    </div>*@
+                        <!-- /.widget-user-image -->
+                        <h3 class="widget-user-username">@Html.Raw(Model.ParentSpecies.Name)</h3>
+                        <h5 class="widget-user-desc"><strong>Species</strong></h5>
+                    </div>
+                    <div class="box-footer">
+                        <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
+                        <p class="text-muted">
+                            @Html.Raw(Model.ParentSpecies.GenusName)
+                        </p>
+                        <strong><i class="fa fa-leaf margin-r-5"></i>Family</strong>
+                        <p class="text-muted">
+                            @Html.Raw(Model.ParentSpecies.FamilyName)
+                        </p>
+                        <strong><i class="fa fa-book margin-r-5"></i>Place of Publication</strong>
+                        <p class="text-muted">
+                            @Html.Raw(Model.ParentSpecies.Protologue)
+                        </p>
+                        <button class="btn btn-default ">Go To Species</button>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-horizontal">
-                        <div class="box-body">
+        }
+        <div class="@columnCssClass">
+            <div class="box box-default">
+                <div class="box-header" style="background-color:#ebebeb;">
+                    <h3 class="box-title">Detail</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                @Html.HiddenFor(x => x.Action)
+                @Html.HiddenFor(x => x.CreatedByCooperatorID)
+                @Html.HiddenFor(x => x.VerifierCooperatorID)
+                @Html.HiddenFor(x => x.ModifiedByCooperatorID)
+                @Html.HiddenFor(x => x.OwnedByCooperatorID)
+                @Html.HiddenFor(x => x.ID)
+                @Html.HiddenFor(x => x.Name)
+                @Html.HiddenFor(x => x.CurrentTaxonomySpeciesID)
 
+                <div class="box-body">
+                    @if (Model.ID > 0)
+                    {
+                        @*<div class="row">
+                            <div class="col-md-12">
+                                <div class="callout callout-info" style="vertical-align:middle;">
+                                    <img src="~/Content/img/info.png" style="margin:0px;" />
+                                    <label>Created by&nbsp;&nbsp;</label>@Model.CreatedByCooperatorID on @Model.CreatedDate, <label>Last Modified by </label> @Model.ModifiedByCooperatorID on @Model.ModifiedDate
+                                </div>
+                            </div>
+                        </div>*@
+                    }
+                    <div class="row">
+                        <div id="btn-container" class="col-md-12">
+                            <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
                             @if (Model.ID > 0)
                             {
-                                <div class="form-group my-auto">
-                                    <label for="txtGenus" class="col-sm-2 control-label">ID</label>
-                                    <div class="col-sm-1">
-                                        <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
-                                    </div>
-                                </div>
+                                <input type="button" class="btn btn-default pull-right" style="margin-right:5px;" value="Add Subtaxa" onclick="location.href='@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "S" })'" />
+                                <input type="button" class="btn btn-default pull-right" style="margin-right:5px;" value="Add Basionym" onclick="location.href='@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "B" })'" />
                             }
-                            <div>
-                                <div class="form-group">
-                                    <label for="txtGenus" class="col-sm-2 control-label">Genus</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input type="text" id="txtGenusName" disabled="" value="@Model.GenusName" class="form-control" />
-                                            @Html.HiddenFor(x => x.GenusID, new { id = "hfGenusID" })
-                                            @Html.HiddenFor(x => x.GenusName, new { id = "hfGenusName" })
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
-                                            </span>
-                                        </div>
-                                        @Html.ValidationMessageFor(x => x.GenusID, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtSpeciesName" class="col-sm-2 control-label">Species Name</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextBoxFor(x => x.SpeciesName, new { @id = "txtSpeciesName", @class = "form-control" })
-                                        @Html.HiddenFor(x => x.SpeciesName)
-                                        @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtAuthority" class="col-sm-2 control-label">Name Authority</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            @Html.TextBoxFor(x => x.Authority, new { @id = "txtAuthority", @class = "form-control" })
-                                            @Html.HiddenFor(x => x.AuthorityID, new { @id = "hfAuthorityID" })
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-horizontal">
+                                <div class="box-body">
 
-                                <!-- FORMA FIELDS -->
-                                <div class="form-group">
-                                    <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Rank Type</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextBoxFor(x => x.FormaRankType, new { @id = "txtFormaRankType", @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtForma" class="col-sm-2 control-label">Forma Name</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextBoxFor(x => x.FormaName, new { @id = "txtFormaName", @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Authority</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextBoxFor(x => x.FormaAuthority, new { @id = "txtFormaAuthority", @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                    <div class="col-sm-10" style="margin-top:10px;">
-                                        @Html.CheckBoxFor(x => x.IsSpecificHybrid, new { id = "cbxIsSpecificHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Specific Hybrid</label>
-                                    </div>
-                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                    <div class="col-sm-10">
-                                        @Html.CheckBoxFor(x => x.IsSubSpecificHybrid, new { id = "cbxIsSubSpecificHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Sub-Specific Hybrid</label>
-                                    </div>
-                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                    <div class="col-sm-10">
-                                        @Html.CheckBoxFor(x => x.IsVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Varietal Hybrid</label>
-                                    </div>
-                                    <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                    <div class="col-sm-10">
-                                        @Html.CheckBoxFor(x => x.IsSubVarietalHybrid, new { id = "cbxIsSubVarietalHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Sub-Varietal Hybrid</label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Protologue</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            @Html.TextBoxFor(x => x.Protologue, new { @id = "txtProtologue", @class = "form-control" })
-                                            @Html.HiddenFor(x => x.ProtologueID, new { @id = "hfProtologueID" })
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-protologue-search">...</button>
-                                            </span>
+                                    @if (Model.ID > 0)
+                                    {
+                                        <div class="form-group my-auto">
+                                            <label for="txtGenus" class="col-sm-2 control-label">ID</label>
+                                            <div class="col-sm-1">
+                                                <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Note</label>
-                                    <div class="col-sm-10">
-                                        <div class="input-group">
-                                            @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
-                                            </span>
+                                    }
+                                    <div>
+                                        <div class="form-group">
+                                            <label for="txtGenus" class="col-sm-2 control-label">Genus</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtGenusName" disabled="" value="@Model.GenusName" class="form-control" />
+                                                    @Html.HiddenFor(x => x.GenusID, new { id = "hfGenusID" })
+                                                    @Html.HiddenFor(x => x.GenusName, new { id = "hfGenusName" })
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
+                                                    </span>
+                                                </div>
+                                                @Html.ValidationMessageFor(x => x.GenusID, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtSpeciesName" class="col-sm-2 control-label">Species Name</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.SpeciesName, new { @id = "txtSpeciesName", @class = "form-control" })
+                                                @Html.HiddenFor(x => x.SpeciesName)
+                                                @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtAuthority" class="col-sm-2 control-label">Name Authority</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(x => x.Authority, new { @id = "txtAuthority", @class = "form-control" })
+                                                    @Html.HiddenFor(x => x.AuthorityID, new { @id = "hfAuthorityID" })
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- FORMA FIELDS -->
+                                        <div class="form-group">
+                                            <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Rank Type</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.FormaRankType, new { @id = "txtFormaRankType", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtForma" class="col-sm-2 control-label">Forma Name</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.FormaName, new { @id = "txtFormaName", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Authority</label>
+                                            <div class="col-sm-10">
+                                                @Html.TextBoxFor(x => x.FormaAuthority, new { @id = "txtFormaAuthority", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                            <div class="col-sm-10" style="margin-top:10px;">
+                                                @Html.CheckBoxFor(x => x.IsSpecificHybrid, new { id = "cbxIsSpecificHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Specific Hybrid</label>
+                                            </div>
+                                            <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                            <div class="col-sm-10">
+                                                @Html.CheckBoxFor(x => x.IsSubSpecificHybrid, new { id = "cbxIsSubSpecificHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Sub-Specific Hybrid</label>
+                                            </div>
+                                            <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                            <div class="col-sm-10">
+                                                @Html.CheckBoxFor(x => x.IsVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Varietal Hybrid</label>
+                                            </div>
+                                            <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
+                                            <div class="col-sm-10">
+                                                @Html.CheckBoxFor(x => x.IsSubVarietalHybrid, new { id = "cbxIsSubVarietalHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Sub-Varietal Hybrid</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Protologue</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(x => x.Protologue, new { @id = "txtProtologue", @class = "form-control" })
+                                                    @Html.HiddenFor(x => x.ProtologueID, new { @id = "hfProtologueID" })
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-protologue-search">...</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Note</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -194,6 +258,7 @@
             </div>
         </div>
     </div>
+  
 }
 
 <!--

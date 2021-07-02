@@ -133,6 +133,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     sideBarPath = "~/Views/GRINGlobal/Shared/_SidebarWebOrder.cshtml";
                 }
 
+                if (requestedUrl.ToLower().Contains("emailtemplate"))
+                {
+                    sideBarPath = "~/Views/GRINGlobal/Shared/_SidebarEmailTemplateEdit.cshtml";
+                }
+
             }
             catch (Exception ex)
             { 
