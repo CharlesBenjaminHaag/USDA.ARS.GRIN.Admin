@@ -164,7 +164,7 @@
 
     function DisplayRecordsByCooperator(cooperatorId)
     {
-        var link = '@Url.Action("CropForCWRListByUser", "Taxonomy")';
+        @*var link = '@Url.Action("CropForCWRListByUser", "Taxonomy")';
         $.ajax(
             {
                 type: 'POST',
@@ -178,7 +178,7 @@
                     function (response) {
                         console.log(response);
                     }
-            });
+            });*@
     }
 
     function InitializeDataTable()

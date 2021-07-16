@@ -123,14 +123,26 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public IQueryable<Species> Search(Query query)
         {
-            throw new NotImplementedException();
+            string sqlWhereClause = String.Empty;
+            IQueryable<Species> speciesList = new List<Species>().AsQueryable();
+
+            try 
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                speciesList = Search(sqlWhereClause);
+                return speciesList;
+            }
+            catch(SqlException ex) 
+            {
+                throw ex;
+            }
         }
 
         public List<Species> Search(string searchExpression, bool includeSynonyms)
         {
             const string COMMAND_TEXT_NAME = "usp_TaxonomySpeciesAcceptedName_Search";
             const string COMMAND_TEXT_SYN = "usp_TaxonomySpeciesSynonym_Search";
-
+            Species species = null;
             List<Species> speciesList = new List<Species>();
 
             try
@@ -152,12 +164,38 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Species species = new Species();
+                        species = new Species();
                         species.ID = GetInt(reader["taxonomy_species_id"].ToString());
-                        species.Name = reader["species_name"].ToString();
-                        species.Authority = reader["species_authority"].ToString();
+                        species.CurrentTaxonomySpeciesID = GetInt(reader["current_taxonomy_species_id"].ToString());
+                        species.NomenNumber = GetInt(reader["nomen_number"].ToString());
+                        species.IsSpecificHybrid = ParseBool(reader["is_specific_hybrid"].ToString());
+                        species.SpeciesName = reader["species_name"].ToString();
+                        species.Name = reader["name"].ToString();
                         species.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
+                        species.ShowIsAcceptedName = reader["is_accepted_name"].ToString();
+                        species.Authority = reader["species_authority"].ToString();
+                        species.IsSubSpecificHybrid = ParseBool(reader["is_subspecific_hybrid"].ToString());
+                        species.SubSpeciesName = reader["subspecies_name"].ToString();
+                        species.SubSpeciesAuthority = reader["subspecies_authority"].ToString();
+                        species.IsVarietalHybrid = ParseBool(reader["is_varietal_hybrid"].ToString());
+                        species.VarietyName = reader["variety_name"].ToString();
+                        species.VarietyAuthority = reader["variety_authority"].ToString();
+                        species.FormaRankType = reader["forma_rank_type"].ToString();
+                        species.FormaName = reader["forma_name"].ToString();
+                        species.FormaAuthority = reader["forma_authority"].ToString();
+                        species.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
+                        species.GenusName = reader["genus_name"].ToString();
+                        species.SynonymCode = reader["synonym_code"].ToString();
+                        species.Protologue = reader["protologue"].ToString();
+                        species.NameAuthority = reader["name_authority"].ToString();
                         species.Note = reader["note"].ToString();
+                        species.CreatedDate = GetDate(reader["created_date"].ToString());
+                        species.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        species.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                        species.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                        species.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        species.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                        species.AccessionCount = GetInt(reader["accession_count"].ToString());
                         speciesList.Add(species);
                     }
                 }
@@ -192,6 +230,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         species.ID = GetInt(reader["taxonomy_species_id"].ToString());
                         species.CurrentTaxonomySpeciesID = GetInt(reader["current_taxonomy_species_id"].ToString());
                         species.NomenNumber = GetInt(reader["nomen_number"].ToString());
+                        species.ShowIsAcceptedName = reader["nomen_number"].ToString();
                         species.IsAcceptedName = (reader["is_accepted_name"].ToString() == "Y") ? true : false;
                         species.IsSpecificHybrid = (reader["is_specific_hybrid"].ToString() == "Y") ? true : false;
                         species.SpeciesName = reader["species_name"].ToString();

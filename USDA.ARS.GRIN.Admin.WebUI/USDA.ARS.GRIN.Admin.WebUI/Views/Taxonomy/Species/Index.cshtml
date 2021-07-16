@@ -4,10 +4,96 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
+<style>
+    td.details-control {
+        background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    }
+
+    tr.shown td.details-control {
+        background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
+
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
+
+    .mailbox-controls {
+        margin-bottom: 10px;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">New Search</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Saved Searches</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group form-horizontal">
+                                <label>Created By</label>
+                                @Html.HiddenFor(x => Model.DefaultCooperatorID, new { id = "hfDefaultCooperatorID" })
+                                @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, null, new { @id = "ddlSelectCooperator", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-horizontal">
+                                <label>Genus Name</label>
+                                @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-horizontal">
+                                <label>Species Name</label>
+                                @Html.TextBoxFor(x=>x.SpeciesName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-horizontal">
+                                <label>Protologue</label>
+                                @Html.TextBoxFor(x => x.Protologue, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-horizontal">
+                                <label>Note</label>
+                                @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <input id="btnClear" type="button" class="btn btn-danger" value="Clear" />
+                        <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+                    
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+</div>
+
 <!-- ============================================================================================== -->
-<!-- TABBED VIEW -->
+<!-- SEARCH RESULTS -->
 <!-- ============================================================================================== -->
-<div class="box box-primary" style="padding:10px;">
+<div class="box box-default" style="padding:10px;">
     @Html.HiddenFor(x => x.DataSourceName)
     <div class="box-header with-border">
         <h3 class="box-title">Species</h3>
@@ -20,80 +106,72 @@
         </div>
     </div>
     <div class="box-body no-padding">
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-                <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-records" title="SpeciesListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
-                </li>
-                <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="SpeciesListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
-                </li>
-                <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
-                        <i class="fa fa-search"></i>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <!-- ============================================================================================== -->
-                <!-- MY-RECORDS TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane active" id="tab_1">
-                    <div class="box-body">
-                        <div id="section-my-records">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================================================================== -->
-                <!-- RECENTLY-ADDED TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_2">
-                    <div class="box-body">
-                        <div id="section-recently-added">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================================================================== -->
-                <!-- SEARCH TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_3">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-7" style="padding-left:0px;">
-                                        <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtName" name="SpeciesName" placeholder="Type all or part of the species name ..." class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="section-search-results" class="crop-search-results">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="mailbox-controls">
+            @*<button type="button" class="btn btn-success btn-sm check-all-search-results">
+                    <i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+                    <i class="fa fa-check-circle-o"></i>
+                </button>*@
+            <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-items-to-folder">
+                <i class="fa fa-folder"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("SpeciesEdit", "Taxonomy")'">
+                <i class="fa fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-geography-search">
+                <i class="fa fa-globe"></i>
+            </button>
+            <button id="btnExport" type="button" class="btn btn-primary btn-sm">
+                <i class="fa fa-file-excel-o"></i> Export
+            </button>
+        </div>
+        <div class="table-responsive mailbox-messages">
+            <table id="tblSpeciesDataTest" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Genus Name</th>
+                        <th>Species</th>
+                        <th>Nomen Number</th>
+                        <th>Accepted Name</th>
+                        <th>Synonym Code</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
     <div class="overlay">
-        <i class="fa fa-refresh fa-spin"></i>
-    </div>
+            <i class="fa fa-refresh fa-spin"></i>
+        </div>
 </div>
 @Html.Partial("~/Views/Taxonomy/Folder/_Edit.cshtml")
-@Html.Partial("~/Views/Taxonomy/Geography/_Search.cshtml");
+@Html.Partial("~/Views/Taxonomy/Geography/_Search.cshtml")
 
 <!-- Page Script -->
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".overlay").hide();
+        //var cooperatorId = $("#hfDefaultCooperatorID").val();
+        //$("#ddlSelectCooperator").val(cooperatorId);
+        //GetUserSpecies();
+    });
+
+    //$('#btnTest').click(function () {
+    //    var table = $('#tblSpeciesDataTest').DataTable();
+    //    var data = table.rows({ selected: true }).data();
+
+    //    var newarray = [];
+    //    for (var i = 0; i < data.length; i++) {
+    //        newarray.push(data[i]["ID"]);
+    //        }
+    //    var sData = newarray.join();
+    //    //TODO: PASS ID LIST TO METHOD
+    //});
 
     $(document).on({
         ajaxStart: function () {
@@ -104,13 +182,8 @@
         }
     });
 
-    $(document).ready(function(){
-        var link = '@Url.Action("SpeciesListByUser", "Taxonomy")';
-        $("#section-my-records").load(link);
-    });
-
     $(".selector-tab").click(function () {
-        var id = $(this).attr('id');
+        @*var id = $(this).attr('id');
         var action = $(this).attr('title');
         var link = '@Url.Action("Action", "Taxonomy")';
         var displaySection = '';
@@ -121,26 +194,201 @@
             displaySection = "#" + id.replace("tab", "section");
             link = link.replace("Action", action);
             $(displaySection).load(link);
+        }*@
+    });
+
+    //******************************************************************
+    //TEST DATATABLES AJAX LOAD
+    //******************************************************************
+    $("#btnSearch").click(function () {
+        var cooperatorId = 0;
+        var genusName = "";
+        var speciesName = "";
+        var synonymCode = "";
+        var protologue = "";
+
+        try {
+            //cooperatorId = $("#SearchViewModel.CreatedByCooperatorID").val();
+            genusName = $("#GenusName").val();
+            speciesName = $("#SpeciesName").val();
+            synonymCode = $("#SynonymCode").val();
+            protologue = $("#Protologue").val();
+            SearchSpecies(cooperatorId, genusName, speciesName, synonymCode, protologue);
+        }
+        catch (ex) {
+            console.log(ex.message);
         }
     });
 
-    $("#btnSearch").click(function () {
-        var value = $("#txtName").val();
-        var url = '@Url.Action("SpeciesSearch", "Taxonomy")';
+    function SearchSpecies(cooperatorId = 0, genusName = "", speciesName = "", synonymCode = "", protologue = "")
+    {
+        try {
 
-        $.get(url, { searchText: value })
-            .done(function (response) {
-            $("#section-search-results").html(response);
-            $('#search-results').DataTable({
-                'destroy': true,
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            });
+            //var table = $('#tblSpeciesDataTest').DataTable();
+            //table.clear();
+
+            $.ajax({
+            url: '@Url.Action("SpeciesNameSearch","Taxonomy")',
+            type: "GET",
+                data: { cooperatorId: cooperatorId, genusName: genusName, speciesName:speciesName, synonymCode:synonymCode, protologue:protologue },
+            contentType: "application/json;",
+            dataType: 'json',
+            success: OnSuccess,
+            failure: function (response) {
+                console.log(response.error);
+            },
+            error: function (response) {
+                console.log(response.error);
+            }
         });
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    }
+
+    function GetUserSpecies()
+    {
+        var cooperatorId = 0;
+        try {
+            $.ajax({
+            url: '@Url.Action("SpeciesUserSearch","Taxonomy")',
+            type: "GET",
+            data: { cooperatorId : cooperatorId },
+            contentType: "application/json;",
+            dataType: 'json',
+            success: OnSuccess,
+            failure: function (response) {
+                console.log(response.d);
+            },
+            error: function (response) {
+                console.log(response.d);
+            }
+        });
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    }
+
+    function GetRecentSpecies()
+    {
+        try {
+            $.ajax({
+            url: '@Url.Action("SpeciesRecentlyEditedSearch","Taxonomy")',
+            type: "GET",
+            data: { },
+            contentType: "application/json;",
+            dataType: 'json',
+            success: OnSuccess,
+            failure: function (response) {
+                alert(response.d);
+            },
+            error: function (response) {
+                alert(response.d);
+            }
+        });
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    }
+
+    function GetUsersDetails(ele) {
+        var dataRow = $('#tblSpeciesDataTest').DataTable().row($(ele).closest('tr')).data();
+        var url = '@Url.Action("SpeciesEdit","Taxonomy", new { id = "SPECIES_ID" })';
+        url = url.replace("SPECIES_ID", dataRow.ID);
+        window.location.href = url;
+    }
+
+    function format(d) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+            '<tr>' +
+            '<td><label>Protologue</label></td>' +
+            '<td>' + d.Protologue + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td><label>Note</label></td>' +
+            '<td>' + d.Note + '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td></td>' +
+            '<td></td>' +
+            '</tr>' +
+            '</table>';
+    }
+
+    function OnSuccess(response) {
+        try {
+            $("#tblSpeciesDataTest").DataTable(
+                {
+                    bLengthChange: true,
+                    select: true,
+                    "bDestroy": true,
+                    lengthMenu: [[5, 10, -1], [5, 10, "All"]],
+                    bFilter: true,
+                    bSort: true,
+                    bPaginate: true,
+                    data: response,
+                    columns: [
+                        {
+                            "className": 'details-control',
+                            "orderable": false,
+                            "data": null,
+                            "defaultContent": ''
+                        },
+                        {
+                            data: 'ID',
+                            render: function (data, type, row, meta) {
+                                return type === 'display' ?
+                                    '<span class="badge">' + data + '</span>' :
+                                    data;
+                            }
+                        },
+                        { 'data': 'GenusName' },
+                        { 'data': 'Name' },
+                        { 'data': 'NomenNumber' },
+                        { 'data': 'ShowIsAcceptedName' },
+                        {
+                            data: 'SynonymCode',
+                            render: function (data, type, row, meta) {
+                                return type === 'display' ?
+                                    '<span class="label label-success">' + data + '</span>' :
+                                    data;
+                            }
+                        },
+                    ],
+                    columnDefs: [{
+                        "targets": 7,
+                        "data": null,
+                        "defaultContent": "<a class='btn btn-default' onclick='GetUsersDetails(this)' title='Edit' href='javascript:;'>Edit</a>"
+                    }]
+                });
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    };
+
+    $('#tblSpeciesDataTest tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = $('#tblSpeciesDataTest').DataTable().row(tr);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
+        }
+    });
+
+    $('#tblSpeciesDataTest tbody').on('click', 'tr', function () {
+        $(this).toggleClass('selected');
     });
 
     $("#select-continents input:checkbox").click(function () {
@@ -235,6 +483,17 @@
             }
         });
     });
+
+    $(function () {
+        var table = $('#tblSpeciesDataTest').dataTable();
+
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+            window.open('data:application/vnd.ms-excel,' +
+                encodeURIComponent(table[0].outerHTML));
+        });
+    });
+
 </script>
 
 

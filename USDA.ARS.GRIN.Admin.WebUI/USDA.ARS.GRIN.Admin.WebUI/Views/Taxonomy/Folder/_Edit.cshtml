@@ -74,7 +74,31 @@
     </div>
 </div>
 <script type="text/javascript">
+
     $("#btnAddSelectedItemsToFolder").click(function () {
+        var folderTitle = "";
+        var folderCategory = "";
+        var folderDescription = "";
+        var isShared = false;
+
+        // Get selected rows
+        var table = $('#tblSpeciesDataTest').DataTable();
+        var data = table.rows({ selected: true }).data();
+
+        var newarray = [];
+        for (var i = 0; i < data.length; i++) {
+            newarray.push(data[i]["ID"]);
+        }
+        var sData = newarray.join();
+
+        folderTitle = $("#txtFolderTitle").val();
+        folderCategory = $("#txtFolderCategory").val();
+        folderDescription = $("#txtFolderDescription").val();
+
+        $('#modal-add-items-to-folder').modal('hide');
+    });
+
+    @*$("#btnAddSelectedItemsToFolder").click(function () {
         var valueArray = [];
         var folderTitle = "";
         var folderCategory = "";
@@ -92,19 +116,20 @@
         dataSourceName = $("#DataSourceName").val();
         dataSourceTitle = $("#DataSourceTitle").val();
 
-        $(".mailbox-messages input:checked").each(function () {
-            var id = $(this).attr("id");
-            valueArray.push(id);
-            }
-        );
+        // Get selected rows
+        var table = $('#tblSpeciesDataTest').DataTable();
+        var data = table.rows({ selected: true }).data();
 
-        //DEBUG
-        alert("DEBUG ITEMS " + valueArray);
+        var newarray = [];
+        for (var i = 0; i < data.length; i++) {
+            newarray.push(data[i]["ID"]);
+        }
+        var sData = newarray.join();
 
         $.ajax({
             url: '@Url.Action("AddToFolder","Taxonomy")',
             type: "GET",
-            data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared: isShared, dataSourceName: dataSourceName, dataSourceTitle: dataSourceTitle, values:valueArray.toString() },
+            data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared: isShared, dataSourceName: dataSourceName, dataSourceTitle: dataSourceTitle, values:sData.toString() },
             cache: false,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -115,5 +140,5 @@
                 alert("Error occured during AJAX request.");
             }
         });
-    });
+    });*@
 </script>

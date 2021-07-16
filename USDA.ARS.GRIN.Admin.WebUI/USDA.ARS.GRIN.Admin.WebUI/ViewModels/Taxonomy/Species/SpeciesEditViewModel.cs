@@ -37,6 +37,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public string GenusName { get; set; }
         public bool IsNamePending { get; set; }
         public string SynonymCode { get; set; }
+        public string InfraspecificTypeCode { get; set; }
         public int VerifierCooperatorID { get; set; }
         public DateTime NameVerifiedDate { get; set; }
         public string Name { get; set; }

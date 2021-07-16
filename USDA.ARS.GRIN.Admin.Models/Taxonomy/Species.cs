@@ -14,6 +14,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public bool IsSpecificHybrid { get; set; }
         public string SpeciesName { get; set; }
         public bool IsAcceptedName { get; set; }
+        public string ShowIsAcceptedName { get; set; }
         public string Authority { get; set; }
         public bool IsSubSpecificHybrid { get; set; }
         public string SubSpeciesName { get; set; }

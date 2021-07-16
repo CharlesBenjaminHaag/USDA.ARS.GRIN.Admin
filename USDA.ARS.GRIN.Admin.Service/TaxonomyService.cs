@@ -70,6 +70,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Get(id);
         }
 
+        public IQueryable<Species> SearchSpecies(Query query)
+        {
+            return _speciesDAO.Search(query);
+        }
+
         public List<Species> FindSpecies(string searchString, bool includeSynonyms)
         {
             return _speciesDAO.Search(searchString, includeSynonyms);

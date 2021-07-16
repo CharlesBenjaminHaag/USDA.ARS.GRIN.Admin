@@ -362,6 +362,7 @@
     <Content Include="Views\GRINGlobal\WebOrder\Email\_Detail.cshtml" />
     <Content Include="Views\Taxonomy\Species\_NoteSearchResults.cshtml" />
     <Content Include="Views\GRINGlobal\Shared\_SidebarEmailTemplateEdit.cshtml" />
+    <Content Include="Views\Taxonomy\Explorer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

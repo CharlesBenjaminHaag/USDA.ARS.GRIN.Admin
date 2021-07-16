@@ -29,7 +29,12 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string URL { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public Literature Literature { get; set; }
         public bool IsAcceptedName { get; set; }
+        public Literature Literature { get; set; }
+      
+        public Citation()
+        {
+            Literature = new Literature();
+        }
     }
 }

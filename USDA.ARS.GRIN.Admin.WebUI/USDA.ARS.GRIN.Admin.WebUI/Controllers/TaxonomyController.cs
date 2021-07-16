@@ -807,34 +807,20 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult SpeciesHome()
         {
+            TempData["context"] = "Species Home";
             SpeciesHomeViewModel viewModel = new SpeciesHomeViewModel();
 
             try
             {
-                TempData["context"] = "Species";
+                viewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
+                viewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
                 return View(BASE_PATH + "Species/Index.cshtml", viewModel);
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Species Controller");
+                Log.Error(ex, ex.Message + ex.StackTrace);
                 return RedirectToAction("InternalServerError", "Error");
             }
-        }
-
-        public PartialViewResult SpeciesListRecent()
-        {
-            SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            viewModel.Species = _taxonomyService.FindRecentSpecies();
-            return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
-        }
-
-        public PartialViewResult SpeciesListByUser()
-        {
-            SpeciesSearchViewModel viewModel = new SpeciesSearchViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            viewModel.Species = _taxonomyService.FindUserSpecies(this.AuthenticatedUser.CooperatorID);
-            return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
         }
 
         public ActionResult FindGenus(string searchString)
@@ -877,26 +863,23 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View();
         }
 
-        public ActionResult SpeciesEdit(int id = 0, int currentId=0, string synonymCode = "")
+        public ActionResult SpeciesEdit(int id = 0, int currentId=0, string synonymCode = "", string infraspecificTypeCode = "")
         {
             Species species = null;
-            SpeciesEditViewModel viewModel = null;
-
+            SpeciesEditViewModel viewModel = new SpeciesEditViewModel();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
             try
             {
-                // TODO
-                // SYN CODE
-                // =, A, B, I, S
-                // 1. Show parent species widget (see trait page)
-                // 2. Configure edit section for new-record addition
- 
                 if (id > 0)
                 {
                     TempData["context"] = "Edit Species";
                     species = _taxonomyService.GetSpecies(id);
-                    viewModel = new SpeciesEditViewModel();
+
+                    if (species.ID != species.CurrentTaxonomySpeciesID)
+                    {
+                        viewModel.ParentSpecies = _taxonomyService.GetSpecies(species.CurrentTaxonomySpeciesID);
+                    }
                     viewModel.ID = species.ID;
                     viewModel.CurrentTaxonomySpeciesID = species.CurrentTaxonomySpeciesID;
                     viewModel.NomenNumber = species.NomenNumber;
@@ -921,6 +904,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.GenusID = species.GenusID;
                     viewModel.GenusName = species.GenusName;
                     viewModel.Authority = species.Authority;
+                    viewModel.SynonymCode = species.SynonymCode;
                     viewModel.CreatedDate = species.CreatedDate;
                     viewModel.CreatedByCooperatorID = species.CreatedByCooperatorID;
                     viewModel.CreatedByCooperatorName = species.CreatedByCooperatorName;
@@ -937,14 +921,40 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 {
                     if (currentId > 0)
                     {
-                        // TODO: GET PARENT SPECIES DATA
+                        if (synonymCode == "B")
+                        {
+                            TempData["context"] = "Add Basionym";
+                        }
+                        else
+                        {
+                            if (synonymCode == "S")
+                            {
+                                TempData["context"] = "Add Synonym";
+                            }
+                        }
+
+                        if (infraspecificTypeCode == "V")
+                        {
+                            TempData["context"] = "Add Variety";
+                        }
+                        else
+                        {
+                            if (infraspecificTypeCode == "F")
+                            {
+                                TempData["context"] = "Add Form";
+                            }
+                        }
+
+                        viewModel.CurrentTaxonomySpeciesID = currentId;
+                        viewModel.SynonymCode = synonymCode;
+                        viewModel.InfraspecificTypeCode = infraspecificTypeCode;
                         viewModel.ParentSpecies = _taxonomyService.GetSpecies(currentId);
+                        viewModel.GenusID = viewModel.ParentSpecies.GenusID;
+                        viewModel.GenusName = viewModel.ParentSpecies.GenusName;
                     }
                     else
                     {
-
                         TempData["context"] = "Add Species";
-                        viewModel = new SpeciesEditViewModel();
                         viewModel.CurrentTaxonomySpeciesID = currentId;
                         viewModel.SynonymCode = synonymCode;
                     }
@@ -994,7 +1004,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 species.GenusID = viewModel.GenusID;
                 species.Authority = viewModel.Authority;
                 species.Note = viewModel.Note;
-
+                species.SynonymCode = viewModel.SynonymCode;
                 if (viewModel.ID > 0)
                 {
                     species.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
@@ -1037,12 +1047,48 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/Species/_SearchResults.cshtml", viewModel);
         }
 
-        [HttpPost]
-        public JsonResult SpeciesNameSearch(string searchText)
+        public JsonResult SpeciesNameSearch(int cooperatorId=0, string genusName="", string speciesName="", string synonymCode="", string protologue="")
         {
-            List<Species> speciesList = new List<Species>();
+            IEnumerable<Species> speciesList = new List<Species>().AsEnumerable();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            speciesList = taxonomyService.FindSpecies(searchText, false);
+            Query query = new Query();
+            QueryCriterion queryCriterion = null;
+
+            if (!String.IsNullOrEmpty(genusName))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "genus_name", FieldValue = genusName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(speciesName))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "species_name", FieldValue = speciesName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            if (!String.IsNullOrEmpty(protologue))
+            {
+                queryCriterion = new QueryCriterion { FieldName = "protologue", FieldValue = protologue, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                query.QueryCriteria.Add(queryCriterion);
+            }
+
+            speciesList = taxonomyService.SearchSpecies(query);
+            return Json(speciesList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SpeciesRecentlyEditedSearch()
+        {
+            IEnumerable<Species> speciesList = null;
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            speciesList = _taxonomyService.FindRecentSpecies();
+            return Json(speciesList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SpeciesUserSearch(int cooperatorId)
+        {
+            IEnumerable<Species> speciesList = null;
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            speciesList = _taxonomyService.FindUserSpecies(this.AuthenticatedUser.CooperatorID);
             return Json(speciesList, JsonRequestBehavior.AllowGet);
         }
 

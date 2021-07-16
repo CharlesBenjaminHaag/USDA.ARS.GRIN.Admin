@@ -107,7 +107,7 @@ AS
 		IF (@cancelled_order_count > 0)
 			BEGIN
 				SET @risk_factor_count = @risk_factor_count + 1
-				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_HISTORY', 'Requestor has prior cancelled orders.', 1
+				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_HIST', 'Requestor has prior cancelled orders.', 1
 			END
 
 		-- ===================================================================
@@ -137,9 +137,12 @@ AS
 		IF (@web_order_request_genera_cnt > 2)
 			BEGIN
 				SET @risk_factor_count = @risk_factor_count + 1
-				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_GENERA', 'Request entails germplasm of more than one genus.', 1
+				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_GEN', 'Request entails germplasm of more than one genus.', 1
 			END
 
+		-- If the web order request hits one or more NRR risk factors:
+		-- 1) Set the status to prevent its appearing in the CT Order Wizard
+		-- 2) Generate an email notifying relevant cooperators (curators).
 		IF (@risk_factor_count > 0)
 			BEGIN
 				SET @email_sent = (SELECT email_sent FROM web_order_request WHERE web_order_request_id = @web_order_request_id)
@@ -178,7 +181,7 @@ AS
 					web_order_request 
 				SET 
 					note = 'ORDER HITS ' + CONVERT(NVARCHAR, @risk_factor_count) + ' NRR RISK FACTORS',
-					status_code = 'NRR_FLAGGED',
+					status_code = 'NRR_FLAG',
 					modified_by = 48,
 					modified_date = GETDATE()
 				WHERE 
@@ -186,13 +189,13 @@ AS
 					(SELECT web_order_request_id FROM inserted);
 			END
 
-		--		UPDATE
-		--			web_order_request_item
-		--		SET
-		--			curator_note = 'ORDER HITS ' + CONVERT(NVARCHAR, @risk_factor_count) + ' NRR RISK FACTORS',
-		--			status_code = 'NRR_FLAGGED'
-		--		WHERE
-		--			web_order_request_id IN (SELECT web_order_request_id FROM inserted);
+				UPDATE
+					web_order_request_item
+				SET
+					curator_note = 'ORDER HITS ' + CONVERT(NVARCHAR, @risk_factor_count) + ' NRR RISK FACTORS',
+					status_code = 'NRR_FLAG'
+				WHERE
+					web_order_request_id IN (SELECT web_order_request_id FROM inserted);
 
 				--EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAGGED', 'Order flagged as possible NRR.', 1
 			END
