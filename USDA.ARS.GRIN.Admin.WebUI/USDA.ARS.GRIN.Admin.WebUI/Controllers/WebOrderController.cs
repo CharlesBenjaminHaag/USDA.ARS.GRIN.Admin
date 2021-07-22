@@ -98,45 +98,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
-                return View("~/Views/Error/_Error.cshtml");
-            }
-        }
-
-        public ActionResult EmailTemplateEdit(int id = 0)
-        {
-            TempData["context"] = "Edit Email Templates";
-            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-            EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
-            emailTemplateEditViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
-
-            return View("~/Views/GRINGlobal/WebOrder/Email/Edit.cshtml", emailTemplateEditViewModel);
-        }
-
-        public PartialViewResult _EmailTemplateEdit(int id)
-        {
-            try 
-            {
-                GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-                EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
-                //emailTemplateEditViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
-                return PartialView("~/Views/GRINGlobal/WebOrder/Email/_Detail.cshtml", emailTemplateEditViewModel);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return PartialView("~/Views/Error/_Error.cshtml");
-            }
-        }
-
-        [HttpPost]
-        public ActionResult EmailTemplateEdit(EmailTemplateEditViewModel emailTemplateEditViewModel)
-        {
-            try 
-            {
-                return RedirectToAction("EmailTemplateEdit","WebOrder", new { id = emailTemplateEditViewModel.ID });
-            }
-            catch (Exception ex)
-            {
                 Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
             }
@@ -167,6 +128,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     }
                     resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
 
+                    //TODO: REFACTOR
+                    //SendEmailMessage("NRR_APPROVE"
                     EmailMessage emailMessage = new EmailMessage();
                     emailMessage.From = "gringlobal.orders@usda.gov";
                     emailMessage.IsHtml = true;
@@ -258,12 +221,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.EmailAddressList = webOrderRequest.EmailAddressList;
 
                 // TODO: Refactor; use stored template BH 7/2/21
-                viewModel.InformationRequestText = "Germplasm Requestor:";
-                viewModel.InformationRequestText += "The U.S.National Plant Germplasm System(NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.";
-                viewModel.InformationRequestText += "Please provide additional relevant information about your project to justify the need for specific NPGS germplasm, instead of using commercially available plant material.";
+                viewModel.InformationRequestText = "Dear Germplasm Requestor:";
+                viewModel.InformationRequestText += "<p>The U.S.National Plant Germplasm System(NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.</p>";
+                viewModel.InformationRequestText += "<p>Please provide additional relevant information about your project to justify the need for specific NPGS germplasm, instead of using commercially available plant material.</p>";
                 viewModel.InformationRequestText += "Send your email to gringlobal.feedback @usda.gov, and include the web order number.";
-                viewModel.InformationRequestText += "For more information about the NPGS, please view a 6 - minute video that describes our mission and purpose at https://www.youtube.com/watch?v=uHOclGNELuw.";
-                viewModel.InformationRequestText += "Thank you.";
+                viewModel.InformationRequestText += "<p>For more information about the NPGS, please view a 6 - minute video that describes our mission and purpose at <a href='https://www.youtube.com/watch?v=uHOclGNELuw'>https://www.youtube.com/watch?v=uHOclGNELuw</a></p>";
+                viewModel.InformationRequestText += "<br/><br/>Thank you.";
                 
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
@@ -468,5 +431,102 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             return resultContainer;
         }
+
+
+        #region Email Templates
+
+        public ActionResult EmailTemplateHome()
+        {
+            try
+            {
+                GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+                EmailTemplateHomeViewModel emailTemplateHomeViewModel = new EmailTemplateHomeViewModel();
+                emailTemplateHomeViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
+                return View("~/Views/GRINGlobal/WebOrder/Email/Index.cshtml", emailTemplateHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public PartialViewResult _EmailTemplateView(int id)
+        {
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
+            EmailTemplate emailTemplate = new EmailTemplate();
+
+            try
+            {
+                emailTemplate = grinGlobalService.GetEmailTemplate(id);
+                if (emailTemplate == null)
+                {
+                    throw new NullReferenceException(String.Format("No email template found for id {0}", id));
+                }
+                emailTemplateEditViewModel.ID = emailTemplate.ID;
+                emailTemplateEditViewModel.Title = emailTemplate.Title;
+                emailTemplateEditViewModel.SenderAddress = emailTemplate.From;
+                emailTemplateEditViewModel.Subject = emailTemplate.Subject;
+                emailTemplateEditViewModel.Body = emailTemplate.Body;
+                return PartialView("~/Views/GRINGlobal/WebOrder/Email/_Detail.cshtml", emailTemplateEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult EmailTemplateEdit(int id)
+        {
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
+            EmailTemplate emailTemplate = new EmailTemplate();
+
+            try
+            {
+                emailTemplate = grinGlobalService.GetEmailTemplate(id);
+                if (emailTemplate == null)
+                {
+                    throw new NullReferenceException(String.Format("No email template found for id {0}", id));
+                }
+                emailTemplateEditViewModel.ID = emailTemplate.ID;
+                emailTemplateEditViewModel.Title = emailTemplate.Title;
+                emailTemplateEditViewModel.SenderAddress = emailTemplate.From;
+                emailTemplateEditViewModel.Subject = emailTemplate.Subject;
+                emailTemplateEditViewModel.Body = emailTemplate.Body;
+                return View("~/Views/GRINGlobal/WebOrder/Email/Edit.cshtml", emailTemplateEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EmailTemplateEdit(EmailTemplateEditViewModel emailTemplateEditViewModel)
+        {
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            EmailTemplate emailTemplate = new EmailTemplate();
+            ResultContainer resultContainer = new ResultContainer();
+            try
+            {
+                emailTemplate.ID = emailTemplateEditViewModel.ID;
+                emailTemplate.From = emailTemplateEditViewModel.SenderAddress;
+                emailTemplate.Subject = emailTemplateEditViewModel.Subject;
+                emailTemplate.Body = emailTemplateEditViewModel.Body;
+                //resultContainer = grinGlobalService.
+                return RedirectToAction("EmailTemplateEdit", "WebOrder", new { id = emailTemplateEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        #endregion Email Templates
     }
 }

@@ -37,7 +37,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public bool IsNamePending { get; set; }
         public string SynonymCode { get; set; }
         public int VerifierCooperatorID { get; set; }
-        public DateTime NameVerifiedDate { get; set; }
+        public string NameVerifiedDate { get; set; }
         public string Name { get; set; }
         public string ProtologueVirtualPath { get; set; }
         public string AlternateName { get; set; }

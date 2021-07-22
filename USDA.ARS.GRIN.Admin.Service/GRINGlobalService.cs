@@ -84,9 +84,14 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region Email
 
+        public EmailTemplate GetEmailTemplate(int id)
+        {
+            return _emailTemplateDAO.Get(id);
+        }
+
         public IQueryable<EmailTemplate> GetEmailTemplates()
         {
-            return _emailTemplateDAO.FindAll(); 
+            return _emailTemplateDAO.FindAll();
         }
 
         #endregion Email

@@ -16,7 +16,8 @@ namespace USDA.ARS.GRIN.Admin.Service
             MailMessage message = new MailMessage();
             message.From = new MailAddress(emailMessage.From);
 
-            // TODO: ADD MULT ADDRESSES HERE
+            // TODO: HANDLE MULT ADDRESSES
+            message.To.Add(new MailAddress(emailMessage.To));
 
             message.Subject = emailMessage.Subject;
             message.Body = emailMessage.Body;

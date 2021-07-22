@@ -464,22 +464,20 @@ Thank you.
                         <label>Subject</label>
                         <input class="form-control" placeholder="Subject:" value="Request For Additional Information Re: Web Order Request #@Model.ID">
                     </div>
-                    <div class="form-group">
-                        <label>Email Body</label>
-                        @Html.TextAreaFor(x => x.InformationRequestText, new { @id="txtEmailBody", @class = "form-control", @rows=10 })
-                        @*<script>
-                            CKEDITOR.replace('txtEmailBody');
-                        </script>*@
-                    </div>
-                    @*<div class="form-group">
-                            <div class="btn btn-default btn-file">
-                                <i class="fa fa-paperclip"></i> Attachment
-                                <input type="file" name="attachment">
-                            </div>
-                            <p class="help-block">Max. 32MB</p>
-                        </div>*@
-                </div>
 
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <label>Body</label>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <p>
+                                @Html.Raw(Model.InformationRequestText)
+                            </p>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

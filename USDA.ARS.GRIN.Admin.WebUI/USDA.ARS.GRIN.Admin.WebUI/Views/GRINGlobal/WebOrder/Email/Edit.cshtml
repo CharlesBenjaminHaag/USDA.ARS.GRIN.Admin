@@ -1,73 +1,270 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.EmailTemplateEditViewModel
 @{
     ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+<style>
+    .checkbox-container {
+        margin-right: 45px;
+    }
+</style>
 
-
-
-
-<div class="row">
-    <div class="col-md-2">
-        <div class="box box-solid">
-            <div class="box-header with-border">
-                <h3 class="box-title">Templates</h3>
-
-                <div class="box-tools">
+<div id="section-data-list">
+    @if (Model.ID > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="callout callout-info" style="vertical-align:middle;">
+                    @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                    @Html.Raw(Model.RevisionHistoryText)
+                </div>
+            </div>
+        </div>
+    }
+    @using (Html.BeginForm("EmailTemplateEdit", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
+    {
+        @Html.HiddenFor(x => x.ID, new { id = "hfCropMapID", name = "ID" })
+        @Html.ValidationSummary()
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">@Model.Title</h3>
+                <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
                     </button>
                 </div>
             </div>
-            <div id="section-item-pick-list" class="box-body no-padding">
-                <ul class="nav nav-pills nav-stacked">
-                    @foreach (var emailTemplate in Model.EmailTemplates)
-                    {
-                    <li id="@emailTemplate.ID">
-                        <a href="#">
-                            <i class="fa fa-file-text-o"></i> @emailTemplate.Title
-                            @*<span class="pull-right">Standard rejection template</span>*@
-                        </a>
-                    </li>
-                    }
-                </ul>
+            <div class="box-body">
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-info"></i>
+                    Text beginning with ":" will be substituted for a web order requestor-specific value when the email is sent. <strong>Do not</strong> delete this text.
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="section-common-name" class="form-group" style="display:none;">
+                            <label for="txtName">From</label>
+                            @Html.TextBoxFor(x => x.SenderAddress, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.SenderAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="txtSpeciesName">Subject</label>
+                            @Html.TextBoxFor(x => x.Subject, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Body</label>
+                        @Html.TextAreaFor(x => x.Body, new { @id = "txtBody", @name = "txtBody", @class = "form-control" })
+                    </div>
+                    <script>
+                        CKEDITOR.replace('txtBody');
+                    </script>
+
+                </div>
             </div>
-            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default">Save Edits</button>
+            </div>
         </div>
-    </div>
-    <div id="section-edit" class="col-md-10">
-
-    </div>
+    }
 </div>
-
 <script type="text/javascript">
-    $(function () {
-        $('#section-item-pick-list ul.nav li').on('click', function () {
 
-            $(this).parent().find('li.active').removeClass('active');
-            $(this).addClass('active');
-            var itemId = $(this).attr('id');
-            LoadEmailTemplate(itemId);
+    $(document).ready(function () {
+        SetDefaults();
+    });
+
+    function SetDefaults()
+    {
+        // Show common name if it is pertinent to this map.
+        var commonName = $("#txtCommonName").val();
+        if (commonName != '') {
+            $("#section-common-name").show();
+        }
+
+        // Load citations related to the species component of the map.
+        var speciesId = $("#hfSpeciesID").val();
+        LoadCitations(speciesId);
+    }
+
+    $(function () {
+        $('.check-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', true);
+        });
+        $('.uncheck-all-search-results').on('click', function () {
+            $('.mailbox-messages input:checkbox').prop('checked', false);
         });
     });
 
-    function LoadEmailTemplate(emailTemplateId)
-    {
-        var link = '@Url.Action("_EmailTemplateEdit", "WebOrder")';
-        $.ajax(
-            {
-                type: 'POST',
-                url: link,
-                data: { id: emailTemplateId },
-                success:
-                    function (response) {
-                        $("#section-edit").html(response);
-                    },
-                error:
-                    function (response) {
-                        console.log(response);
-                    }
-            });
+    $('form input').keydown(function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-species-search').modal('hide');
+        $("#SpeciesName").val(speciesText);
+        $("#hfSpeciesID").val(ID);
+        LoadCitations(ID);
     }
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        CKEDITOR.instances.txtNote.setData(noteText);
+    }
+
+    function SelectCitation(id, title) {
+        $('#modal-citation-search').modal('hide');
+        $("#txtCitationTitle").val(title);
+        $("#hfCitationID").val(id);
+    }
+
+    $(document).on("click", "[id*='btnDeleteMultiple']", function(){
+        var valueArray = [];
+        var url = "";
+        var inputCropId = 0;
+        var inputCropMapId = 0;
+        var inputSpeciesId = 0;
+
+        inputCropId = $("#hfCropID").val();
+        inputCropMapId = $("#hfCropMapID").val();
+        inputSpeciesId = $("#hfSpeciesID").val();
+
+        $("#section-crop-trait-list input:checked").each(function () {
+            var id = $(this).attr("id");
+            valueArray.push(id);
+            }
+        );
+
+        url = '@Url.Action("CropTraitsDelete", "Taxonomy")';
+
+        $.get(url, { speciesId: inputSpeciesId, cropId: inputCropId, cropMapId: inputCropMapId, cropTraitIdList: valueArray.toString() })
+            .done(function (response) {
+                $("#section-crop-trait-list").html(response);
+        });
+    });
+
+    $("#btnSearchSpecies").click(function () {
+        var url = '@Url.Action("FindSpecies","Taxonomy")';
+        var genusId = $("#ddlSelectGenus").val();
+        var inputSearchString = $("#SpeciesSearchText").val();
+        var includeSynonyms = false;
+
+        if ($('#cbxIncludeSynonyms').is(":checked")) {
+            includeSynonyms = true;
+        }
+
+        $.post(url, { genusId: genusId,  searchString: inputSearchString, includeSynonyms: includeSynonyms })
+            .done(function (response) {
+                $("#section-species-search-results").html(response);
+        });
+    });
+
+    $("#btnSearchNotes").click(function () {
+        var noteContext = "taxonomy_cwr_map";
+        var url = "/Taxonomy/FindNotes/";
+        var inputSearchString = $("#txtSearchNotes").val();
+
+        $.post(url, { searchString: inputSearchString, context: noteContext })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+        });
+    });
+
+    $("#btnSearchCitations").click(function () {
+        var url = "/Taxonomy/FindCitations/";
+        var speciesId = $("#hfSpeciesID").val();
+        var inputSearchString = $("#txtSearchCitations").val();
+
+        $.post(url, { speciesId: speciesId, searchString: inputSearchString })
+            .done(function (response) {
+                $("#section-citation-search-results").html(response);
+        });
+    });
+
+    $('#cbxIsCrop').click(function () {
+        var thisCheck = $(this);
+
+        if ($(this).prop("checked") == true) {
+            $('#ddlGenepoolCode').val(0);
+            $('#ddlGenepoolCode').prop('disabled', true);
+            $('#cbxIsGraftStock').prop('disabled', true);
+            $("#cbxIsGraftStock").prop("checked", false);
+            $('#cbxIsPotential').prop('disabled', true);
+            $("#cbxIsPotential").prop("checked", false);
+            $("#section-common-name").show();
+        }
+        else {
+            $('#ddlGenepoolCode').prop('disabled', false);
+            $('#cbxIsGraftStock').prop('disabled', false);
+            $('#cbxIsPotential').prop('disabled', false);
+            $("#section-common-name").hide();
+        }
+    });
+
+    function LoadCitations(speciesId) {
+        var citationsSelect = $('#ddlCitations');
+        citationsSelect.empty();
+
+        if (speciesId != null && speciesId != '') {
+            $.getJSON('@Url.Action("GetCitations")', { speciesId: speciesId }, function (citations) {
+                if (citations != null && !jQuery.isEmptyObject(citations)) {
+                    citationsSelect.append($('<option/>', {
+                        value: null,
+                        text: "Select a citation"
+                    }));
+                    $.each(citations, function (index, citation) {
+                        citationsSelect.append($('<option/>', {
+                            value: citation.ID,
+                            text: citation.Title
+                        }));
+                    });
+                    citationsSelect.prop("disabled", false);
+                }
+                else
+                {
+                    citationsSelect.prop("disabled", true);
+                };
+            });
+        }
+    }
+
+    //$(document).ready(function () {
+    //    $("#SpeciesSearchText").autocomplete({
+    //        source: function (request, response) {
+    //            $.ajax({
+    //                url: "/Taxonomy/SpeciesNameSearch",
+    //                type: "POST",
+    //                dataType: "json",
+    //                data: { searchText: request.term },
+    //                success: function (data) {
+    //                    response($.map(data, function (item) {
+    //                        return { label: item.SpeciesName, value: item.ID };
+    //                    }))
+    //                }
+    //            })
+    //        },
+    //        select: function (e, i) {
+    //            $("#lblVendorName").text(i.item.value);
+    //        }
+
+    //    });
+    //});
+
 </script>
+
+
+

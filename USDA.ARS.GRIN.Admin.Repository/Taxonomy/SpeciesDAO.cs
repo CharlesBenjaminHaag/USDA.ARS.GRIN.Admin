@@ -253,7 +253,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         species.IsNamePending = (reader["is_name_pending"].ToString() == "Y") ? true : false;
                         species.SynonymCode = reader["synonym_code"].ToString();
                         species.VerifierCooperatorID = GetInt(reader["verifier_cooperator_id"].ToString());
-                        species.NameVerifiedDate = GetDate(reader["name_verified_date"].ToString());
+                        species.NameVerifiedDate = GetDate(reader["name_verified_date"].ToString()).ToShortDateString();
                         species.Name = reader["name"].ToString();
                         species.NameAuthority = reader["name_authority"].ToString();
                         species.Protologue = reader["protologue"].ToString();
@@ -420,7 +420,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@is_name_pending", entity.IsNamePending);
                         cmd.Parameters.AddWithValue("@synonym_code", String.IsNullOrEmpty(entity.SynonymCode) ? "" : entity.SynonymCode);
 
-                        if (entity.NameVerifiedDate == DateTime.MinValue)
+                        if (!String.IsNullOrEmpty(entity.NameVerifiedDate))
                         {
                             cmd.Parameters.AddWithValue("@name_verified_date", DBNull.Value);
                         }
@@ -546,7 +546,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Parameters.AddWithValue("@is_name_pending", entity.IsNamePending);
                         cmd.Parameters.AddWithValue("@synonym_code", String.IsNullOrEmpty(entity.SynonymCode) ? "" : entity.SynonymCode);
 
-                        if (entity.NameVerifiedDate == DateTime.MinValue)
+                        if (!String.IsNullOrEmpty(entity.NameVerifiedDate))
                         {
                             cmd.Parameters.AddWithValue("@name_verified_date", DBNull.Value);
                         }

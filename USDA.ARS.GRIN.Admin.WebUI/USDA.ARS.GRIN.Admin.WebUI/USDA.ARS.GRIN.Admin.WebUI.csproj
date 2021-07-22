@@ -363,6 +363,7 @@
     <Content Include="Views\Taxonomy\Species\_NoteSearchResults.cshtml" />
     <Content Include="Views\GRINGlobal\Shared\_SidebarEmailTemplateEdit.cshtml" />
     <Content Include="Views\Taxonomy\Explorer.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\Email\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -428,7 +429,8 @@
     <Compile Include="ViewModels\AccountManagement\UserListViewModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\EmailTemplateEditViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrder\Email\EmailTemplateEditViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrder\Email\EmailTemplateHomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\GRINGlobalHomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\AccessionInventoryAttachmentListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\HomeViewModel.cs" />

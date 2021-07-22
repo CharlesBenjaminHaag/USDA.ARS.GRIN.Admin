@@ -54,28 +54,30 @@
 
     <!-- DETAILS SECTION -->
     <div class="row">
-        @{ 
-            string columnCssClass = String.Empty;
-            if (!String.IsNullOrEmpty(Model.SynonymCode) || (!String.IsNullOrEmpty(Model.InfraspecificTypeCode)))
-            {
-                columnCssClass = "col-md-9";
-            }
-            else
-            {
-                columnCssClass = "col-md-12";
-            }
-        }
-
-        @if (!String.IsNullOrEmpty(Model.SynonymCode) || (!String.IsNullOrEmpty(Model.InfraspecificTypeCode)))
+       
+    @{
+        string columnCssClass = String.Empty;
+        if (!String.IsNullOrEmpty(Model.SynonymCode) || (!String.IsNullOrEmpty(Model.InfraspecificTypeCode)))
         {
-            <div class="col-md-3">
+            columnCssClass = "col-md-9";
+        }
+        else
+        {
+            columnCssClass = "col-md-12";
+        }
+    }
+
+    @if (!String.IsNullOrEmpty(Model.SynonymCode) || (!String.IsNullOrEmpty(Model.InfraspecificTypeCode)))
+    {
+        <div class="row">
+            <div class="col-md-12">
                 <!-- SPECIES WIDGET -->
                 <div class="box box-widget widget-user-2">
                     <!-- Add the bg color to the header using any of the bg-* classes -->
                     <div class="widget-user-header bg-olive-active">
                         @*<div class="widget-user-image">
-                        <img class="img-circle" src="" alt="User Avatar">
-                    </div>*@
+                                <img class="img-circle" src="" alt="User Avatar">
+                            </div>*@
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">@Html.Raw(Model.ParentSpecies.Name)</h3>
                         <h5 class="widget-user-desc"><strong>Accepted Name</strong></h5>
@@ -97,31 +99,34 @@
                     </div>
                 </div>
             </div>
-        }
-        <div class="@columnCssClass">
-            <div class="box box-default">
-                <div class="box-header" style="background-color:#ebebeb;">
-                    <h3 class="box-title">Detail (@Model.ID)</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
+        </div>
+            }
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-default">
+            <div class="box-header" style="background-color:#ebebeb;">
+                <h3 class="box-title">Detail (@Model.ID)</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
-                @Html.HiddenFor(x => x.Action)
-                @Html.HiddenFor(x => x.CreatedByCooperatorID)
-                @Html.HiddenFor(x => x.VerifierCooperatorID)
-                @Html.HiddenFor(x => x.ModifiedByCooperatorID)
-                @Html.HiddenFor(x => x.OwnedByCooperatorID)
-                @Html.HiddenFor(x => x.ID)
-                @Html.HiddenFor(x => x.Name)
-                @Html.HiddenFor(x => x.CurrentTaxonomySpeciesID)
-                @Html.HiddenFor(x => x.SynonymCode)
-                @Html.HiddenFor(x => x.InfraspecificTypeCode)
-                <div class="box-body">
-                    @if (Model.ID > 0)
-                    {
-                        @*<div class="row">
+            </div>
+            @Html.HiddenFor(x => x.Action)
+            @Html.HiddenFor(x => x.CreatedByCooperatorID)
+            @Html.HiddenFor(x => x.VerifierCooperatorID)
+            @Html.HiddenFor(x => x.ModifiedByCooperatorID)
+            @Html.HiddenFor(x => x.OwnedByCooperatorID)
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(x => x.Name)
+            @Html.HiddenFor(x => x.CurrentTaxonomySpeciesID)
+            @Html.HiddenFor(x => x.SynonymCode)
+            @Html.HiddenFor(x => x.InfraspecificTypeCode)
+            <div class="box-body">
+                @if (Model.ID > 0)
+                {
+                    @*<div class="row">
                             <div class="col-md-12">
                                 <div class="callout callout-info" style="vertical-align:middle;">
                                     <img src="~/Content/img/info.png" style="margin:0px;" />
@@ -129,52 +134,52 @@
                                 </div>
                             </div>
                         </div>*@
-                    }
-                    <div class="row">
-                        <div id="btn-container" class="col-md-12">
-                            <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
-                            @if ((Model.ID > 0) && String.IsNullOrEmpty(Model.SynonymCode))
-                            {
-                                <div class="btn-group pull-right">
-                                    <button type="button" class="btn btn-default">Add Synonym</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "B" })">Basionym</a></li>
-                                        <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "S" })">Synonym</a></li>
-                                    </ul>
-                                </div>
+                }
+                <div class="row">
+                    <div id="btn-container" class="col-md-12">
+                        <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
+                        @if ((Model.ID > 0) && String.IsNullOrEmpty(Model.SynonymCode))
+                        {
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default">Add Synonym</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "B" })">Basionym</a></li>
+                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "S" })">Synonym</a></li>
+                                </ul>
+                            </div>
 
-                                <div class="btn-group pull-right">
-                                    <button type="button" class="btn btn-default">Add Infraspecific Taxon</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, infraspecificTypeCode = "V" })">Variety</a></li>
-                                        <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, infraspecificTypeCode = "F" })">Form</a></li>
-                                    </ul>
-                                </div>
-                            }
-                        </div>
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-default">Add Infraspecific Taxon</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, infraspecificTypeCode = "V" })">Variety</a></li>
+                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, infraspecificTypeCode = "F" })">Form</a></li>
+                                </ul>
+                            </div>
+                        }
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-horizontal">
-                                <div class="box-body">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="box-body">
 
-                                    @if (Model.ID > 0)
-                                    {
-                                        <div class="form-group my-auto">
-                                            <label for="txtGenus" class="col-sm-2 control-label">ID</label>
-                                            <div class="col-sm-1">
-                                                <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
-                                            </div>
+                                @if (Model.ID > 0)
+                                {
+                                    <div class="form-group my-auto">
+                                        <label for="txtGenus" class="col-sm-2 control-label">ID</label>
+                                        <div class="col-sm-1">
+                                            <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
                                         </div>
-                                    }
+                                    </div>
+                                }
                                 <div>
                                     <div class="form-group">
                                         <label for="txtGenus" class="col-sm-2 control-label">Genus</label>
@@ -293,13 +298,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </div>
   
 }

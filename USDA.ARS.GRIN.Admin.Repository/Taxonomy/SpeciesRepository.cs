@@ -64,7 +64,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     cmd.CommandText = commandText;
 
                     species.ModifiedDate = DateTime.Now;
-                    species.NameVerifiedDate = DateTime.Now;
                     species.OwnedDate = DateTime.Now;
 
                     if (species.CurrentTaxonomySpeciesID == 0)
@@ -172,7 +171,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     cmd.CommandText = commandText;
 
                     species.ModifiedDate = DateTime.Now;
-                    species.NameVerifiedDate = DateTime.Now;
                     species.OwnedDate = DateTime.Now;
 
                     cmd.Parameters.AddWithValue("@taxonomy_species_id", species.ID);
@@ -288,7 +286,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 species.IsNamePending = (reader["is_name_pending"].ToString() == "Y") ? true : false;
                                 species.SynonymCode = reader["synonym_code"].ToString();
                                 species.VerifierCooperatorID = GetInt(reader["verifier_cooperator_id"].ToString());
-                                species.NameVerifiedDate = GetDate(reader["name_verified_date"].ToString());
+                                species.NameVerifiedDate = reader["name_verified_date"].ToString();
                                 species.Name = reader["name"].ToString();
                                 species.NameAuthority = reader["name_authority"].ToString();
                                 species.Protologue = reader["protologue"].ToString();
@@ -361,7 +359,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 species.IsNamePending = (reader["is_name_pending"].ToString() == "Y") ? true : false;
                                 species.SynonymCode = reader["synonym_code"].ToString();
                                 species.VerifierCooperatorID = GetInt(reader["verifier_cooperator_id"].ToString());
-                                species.NameVerifiedDate = GetDate(reader["name_verified_date"].ToString());
+                                species.NameVerifiedDate = reader["name_verified_date"].ToString();
                                 species.Name = reader["name"].ToString();
                                 species.NameAuthority = reader["name_authority"].ToString();
                                 species.Protologue = reader["protologue"].ToString();

@@ -29,60 +29,17 @@
             </a>
         </li>
         <li class="header">ADMIN</li>
-        
-        
-        <!--<li class="treeview menu-open" style="height: auto;">
-            <a href="#">
-                <i class="fa fa-table"></i> <span>Email Templates</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu" style="display: block;">
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>-->
-                @*<li class="treeview" style="height: auto;">
-                    <a href="#">
-                        <i class="fa fa-circle-o"></i> Level One
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: none;">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-circle-o"></i> Level Two
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none;">
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>*@
-                <!--<li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-            </ul>
-        </li>-->
-
-        
         <li class="@Url.IsLinkActive("EmailTemplateEdit","WebOrder" )">
-            <a href="@Url.Action("EmailTemplateEdit","WebOrder", new { id = 0 })">
+            @*<a href="@Url.Action("EmailTemplateHome","WebOrder", new { id = 0 })">
+                <i class="fa fa-table"></i>
+                <span>Email Templates</span>
+            </a>*@
+            <a href="" class="disabled" style="color:#ebebeb;">
                 <i class="fa fa-table"></i>
                 <span>Email Templates</span>
             </a>
-          
         </li>
-
-
-
     </ul>
-        @* END Menu *@
     </section>
 </aside>
 

@@ -132,10 +132,11 @@
                     <tr>
                         <th></th>
                         <th>ID</th>
-                        <th>Genus Name</th>
-                        <th>Species</th>
-                        <th>Nomen Number</th>
-                        <th>Accepted Name</th>
+                        <th>Name</th>
+                        <th>Authority</th>
+                        <th>Verified Date</th>
+                        <th>Protologue</th>
+                        <th>Pr</th>
                         <th>Synonym Code</th>
                         <th></th>
                     </tr>
@@ -156,22 +157,8 @@
 
     $(document).ready(function () {
         $(".overlay").hide();
-        //var cooperatorId = $("#hfDefaultCooperatorID").val();
-        //$("#ddlSelectCooperator").val(cooperatorId);
-        //GetUserSpecies();
+        
     });
-
-    //$('#btnTest').click(function () {
-    //    var table = $('#tblSpeciesDataTest').DataTable();
-    //    var data = table.rows({ selected: true }).data();
-
-    //    var newarray = [];
-    //    for (var i = 0; i < data.length; i++) {
-    //        newarray.push(data[i]["ID"]);
-    //        }
-    //    var sData = newarray.join();
-    //    //TODO: PASS ID LIST TO METHOD
-    //});
 
     $(document).on({
         ajaxStart: function () {
@@ -197,9 +184,6 @@
         }*@
     });
 
-    //******************************************************************
-    //TEST DATATABLES AJAX LOAD
-    //******************************************************************
     $("#btnSearch").click(function () {
         var cooperatorId = 0;
         var genusName = "";
@@ -208,7 +192,10 @@
         var protologue = "";
 
         try {
+
+            //TODO: GET SEL COOP ID
             //cooperatorId = $("#SearchViewModel.CreatedByCooperatorID").val();
+
             genusName = $("#GenusName").val();
             speciesName = $("#SpeciesName").val();
             synonymCode = $("#SynonymCode").val();
@@ -271,29 +258,6 @@
         }
     }
 
-    function GetRecentSpecies()
-    {
-        try {
-            $.ajax({
-            url: '@Url.Action("SpeciesRecentlyEditedSearch","Taxonomy")',
-            type: "GET",
-            data: { },
-            contentType: "application/json;",
-            dataType: 'json',
-            success: OnSuccess,
-            failure: function (response) {
-                alert(response.d);
-            },
-            error: function (response) {
-                alert(response.d);
-            }
-        });
-        }
-        catch (ex) {
-            console.log(ex.message);
-        }
-    }
-
     function GetUsersDetails(ele) {
         var dataRow = $('#tblSpeciesDataTest').DataTable().row($(ele).closest('tr')).data();
         var url = '@Url.Action("SpeciesEdit","Taxonomy", new { id = "SPECIES_ID" })';
@@ -346,10 +310,10 @@
                                     data;
                             }
                         },
-                        { 'data': 'GenusName' },
                         { 'data': 'Name' },
-                        { 'data': 'NomenNumber' },
-                        { 'data': 'ShowIsAcceptedName' },
+                        { 'data': 'Authority' },
+                        { 'data': 'NameVerifiedDate' },
+                        { 'data': 'Protologue' },
                         {
                             data: 'SynonymCode',
                             render: function (data, type, row, meta) {
@@ -370,7 +334,7 @@
             console.log(ex.message);
         }
     };
-
+    
     $('#tblSpeciesDataTest tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = $('#tblSpeciesDataTest').DataTable().row(tr);

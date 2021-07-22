@@ -1,0 +1,67 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.EmailTemplateHomeViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Templates</h3>
+
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="section-item-pick-list" class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    @foreach (var emailTemplate in Model.EmailTemplates)
+                    {
+                        <li id="@emailTemplate.ID">
+                            <a href="#">
+                                <i class="fa fa-file-text-o"></i> @emailTemplate.Title
+                                @*<span class="pull-right">Standard rejection template</span>*@
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    <div id="section-edit" class="col-md-9">
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#section-item-pick-list ul.nav li').on('click', function () {
+
+            $(this).parent().find('li.active').removeClass('active');
+            $(this).addClass('active');
+            var itemId = $(this).attr('id');
+            LoadEmailTemplate(itemId);
+        });
+    });
+
+    function LoadEmailTemplate(emailTemplateId)
+    {
+        var link = '@Url.Action("_EmailTemplateView", "WebOrder")';
+        $.ajax(
+            {
+                type: 'POST',
+                url: link,
+                data: { id: emailTemplateId },
+                success:
+                    function (response) {
+                        $("#section-edit").html(response);
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                    }
+            });
+    }
+</script>

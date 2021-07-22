@@ -110,9 +110,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 emailTemplate.CreatedByCooperatorName = reader["created_by_name"].ToString();
                                 emailTemplate.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 emailTemplate.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
-                                emailTemplate.OwnedDate = GetDate(reader["owned_date"].ToString());
-                                emailTemplate.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
-                                emailTemplate.OwnedByCooperatorName = reader["owned_by_name"].ToString();
                             }
                         }
                     }
