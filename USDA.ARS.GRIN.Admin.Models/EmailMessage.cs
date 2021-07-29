@@ -16,6 +16,7 @@ namespace USDA.ARS.GRIN.Admin.Models
 
         public string From { get; set; }
         public string To { get; set; }
+        public string[] Recipients { get; set; }
         public string CC { get; set; }
         public string BCC { get; set; }
         public string ReplyTo { get; set; }

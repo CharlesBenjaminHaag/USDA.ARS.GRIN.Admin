@@ -45,8 +45,14 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             StringBuilder sbResultDescription = new StringBuilder();
             MailAddress from = new MailAddress(emailMessage.From);
-            MailAddress to = new MailAddress(emailMessage.To);
-            MailMessage message = new MailMessage(from, to);
+            MailMessage message = new MailMessage();
+            message.From = from;
+
+            foreach (var emailAddress in emailMessage.Recipients)
+            {
+                message.To.Add(emailAddress);
+            }
+
             message.Subject = emailMessage.Subject;
             message.Body = emailMessage.Body;
             message.IsBodyHtml = true;

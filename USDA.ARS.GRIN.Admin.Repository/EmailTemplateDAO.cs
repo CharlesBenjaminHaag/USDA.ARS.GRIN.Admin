@@ -149,7 +149,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
-                        cmd.Parameters.AddWithValue("@categoryCode", searchString);
+                        cmd.Parameters.AddWithValue("@category_code", searchString);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {

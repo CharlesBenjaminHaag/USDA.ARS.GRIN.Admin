@@ -15,6 +15,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected AccessionInventoryAttachmentDAO _accessionInventoryAttachmentDAO = null;
         protected WebOrderRequestDAO _webOrderRequestDAO = null;
         protected EmailTemplateDAO _emailTemplateDAO = null;
+        protected SmtpService _smtpService = null;
         protected string _context;
         
         public GRINGlobalService(string context)
@@ -23,6 +24,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             _accessionInventoryAttachmentDAO = new AccessionInventoryAttachmentDAO(context);
             _webOrderRequestDAO = new WebOrderRequestDAO(context);
             _emailTemplateDAO = new EmailTemplateDAO(context);
+            _smtpService = new SmtpService();
         }
 
         public AccessionInventoryAttachment GetAccessionInventoryAttachment(int id)
@@ -119,13 +121,21 @@ namespace USDA.ARS.GRIN.Admin.Service
         public ResultContainer SendEmail(string type, string[] emailNotificationList)
         {
             ResultContainer resultContainer = new ResultContainer();
+            EmailTemplate emailTemplate = new EmailTemplate();
+            EmailMessage emailMessage = new EmailMessage();
+
             try
-            { 
-                //TODO:
-                //Get template related to typoe code
-                //Get recipient(s)
-                //Call email service
-            
+            {
+                emailTemplate = _emailTemplateDAO.Search(type).First();
+                emailMessage.Subject = emailMessage.Subject;
+                emailMessage.From = emailTemplate.From;
+                emailMessage.Recipients = emailNotificationList;
+                emailMessage.Body = emailTemplate.Body;
+                resultContainer = _smtpService.SendMessage(emailMessage);
+                if (resultContainer.ResultMessage == ResultContainer.ResultCodeValue.OK.ToString())
+                {
+                    throw new Exception(resultContainer.ResultMessage);
+                }
             }
             catch (Exception ex)
             {
