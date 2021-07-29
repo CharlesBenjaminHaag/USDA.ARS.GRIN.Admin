@@ -298,7 +298,6 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             }
             return webOrderRequests.AsQueryable();
         }
-
         private string GetSQL(string fieldValue)
         {
             string sql = String.Empty;
@@ -452,6 +451,16 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                 throw ex;
             }
             return webOrderRequests.AsQueryable();
+        }
+
+        public string[] GetEmailNotificationList(int webOrderRequestId)
+        {
+            string[] emailRecipientList = new string[] { };
+
+
+
+
+            return emailRecipientList;
         }
 
         #endregion WebOrderRequest

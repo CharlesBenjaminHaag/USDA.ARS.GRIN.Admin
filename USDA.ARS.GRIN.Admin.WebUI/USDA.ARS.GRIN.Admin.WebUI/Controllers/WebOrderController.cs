@@ -24,6 +24,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 viewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
+                if (viewModel.Statuses.Count() > 0)
+                {
+                    viewModel.CurrentID = viewModel.Statuses.First().ID;
+                }
+                
                 viewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
                 return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", viewModel);
             }
@@ -106,6 +111,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
         {
+            string[] emailRecipientList = new string[] { };
             ResultContainer resultContainer = null;
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             SmtpService smtpService = new SmtpService();
@@ -118,7 +124,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                 if (viewModel.Action == OrderRequestAction.NRRReviewEnd)
                 {
-                    grinGlobalService.SetReviewStatus(viewModel.ID, AuthenticatedUser.WebCooperatorID, false);
+                    grinGlobalService.SetReviewStatus(viewModel.ID, AuthenticatedUser.Cooperator.WebCooperator.ID, false);
                 }
                 else
                 {
@@ -126,51 +132,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     {
                         resultContainer = grinGlobalService.UpdateWebOrderRequest(webOrderRequest);
                     }
-                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
-
-                    //TODO: REFACTOR
-                    //SendEmailMessage("NRR_APPROVE"
-                    EmailMessage emailMessage = new EmailMessage();
-                    emailMessage.From = "gringlobal.orders@usda.gov";
-                    emailMessage.IsHtml = true;
+                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
 
                     if (viewModel.Action == "NRR_APPROVE")
                     {
-                        emailMessage.To = "benjamin.haag@usda.gov";
-                        emailMessage.Subject = "NRR Review Update: Order #" + webOrderRequest.ID + " Approved";
-                        emailMessage.Body = "Order # " + webOrderRequest.ID + " has been approved. You may now process it normally via the Order Wizard.";
-                        smtpService.SendMessage(emailMessage);
+                        emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
+                        grinGlobalService.SendEmail("CAP", emailRecipientList);
                     }
                     else
                         if (viewModel.Action == "NRR_REJECT")
-                    {
-                        emailMessage.To = viewModel.WebCooperator.EmailAddress;
-                        emailMessage.Subject = "Your Germplasm Request (Order #" + webOrderRequest.ID + ")";
-
-                        System.Text.StringBuilder sbEmailBody = new System.Text.StringBuilder();
-                        sbEmailBody.Append("Dear Germplasm Requestor,<p>Thank you for your interest in our germplasm collection.The mission of the National Plant Germplasm System(NPGS)");
-                        sbEmailBody.Append("is to provide materials in small quantities to research and education entities when genetic diversity or genetic standards are a");
-                        sbEmailBody.Append("requirement.The accessions maintained by NPGS are not intended for home or personal use that can");
-                        sbEmailBody.Append("be better served by commercially - available varieties.");
-                        sbEmailBody.Append("*** PLACEHOLDER FOR TEMPLATE TEXT ***");
-                        emailMessage.Body = sbEmailBody.ToString();
-                        smtpService.SendMessage(emailMessage);
-
-                        // EMAIL TO CURATORS
-                        emailMessage.To = "benjamin.haag@usda.gov";
-                        emailMessage.Subject = "NRR Review Update: Order " + webOrderRequest.ID + " Canceled";
-                        emailMessage.Body = "Order # " + webOrderRequest.ID + " has been determined to be a Non-Research Request (NRR), and has been cancelled. You may reference this order within the Order Wizard.";
-                        smtpService.SendMessage(emailMessage);
-                    }
-                    else
-                        if (viewModel.Action == "NRR_INFO")
                         {
-                        emailMessage.To = viewModel.WebCooperator.EmailAddress;
-                        emailMessage.Subject = "Request For Additional Information: Order " + webOrderRequest.ID;
-                        emailMessage.Body = viewModel.InformationRequestText;
-                        smtpService.SendMessage(emailMessage);
-                            
+                            emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
+                            grinGlobalService.SendEmail("CCL", emailRecipientList);
+                            grinGlobalService.SendEmail("RRJ", new string[] { viewModel.WebCooperator.EmailAddress });
+                        }
+                        else
+                            if (viewModel.Action == "NRR_INFO")
+                            {
+                                grinGlobalService.SendEmail("RQI", new string[] { viewModel.WebCooperator.EmailAddress });
+                            }
+
+                    if (resultContainer.ResultCode == ResultContainer.ResultCodeValue.Error.ToString())
+                    {
+                        throw new Exception("Error sending mail: " + resultContainer.ResultMessage + resultContainer.ResultDescription);
                     }
+
                 }
                 if ((viewModel.Action != "NRR_NOTE") && (viewModel.Action != "NRR_INFO"))
                 {
@@ -199,8 +185,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 if (reviewMode)
                 {
-                    resultContainer = service.SetReviewStatus(id, AuthenticatedUser.WebCooperatorID, true);
-                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.WebCooperatorID });
+                    resultContainer = service.SetReviewStatus(id, AuthenticatedUser.Cooperator.WebCooperator.ID, true);
+                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
                 }
 
                 webOrderRequest = service.GetWebOrderRequest(id);
@@ -208,6 +194,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 {
                     throw new NullReferenceException(String.Format("Null web order request returned for ID {0}", id));
                 }
+                viewModel.AuthenticatedUser = AuthenticatedUser;
                 viewModel.StatusCode = webOrderRequest.StatusCode;
                 viewModel.OrderDate = webOrderRequest.OrderDate;
                 viewModel.WebCooperator = webOrderRequest.Cooperators.First();
@@ -442,6 +429,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
                 EmailTemplateHomeViewModel emailTemplateHomeViewModel = new EmailTemplateHomeViewModel();
                 emailTemplateHomeViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
+                if (emailTemplateHomeViewModel.EmailTemplates.Count() > 0)
+                {
+                    emailTemplateHomeViewModel.CurrentID = emailTemplateHomeViewModel.EmailTemplates.First().ID;
+                }
                 return View("~/Views/GRINGlobal/WebOrder/Email/Index.cshtml", emailTemplateHomeViewModel);
             }
             catch (Exception ex)
@@ -496,6 +487,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 emailTemplateEditViewModel.SenderAddress = emailTemplate.From;
                 emailTemplateEditViewModel.Subject = emailTemplate.Subject;
                 emailTemplateEditViewModel.Body = emailTemplate.Body;
+                emailTemplateEditViewModel.CreatedDate = emailTemplate.CreatedDate;
+                emailTemplateEditViewModel.CreatedByCooperatorID = emailTemplate.CreatedByCooperatorID;
+                emailTemplateEditViewModel.CreatedByCooperatorName = emailTemplate.CreatedByCooperatorName;
+                emailTemplateEditViewModel.ModifiedDate = emailTemplate.ModifiedDate;
+                emailTemplateEditViewModel.ModifiedByCooperatorID = emailTemplate.ModifiedByCooperatorID;
+                emailTemplateEditViewModel.ModifiedByCooperatorName = emailTemplate.ModifiedByCooperatorName;
                 return View("~/Views/GRINGlobal/WebOrder/Email/Edit.cshtml", emailTemplateEditViewModel);
             }
             catch (Exception ex)
@@ -514,10 +511,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 emailTemplate.ID = emailTemplateEditViewModel.ID;
-                emailTemplate.From = emailTemplateEditViewModel.SenderAddress;
+                emailTemplate.Title = emailTemplateEditViewModel.Title;
                 emailTemplate.Subject = emailTemplateEditViewModel.Subject;
+                emailTemplate.From = emailTemplateEditViewModel.SenderAddress;
+                emailTemplate.To = emailTemplateEditViewModel.RecipientAddress;
                 emailTemplate.Body = emailTemplateEditViewModel.Body;
-                //resultContainer = grinGlobalService.
+                resultContainer = grinGlobalService.UpdateEmailTemplate(emailTemplate);
                 return RedirectToAction("EmailTemplateEdit", "WebOrder", new { id = emailTemplateEditViewModel.ID });
             }
             catch (Exception ex)

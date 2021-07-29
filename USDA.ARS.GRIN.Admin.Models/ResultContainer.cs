@@ -35,5 +35,10 @@ namespace USDA.ARS.GRIN.Admin.Models
 
             return errorMessage;
         }
+        public enum ResultCodeValue
+        {
+            OK,
+            Error
+        }
     }
 }

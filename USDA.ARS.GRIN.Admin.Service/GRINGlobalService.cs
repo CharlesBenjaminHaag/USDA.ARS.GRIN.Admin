@@ -15,9 +15,11 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected AccessionInventoryAttachmentDAO _accessionInventoryAttachmentDAO = null;
         protected WebOrderRequestDAO _webOrderRequestDAO = null;
         protected EmailTemplateDAO _emailTemplateDAO = null;
+        protected string _context;
         
         public GRINGlobalService(string context)
         {
+            _context = context;
             _accessionInventoryAttachmentDAO = new AccessionInventoryAttachmentDAO(context);
             _webOrderRequestDAO = new WebOrderRequestDAO(context);
             _emailTemplateDAO = new EmailTemplateDAO(context);
@@ -82,7 +84,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _accessionInventoryAttachmentDAO.GetValidationCounts();
         }
 
-        #region Email
+        #region Email Templates
 
         public EmailTemplate GetEmailTemplate(int id)
         {
@@ -94,6 +96,44 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _emailTemplateDAO.FindAll();
         }
 
-        #endregion Email
+        public ResultContainer UpdateEmailTemplate(EmailTemplate emailTemplate)
+        {
+            return _emailTemplateDAO.Update(emailTemplate);
+        }
+
+        #endregion Email Templates
+        #region Email
+
+        public string[] GetEmailNotificationList(int webOrderRequestId)
+        {
+            if (_context != "PRODUCTION")
+            {
+                return new string[] { "marty.reisinger@usda.gov" };
+            }
+            else
+            {
+                return _webOrderRequestDAO.GetEmailNotificationList(webOrderRequestId);
+            }
+        }
+
+        public ResultContainer SendEmail(string type, string[] emailNotificationList)
+        {
+            ResultContainer resultContainer = new ResultContainer();
+            try
+            { 
+                //TODO:
+                //Get template related to typoe code
+                //Get recipient(s)
+                //Call email service
+            
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        #endregion
     }
 }

@@ -31,7 +31,7 @@
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Order Status</h3>
-
+                            @Html.HiddenFor(x => x.CurrentID)
                             <div class="box-tools">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                     <i class="fa fa-minus"></i>
@@ -232,7 +232,7 @@
     });
 
     $(document).ready(function () {
-        LoadWebOrderRequests("NRR_FLAG", 2);
+        LoadData("NRR_FLAG", 2);
         $("#txtOrderDateRange").val("");
     });
 
@@ -248,7 +248,7 @@
             $("#SelectedStatusCode").val(status);
 
             var timeFrameId = $("#SelectedTimeFrameCode").val();
-            LoadWebOrderRequests(status, timeFrameId);
+            LoadData(status, timeFrameId);
         });
     });
 
@@ -264,7 +264,7 @@
             $("#SelectedTimeFrameCode").val(timeFrameCode);
 
             var statusCode = $("#SelectedStatusCode").val();
-            LoadWebOrderRequests(statusCode, timeFrameCode);
+            LoadData(statusCode, timeFrameCode);
         });
     });
 
@@ -328,7 +328,7 @@
         }
     }
 
-    function LoadWebOrderRequests(statusCode, timeFrameCode)
+    function LoadData(statusCode, timeFrameCode)
     {
         $("#SelectedStatusCode").val(statusCode);
         $("#SelectedTimeFrameCode").val(timeFrameCode);

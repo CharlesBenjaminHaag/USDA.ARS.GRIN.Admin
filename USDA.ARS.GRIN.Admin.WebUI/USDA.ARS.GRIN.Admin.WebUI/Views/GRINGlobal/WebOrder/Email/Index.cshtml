@@ -8,7 +8,7 @@
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Templates</h3>
-
+                @Html.HiddenFor(x => x.CurrentID)
                 <div class="box-tools">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
@@ -36,24 +36,38 @@
     </div>
 </div>
 <script type="text/javascript">
+    $(document).ready(function () {
+        try {
+            var currentid = 0;
+            currentid = $("#CurrentID").val();
+            LoadData(currentid);
+        }
+        catch (ex) {
+            console.log(ex.message);
+        }
+    });
+
     $(function () {
         $('#section-item-pick-list ul.nav li').on('click', function () {
 
             $(this).parent().find('li.active').removeClass('active');
             $(this).addClass('active');
             var itemId = $(this).attr('id');
-            LoadEmailTemplate(itemId);
+            LoadData(itemId);
         });
     });
 
-    function LoadEmailTemplate(emailTemplateId)
+    function LoadData(id)
     {
+        var $getStatusElement = $('li#' + id);
+        $getStatusElement.addClass('active');
+
         var link = '@Url.Action("_EmailTemplateView", "WebOrder")';
         $.ajax(
             {
                 type: 'POST',
                 url: link,
-                data: { id: emailTemplateId },
+                data: { id: id },
                 success:
                     function (response) {
                         $("#section-edit").html(response);

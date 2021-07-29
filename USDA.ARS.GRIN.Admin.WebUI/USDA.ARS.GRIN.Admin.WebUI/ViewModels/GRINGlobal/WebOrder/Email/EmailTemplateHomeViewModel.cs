@@ -7,7 +7,7 @@ using USDA.ARS.GRIN.Admin.Models;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
 {
-    public class EmailTemplateHomeViewModel
+    public class EmailTemplateHomeViewModel: BaseViewModel
     {
         public IQueryable<EmailTemplate> EmailTemplates { get; set; }
     }

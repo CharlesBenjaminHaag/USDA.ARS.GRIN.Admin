@@ -23,25 +23,25 @@ namespace USDA.ARS.GRIN.Admin.WebUI
             string appVersion = String.Empty;
             string mainCssClass = "hold-transition skin-blue sidebar-mini";
 
-            if (HttpContext.Current.Request.Url.ToString().Contains("taxonomy"))
-            {
-                mainCssClass = "hold-transition skin-green sidebar-mini";
-            }
+            //if (HttpContext.Current.Request.Url.ToString().Contains("taxonomy"))
+            //{
+            //    mainCssClass = "hold-transition skin-green sidebar-mini";
+            //}
 
-            if (HttpContext.Current.Request.Url.ToString().Contains("sitemanagement"))
-            {
-                mainCssClass = "hold-transition skin-red sidebar-mini";
-            }
+            //if (HttpContext.Current.Request.Url.ToString().Contains("sitemanagement"))
+            //{
+            //    mainCssClass = "hold-transition skin-red sidebar-mini";
+            //}
 
-            if (HttpContext.Current.Request.Url.ToString().Contains("accountmanagement"))
-            {
-                mainCssClass = "hold-transition skin-purple sidebar-mini";
-            }
+            //if (HttpContext.Current.Request.Url.ToString().Contains("accountmanagement"))
+            //{
+            //    mainCssClass = "hold-transition skin-purple sidebar-mini";
+            //}
 
-            if (HttpContext.Current.Request.Url.ToString().ToLower().Contains("weborder"))
-            {
-                mainCssClass = "hold-transition skin-red sidebar-mini";
-            }
+            //if (HttpContext.Current.Request.Url.ToString().ToLower().Contains("weborder"))
+            //{
+            //    mainCssClass = "hold-transition skin-red sidebar-mini";
+            //}
 
             return mainCssClass;
         }

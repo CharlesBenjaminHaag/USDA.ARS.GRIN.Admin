@@ -26,7 +26,7 @@
     }
     @using (Html.BeginForm("EmailTemplateEdit", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
     {
-        @Html.HiddenFor(x => x.ID, new { id = "hfCropMapID", name = "ID" })
+        @Html.HiddenFor(x => x.ID)
         @Html.ValidationSummary()
         <div class="box box-default">
             <div class="box-header">

@@ -21,6 +21,8 @@
                     <th>Postal Code</th>
                     <th>Intended Use</th>
                     <th></th>
+                    <th>DEBUG</th>
+                    <th>DEBUG</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +30,7 @@
                 {
                     <tr>
                         <td>
-                            @if (webOrderRequest.IsLocked)
+                            @if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.AuthenticatedUser.Cooperator.WebCooperator.ID))
                             {
                                 <i class="fa fa-eye" style="color:red; margin-left:.5em;"></i>
                             }
@@ -44,16 +46,25 @@
                         <td>
                             @if (webOrderRequest.StatusCode.Contains("NRR"))
                             {
-                                <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
-                                    <i class="fa fa-eye"></i> Review
-                                </button>
+                                if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.AuthenticatedUser.Cooperator.WebCooperator.ID))
+                                {
+                                    <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
+                                        <i class="fa fa-drivers-license"></i> Detail
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
+                                        <i class="fa fa-eye"></i> Review
+                                    </button>
+                                }
                             }
-                            else
-                            {
-                                <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
-                                    <i class="fa fa-drivers-license"></i> Detail
-                                </button>
-                            }
+                        </td>
+                        <td>
+                            @webOrderRequest.OwnedByCooperatorID
+                        </td>
+                        <td>
+                            @Model.AuthenticatedUser.Cooperator.WebCooperator.ID
                         </td>
                     </tr>
                 }

@@ -12,6 +12,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
     public abstract class BaseSearchViewModel: BaseViewModel
     {
+        public int CurrentID { get; set; }
         public User AuthenticatedUser
         {
             get; set;

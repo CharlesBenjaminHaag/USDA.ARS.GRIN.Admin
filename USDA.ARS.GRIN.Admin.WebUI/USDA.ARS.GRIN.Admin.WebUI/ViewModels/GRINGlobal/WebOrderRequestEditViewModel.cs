@@ -37,6 +37,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
             Cooperator = new Cooperator();
             WebCooperator = new Cooperator();
             WebOrderRequestAddress = new Address();
+            WebOrderRequestAddresses = new List<Address>();
+            WebOrderRequestItems = new List<WebOrderRequestItem>();
             WebOrderRequestActionGroupViewModels = new List<WebOrderRequestActionGroupViewModel>();
             WebOrderRequestActions = new List<WebOrderRequestAction>();
         }

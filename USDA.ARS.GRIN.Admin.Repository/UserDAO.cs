@@ -55,7 +55,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             user.WebUserName = reader["web_user_name"].ToString();
                             user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
                             user.Cooperator.ID = user.CooperatorID;
-                            user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
+                            user.Cooperator.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
                             user.Cooperator.FirstName = reader["first_name"].ToString();
                             user.Cooperator.LastName = reader["last_name"].ToString();
                             user.Cooperator.EmailAddress = reader["email"].ToString();
@@ -293,13 +293,13 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 user.WebUserName = reader["web_user_name"].ToString();
                                 user.CooperatorID = GetInt(reader["cooperator_id"].ToString());
                                 user.Cooperator.ID = user.CooperatorID;
-                                user.WebCooperatorID = GetInt(reader["web_cooperator_id"].ToString());
                                 user.Cooperator.FirstName = reader["first_name"].ToString();
                                 user.Cooperator.LastName = reader["last_name"].ToString();
                                 user.Cooperator.EmailAddress = reader["email"].ToString();
                                 user.Cooperator.Organization = reader["organization"].ToString();
-                                //org abbrev
-                                //org region code
+                                user.Cooperator.WebCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
+                                user.Cooperator.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
+                                user.Cooperator.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 user.Cooperator.Job = reader["job"].ToString();
                                 user.Cooperator.Address.AddressLine1 = reader["address_line1"].ToString();
                                 user.Cooperator.Address.AddressLine2 = reader["address_line2"].ToString();

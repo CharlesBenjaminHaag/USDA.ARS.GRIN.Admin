@@ -14,6 +14,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
     public class BaseViewModel
     {
+        public int AuthenticatedUserCooperatorID { get; set; }
+        public int DefaultCooperatorID { get; set; }
+        public int ID { get; set; }
+
+        public int CurrentID { get; set; }
+        public string CurrentCodeValue { get; set; }
         public string Action { get; set; }
         public SysTable SysTable { get; set; }
         public string DataSourceName { get; set; }
@@ -23,9 +29,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
             get; set;
         }
         public string ErrorMessage { get; set; }
-        public int AuthenticatedUserCooperatorID { get; set; }
-        public int DefaultCooperatorID { get; set; }
-        public int ID { get; set; }
         [AllowHtml]
         public string Note { get; set; }
         public DateTime CreatedDate { get; set; }

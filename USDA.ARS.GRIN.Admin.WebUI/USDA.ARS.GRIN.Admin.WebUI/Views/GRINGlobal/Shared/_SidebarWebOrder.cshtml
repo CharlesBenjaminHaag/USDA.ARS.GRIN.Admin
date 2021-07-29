@@ -30,11 +30,7 @@
         </li>
         <li class="header">ADMIN</li>
         <li class="@Url.IsLinkActive("EmailTemplateEdit","WebOrder" )">
-            @*<a href="@Url.Action("EmailTemplateHome","WebOrder", new { id = 0 })">
-                <i class="fa fa-table"></i>
-                <span>Email Templates</span>
-            </a>*@
-            <a href="" class="disabled" style="color:#ebebeb;">
+            <a href="@Url.Action("EmailTemplateHome","WebOrder", new { id = 0 })">
                 <i class="fa fa-table"></i>
                 <span>Email Templates</span>
             </a>

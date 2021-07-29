@@ -26,375 +26,389 @@
     @Html.HiddenFor(x => x.WebCooperator.ID)
     @Html.HiddenFor(x => x.WebCooperator.EmailAddress)
     @Html.HiddenFor(x => x.InformationRequestText)
+
+    if ((!Model.IsReviewMode) && (Model.AuthenticatedUser.Cooperator.WebCooperator.ID != Model.OwnedByCooperatorID))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="callout callout-info" style="vertical-align:middle;">
+                    This web order request is currently being reviewed by 
+                    <strong>
+                    @Model.OwnedByCooperatorID
+                    </strong>
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-12" style="margin-bottom:20px;">
             @if (Model.IsReviewMode)
             {
-            <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" value="Deny..." />
-            @*<input type="button" id="btnEditEmail" class="btn btn-danger pull-right" value="Edit Requestor Email" />*@
-            <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" value="Approve..." />
-            <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" value="Add Note..." />
-            <input type="button" id="btnContactRequestor" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-contact-requestor" value="Request Additional Information..." />
+                <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" value="Deny..." />
+                <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" value="Approve..." />
+                <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" value="Add Note..." />
+                <input type="button" id="btnContactRequestor" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-contact-requestor" value="Request Additional Information..." />
 
-            if (Model.IsLocked)
-            {
-                <button type="button" id="btn-unlock" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                    <i class="fa fa-unlock"></i><span id="button-label">Unlock</span>
-                </button>
+                if (Model.IsLocked)
+                {
+                    <button type="button" id="btn-unlock" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-unlock"></i><span id="button-label">Unlock</span>
+                    </button>
+                }
             }
-        }
-        <a href="@Url.Action("Index", "WebOrder")" class="btn btn-default">Return to  Home Page</a>
+            <a href="@Url.Action("Index", "WebOrder")" class="btn btn-default">Return to  Home Page</a>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        <!-- TIMELINE -->
-        <div class="box box-primary">
-            <div class="box-header">
-                <h3 class="box-title">Web Order Actions</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
+    <div class="row">
+        <div class="col-md-3">
+            <!-- TIMELINE -->
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Web Order Actions</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="box-body">
+                <div class="box-body">
 
-                @if (Model.WebOrderRequestActionGroupViewModels.Count() > 0)
-                {
-                    <ul class="timeline timeline-inverse">
-                        @foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
-                        {
-                            <li class="time-label">
-                                <span class="bg-aqua">
-                                    @webOrderRequestActionGroup.ActionDate.ToShortDateString()
-                                </span>
-                            </li>
-
-                            foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
+                    @if (Model.WebOrderRequestActionGroupViewModels.Count() > 0)
+                    {
+                        <ul class="timeline timeline-inverse">
+                            @foreach (var webOrderRequestActionGroup in Model.WebOrderRequestActionGroupViewModels)
                             {
-                                <li>
-                                    <i class="@DisplayHelper.GetWebOrderRequestStatusCSSClass(webOrderRequestAction.ActionCode)"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
-                                        <h3 class="timeline-header">
-                                            <strong>@webOrderRequestAction.Title</strong>
-                                            (<a href="#">@webOrderRequestAction.CreatedByCooperatorName</a>)
-                                        </h3>
-                                        <div class="timeline-body">
-                                            @webOrderRequestAction.Note
-                                        </div>
-                                        @*<div class="timeline-footer">
-                                                <a class="btn btn-primary btn-xs">Read more</a>
-                                                <a class="btn btn-danger btn-xs">Delete</a>
-                                            </div>*@
-                                    </div>
+                                <li class="time-label">
+                                    <span class="bg-aqua">
+                                        @webOrderRequestActionGroup.ActionDate.ToShortDateString()
+                                    </span>
                                 </li>
-                                <!-- END timeline item -->
-                            }
-                        }
-                        <li>
-                            <i class="fa fa-clock-o bg-gray"></i>
-                        </li>
-                    </ul>
-                }
-                else
-                {
-                    <div class="alert alert-info">
-                        <h4 style="padding-bottom:0px; margin-bottom:0px;"><i class="icon fa fa-info"></i>No Actions Found</h4>
-                    </div>
-                }
-            </div>
-        </div>
 
-    </div>
-    <div class="col-md-9">
-
-        <!--
-        ===============================================================================================
-        WEB COOPERATOR
-        ===============================================================================================
-        -->
-        <div class="box box-default">
-            <div class="box-header">
-                <h3 class="box-title">Web Cooperator</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Job</th>
-                            <th>Organization</th>
-                            <th>Created</th>
-                            <th>Last Modified</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@Model.WebCooperator.Title</td>
-                            <td>@Model.WebCooperator.FirstName</td>
-                            <td>@Model.WebCooperator.LastName</td>
-                            <td>@Model.WebCooperator.EmailAddress</td>
-                            <td>@Model.WebCooperator.PrimaryPhoneNumber</td>
-                            <td>@Model.WebCooperator.Job</td>
-                            <td>@Model.WebCooperator.Organization</td>
-                            <td>@Model.WebCooperator.CreatedDate.ToShortDateString()</td>
-                            <td>@Model.WebCooperator.ModifiedDate.ToShortDateString()</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!--
-        ===============================================================================================
-        ADDRESSES
-        ===============================================================================================
-        -->
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#tab_1" id="tab-shipping-address" title="ShippingAddress" class="selector-tab" data-toggle="tab" aria-expanded="true">Shipping Address</a>
-                </li>
-                <li class="">
-                    <a href="#tab_2" id="tab-address" title="Address" class="selector-tab" data-toggle="tab" aria-expanded="false">Web Cooperator Address</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="tab_1">
-                    <div class="box-body">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Address 1</th>
-                                    <th>Address 2</th>
-                                    <th>Address 3</th>
-                                    <th>City</th>
-                                    <th>State/Province</th>
-                                    <th>Postal Code</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var address in Model.WebOrderRequestAddresses)
+                                foreach (var webOrderRequestAction in webOrderRequestActionGroup.WebOrderRequestActions)
                                 {
-                                    <tr>
-                                        <td>@address.AddressLine1</td>
-                                        <td>@address.AddressLine2</td>
-                                        <td>@address.AddressLine3</td>
-                                        <td>@address.City</td>
-                                        <td>@address.State</td>
-                                        <td>@address.ZIP</td>
-                                    </tr>
+                                    <li>
+                                        <i class="@DisplayHelper.GetWebOrderRequestStatusCSSClass(webOrderRequestAction.ActionCode)"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fa fa-clock-o"></i>@webOrderRequestAction.ActionDate.ToShortTimeString()</span>
+                                            <h3 class="timeline-header">
+                                                <strong>@webOrderRequestAction.Title</strong>
+                                                (<a href="#">@webOrderRequestAction.CreatedByCooperatorName</a>)
+                                            </h3>
+                                            <div class="timeline-body">
+                                                @webOrderRequestAction.Note
+                                            </div>
+                                            @*<div class="timeline-footer">
+                                                    <a class="btn btn-primary btn-xs">Read more</a>
+                                                    <a class="btn btn-danger btn-xs">Delete</a>
+                                                </div>*@
+                                        </div>
+                                    </li>
+                                    <!-- END timeline item -->
                                 }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="tab-pane" id="tab_2">
-                    <div class="box-body">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Address 1</th>
-                                    <th>Address 2</th>
-                                    <th>Address 3</th>
-                                    <th>City</th>
-                                    <th>State/Province</th>
-                                    <th>Postal Code</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>@Model.WebCooperator.Address.AddressLine1</td>
-                                    <td>@Model.WebCooperator.Address.AddressLine2</td>
-                                    <td>@Model.WebCooperator.Address.AddressLine3</td>
-                                    <td>@Model.WebCooperator.Address.City</td>
-                                    <td>@Model.WebCooperator.Address.State</td>
-                                    <td>@Model.WebCooperator.Address.ZIP</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="box box-default">
-            <div class="box-header">
-                <h3 class="box-title">Request Details</h3>
-                <div class="box-tools">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body">
-                <!--ORDER-->
-                <label>Web Order</label>
-                <table class="table table-hover table-striped ggtools">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>ID</th>
-                            <th>Status</th>
-                            <th>Intended Use</th>
-                            <th>Submitted</th>
-                            <th>By</th>
-                            <th>Email</th>
-                            <th>Address 1</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Postal Code</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td><span class="badge">@Model.ID</span></td>
-                            <td>@Model.StatusCode</td>
-                            <td>@Model.IntendedUseCode</td>
-                            <td>@Model.OrderDate.ToShortDateString()</td>
-                            <td>@Model.WebCooperator.LastName, @Model.WebCooperator.FirstName</td>
-                            <td>@Model.WebCooperator.EmailAddress</td>
-                            <td>@Model.WebCooperator.Address.AddressLine1</td>
-                            <td>@Model.WebCooperator.Address.City</td>
-                            <td>@Model.WebCooperator.Address.State</td>
-                            <td>@Model.WebCooperator.Address.ZIP</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- ORDER ITEMS -->
-                <label>Web Order Items</label>
-                <table class="table table-striped ggtools">
-                    <thead>
-                        <tr>
-                            <th>Seq.</th>
-                            <th>Status</th>
-                            <th>Accession</th>
-                            <th>Species</th>
-                            <th>Site Long Name</th>
-                            <th>Site Short Name</th>
-                            <th>Distribution Form</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var webOrderRequestItem in Model.WebOrderRequestItems)
-                        {
-                            <tr>
-                                <td>@webOrderRequestItem.SequenceNumber</td>
-                                <td>@webOrderRequestItem.StatusCode</td>
-                                <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
-                                <td>
-                                    <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
-                                </td>
-                                <td>@webOrderRequestItem.Site.LongName</td>
-                                <td>@webOrderRequestItem.Site.ShortName</td>
-                                <td>@webOrderRequestItem.DistributionForm</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="box box-default">
-            <div class="box-header">
-                <h3 class="box-title">Notes</h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="box-body">
-                @if (!String.IsNullOrEmpty(Model.IntendedUseNote))
-                {
-                    <label>Intended Use</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.IntendedUseNote
-                    </p>
-                }
-                @if (!String.IsNullOrEmpty(Model.SpecialInstruction))
-                {
-                    <label>Special Instruction</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.SpecialInstruction
-                    </p>
-                }
-                @if (!String.IsNullOrEmpty(Model.Note))
-                {
-                    <label>Note</label>
-                    <p class="text-muted well well-sm no-shadow">
-                        @Model.Note
-                    </p>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- APPROVE MODAL -->
-<div id="modal-approve" class="modal modal-success fade" role='dialog'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Approve Web Order <span id="web-order-request-id"></span></h4>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <h5>This will approve this order for further processing by the designated site. Please enter any desired order action notes in the field below.</h5>
-                <textarea id="txtApprovalNote" rows="5" class="form-control"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btn-approve-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
-                <button type="button" id="btn-approve-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- DENY MODAL -->
-<div id="modal-deny" class="modal modal-danger" role='dialog'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Deny Web Order <span id="web-order-request-id"></span></h4>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <h5>This will <strong>cancel</strong> this order.</h5>
-                <label>Note</label>
-                <textarea id="txtRejectionNote" rows="5" class="form-control"></textarea>
-                <br />
-                <div class="box box-danger collapsed-box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Preview Email</h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" style="background-color:#d33724;" data-widget="collapse">
-                                <i class="fa fa-plus"></i>
-                            </button>
+                            }
+                            <li>
+                                <i class="fa fa-clock-o bg-gray"></i>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <h4 style="padding-bottom:0px; margin-bottom:0px;"><i class="icon fa fa-info"></i>No Actions Found</h4>
                         </div>
-                        <!-- /.box-tools -->
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9">
+
+            <!--
+            ===============================================================================================
+            WEB COOPERATOR
+            ===============================================================================================
+            -->
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Web Cooperator</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body" style="background-color:#dd4b39;">
-                        <p>Preview the email that the requestor will receive.</p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <textarea id="txtEmail" rows="15" class="form-control" disabled>Germplasm Requestor:
+                </div>
+                <div class="box-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Job</th>
+                                <th>Organization</th>
+                                <th>Created</th>
+                                <th>Last Modified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.WebCooperator.Title</td>
+                                <td>@Model.WebCooperator.FirstName</td>
+                                <td>@Model.WebCooperator.LastName</td>
+                                <td>@Model.WebCooperator.EmailAddress</td>
+                                <td>@Model.WebCooperator.PrimaryPhoneNumber</td>
+                                <td>@Model.WebCooperator.Job</td>
+                                <td>@Model.WebCooperator.Organization</td>
+                                <td>@Model.WebCooperator.CreatedDate.ToShortDateString()</td>
+                                <td>@Model.WebCooperator.ModifiedDate.ToShortDateString()</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--
+            ===============================================================================================
+            ADDRESSES
+            ===============================================================================================
+            -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab_1" id="tab-shipping-address" title="ShippingAddress" class="selector-tab" data-toggle="tab" aria-expanded="true">Shipping Address</a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_2" id="tab-address" title="Address" class="selector-tab" data-toggle="tab" aria-expanded="false">Web Cooperator Address</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="box-body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>Address 3</th>
+                                        <th>City</th>
+                                        <th>State/Province</th>
+                                        <th>Postal Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var address in Model.WebOrderRequestAddresses)
+                                    {
+                                        <tr>
+                                            <td>@address.AddressLine1</td>
+                                            <td>@address.AddressLine2</td>
+                                            <td>@address.AddressLine3</td>
+                                            <td>@address.City</td>
+                                            <td>@address.State</td>
+                                            <td>@address.ZIP</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        <div class="box-body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>Address 3</th>
+                                        <th>City</th>
+                                        <th>State/Province</th>
+                                        <th>Postal Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.WebCooperator.Address.AddressLine1</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine2</td>
+                                        <td>@Model.WebCooperator.Address.AddressLine3</td>
+                                        <td>@Model.WebCooperator.Address.City</td>
+                                        <td>@Model.WebCooperator.Address.State</td>
+                                        <td>@Model.WebCooperator.Address.ZIP</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Request Details</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <!--ORDER-->
+                    <label>Web Order</label>
+                    <table class="table table-hover table-striped ggtools">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Intended Use</th>
+                                <th>Submitted</th>
+                                <th>By</th>
+                                <th>Email</th>
+                                <th>Address 1</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Postal Code</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td><span class="badge">@Model.ID</span></td>
+                                <td>@Model.StatusCode</td>
+                                <td>@Model.IntendedUseCode</td>
+                                <td>@Model.OrderDate.ToShortDateString()</td>
+                                <td>@Model.WebCooperator.LastName, @Model.WebCooperator.FirstName</td>
+                                <td>@Model.WebCooperator.EmailAddress</td>
+                                <td>@Model.WebCooperator.Address.AddressLine1</td>
+                                <td>@Model.WebCooperator.Address.City</td>
+                                <td>@Model.WebCooperator.Address.State</td>
+                                <td>@Model.WebCooperator.Address.ZIP</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- ORDER ITEMS -->
+                    <label>Web Order Items</label>
+                    <table class="table table-striped ggtools">
+                        <thead>
+                            <tr>
+                                <th>Seq.</th>
+                                <th>Status</th>
+                                <th>Accession</th>
+                                <th>Species</th>
+                                <th>Site Long Name</th>
+                                <th>Site Short Name</th>
+                                <th>Distribution Form</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var webOrderRequestItem in Model.WebOrderRequestItems)
+                            {
+                                <tr>
+                                    <td>@webOrderRequestItem.SequenceNumber</td>
+                                    <td>@webOrderRequestItem.StatusCode</td>
+                                    <td><a href="https://npgsweb.ars-grin.gov/gringlobal/accessiondetail.aspx?id=@webOrderRequestItem.Accession.ID">@webOrderRequestItem.Accession.Descriptor</a></td>
+                                    <td>
+                                        <a href="https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=@webOrderRequestItem.Species.ID">@webOrderRequestItem.Species.Name</a>
+                                    </td>
+                                    <td>@webOrderRequestItem.Site.LongName</td>
+                                    <td>@webOrderRequestItem.Site.ShortName</td>
+                                    <td>@webOrderRequestItem.DistributionForm</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title">Notes</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    @if (!String.IsNullOrEmpty(Model.IntendedUseNote))
+                    {
+                        <label>Intended Use</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.IntendedUseNote
+                        </p>
+                    }
+                    @if (!String.IsNullOrEmpty(Model.SpecialInstruction))
+                    {
+                        <label>Special Instruction</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.SpecialInstruction
+                        </p>
+                    }
+                    @if (!String.IsNullOrEmpty(Model.Note))
+                    {
+                        <label>Note</label>
+                        <p class="text-muted well well-sm no-shadow">
+                            @Model.Note
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPROVE MODAL -->
+    <div id="modal-approve" class="modal modal-success fade" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Approve Web Order <span id="web-order-request-id"></span></h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h5>This will approve this order for further processing by the designated site. Please enter any desired order action notes in the field below.</h5>
+                    <textarea id="txtApprovalNote" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-approve-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
+                    <button type="button" id="btn-approve-cancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DENY MODAL -->
+    <div id="modal-deny" class="modal modal-danger" role='dialog'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Deny Web Order <span id="web-order-request-id"></span></h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <h5>This will <strong>cancel</strong> this order.</h5>
+                    <label>Note</label>
+                    <textarea id="txtRejectionNote" rows="5" class="form-control"></textarea>
+                    <br />
+                    <div class="box box-danger collapsed-box box-solid">
+                        <div class="box-header">
+                            <h3 class="box-title">Preview Email</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" style="background-color:#d33724;" data-widget="collapse">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body" style="background-color:#dd4b39;">
+                            <p>Preview the email that the requestor will receive.</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea id="txtEmail" rows="15" class="form-control" disabled>Germplasm Requestor:
 
 The U.S. National Plant Germplasm System (NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.
 
@@ -406,89 +420,89 @@ If you believe this decision is an error, please provide additional relevant inf
 
 Thank you.
                                     </textarea>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="btn-deny-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
-                <button type="button" id="btn-deny-cancel" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- NOTE MODAL -->
-<div class="modal fade" id="modal-note">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Add Note</h4>
-            </div>
-            <div class="modal-body">
-                <textarea id="txtNote" rows="5" class="form-control"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" id="btn-note-submit" class="btn btn-primary" data-dismiss="modal">Save</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<!-- CONTACT-REQUESTOR EMAIL -->
-<div class="modal fade" id="modal-contact-requestor">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Contact Requestor</h4>
-            </div>
-            <div class="modal-body">
-                <div class="box-body">
-                    <div class="form-group">
-                        <label>To:</label>
-                        <input class="form-control" placeholder="To:" value="@Model.WebCooperator.EmailAddress">
-                    </div>
-                    <div class="form-group">
-                        <label>Subject</label>
-                        <input class="form-control" placeholder="Subject:" value="Request For Additional Information Re: Web Order Request #@Model.ID">
-                    </div>
-
-                    <div class="box box-solid">
-                        <div class="box-header with-border">
-                            <label>Body</label>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <p>
-                                @Html.Raw(Model.InformationRequestText)
-                            </p>
                         </div>
                         <!-- /.box-body -->
                     </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-deny-submit" class="btn btn-outline" data-dismiss="modal">Continue</button>
+                    <button type="button" id="btn-deny-cancel" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" id="btn-contact-request-submit" class="btn btn-primary" data-dismiss="modal">Send Email</button>
-            </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+
+    <!-- NOTE MODAL -->
+    <div class="modal fade" id="modal-note">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Add Note</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea id="txtNote" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn-note-submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- CONTACT-REQUESTOR EMAIL -->
+    <div class="modal fade" id="modal-contact-requestor">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Contact Requestor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>To:</label>
+                            <input class="form-control" placeholder="To:" value="@Model.WebCooperator.EmailAddress">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input class="form-control" placeholder="Subject:" value="Request For Additional Information Re: Web Order Request #@Model.ID">
+                        </div>
+
+                        <div class="box box-solid">
+                            <div class="box-header with-border">
+                                <label>Body</label>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <p>
+                                    @Html.Raw(Model.InformationRequestText)
+                                </p>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn-contact-request-submit" class="btn btn-primary" data-dismiss="modal">Send Email</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 }
 
 <script>
