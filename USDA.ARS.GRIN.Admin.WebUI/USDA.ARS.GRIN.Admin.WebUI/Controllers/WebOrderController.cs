@@ -301,7 +301,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public PartialViewResult _Search(string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange, string startDate, string endDate)
+        public PartialViewResult _Search(int id, string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange, string startDate, string endDate)
         {
             WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
@@ -309,6 +309,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
+                if (id > 0)
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.web_order_request_id", FieldValue = id.ToString(), SearchOperatorCode = "=", DataType = "INT" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
                 if (!String.IsNullOrEmpty(requestorEmail))
                 {
                     QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = requestorEmail, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };

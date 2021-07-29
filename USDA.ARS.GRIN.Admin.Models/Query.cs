@@ -64,6 +64,13 @@ namespace USDA.ARS.GRIN.Admin.Models
                         sbWhereClause.Append(queryCriterion.FieldValue);
                         sbWhereClause.Append("'");
                     }
+                    else
+                    {
+                        if (queryCriterion.DataType == "INT")
+                        {
+                            sbWhereClause.Append(queryCriterion.FieldValue);
+                        }
+                    }
                 }
                 i++;
             }

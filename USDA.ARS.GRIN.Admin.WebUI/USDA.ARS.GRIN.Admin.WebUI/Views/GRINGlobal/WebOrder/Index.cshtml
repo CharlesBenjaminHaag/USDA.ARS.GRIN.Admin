@@ -90,6 +90,10 @@
                             </div>
                             <div id="section-search-criteria" class="box-body">
                                 <div class="form-group">
+                                    <label for="exampleInputEmail1">Web Order Request ID</label>
+                                    @Html.TextBoxFor(x => x.ID, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
                                     @Html.TextBoxFor(x => x.RequestorEmailAddress, new { @class = "form-control" })
                                 </div>
@@ -279,6 +283,7 @@
         var id = 0;
 
         try {
+            id = $("#ID").val();
             statusCode = $("#SelectedStatusCode").val();
             timeFrameCode = $("#SelectedTimeFrameCode").val();
             requestorEmail = $("#RequestorEmailAddress").val();
@@ -286,7 +291,7 @@
             requestorLastName = $("#RequestorLastName").val();
             intendedUseCode = $("#IntendedUseCode").val();
             selectedDateRange = $("#SelectedDateRange").val();
-            SearchWebOrderRequests(statusCode, timeFrameCode, requestorEmail, requestorFirstName, requestorLastName, intendedUseCode, selectedDateRange);
+            SearchWebOrderRequests(id, statusCode, timeFrameCode, requestorEmail, requestorFirstName, requestorLastName, intendedUseCode, selectedDateRange);
         }
         catch (ex) {
             console.log(ex.message);
@@ -298,7 +303,7 @@
         $("select").each(function () { this.selectedIndex = 0 });
     });
 
-    function SearchWebOrderRequests(statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, selectedDateRange)
+    function SearchWebOrderRequests(id, statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, selectedDateRange)
     {
         var link = "";
 
@@ -311,7 +316,7 @@
                 {
                     type: 'GET',
                     url: link,
-                    data: { statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName: lastName, intendedUseCode: intendedUseCode, selectedDateRange: selectedDateRange },
+                    data: { id: id, statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName: lastName, intendedUseCode: intendedUseCode, selectedDateRange: selectedDateRange },
                     success:
                         function (response) {
                             $("#section-data").html(response);
