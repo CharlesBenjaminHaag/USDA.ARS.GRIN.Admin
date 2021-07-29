@@ -137,19 +137,19 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     if (viewModel.Action == "NRR_APPROVE")
                     {
                         emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
-                        grinGlobalService.SendEmail("CAP", emailRecipientList);
+                        grinGlobalService.SendEmail(viewModel.ID, "CAP", emailRecipientList);
                     }
                     else
                         if (viewModel.Action == "NRR_REJECT")
                         {
                             emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
-                            grinGlobalService.SendEmail("CCL", emailRecipientList);
-                            grinGlobalService.SendEmail("RRJ", new string[] { viewModel.WebCooperator.EmailAddress });
+                            grinGlobalService.SendEmail(viewModel.ID, "CCL", emailRecipientList);
+                            grinGlobalService.SendEmail(viewModel.ID, "RRJ", new string[] { viewModel.WebCooperator.EmailAddress });
                         }
                         else
                             if (viewModel.Action == "NRR_INFO")
                             {
-                                grinGlobalService.SendEmail("RQI", new string[] { viewModel.WebCooperator.EmailAddress });
+                                grinGlobalService.SendEmail(viewModel.ID, "RQI", new string[] { viewModel.WebCooperator.EmailAddress });
                             }
 
                     if (resultContainer.ResultCode == ResultContainer.ResultCodeValue.Error.ToString())
@@ -170,8 +170,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex, ex.Message);
-                //TODO: CHANGE
-                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml");
+                return RedirectToAction("InternalServerError", "Error");
             }
         }
         private WebOrderRequestEditViewModel LoadViewModel(int id, bool reviewMode)

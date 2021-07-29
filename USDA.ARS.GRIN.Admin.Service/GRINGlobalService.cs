@@ -118,7 +118,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             }
         }
 
-        public ResultContainer SendEmail(string type, string[] emailNotificationList)
+        public ResultContainer SendEmail(int webOrderRequestId, string type, string[] emailNotificationList)
         {
             ResultContainer resultContainer = new ResultContainer();
             EmailTemplate emailTemplate = new EmailTemplate();
@@ -127,10 +127,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             try
             {
                 emailTemplate = _emailTemplateDAO.Search(type).First();
-                emailMessage.Subject = emailMessage.Subject;
+                emailMessage.Subject = emailTemplate.Subject.Replace("[ID_HERE]", webOrderRequestId.ToString());
                 emailMessage.From = emailTemplate.From;
+                emailMessage.ReplyTo = emailTemplate.From;
                 emailMessage.Recipients = emailNotificationList;
-                emailMessage.Body = emailTemplate.Body;
+                emailMessage.Body = emailTemplate.Body.Replace("[ID_HERE]", webOrderRequestId.ToString());
                 resultContainer = _smtpService.SendMessage(emailMessage);
                 if (resultContainer.ResultMessage == ResultContainer.ResultCodeValue.OK.ToString())
                 {

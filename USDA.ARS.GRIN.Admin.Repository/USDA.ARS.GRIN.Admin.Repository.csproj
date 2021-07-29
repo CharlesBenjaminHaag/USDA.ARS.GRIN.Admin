@@ -98,6 +98,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="SQL\USDA.ARS.GRIN.Admin.AcctMgmt_03.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_04.Data.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_04.SysData.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_04.SysFunctions.SQL" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.DataMgmt_01.StoredProcedures.sql" />

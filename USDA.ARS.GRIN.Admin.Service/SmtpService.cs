@@ -13,34 +13,6 @@ namespace USDA.ARS.GRIN.Admin.Service
     {
         protected static string SMTP_SERVER = "mailproxy1.usda.gov";
 
-        //public ResultContainer SendMessage(EmailMessage emailMessage)
-        //{
-        //    MailMessage message = new MailMessage();
-        //    message.From = new MailAddress(emailMessage.From);
-
-        //    // TODO: HANDLE MULT ADDRESSES
-        //    message.To.Add(new MailAddress(emailMessage.To));
-
-        //    message.Subject = emailMessage.Subject;
-        //    message.Body = emailMessage.Body;
-        //    message.IsBodyHtml = emailMessage.IsHtml;
-            
-            
-        //    SmtpClient client = new SmtpClient("mailproxy1.usda.gov");
-        //    ResultContainer resultContainer = new ResultContainer();
-
-        //    try
-        //    {
-        //        client.Send(message);
-        //    }
-        //    catch (SmtpException ex)
-        //    {
-        //        resultContainer.ResultDescription = ex.Message;
-        //    }
-        //    resultContainer.ResultCode = "OK";
-        //    return resultContainer;
-        //}
-
         public ResultContainer SendMessage(EmailMessage emailMessage)
         {
             StringBuilder sbResultDescription = new StringBuilder();
@@ -52,7 +24,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             {
                 message.To.Add(emailAddress);
             }
-
+            message.ReplyToList.Add(new MailAddress(emailMessage.From));
             message.Subject = emailMessage.Subject;
             message.Body = emailMessage.Body;
             message.IsBodyHtml = true;

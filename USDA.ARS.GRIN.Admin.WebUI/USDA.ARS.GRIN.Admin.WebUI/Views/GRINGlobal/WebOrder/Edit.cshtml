@@ -34,7 +34,7 @@
                 <div class="callout callout-info" style="vertical-align:middle;">
                     This web order request is currently being reviewed by 
                     <strong>
-                    @Model.OwnedByCooperatorID
+                        @Model.AuthenticatedUser.Cooperator.WebCooperator.LastName, @Model.AuthenticatedUser.Cooperator.WebCooperator.FirstName
                     </strong>
                 </div>
             </div>
@@ -408,18 +408,7 @@
                             <p>Preview the email that the requestor will receive.</p>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <textarea id="txtEmail" rows="15" class="form-control" disabled>Germplasm Requestor:
-
-The U.S. National Plant Germplasm System (NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.
-
-Your request does not meet the criteria to receive germplasm from the NPGS and has been cancelled.
-
-For more information about the NPGS, please view a 6-minute video that describes our mission and purpose at https://www.youtube.com/watch?v=uHOclGNELuw.
-
-If you believe this decision is an error, please provide additional relevant information about your project to justify the need for specific NPGS germplasm, instead of using commercially available plant material. Send your email to gringlobal.feedback@usda.gov, and include the web order number.
-
-Thank you.
-                                    </textarea>
+                                    <textarea id="txtEmail" rows="15" class="form-control" disabled>  </textarea>
                                 </div>
                             </div>
                         </div>

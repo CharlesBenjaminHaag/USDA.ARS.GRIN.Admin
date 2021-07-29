@@ -57,6 +57,12 @@
                                     </button>
                                 }
                             }
+                            else
+                            { 
+                                <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
+                                    <i class="fa fa-drivers-license"></i> Detail
+                                </button>
+                            }
                         </td>
                     </tr>
                 }
