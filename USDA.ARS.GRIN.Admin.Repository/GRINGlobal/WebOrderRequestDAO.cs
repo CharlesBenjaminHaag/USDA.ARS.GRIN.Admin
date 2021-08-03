@@ -86,6 +86,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequest.WebOrderRequestActions = SearchActions(webOrderRequest.ID);
                                 webOrderRequest.EmailAddressList = emailAddressList;
+                                webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
+                                webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                             }
                         }
                     }
@@ -436,6 +438,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 webOrderRequest.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
+                                webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
                                 webOrderRequest.Addresses = GetAddresses(webOrderRequest.ID);
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);

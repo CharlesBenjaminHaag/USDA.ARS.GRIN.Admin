@@ -5,7 +5,7 @@
         string headerHrefId = String.Empty;
         string bodyId = String.Empty;
     }
-
+    @Html.HiddenFor(x => x.WebCooperatorID)
     @if (Model.WebOrderRequests.Count() > 0)
     {
         <table class="table table-hover table-striped ggtools">
@@ -28,7 +28,7 @@
                 {
                     <tr>
                         <td>
-                            @if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.AuthenticatedUser.Cooperator.WebCooperator.ID))
+                            @if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.WebCooperatorID))
                             {
                                 <i class="fa fa-eye" style="color:red; margin-left:.5em;"></i>
                             }
@@ -44,7 +44,7 @@
                         <td>
                             @if (webOrderRequest.StatusCode.Contains("NRR"))
                             {
-                                if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.AuthenticatedUser.Cooperator.WebCooperator.ID))
+                                if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.WebCooperatorID))
                                 {
                                     <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
                                         <i class="fa fa-drivers-license"></i> Detail

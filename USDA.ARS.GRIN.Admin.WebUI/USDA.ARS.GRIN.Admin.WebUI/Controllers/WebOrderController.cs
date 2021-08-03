@@ -47,6 +47,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
+                webOrderRequestListViewModel.WebCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID;
                 webOrderRequestListViewModel.WebOrderRequests = service.GetWebOrderRequests(status, timeFrameCode);
                 return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
             }
@@ -138,6 +139,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     {
                         emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
                         grinGlobalService.SendEmail(viewModel.ID, "CAP", emailRecipientList);
+                        resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
                     }
                     else
                         if (viewModel.Action == "NRR_REJECT")
@@ -145,12 +147,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                             emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
                             grinGlobalService.SendEmail(viewModel.ID, "CCL", emailRecipientList);
                             grinGlobalService.SendEmail(viewModel.ID, "RRJ", new string[] { viewModel.WebCooperator.EmailAddress });
+                            resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                    }
+                    else
+                        if (viewModel.Action == "NRR_INFO")
+                        {
+                            grinGlobalService.SendEmail(viewModel.ID, "RQI", new string[] { viewModel.WebCooperator.EmailAddress });
                         }
-                        else
-                            if (viewModel.Action == "NRR_INFO")
-                            {
-                                grinGlobalService.SendEmail(viewModel.ID, "RQI", new string[] { viewModel.WebCooperator.EmailAddress });
-                            }
 
                     if (resultContainer.ResultCode == ResultContainer.ResultCodeValue.Error.ToString())
                     {
@@ -216,6 +219,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
+                viewModel.OwnedByCooperatorID = webOrderRequest.OwnedByCooperatorID;
                 viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
                 viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;
                 viewModel.WebOrderRequestAddresses = webOrderRequest.Addresses;
@@ -351,7 +355,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         query.QueryCriteria.Add(queryCriterionEnd);
                     }
                 }
-
+                webOrderRequestListViewModel.WebCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID;
                 webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
 
                 return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);

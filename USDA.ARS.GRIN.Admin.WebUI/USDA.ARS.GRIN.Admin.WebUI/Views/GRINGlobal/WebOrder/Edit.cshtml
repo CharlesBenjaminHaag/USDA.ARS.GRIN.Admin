@@ -27,12 +27,18 @@
     @Html.HiddenFor(x => x.WebCooperator.EmailAddress)
     @Html.HiddenFor(x => x.InformationRequestText)
 
-    if ((!Model.IsReviewMode) && (Model.AuthenticatedUser.Cooperator.WebCooperator.ID != Model.OwnedByCooperatorID))
+    string displayModifiedDate = String.Empty;
+    if (Model.WebCooperator.ModifiedDate != DateTime.MinValue)
+    {
+        displayModifiedDate = Model.WebCooperator.ModifiedDate.ToShortDateString();
+    }
+
+    if ((!Model.IsReviewMode) && (Model.WebCooperatorID != Model.OwnedByCooperatorID))
     {
         <div class="row">
             <div class="col-md-12">
                 <div class="callout callout-info" style="vertical-align:middle;">
-                    This web order request is currently being reviewed by 
+                    This web order request is currently being reviewed by
                     <strong>
                         @Model.AuthenticatedUser.Cooperator.WebCooperator.LastName, @Model.AuthenticatedUser.Cooperator.WebCooperator.FirstName
                     </strong>
@@ -164,7 +170,7 @@
                                 <td>@Model.WebCooperator.Job</td>
                                 <td>@Model.WebCooperator.Organization</td>
                                 <td>@Model.WebCooperator.CreatedDate.ToShortDateString()</td>
-                                <td>@Model.WebCooperator.ModifiedDate.ToShortDateString()</td>
+                                <td>@displayModifiedDate</td>
                             </tr>
                         </tbody>
                     </table>

@@ -110,7 +110,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             if (_context != "PRODUCTION")
             {
-                return new string[] { "marty.reisinger@usda.gov" };
+                return new string[] { "marty.reisinger@usda.gov,benjamin.haag@usda.gov" };
             }
             else
             {

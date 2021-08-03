@@ -1,20 +1,13 @@
 USE [gringlobal]
 GO
-
-/****** Object:  Trigger [tr_scan_web_order_items]    Script Date: 7/28/2021 11:30:43 PM ******/
-DROP TRIGGER [dbo].[tr_scan_web_order_items]
-GO
-
-/****** Object:  Trigger [dbo].[tr_scan_web_order_items]    Script Date: 7/28/2021 11:30:44 PM ******/
+/****** Object:  Trigger [dbo].[tr_scan_web_order_items]    Script Date: 8/1/2021 6:34:59 PM ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
 
-
-CREATE TRIGGER [dbo].[tr_scan_web_order_items] ON [dbo].[web_order_request_item]
+ALTER TRIGGER [dbo].[tr_scan_web_order_items] ON [dbo].[web_order_request_item]
 AFTER INSERT
 AS
 	BEGIN TRY
@@ -36,6 +29,10 @@ AS
 		DECLARE @email_sent BIT
 		DECLARE @web_order_request_action_id INT
 		DECLARE @error_code INT
+
+		-- Email Template
+		DECLARE @email_template_subject NVARCHAR(500)
+		DECLARE @email_template_body NVARCHAR(MAX)
 
 		DECLARE @risk_factor_count INT = 0
 		DECLARE @cancelled_order_count INT = 0
@@ -150,25 +147,20 @@ AS
 
 				IF (@risk_factor_count > 0)
 					BEGIN
+						SELECT 
+							@email_template_subject = REPLACE(subject,'[ID_HERE]',CONVERT(NVARCHAR, @web_order_request_id)),	
+							@email_template_body = REPLACE(body,'[ID_HERE]',CONVERT(NVARCHAR, @web_order_request_id)) 
+						FROM email_template
+						WHERE category_code = 'NRR'
+						
 						SET @email_sent = (SELECT email_sent FROM web_order_request WHERE web_order_request_id = @web_order_request_id)
 						IF (@email_sent = 0)
 							BEGIN
-								SET @email_subject = 'NRR (Potential) -- GRIN-Global Web Order #' + CONVERT(NVARCHAR, @web_order_request_id )
-								SET @email_body = 'Please Note:<p>Web Order <strong>' + CONVERT(NVARCHAR, @web_order_request_id ) + '</strong> has been flagged for review because it meets one or more Non-Research Request (NRR) criteria. It has been forwarded to the NRR Committee for review.</p><p><strong>Please note that this web order will not appear in the Order Wizard until it has been reviewed.</strong></p>'
-								SET @email_body = @email_body + '<p>The attached web order was flagged by the NRR trigger process as a potential Non Research Request (NRR). This email is simply a preliminary email for your information only. You should not proceed to address this request at this time.  The request will soon be reviewed by the current NRR Review Committee and will be evaluated appropriately, according to the NPGS guidelines.</p>
-								<p>You will be receiving a second notification shortly, indicating their decision.  If they cancel the request, then no further action is required by you.  If they approve the request, then you should process your site’s portion of the request, as usual. Note that in cases where the committee has requested more details from the requestor when the request is not an obvious NRR, the delay is dependent on the responsiveness of the requestor.</p>'
-								SET @email_body = @email_body + '<p>If you have questions, or can provide information regarding this web order, please contact the NRR Committee:</p>'
-								SET @email_body = @email_body + '<ul>'
-								SET @email_body = @email_body + '<li><a href="mailto:@gary.kinard@usda.gov">Gary Kinard</a></li>'
-								SET @email_body = @email_body + '<li><a href="mailto:@harold.bockleman@usda.gov">Harold Bockleman</a></li>'
-								SET @email_body = @email_body + '<li><a href="mailto:@marty.reisinger@usda.gov">Martin Reisinger</a></li>'
-								SET @email_body = @email_body + '</ul>'
-				
 								EXEC msdb.dbo.sp_send_dbmail  
 								@profile_name = 'GRIN-Global DB Mail',  
 								@recipients = 'benjamin.haag@usda.gov;marty.reisinger@usda.gov',  
-								@body = @email_body,  
-								@subject = @email_subject,
+								@body = @email_template_body,  
+								@subject = @email_template_subject,
 								@body_format = 'HTML'; 
 
 								-- Set flag.
@@ -192,16 +184,6 @@ AS
 							web_order_request_id IN 
 							(SELECT web_order_request_id FROM inserted);
 					END
-
-				--		UPDATE
-				--			web_order_request_item
-				--		SET
-				--			curator_note = 'ORDER HITS ' + CONVERT(NVARCHAR, @risk_factor_count) + ' NRR RISK FACTORS',
-				--			status_code = 'NRR_FLAGGED'
-				--		WHERE
-				--			web_order_request_id IN (SELECT web_order_request_id FROM inserted);
-
-						--EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAGGED', 'Order flagged as possible NRR.', 1
 					END
 		END
 	END TRY
@@ -221,10 +203,3 @@ AS
 	END CATCH
 
  
-GO
-
-ALTER TABLE [dbo].[web_order_request_item] ENABLE TRIGGER [tr_scan_web_order_items]
-GO
-
-
-
