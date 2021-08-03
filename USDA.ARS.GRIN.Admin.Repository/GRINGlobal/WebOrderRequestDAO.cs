@@ -87,6 +87,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebOrderRequestActions = SearchActions(webOrderRequest.ID);
                                 webOrderRequest.EmailAddressList = emailAddressList;
                                 webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
+                                webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                             }
                         }

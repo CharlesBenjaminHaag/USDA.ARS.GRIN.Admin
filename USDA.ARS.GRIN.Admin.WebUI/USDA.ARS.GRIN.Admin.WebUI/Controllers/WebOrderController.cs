@@ -180,18 +180,18 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             ResultContainer resultContainer = null;
             WebOrderRequest webOrderRequest = null;
-            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
 
             try
             {
                 if (reviewMode)
                 {
-                    resultContainer = service.SetReviewStatus(id, AuthenticatedUser.Cooperator.WebCooperator.ID, true);
-                    resultContainer = service.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                    resultContainer = grinGlobalService.SetReviewStatus(id, AuthenticatedUser.Cooperator.WebCooperator.ID, true);
+                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
                 }
 
-                webOrderRequest = service.GetWebOrderRequest(id);
+                webOrderRequest = grinGlobalService.GetWebOrderRequest(id);
                 if (webOrderRequest == null)
                 {
                     throw new NullReferenceException(String.Format("Null web order request returned for ID {0}", id));
@@ -207,22 +207,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 viewModel.IntendedUseCode = webOrderRequest.IntendedUseCode;
                 viewModel.IntendedUseNote = webOrderRequest.IntendedUseNote;
                 viewModel.Note = webOrderRequest.Note;
-                viewModel.EmailAddressList = webOrderRequest.EmailAddressList;
-
-                // TODO: Refactor; use stored template BH 7/2/21
-                viewModel.InformationRequestText = "Dear Germplasm Requestor:";
-                viewModel.InformationRequestText += "<p>The U.S.National Plant Germplasm System(NPGS) provides plant material in small quantities to research and educational entities for projects where genetic diversity is required. Accessions maintained by the NPGS are not intended or available for home, personal, or community gardening.</p>";
-                viewModel.InformationRequestText += "<p>Please provide additional relevant information about your project to justify the need for specific NPGS germplasm, instead of using commercially available plant material.</p>";
-                viewModel.InformationRequestText += "Send your email to gringlobal.feedback @usda.gov, and include the web order number.";
-                viewModel.InformationRequestText += "<p>For more information about the NPGS, please view a 6 - minute video that describes our mission and purpose at <a href='https://www.youtube.com/watch?v=uHOclGNELuw'>https://www.youtube.com/watch?v=uHOclGNELuw</a></p>";
-                viewModel.InformationRequestText += "<br/><br/>Thank you.";
-                
                 viewModel.SpecialInstruction = webOrderRequest.SpecialInstruction;
                 viewModel.OwnedDate = webOrderRequest.OwnedDate;
                 viewModel.OwnedByCooperatorID = webOrderRequest.OwnedByCooperatorID;
                 viewModel.OwnedByCooperatorName = webOrderRequest.OwnedByCooperatorName;
                 viewModel.WebOrderRequestItems = webOrderRequest.WebOrderRequestItems;
                 viewModel.WebOrderRequestAddresses = webOrderRequest.Addresses;
+                viewModel.EmailAddressList = webOrderRequest.EmailAddressList;
+                viewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
 
                 var queryWebOrderRequestDates =
                     from action in webOrderRequest.WebOrderRequestActions

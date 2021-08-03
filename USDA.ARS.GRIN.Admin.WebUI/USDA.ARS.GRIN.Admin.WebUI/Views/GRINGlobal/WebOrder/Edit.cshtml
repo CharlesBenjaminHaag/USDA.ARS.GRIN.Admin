@@ -40,7 +40,7 @@
                 <div class="callout callout-info" style="vertical-align:middle;">
                     This web order request is currently being reviewed by
                     <strong>
-                        @Model.AuthenticatedUser.Cooperator.WebCooperator.LastName, @Model.AuthenticatedUser.Cooperator.WebCooperator.FirstName
+                        @Model.OwnedByCooperatorName
                     </strong>
                 </div>
             </div>
@@ -472,7 +472,7 @@
                         </div>
                         <div class="form-group">
                             <label>Subject</label>
-                            <input class="form-control" placeholder="Subject:" value="Request For Additional Information Re: Web Order Request #@Model.ID">
+                            <input class="form-control" placeholder="Subject:" value="@Model.InformationRequestEmailTemplate.Subject.Replace("[ID_HERE]", Model.CurrentID.ToString())">
                         </div>
 
                         <div class="box box-solid">
@@ -482,7 +482,7 @@
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <p>
-                                    @Html.Raw(Model.InformationRequestText)
+                                    @Html.Raw(Model.InformationRequestEmailTemplate.Body)
                                 </p>
                             </div>
                             <!-- /.box-body -->

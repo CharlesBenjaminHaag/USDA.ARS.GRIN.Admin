@@ -46,6 +46,7 @@
     <Compile Include="Country.cs" />
     <Compile Include="EmailMessage.cs" />
     <Compile Include="EmailTemplate.cs" />
+    <Compile Include="EmailTemplateTypeEnum.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Genesys\PassportDataExport.cs" />
     <Compile Include="Genesys\MCPDAccession.cs" />

@@ -17,7 +17,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
         public string IntendedUseNote { get; set; }
         public string StatusCode { get; set; }
         public string ActionNote { get; set; }
-        
+
         [AllowHtml]
         public string InformationRequestText { get; set; }
         public string SpecialInstruction { get; set; }
@@ -25,13 +25,25 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
         public string EmailAddressList { get; set; }
         public bool IsLocked { get; set; }
         public Cooperator Cooperator { get; set; }
-        public Cooperator WebCooperator { get; set; } 
+        public Cooperator WebCooperator { get; set; }
         public Address WebOrderRequestAddress { get; set; }
 
         public IEnumerable<WebOrderRequestItem> WebOrderRequestItems { get; set; }
         public List<WebOrderRequestActionGroupViewModel> WebOrderRequestActionGroupViewModels { get; set; }
         public IEnumerable<WebOrderRequestAction> WebOrderRequestActions { get; set; }
         public List<Address> WebOrderRequestAddresses { get; set; }
+        public IEnumerable<EmailTemplate> EmailTemplates { get; set; }
+        public EmailTemplate InformationRequestEmailTemplate 
+        { 
+            get 
+            {
+                return EmailTemplates.Where(x => x.Category == EmailTemplateTypeEnum.RQI.ToString()).FirstOrDefault();
+            } 
+        }
+        public EmailTemplate RejectionNotificationEmailTemplate { get; set; }
+        public EmailTemplate AcceptanceNotificationEmailTemplate { get; set; }
+        
+
         public WebOrderRequestEditViewModel()
         {
             Cooperator = new Cooperator();
@@ -41,6 +53,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
             WebOrderRequestItems = new List<WebOrderRequestItem>();
             WebOrderRequestActionGroupViewModels = new List<WebOrderRequestActionGroupViewModel>();
             WebOrderRequestActions = new List<WebOrderRequestAction>();
+            EmailTemplates = new List<EmailTemplate>();
         }
     }
 }
