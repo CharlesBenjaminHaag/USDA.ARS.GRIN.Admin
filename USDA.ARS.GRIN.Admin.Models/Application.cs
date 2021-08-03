@@ -8,7 +8,6 @@ namespace USDA.ARS.GRIN.Admin.Models
 {
     public class Application : BaseModel
     {
-        public int ID { get; set; }
         public int GroupID { get; set; }
         public string ApplicationCode { get; set; }
         public string Title { get; set; }
