@@ -54,10 +54,6 @@
 
     <div class="row">
         <div class="col-md-12" style="margin-bottom:20px;">
-            <!--DEBUG-->
-            <i class="fa fa-question bg-maroon"></i>
-
-
             @if (Model.IsReviewMode)
             {
                 <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" value="Deny..." />
@@ -146,7 +142,7 @@
                                                 @if (!String.IsNullOrEmpty(webOrderRequestAction.Note))
                                                 {
                                                     <p style="font-style:italic; margin-top:.2em;">
-                                                        <strong>@webOrderRequestAction.OwnedByCooperatorName:</strong>
+                                                        <strong>@webOrderRequestAction.CreatedByCooperatorName:</strong>
                                                         @webOrderRequestAction.Note
                                                     </p>
                                                 }
@@ -430,9 +426,7 @@
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="email-body-container">
-                                   
-                                        @Html.Raw(Model.RequestorRejectionLetterTemplate.Body)
-                                   
+                                    @Html.Raw(Model.RequestorRejectionLetterTemplate.Body.Replace("[ID_HERE]", Model.ID.ToString()))
                                 </div>
                             </div>
                         </div>

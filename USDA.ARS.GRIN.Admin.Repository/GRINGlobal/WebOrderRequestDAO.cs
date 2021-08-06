@@ -145,7 +145,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public ResultContainer Update(WebOrderRequest entity)
         {
-            const string COMMAND_TEXT = "usp_WebOrderRequestStatus_Update";
+            const string COMMAND_TEXT = "usp_WebOrderRequest_Update";
             ResultContainer resultContainer = new ResultContainer();
 
             try
@@ -191,7 +191,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public ResultContainer UpdateStatus(int id, string statusCode, int webCooperatorId)
         {
-            const string COMMAND_TEXT = "usp_WebOrderRequestStatus_Update";
+            const string COMMAND_TEXT = "usp_WebOrderRequest_Update";
             ResultContainer resultContainer = new ResultContainer();
 
             try
