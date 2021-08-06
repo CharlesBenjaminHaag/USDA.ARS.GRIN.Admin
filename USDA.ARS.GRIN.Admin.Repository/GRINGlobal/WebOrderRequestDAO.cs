@@ -15,11 +15,45 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
     {
         public WebOrderRequestDAO(string context)
         {
-            InsertCommmand = "usp_WebOrderRequest_Insert";
-            UpdateCommmand = "usp_WebOrderRequest_Update";
-            SelectCommmand = "usp_WebOrderRequest_Select";
             _context = context;
         }
+
+        #region WebCooperator
+
+        public Dictionary<string, int> GetTotals(int webCooperatorId)
+        {
+            const string COMMAND_TEXT = "usp_WebOrderRequestCooperatorTotals_Select";
+            Dictionary<string, int> dictTotals = new Dictionary<string, int>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@web_cooperator_id", webCooperatorId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                dictTotals.Add(reader["category"].ToString(), GetInt(reader["total"].ToString()));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return dictTotals;
+        }
+
+        #endregion
 
         #region WebOrderRequest
 
@@ -35,6 +69,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public WebOrderRequest Get(int id)
         {
+            const string COMMAND_TEXT = "usp_WebOrderRequest_Select";
             string emailAddressList = String.Empty;
             WebOrderRequest webOrderRequest = new WebOrderRequest();
 
@@ -46,7 +81,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                     {
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = SelectCommmand;
+                        cmd.CommandText = COMMAND_TEXT;
                         cmd.Parameters.AddWithValue("@web_order_request_id", id);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -62,6 +97,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webCooperator.Title = reader["web_cooperator_title"].ToString();
                                 webCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
+                                webCooperator.FullName = reader["web_cooperator_full_name"].ToString();
                                 webCooperator.Organization = reader["web_cooperator_organization"].ToString();
                                 webCooperator.Job = reader["web_cooperator_job"].ToString();
                                 webCooperator.PrimaryPhoneNumber = reader["web_cooperator_primary_phone"].ToString();
@@ -74,7 +110,12 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webCooperator.Address.City = reader["web_cooperator_address_city"].ToString();
                                 webCooperator.Address.ZIP = reader["web_cooperator_address_postal_index"].ToString();
                                 webCooperator.Address.State = reader["web_cooperator_address_state"].ToString();
+                                webCooperator.Totals = GetTotals(webCooperator.ID);
+                                
+                                //REFACTOR
                                 webOrderRequest.Cooperators.Add(webCooperator);
+                                webOrderRequest.WebCooperator = webCooperator;
+
 
                                 webOrderRequest.OrderDate = GetDate(reader["ordered_date"].ToString());
                                 webOrderRequest.StatusCode = reader["status_code"].ToString();
@@ -104,6 +145,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public ResultContainer Update(WebOrderRequest entity)
         {
+            const string COMMAND_TEXT = "usp_WebOrderRequestStatus_Update";
             ResultContainer resultContainer = new ResultContainer();
 
             try
@@ -114,7 +156,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                     {
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = UpdateCommmand;
+                        cmd.CommandText = COMMAND_TEXT;
 
                         cmd.Parameters.AddWithValue("@web_order_request_id", entity.ID);
                         cmd.Parameters.AddWithValue("@web_cooperator_id", entity.WebCooperatorID);
@@ -574,6 +616,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequestAction.ActionCode = reader["action_code"].ToString();
                                 webOrderRequestAction.ActionDateTime = GetDate(reader["action_date"].ToString());
                                 webOrderRequestAction.ActionDate = GetDate(reader["action_date_converted"].ToString());
+                                webOrderRequestAction.Description = reader["action_description"].ToString();
                                 webOrderRequestAction.Note = reader["note"].ToString();
                                 webOrderRequestAction.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
                                 webOrderRequestAction.CreatedByCooperatorName = reader["created_by_name"].ToString();

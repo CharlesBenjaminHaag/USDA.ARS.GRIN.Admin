@@ -232,6 +232,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         webOrderRequestAction.ID = subGroup.ID;
                         webOrderRequestAction.ActionCode = subGroup.ActionCode;
                         webOrderRequestAction.Title = subGroup.Title;
+                        webOrderRequestAction.Description = subGroup.Description;
                         webOrderRequestAction.Note = subGroup.Note;
                         webOrderRequestAction.ActionDate = subGroup.ActionDateTime;
                         webOrderRequestAction.CreatedByCooperatorName = subGroup.CreatedByCooperatorName;

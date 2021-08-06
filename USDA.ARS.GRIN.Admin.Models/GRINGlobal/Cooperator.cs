@@ -9,7 +9,6 @@ namespace USDA.ARS.GRIN.Admin.Models
 {
     public class Cooperator : BaseModel, IEntity
     {
-        public int ID { get; set; }
         public int Type { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
@@ -24,11 +23,14 @@ namespace USDA.ARS.GRIN.Admin.Models
         public WebCooperator WebCooperator { get; set; }
         public Address Address { get; set; }
         public Site Site { get; set; }
+
+        public Dictionary<string, int> Totals { get; set; }
         public Cooperator()
         {
             WebCooperator = new WebCooperator();
             Address = new Address();
             Site = new Site();
+            Totals = new Dictionary<string, int>();
         }
     }
 }

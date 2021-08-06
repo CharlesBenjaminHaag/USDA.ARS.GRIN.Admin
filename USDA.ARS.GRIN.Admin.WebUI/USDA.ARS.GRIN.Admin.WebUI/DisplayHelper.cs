@@ -100,6 +100,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI
                     case "NRR_NOTE":
                         cssClass = "fa fa-comment-o bg-purple";
                         break;
+                    case "NRR_REVIEW":
+                        cssClass = "fa fa-eye bg-blue";
+                        break;
+                    case "NRR_INFO":
+                        cssClass = "fa fa-question bg-maroon";
+                        break;
                     case "NRR_REJECT":
                         cssClass = "fa fa-thumbs-down bg-red";
                         break;

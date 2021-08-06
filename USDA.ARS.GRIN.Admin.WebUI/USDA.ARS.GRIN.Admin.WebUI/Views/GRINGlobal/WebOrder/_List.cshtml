@@ -8,7 +8,7 @@
     @Html.HiddenFor(x => x.WebCooperatorID)
     @if (Model.WebOrderRequests.Count() > 0)
     {
-        <table class="table table-hover table-striped ggtools">
+        <table class="table table-hover table-striped ggtools" style="width:100%;">
             <thead>
                 <tr>
                     <th></th>
@@ -47,20 +47,32 @@
                                 if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.WebCooperatorID))
                                 {
                                     <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
-                                        <i class="fa fa-drivers-license"></i> Detail
+                                        <i class="fa fa-book"></i> Detail
                                     </button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
-                                        <i class="fa fa-eye"></i> Review
-                                    </button>
+                                    if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID == Model.WebCooperatorID))
+                                    {
+                                        <button class="btn btn-warning btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
+                                            <i class="fa fa-eye"></i> Continue Review
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        if (!webOrderRequest.IsLocked)
+                                        {
+                                            <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
+                                                <i class="fa fa-eye"></i> Begin Review
+                                            </button>
+                                        }
+                                    }
                                 }
                             }
                             else
-                            { 
+                            {
                                 <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
-                                    <i class="fa fa-drivers-license"></i> Detail
+                                    <i class="fa fa-book"></i> Detail
                                 </button>
                             }
                         </td>
@@ -80,5 +92,9 @@
 </div>
 
 <script>
-    $('.ggtools').DataTable();
+    $('.ggtools').DataTable(
+        {
+            responsive: true
+        }
+    );
 </script>

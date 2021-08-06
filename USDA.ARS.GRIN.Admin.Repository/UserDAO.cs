@@ -15,10 +15,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
         private string _context;
         public UserDAO(string contextName)
         {
-            InsertCommmand = "usp_AcctMgmtSysUser_Insert";
-            UpdateCommmand = "usp_AcctMgmtSysUser_Update";
-            DeleteCommmand = "usp_AcctMgmtSysUser_Delete";
-            SelectCommmand = "usp_AcctMgmtSysUser_Select";
+            //InsertCommmand = "usp_AcctMgmtSysUser_Insert";
+            //UpdateCommmand = "usp_AcctMgmtSysUser_Update";
+            //DeleteCommmand = "usp_AcctMgmtSysUser_Delete";
+            //SelectCommmand = "usp_AcctMgmtSysUser_Select";
             
             _context = contextName;
         }

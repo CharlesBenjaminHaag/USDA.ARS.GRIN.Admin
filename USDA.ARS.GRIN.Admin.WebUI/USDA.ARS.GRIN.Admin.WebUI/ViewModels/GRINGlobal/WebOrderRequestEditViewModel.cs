@@ -40,10 +40,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
                 return EmailTemplates.Where(x => x.Category == EmailTemplateTypeEnum.RQI.ToString()).FirstOrDefault();
             } 
         }
-        public EmailTemplate RejectionNotificationEmailTemplate { get; set; }
-        public EmailTemplate AcceptanceNotificationEmailTemplate { get; set; }
-        
-
+        public EmailTemplate RequestorRejectionLetterTemplate { get 
+            {
+                return EmailTemplates.Where(x => x.Category == EmailTemplateTypeEnum.RRJ.ToString()).FirstOrDefault();
+            } }
+     
         public WebOrderRequestEditViewModel()
         {
             Cooperator = new Cooperator();

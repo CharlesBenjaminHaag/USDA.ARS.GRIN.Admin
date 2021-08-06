@@ -17,12 +17,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
         private static string _key = "foo";
         private static readonly MemoryCache _cache = MemoryCache.Default;
 
-        public static string InsertCommmand;
-        public static string UpdateCommmand;
-        public static string DeleteCommmand;
-        public static string SelectCommmand;
-        public static string SelectAllCommmand;
-
         protected string GetConnectionStringKey(string context)
         {
             switch (context)

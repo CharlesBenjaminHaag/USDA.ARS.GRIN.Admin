@@ -12,5 +12,11 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string Environment { get; set; }
         public Application Application { get; set; }
         public List<Cooperator> AuthorizedCooperators { get; set; }
+
+        public UserSession()
+        {
+            AuthenticatedUser = new User();
+            AuthorizedCooperators = new List<Cooperator>();
+        }
     }
 }
