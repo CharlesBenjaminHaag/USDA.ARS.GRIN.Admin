@@ -97,20 +97,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.AcctMgmt_03.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_04.Data.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_04.SysData.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_04.SysFunctions.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.DataMgmt_01.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_03.SysStoredProcedures.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_01.SysTables.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy_03.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy_01.Tables.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Taxonomy_02.Views.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin._BASE_02.SysViews.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_02.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_01.Tables.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder_03.TriggersAndFunctions.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.email_template.Table.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.sys_application.Table.sql" />
+    <Content Include="SQL\dbo.sys_db_error.Table.sql" />
+    <Content Include="SQL\dbo.vw_AcctMgmtSysApplication.View.sql" />
+    <Content Include="SQL\dbo.vw_AcctMgmtSysTableFields.View.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.AcctMgmt.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.code_value.Data.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Sys.StoredProcedures.SQL" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Triggers.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

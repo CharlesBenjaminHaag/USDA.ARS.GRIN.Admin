@@ -100,9 +100,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             if (requestedUrl.ToLower().Contains("weborder"))
             {
                 userViewModel.ActiveContext = "weborder";
-                userViewModel.AppName1 = "NRR";
-                userViewModel.AppName2 = "-B-GONE";
-                userViewModel.AppAbbrev = "NRR";
+                userViewModel.AppName1 = "WebOrder";
+                userViewModel.AppName2 = "Review";
+                userViewModel.AppAbbrev = "WOR";
             }
 
             userViewModel.AuthenticatedUser = this.AuthenticatedUser;

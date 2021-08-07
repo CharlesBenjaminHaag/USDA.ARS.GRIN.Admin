@@ -76,7 +76,7 @@
             <form action="@Url.Action("Login","User")" method="post">
                 <label>Select Server</label>
                 <div class="form-group has-feedback">
-                    <select name="environment" class="form-control">
+                    <select id="ddlSelectEnvironment" name="Environment" class="form-control">
                         <option value="LOCAL">Local</option>
                         @*<option value="PRODCOPY">Prod-Copy</option>*@
                         <option value="DEVELOPMENT">Development</option>
@@ -86,11 +86,11 @@
                     </select>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" name="userName" class="form-control" placeholder="User name">
+                    @Html.TextBoxFor(x => x.UserName, new { @placeholder="Enter GRIN-Global user name", @class="form-control" })
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    @Html.TextBoxFor(x => x.Password, new { @placeholder = "Enter GRIN-Global password", @type ="password", @class="form-control" })
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -174,6 +174,9 @@
     <!-- iCheck -->
     @*<script src="../../plugins/iCheck/icheck.min.js"></script>*@
     <script>
+
+        $("#ddlSelectEnvironment").val("TRAINING");
+
           //$(function () {
           //  $('input').iCheck({
           //    checkboxClass: 'icheckbox_square-blue',

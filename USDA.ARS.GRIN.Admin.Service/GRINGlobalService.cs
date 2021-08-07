@@ -106,19 +106,19 @@ namespace USDA.ARS.GRIN.Admin.Service
         #endregion Email Templates
         #region Email
 
-        public string[] GetEmailNotificationList(int webOrderRequestId)
+        public string GetEmailNotificationList(int webOrderRequestId)
         {
             if (_context != "PRODUCTION")
             {
-                return new string[] { "marty.reisinger@usda.gov,benjamin.haag@usda.gov" };
+                return "marty.reisinger@usda.gov,benjamin.haag@usda.gov";
             }
             else
             {
-                return _webOrderRequestDAO.GetEmailNotificationList(webOrderRequestId);
+                return _webOrderRequestDAO.GetEmailNotificationList(webOrderRequestId).ToString();
             }
         }
 
-        public ResultContainer SendEmail(int webOrderRequestId, string type, string[] emailNotificationList)
+        public ResultContainer SendEmail(int webOrderRequestId, string type, string emailNotificationList)
         {
             ResultContainer resultContainer = new ResultContainer();
             EmailTemplate emailTemplate = new EmailTemplate();
@@ -130,7 +130,7 @@ namespace USDA.ARS.GRIN.Admin.Service
                 emailMessage.Subject = emailTemplate.Subject.Replace("[ID_HERE]", webOrderRequestId.ToString());
                 emailMessage.From = emailTemplate.From;
                 emailMessage.ReplyTo = emailTemplate.From;
-                emailMessage.Recipients = emailNotificationList;
+                emailMessage.Recipients = emailNotificationList.Split(',');
                 emailMessage.Body = emailTemplate.Body.Replace("[ID_HERE]", webOrderRequestId.ToString());
                 resultContainer = _smtpService.SendMessage(emailMessage);
                 if (resultContainer.ResultMessage == ResultContainer.ResultCodeValue.OK.ToString())

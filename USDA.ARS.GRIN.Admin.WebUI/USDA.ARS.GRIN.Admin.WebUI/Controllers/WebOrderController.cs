@@ -112,7 +112,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(WebOrderRequestEditViewModel viewModel)
         {
-            string[] emailRecipientList = new string[] { };
+            string emailRecipientList = String.Empty;
             ResultContainer resultContainer = null;
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             SmtpService smtpService = new SmtpService();
@@ -146,14 +146,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         {
                             emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
                             grinGlobalService.SendEmail(viewModel.ID, "CCL", emailRecipientList);
-                            grinGlobalService.SendEmail(viewModel.ID, "RRJ", new string[] { viewModel.WebCooperator.EmailAddress });
+                            grinGlobalService.SendEmail(viewModel.ID, "RRJ", viewModel.WebCooperator.EmailAddress);
                             resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
-                    }
-                    else
-                        if (viewModel.Action == "NRR_INFO")
-                        {
-                            grinGlobalService.SendEmail(viewModel.ID, "RQI", new string[] { viewModel.WebCooperator.EmailAddress });
                         }
+                        else
+                            if (viewModel.Action == "NRR_INFO")
+                            {
+                                grinGlobalService.SendEmail(viewModel.ID, "RQI", viewModel.WebCooperator.EmailAddress);
+                            }
 
                     if (resultContainer.ResultCode == ResultContainer.ResultCodeValue.Error.ToString())
                     {

@@ -499,14 +499,38 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             return webOrderRequests.AsQueryable();
         }
 
-        public string[] GetEmailNotificationList(int webOrderRequestId)
+        public string GetEmailNotificationList(int webOrderRequestId)
         {
-            string[] emailRecipientList = new string[] { };
+            const string COMMAND_TEXT = "usp_WebOrderRequestEmailAddressListv2_Select";
+            string emailNotificationList = String.Empty;
+            List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
 
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@web_order_request_id", webOrderRequestId);
 
-
-
-            return emailRecipientList;
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                emailNotificationList = reader["email_recipients"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return emailNotificationList;
         }
 
         #endregion WebOrderRequest
