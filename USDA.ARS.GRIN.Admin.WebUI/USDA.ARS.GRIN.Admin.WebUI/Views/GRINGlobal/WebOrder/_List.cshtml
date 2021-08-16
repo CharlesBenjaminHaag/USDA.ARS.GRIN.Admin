@@ -13,6 +13,7 @@
                 <tr>
                     <th></th>
                     <th>ID</th>
+                    <th>Status</th>
                     <th>Submitted</th>
                     <th>By</th>
                     <th>Email</th>
@@ -34,7 +35,8 @@
                             }
                         </td>
                         <td><span class="badge">@webOrderRequest.ID</span></td>
-                        <td>@webOrderRequest.OrderDate.ToShortDateString()</td>
+                        <td>@webOrderRequest.StatusCode</td>
+                        <td>@webOrderRequest.OrderDate.ToShortDateString() at @webOrderRequest.OrderDate.ToLocalTime().ToShortTimeString()</td>
                         <td>@webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName</td>
                         <td>@webOrderRequest.WebCooperator.EmailAddress</td>
                         <td>@webOrderRequest.WebCooperator.Address.City</td>

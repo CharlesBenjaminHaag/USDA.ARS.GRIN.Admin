@@ -1,0 +1,38 @@
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Authority>
+<br />
+<h4>@Model.Count() results found</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Note</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() > 0)
+        {
+            foreach (var author in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.Raw(author.AuthorityText)
+                    </td>
+                    <td>
+                        <button id="btnAuthor1" value="@author.AuthorityText" class="btn btn-primary btn-small proto pull-right" onclick="SelectAuthor(this.value);return false;">Select</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:5px;">
+                        Your search returned no matches.
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

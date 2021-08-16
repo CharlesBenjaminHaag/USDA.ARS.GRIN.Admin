@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
+namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class Genus : BaseModel, IEntity
+    public class GenusHomeViewModel : BaseViewModel
     {
-        public int FamilyID { get; set; }
-        public string FamilyName { get; set; }
         public string QualifyingCode { get; set; }
         public string HybridCode { get; set; }
         public string Name { get; set; }
@@ -19,6 +16,6 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string SubSectionName { get; set; }
         public string SeriesName { get; set; }
         public string SubSeriesName { get; set; }
-        public List<Species> SpeciesGenera { get; set; }
+       
     }
 }

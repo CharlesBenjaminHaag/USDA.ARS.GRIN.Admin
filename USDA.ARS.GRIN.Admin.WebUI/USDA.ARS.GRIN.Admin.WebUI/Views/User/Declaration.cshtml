@@ -1,0 +1,148 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GGTools | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/css/AdminLTE.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <style>
+        .login-box, .register-box {
+            width: 400px;
+            margin: 7% auto;
+        }
+    </style>
+  
+</head>
+<body class="hold-transition login-page" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
+    <div class="register-box">
+        <div class="register-logo">
+            <a href="../../index2.html"><b>GGTools</b>@DisplayHelper.GetVersion() Login</a>
+        </div>
+
+        <div class="register-box-body">
+            <h4>Official Notice</h4>
+            <form action="@Url.Action("Confirm","User")" method="post">
+                <div class="form-group has-feedback">
+                    <p>
+                        You are accessing a U.S. Government information system, which includes (1) this computer, (2) this computer network, 
+                        (3) all computers connected to this network, and (4) all devices and storage media attached to this network 
+                        or to a computer on this network.  This information system is provided for U.S. Government-authorized use only.
+                        Unauthorized or improper use of this system may result in disciplinary action, as well as civil and criminal penalties.
+                    </p>
+                    <p>
+                        By using this information system, you understand and consent to the following:
+                        You have no reasonable expectation of privacy regarding any communications or data transiting or stored on 
+                        this information system. At any time, the government may for any lawful government purpose monitor, 
+                        intercept, search, and seize any communication or data transiting or stored on this information system.
+                        Any communications or data transiting or stored on this information system may be disclosed or 
+                        used for any lawful government purpose.
+                    </p>
+                    <p>
+                        Your consent is final and irrevocable.  You may not rely on any statements or informal policies 
+                        purporting to provide you with any expectation of privacy regarding communications on this system, 
+                        whether oral or written, by your supervisor or any other official, except USDA's Chief Information Officer.
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a href="@Url.Action("Logout", "User")" class="btn btn-danger btn-block btn-flat">
+                            Cancel
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+                        <button id="btnLogin" type="submit" class="btn btn-primary btn-block btn-flat">I Understand</button>
+                    </div>
+                </div>             
+            </form>
+
+            @*<div class="social-auth-links text-center">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                    <i class="fa fa-facebook"></i> Sign up using
+                    Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                    <i class="fa fa-google-plus"></i> Sign up using
+                    Google+
+                </a>
+            </div>*@
+
+            @*<a href="login.html" class="text-center">I already have a membership</a>*@
+        </div>
+        <!-- /.form-box -->
+    </div>
+    <!-- /.register-box -->
+    <!-- jQuery 3 -->
+    <script src="~/Content/js/plugins/jquery/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/Content/js/plugins/bootstrap/bootstrap.js"></script>
+    <!-- iCheck -->
+    @*<script src="../../plugins/iCheck/icheck.min.js"></script>*@
+    <script>
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+
+        $("#btn-search-requestor-email-address").click(function () {
+            var requestorEmailAddress = $("#requestor-email-address").val();
+            LookupRequestorEmailAddress(requestorEmailAddress);
+        });
+
+
+        //
+
+
+                  //$(function () {
+                  //  $('input').iCheck({
+                  //    checkboxClass: 'icheckbox_square-blue',
+                  //    radioClass: 'iradio_square-blue',
+                  //    increaseArea: '20%' /* optional */
+                  //  });
+                  //});
+        function LookupRequestorEmailAddress(emailAddress) {
+
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: '/AccountManagement/FindCooperator',
+                    data: { emailAddress: emailAddress },
+                    success:
+                        function (response) {
+                            $("#registration-process-content").html(response);
+                        },
+                    error:
+                        function (response) {
+                            alert("Error: " + response);
+                        }
+                });
+        }
+
+    </script>
+</body>
+</html>

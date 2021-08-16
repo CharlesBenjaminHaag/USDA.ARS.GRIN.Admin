@@ -227,8 +227,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return sysTables;
         }
 
-
-
         protected string GetSearchSyntax(string searchOperatorCode, string searchCriterion)
         {
             string searchSyntax = String.Empty;
@@ -264,6 +262,31 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 sqlWhereClause.Append(searchCriterion.SearchSyntax);
             }
             return sqlWhereClause.ToString();
+        }
+
+        public List<Cooperator> GetCreatedByCooperators(string tableName)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCreatedByCooperators_Select";
+            List<Cooperator> cooperators = new List<Cooperator>();
+
+            using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+            {
+                using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@table_name", tableName);
+                    SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            cooperators.Add(new Cooperator { ID = GetInt(reader["cooperator_id"].ToString()), FullName = reader["cooperator_full_name"].ToString() });
+                        }
+                    }
+                }
+            }
+            return cooperators;
         }
 
         public string UnBool(bool boolValue)

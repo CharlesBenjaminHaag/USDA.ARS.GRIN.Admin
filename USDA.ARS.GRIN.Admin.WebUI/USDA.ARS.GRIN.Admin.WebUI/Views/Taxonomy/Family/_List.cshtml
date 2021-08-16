@@ -1,4 +1,4 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.GenusListViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.FamilyListViewModel
 <div class="mailbox-controls">
     @*<button type="button" class="btn btn-success btn-sm check-all-search-results">
             <i class="fa fa-check"></i>
@@ -16,7 +16,7 @@
     <button type="button" id="btnAddItemsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-items-to-folder">
         <i class="fa fa-folder"></i>
     </button>
-    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("GenusEdit", "Taxonomy", new { id = 0 })'">
+    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("FamilyEdit", "Taxonomy", new { id = 0 })'">
         <i class="fa fa-plus"></i>
     </button>
     <div class="pull-right">
@@ -30,48 +30,37 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Hybrid Code</th>
-            <th>Sub-Genus Name</th>
-            <th>Section Name</th>
+            <th>Authority</th>
             <th>Last Modified</th>
             <th>By</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var genus in Model.Genera)
-        {
-            <tr>
-                <td>
-                    <span class="badge">@genus.ID</span>
-                </td>
-                <td>
-                    @Html.Raw(genus.Name)
-                </td>
-                <td>
-                    @genus.HybridCode
-                </td>
-                <td>
-                    @genus.SubGenusName
-                </td>
-                <td>
-                    @genus.SectionName
-                </td>
-                <td>
-                    @if (genus.ModifiedDate != DateTime.MinValue)
-                    {
-                        @genus.ModifiedDate.ToShortDateString()
-                    }
-                </td>
-                <td>
-                    @genus.ModifiedByCooperatorName
-                </td>
-                <td>
-                    <a href="@Url.Action("GenusEdit", "Taxonomy", new { id = genus.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                </td>
-            </tr>
+        @foreach (var family in Model.Families)
+        { 
+        <tr>
+            <td>
+                <span class="badge">@family.ID</span>
+            </td>
+            <td>
+                @family.Name
+            </td>
+            <td>
+                @family.Authority
+            </td>
+            <td>
+                @family.ModifiedDate.ToShortDateString()
+            </td>
+            <td>
+                @family.ModifiedByCooperatorName
+            </td>
+            <td>
+                <a href="@Url.Action("FamilyEdit", "Taxonomy", new { id = family.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

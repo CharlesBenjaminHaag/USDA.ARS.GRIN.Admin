@@ -43,14 +43,48 @@ namespace USDA.ARS.GRIN.Admin.Service
             this.geographyDAO = new GeographyDAO(context);
         }
 
-        // ****************************************************************************
-        // GENUS
-        // ****************************************************************************
+        #region Family
+
+        public IQueryable<Family> FamilySearch(Query query)
+        {
+            return _familyDAO.Search(query);
+        }
+
+        public Family GetFamily(int id)
+        {
+            return _familyDAO.Get(id);
+        }
+
+        public ResultContainer AddFamily(Family family)
+        {
+            return null;
+        }
+
+        public ResultContainer UpdateFamily(Family family)
+        {
+            return null;
+        }
+
+        #endregion
 
         #region Genus
-        public IQueryable<Genus> GetGenera()
+
+        public IEnumerable<Genus> GenusSearch(Query query)
         {
-            return _genusDAO.Find();
+            return _genusDAO.Search(query);
+        }
+
+        public Genus GetGenus(int id)
+        {
+            return _genusDAO.Get(id);
+        }
+        public ResultContainer AddGenus(Genus genus)
+        {
+            return _genusDAO.Add(genus);
+        }
+        public ResultContainer UpdateGenus(Genus genus)
+        {
+            return _genusDAO.Add(genus);
         }
 
         public IQueryable<Genus> FindGenus(string searchString)
@@ -60,21 +94,27 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #endregion
 
-        // ****************************************************************************
-        // SPECIES
-        // ****************************************************************************
         #region Species
+        public IQueryable<Species> SpeciesSearch(Query query)
+        {
+            return _speciesDAO.Search(query);
+        }
 
         public Species GetSpecies(int id)
         {
             return _speciesDAO.Get(id);
         }
-
-        public IQueryable<Species> SearchSpecies(Query query)
+        public ResultContainer AddSpecies(Species species)
         {
-            return _speciesDAO.Search(query);
+            return _speciesDAO.Add(species);
         }
 
+        public ResultContainer UpdateSpecies(Species species)
+        {
+            return _speciesDAO.Update(species);
+        }
+
+        //TODO: Need?
         public List<Species> FindSpecies(string searchString, bool includeSynonyms)
         {
             return _speciesDAO.Search(searchString, includeSynonyms);
@@ -120,14 +160,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.FindSpeciesNotes(searchText);
         }
 
-        public ResultContainer AddSpecies(Species species)
-        {
-            return _speciesDAO.Add(species);
-        }
-        public ResultContainer UpdateSpecies(Species species)
-        {
-            return _speciesDAO.Update(species);
-        }
+        
 
         public List<Accession> GetAccessions(int speciesId)
         {
@@ -437,9 +470,21 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _cropForCwrDAO.GetCodeValueReferenceItems().Where(x => x.GroupName == "CWR_BREEDING_TYPE").Where(y => y.Description.Contains(traitClassCode)).ToList();
         }
 
-        public IEnumerable<Note> FindNotes(string searchString, string context)
+        public IEnumerable<Note> NoteSearch(string tableName, string searchString)
         {
-            return _referenceDAO.FindNotes(searchString, context);
+            return _referenceDAO.NoteSearch(tableName, searchString);
+        }
+        public IEnumerable<Authority> AuthoritySearch(string tableName, string searchString)
+        {
+            return _referenceDAO.AuthoritySearch(tableName, searchString);
+        }
+        public IEnumerable<Citation> CitationSearch(string searchString)
+        {
+            return _referenceDAO.CitationSearch(searchString);
+        }
+        public List<Cooperator> GetCreatedByCooperators(string tableName)
+        {
+            return _speciesDAO.GetCreatedByCooperators(tableName);
         }
 
         #endregion Reference

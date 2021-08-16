@@ -1,0 +1,194 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.GenusHomeViewModel
+@{
+    ViewBag.Title = @TempData["context"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<!-- ============================================================================================== -->
+<!-- SEARCH CRITERIA -->
+<!-- ============================================================================================== -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">New Search</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Saved Searches</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div id="section-search-criteria">
+                        @using (Html.BeginForm("GenusSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
+                        {
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Created By</label>
+                                    @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "Select a cooperator", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-horizontal">
+                                    <label>Name</label>
+                                    @Html.TextBoxFor(x => x.Name, new { @class="form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-horizontal">
+                                    <label>Sub-Genus Name</label>
+                                    @Html.TextBoxFor(x => x.SubGenusName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Hybrid Code</label>
+                                    @Html.TextBoxFor(x => x.HybridCode, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Section Name</label>
+                                        @Html.TextBoxFor(x => x.SectionName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                @*<div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Series Name</label>
+                                        @Html.TextBoxFor(x => x.SeriesName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Subseries Name</label>
+                                        @Html.TextBoxFor(x => x.SubSeriesName, new { @class = "form-control" })
+                                    </div>
+                                </div>*@
+                            </div>
+                            <div class="box-footer">
+                                <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
+                                <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+</div>
+
+<!-- ============================================================================================== -->
+<!-- SEARCH RESULTS -->
+<!-- ============================================================================================== -->
+<div class="box box-default" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Search Results</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body no-padding">
+        <div id="section-search-results">
+
+        </div>
+    </div>
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    //$("#frmSearch").on("submit", function (event) {
+    //    var $this = $(this);
+    //    var frmValues = $this.serialize();
+    //    $.ajax({
+    //        type: $this.attr('method'),
+    //        url: $this.attr('action'),
+    //        data: frmValues
+    //    })
+    //        .done(function () {
+    //            //$("#para").text("Serialized! Input String is " + frmValues); 
+    //        })
+    //        .fail(function () {
+    //            //$("#para").text("An error occured");
+    //        });
+    //    event.preventDefault();
+    //});
+
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
+        Init();
+    });
+
+    function Init() {
+        $(".overlay").hide();
+    }
+
+    $(document).on({
+        ajaxStart: function () {
+            $(".overlay").show();
+        },
+        ajaxStop: function () {
+            $(".overlay").hide();
+        }
+    });
+
+    $(function () {
+        $("#btnSearch").click(function () {
+            var link = '@Url.Action("GenusSearch", "Taxonomy")';
+            var formData = new FormData();
+
+            formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
+            formData.append("Name", $("#Name").val());
+            formData.append("SubGenusName", $("#SubGenusName").val());
+            formData.append("HybridCode", $("#HybridCode").val());
+            formData.append("SectionName", $("#SectionName").val());
+            formData.append("SeriesName", $("#SeriesName").val());
+            formData.append("SubSeriesName", $("#SubSeriesName").val());
+
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-search-results").html(response);
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            $(this).closest('form').find("input[type=text], textarea").val("");
+            $("#section-search-criteria select").val("");
+            $('#section-search-results').html("");
+        });
+    });
+</script>
+

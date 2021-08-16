@@ -69,10 +69,27 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 Log.Error(ex, ex.Message);
                 return RedirectToAction("Login", "User", new { loginStatus = LoginStatusEnum.ERROR });
             }
+            //return RedirectToAction("Index", "Home", new { loginStatus = LoginResult.SUCCESS.ToString(), Area = "" });
+            return RedirectToAction("Declaration", "User");
+        }
+
+        public ActionResult Declaration()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Confirm()
+        {
+            // TODO Check login status
             return RedirectToAction("Index", "Home", new { loginStatus = LoginResult.SUCCESS.ToString(), Area = "" });
         }
 
         public ActionResult AccountRequest()
+        {
+            return View();
+        }
+        [HttpPost]       
+        public ActionResult AccountRequest(LoginViewModel viewModel)
         {
             return View();
         }

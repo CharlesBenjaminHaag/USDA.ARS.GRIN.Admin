@@ -76,6 +76,7 @@
     <Compile Include="SysTable.cs" />
     <Compile Include="SysUser.cs" />
     <Compile Include="Taxonomy\Accession.cs" />
+    <Compile Include="Taxonomy\Authority.cs" />
     <Compile Include="Taxonomy\DemoContainer.cs" />
     <Compile Include="Taxonomy\Family.cs" />
     <Compile Include="Taxonomy\Region.cs" />

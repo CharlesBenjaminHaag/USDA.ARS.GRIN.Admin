@@ -7,6 +7,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [HttpGet]
         public ActionResult _Error()
         {
+            var exception = Server.GetLastError();
             return PartialView();
         }
 
@@ -14,7 +15,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult InternalServerError()
         {
             var exception = Server.GetLastError();
-
             return View();
         }
 

@@ -73,37 +73,80 @@
                     @Model.ErrorMessage
                 </div>
             }
-            <form action="@Url.Action("Login","User")" method="post">
-                <label>Select Server</label>
-                <div class="form-group has-feedback">
-                    <select id="ddlSelectEnvironment" name="Environment" class="form-control">
-                        <option value="LOCAL">Local</option>
-                        @*<option value="PRODCOPY">Prod-Copy</option>*@
-                        <option value="DEVELOPMENT">Development</option>
-                        @*<option value="TEST">Test</option>*@
-                        <option value="TRAINING">Training</option>
-                        <option value="PRODUCTION">Production</option>
-                    </select>
+        <form action="@Url.Action("Login","User")" method="post">
+            <label>Select Server</label>
+            <div class="form-group has-feedback">
+                <select id="ddlSelectEnvironment" name="Environment" class="form-control">
+                    <option value="LOCAL">Local</option>
+                    @*<option value="PRODCOPY">Prod-Copy</option>*@
+                    <option value="DEVELOPMENT">Development</option>
+                    @*<option value="TEST">Test</option>*@
+                    <option value="TRAINING">Training</option>
+                    <option value="PRODUCTION">Production</option>
+                </select>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.TextBoxFor(x => x.UserName, new { @placeholder = "Enter GRIN-Global user name", @class = "form-control" })
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.TextBoxFor(x => x.Password, new { @placeholder = "Enter GRIN-Global password", @type = "password", @class = "form-control" })
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-primary btn-block btn-flat disabled">
+                        Reset Password
+                    </button>
                 </div>
-                <div class="form-group has-feedback">
-                    @Html.TextBoxFor(x => x.UserName, new { @placeholder="Enter GRIN-Global user name", @class="form-control" })
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <div class="col-xs-6">
+                    <button type="submit" id="btnInitiateLogin" class="btn btn-primary btn-block btn-flat" >Sign In</button>
                 </div>
-                <div class="form-group has-feedback">
-                    @Html.TextBoxFor(x => x.Password, new { @placeholder = "Enter GRIN-Global password", @type ="password", @class="form-control" })
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <button type="button" class="btn btn-primary btn-block btn-flat disabled">
-                            Reset Password
-                        </button>
-                    </div>
-                    <div class="col-xs-6">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                    </div>
-                </div>
-            </form>
+            </div>
+
+            <!-- ================================================================== -->
+            <!-- DECLARATION MODAL -->
+            <!-- ================================================================== -->
+            <!--<div class="modal fade" id="modal-declaration">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Official Notice</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                You are accessing a U.S. Government information system, which includes (1) this computer, (2) this computer network,
+                                (3) all computers connected to this network, and (4) all devices and storage media attached to this network
+                                or to a computer on this network.  This information system is provided for U.S. Government-authorized use only.
+                                Unauthorized or improper use of this system may result in disciplinary action, as well as civil and criminal penalties.
+                            </p>
+                            <p>
+                                By using this information system, you understand and consent to the following:
+                                You have no reasonable expectation of privacy regarding any communications or data transiting or stored on
+                                this information system. At any time, the government may for any lawful government purpose monitor,
+                                intercept, search, and seize any communication or data transiting or stored on this information system.
+                                Any communications or data transiting or stored on this information system may be disclosed or
+                                used for any lawful government purpose.
+                            </p>
+                            <p>
+                                Your consent is final and irrevocable.  You may not rely on any statements or informal policies
+                                purporting to provide you with any expectation of privacy regarding communications on this system,
+                                whether oral or written, by your supervisor or any other official, except USDA's Chief Information Officer.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary pull-right"></button>
+                        </div>
+                    </div>-->
+                    <!-- /.modal-content -->
+                <!--</div>-->
+                <!-- /.modal-dialog -->
+            <!--</div>-->
+        </form>
             <div class="row">
                 <div class="col-xs-12" style="margin-top:20px;">
                     <a href="@Url.Action("AccountRequest")" class="btn btn-success btn-block disabled"button>I would like to request a new Curator account.</a>
@@ -113,58 +156,6 @@
         </div>
         <!-- /.login-box-body -->
     </div>
-
-
-    <div class="modal fade" id="modal-release-notes">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">Release Notes</h4>
-                </div>
-                <div class="modal-body">
-
-
-                    <div class="csg-wrapper" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; vertical-align: baseline;">
-                        <h1 class="csg-h1" style="font-style: inherit; color: #172B4D; font-weight: 600; margin-bottom: 0; font-size: 23px; line-height: 1.1034; margin-top: 40px; letter-spacing: -0.01em;">Release notes - NGRL DBMU Initiatives - Version GGTools 1.1.3</h1><h3 class="csg-h3" style="font-style: inherit; color: #172B4D; font-weight: 600; margin-bottom: 0; font-size: 16px; line-height: 1.2; margin-top: 32px; font-weight: 500; letter-spacing: -0.008em;">Bug</h3><p class="csg-p" style="margin: 0; padding: 0px; margin-bottom: 7px; padding-top: 7px; mso-line-height-rule: exactly; line-height: 24px; font-size: 14px;">
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-223" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-223</a> CWR Map Edit Page -- Error When Selecting Species
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-222" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-222</a> Crop For CWR Edit Page -- Error When Adding New CWR Map
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-221" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-221</a> All Edit Pages: Hide ID Field If Editing New Unsaved Record
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-220" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-220</a> Crop For CWR List Views Need DataTable Logic
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-199" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-199</a> Species Home Page "My Records" Shows No Records
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-177" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-177</a> On CWR Map Home Page, All Records Show "Is Crop" as "Yes"
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-169" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-169</a> Change "Recent" Setting to "Past Month" In All Lists
-                        </p><h3 class="csg-h3" style="font-style: inherit; color: #172B4D; font-weight: 600; margin-bottom: 0; font-size: 16px; line-height: 1.2; margin-top: 32px; font-weight: 500; letter-spacing: -0.008em;">Task</h3><p class="csg-p" style="margin: 0; padding: 0px; margin-bottom: 7px; padding-top: 7px; mso-line-height-rule: exactly; line-height: 24px; font-size: 14px;">
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-197" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-197</a> Enlarge Font of ID Numbers on Edit Pages
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-180" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-180</a> On CWR Map Edit Page, Only Show "Common Name' Field if "Is Crop" is "Yes"
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-178" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-178</a> All Lists Must Use Standard DataTable Functions (Sort, Paging)
-                            <br>
-                            <a href="https://ngrl-dbmu.atlassian.net/browse/NDI-175" class="csg-mark-link" style="border: none; background: transparent; color: #0052cc; text-decoration: none;">NDI-175</a> Citation Lookup Must Filter by Species and its Synonyms
-                        </p>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-
 
     <!-- /.login-box -->
     <!-- jQuery 3 -->

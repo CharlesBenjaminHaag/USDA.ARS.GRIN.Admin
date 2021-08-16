@@ -13,20 +13,104 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
 {
     public class FamilyDAO : BaseDAO, IRepository<Family>
     {
-        private string _context;
         public FamilyDAO(string context)
         {
-            _context = context;
+            base._context = context;
         }
+        public IQueryable<Family> Search(Query query)
+        {
+            string sqlWhereClause = String.Empty;
+            IQueryable<Family> familyList = new List<Family>().AsQueryable();
 
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                familyList = Search(sqlWhereClause);
+                return familyList;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+        public IQueryable<Family> Search(string searchString)
+        {
+            const string COMMAND_TEXT_NAME = "usp_TaxonomyFamily_Search";
+            List<Family> families = new List<Family>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT_NAME;
+                    cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Family family = new Family();
+                        family.ID = GetInt(reader["taxonomy_family_id"].ToString());
+                        family.Name = reader["family_name"].ToString();
+                        family.Authority = reader["family_authority"].ToString();
+                        family.Note = reader["note"].ToString();
+                        family.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        family.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                        family.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        family.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                        families.Add(family);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return families.AsQueryable();
+        }
         public Family Get(int id)
         {
-            return null;
-        }
+            const string COMMAND_TEXT_NAME = "usp_TaxonomyFamily_Select";
+            Family family = new Family();
 
-        public int AddREFACTOR(Family entity)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT_NAME;
+                    cmd.Parameters.AddWithValue("@taxonomy_family_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        family.ID = GetInt(reader["taxonomy_family_id"].ToString());
+                        family.ParentID = GetInt(reader["current_taxonomy_family_id"].ToString());
+                        family.SuprafamilyRankCode = reader["suprafamily_rank_code"].ToString();
+                        family.SuprafamilyRankName = reader["suprafamily_rank_name"].ToString();
+                        family.Name = reader["family_name"].ToString();
+                        family.Authority = reader["family_authority"].ToString();
+                        family.AlternateName = reader["alternate_name"].ToString();
+                        family.SubFamilyName = reader["subfamily_name"].ToString();
+                        family.TribeName = reader["tribe_name"].ToString();
+                        family.SubTribeName = reader["subtribe_name"].ToString();
+                        family.Note = reader["note"].ToString();
+                        family.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        family.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                        family.CreatedDate = GetDate(reader["created_date"].ToString());
+                        family.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        family.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                        family.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return family;
         }
 
         public IQueryable<Family> Find(Query query = null)
@@ -99,32 +183,9 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             throw new NotImplementedException();
         }
 
-        public int Remove(Family entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(Family entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Add(Family entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Family> Search(Query query)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public IQueryable<Family> Search(int parentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Family> Search(string searchString)
         {
             throw new NotImplementedException();
         }

@@ -433,7 +433,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 emailTemplateHomeViewModel.EmailTemplates = grinGlobalService.GetEmailTemplates();
                 if (emailTemplateHomeViewModel.EmailTemplates.Count() > 0)
                 {
-                    emailTemplateHomeViewModel.CurrentID = emailTemplateHomeViewModel.EmailTemplates.First().ID;
+                    emailTemplateHomeViewModel.ParentID = emailTemplateHomeViewModel.EmailTemplates.First().ID;
                 }
                 return View("~/Views/GRINGlobal/WebOrder/Email/Index.cshtml", emailTemplateHomeViewModel);
             }

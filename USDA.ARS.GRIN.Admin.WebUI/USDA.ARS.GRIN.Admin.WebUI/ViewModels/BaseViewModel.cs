@@ -18,10 +18,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int DefaultCooperatorID { get; set; }
         public int ID { get; set; }
 
-        public int CurrentID { get; set; }
+        public int ParentID { get; set; }
         public string CurrentCodeValue { get; set; }
         public string Action { get; set; }
         public SysTable SysTable { get; set; }
+        public string TableName { get; set; }
         public string DataSourceName { get; set; }
         public string DataSourceTitle { get; set; }
         public User AuthenticatedUser

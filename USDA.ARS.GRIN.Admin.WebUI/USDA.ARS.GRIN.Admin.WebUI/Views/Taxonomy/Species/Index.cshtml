@@ -127,7 +127,7 @@
             </button>
         </div>
         <div class="table-responsive mailbox-messages">
-            <table id="tblSpeciesDataTest" class="table table-hover table-striped">
+            <table id="tblResults" class="table table-hover table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -136,7 +136,6 @@
                         <th>Authority</th>
                         <th>Verified Date</th>
                         <th>Protologue</th>
-                        <th>Pr</th>
                         <th>Synonym Code</th>
                         <th></th>
                     </tr>
@@ -157,7 +156,7 @@
 
     $(document).ready(function () {
         $(".overlay").hide();
-        
+
     });
 
     $(document).on({
@@ -192,10 +191,7 @@
         var protologue = "";
 
         try {
-
-            //TODO: GET SEL COOP ID
-            //cooperatorId = $("#SearchViewModel.CreatedByCooperatorID").val();
-
+            cooperatorId = $("#ddlSelectCooperator").val();
             genusName = $("#GenusName").val();
             speciesName = $("#SpeciesName").val();
             synonymCode = $("#SynonymCode").val();
@@ -210,11 +206,32 @@
     function SearchSpecies(cooperatorId = 0, genusName = "", speciesName = "", synonymCode = "", protologue = "")
     {
         try {
+            var url = '@Url.Action("SpeciesNameSearch", "Taxonomy")';
+
+
+
+            //$(document).ready(function () {
+            //    $('#tblResults').DataTable({
+            //        "ajax": url
+            //    });
+            //});
+
+
+
+            //table = $("#searchtable").DataTable();
+            //var oData = table.rows('.selected').data();
+            //$.each($(oData), function (key, value) {
+            //    avail = value[availindex];
+            //    if (avail.indexOf("fa-shopping-cart") > 0) {
+            //        avail = "Add to Cart";
+            //    }
+            //    ids += value[accidindex] + ":" + avail + ",";
+
+
 
             //var table = $('#tblSpeciesDataTest').DataTable();
             //table.clear();
-
-            $.ajax({
+            @*$.ajax({
             url: '@Url.Action("SpeciesNameSearch","Taxonomy")',
             type: "GET",
                 data: { cooperatorId: cooperatorId, genusName: genusName, speciesName:speciesName, synonymCode:synonymCode, protologue:protologue },
@@ -222,19 +239,19 @@
             dataType: 'json',
             success: OnSuccess,
             failure: function (response) {
-                console.log(response.error);
+                console.log(response);
             },
             error: function (response) {
-                console.log(response.error);
-            }
-        });
+                console.log(response);
+            }*@
+       /* });*/
         }
         catch (ex) {
             console.log(ex.message);
         }
     }
 
-    function GetUserSpecies()
+    @*function GetUserSpecies()
     {
         var cooperatorId = 0;
         try {
@@ -256,7 +273,7 @@
         catch (ex) {
             console.log(ex.message);
         }
-    }
+    }*@
 
     function GetUsersDetails(ele) {
         var dataRow = $('#tblSpeciesDataTest').DataTable().row($(ele).closest('tr')).data();
@@ -269,10 +286,6 @@
         // `d` is the original data object for the row
         return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
             '<tr>' +
-            '<td><label>Protologue</label></td>' +
-            '<td>' + d.Protologue + '</td>' +
-            '</tr>' +
-            '<tr>' +
             '<td><label>Note</label></td>' +
             '<td>' + d.Note + '</td>' +
             '</tr>' +
@@ -283,58 +296,58 @@
             '</table>';
     }
 
-    function OnSuccess(response) {
-        try {
-            $("#tblSpeciesDataTest").DataTable(
-                {
-                    bLengthChange: true,
-                    select: true,
-                    "bDestroy": true,
-                    lengthMenu: [[5, 10, -1], [5, 10, "All"]],
-                    bFilter: true,
-                    bSort: true,
-                    bPaginate: true,
-                    data: response,
-                    columns: [
-                        {
-                            "className": 'details-control',
-                            "orderable": false,
-                            "data": null,
-                            "defaultContent": ''
-                        },
-                        {
-                            data: 'ID',
-                            render: function (data, type, row, meta) {
-                                return type === 'display' ?
-                                    '<span class="badge">' + data + '</span>' :
-                                    data;
-                            }
-                        },
-                        { 'data': 'Name' },
-                        { 'data': 'Authority' },
-                        { 'data': 'NameVerifiedDate' },
-                        { 'data': 'Protologue' },
-                        {
-                            data: 'SynonymCode',
-                            render: function (data, type, row, meta) {
-                                return type === 'display' ?
-                                    '<span class="label label-success">' + data + '</span>' :
-                                    data;
-                            }
-                        },
-                    ],
-                    columnDefs: [{
-                        "targets": 7,
-                        "data": null,
-                        "defaultContent": "<a class='btn btn-default' onclick='GetUsersDetails(this)' title='Edit' href='javascript:;'>Edit</a>"
-                    }]
-                });
-        }
-        catch (ex) {
-            console.log(ex.message);
-        }
-    };
-    
+    //function OnSuccess(response) {
+    //    try {
+    //        $("#tblSpeciesDataTest").DataTable(
+    //            {
+    //                bLengthChange: true,
+    //                select: true,
+    //                "bDestroy": true,
+    //                lengthMenu: [[5, 10, -1], [5, 10, "All"]],
+    //                bFilter: true,
+    //                bSort: true,
+    //                bPaginate: true,
+    //                data: response,
+    //                columns: [
+    //                    {
+    //                        "className": 'details-control',
+    //                        "orderable": false,
+    //                        "data": null,
+    //                        "defaultContent": ''
+    //                    },
+    //                    {
+    //                        data: 'ID',
+    //                        render: function (data, type, row, meta) {
+    //                            return type === 'display' ?
+    //                                '<span class="badge">' + data + '</span>' :
+    //                                data;
+    //                        }
+    //                    },
+    //                    { 'data': 'Name' },
+    //                    { 'data': 'Authority' },
+    //                    { 'data': 'NameVerifiedDate' },
+    //                    { 'data': 'Protologue' },
+    //                    {
+    //                        data: 'SynonymCode',
+    //                        render: function (data, type, row, meta) {
+    //                            return type === 'display' ?
+    //                                '<span class="label label-success">' + data + '</span>' :
+    //                                data;
+    //                        }
+    //                    },
+    //                ],
+    //                columnDefs: [{
+    //                    "targets": 7,
+    //                    "data": null,
+    //                    "defaultContent": "<a class='btn btn-default' onclick='GetUsersDetails(this)' title='Edit' href='javascript:;'>Edit</a>"
+    //                }]
+    //            });
+    //    }
+    //    catch (ex) {
+    //        console.log(ex.message);
+    //    }
+    //};
+
     $('#tblSpeciesDataTest tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = $('#tblSpeciesDataTest').DataTable().row(tr);

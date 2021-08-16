@@ -106,7 +106,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return protologues;
         }
 
-        public IEnumerable<Note> FindNotes(string searchString, string context)
+        public IEnumerable<Note> NoteSearch(string tableName, string searchText)
         {
             List<Note> notes = new List<Note>();
 
@@ -120,8 +120,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@sys_table_name", context);
-                        cmd.Parameters.AddWithValue("@search_string", searchString);
+                        cmd.Parameters.AddWithValue("@sys_table_name", tableName);
+                        cmd.Parameters.AddWithValue("@search_string", searchText);
                         SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         if (reader.HasRows)
@@ -140,6 +140,77 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return notes.AsEnumerable();
         }
+
+        public IEnumerable<Authority> AuthoritySearch(string tableName, string searchText)
+        {
+            List<Authority> authors = new List<Authority>();
+
+            try
+            {
+                const string COMMAND_TEXT = "usp_TaxonomyAuthority_Search";
+                StringBuilder sbSqlStatement = new StringBuilder();
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@sys_table_name", tableName);
+                        cmd.Parameters.AddWithValue("@search_text", searchText);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                authors.Add(new Authority { TableName = reader["table_name"].ToString(), ColumnName = reader["column_name"].ToString(), AuthorityText = reader["authority_text"].ToString() });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return authors.AsEnumerable();
+        }
+
+        public IEnumerable<Citation> CitationSearch(string searchText)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCitation_Search";
+            List<Citation> citations = new List<Citation>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@search_string", searchText);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Citation citation = new Citation();
+                                citation.ID = Int32.Parse(reader["citation_id"].ToString());
+                                citation.CitationText = reader["citation_text"].ToString();
+                                citations.Add(citation);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return citations;
+        }
+
         public List<Citation> GetCitations(int speciesId)
         {
             List<Citation> citations = new List<Citation>();

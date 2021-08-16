@@ -14,11 +14,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class SpeciesDAO : BaseDAO, IRepository<Species>
     {
-        private string _context;
+        //private string _context;
         protected ReferenceDAO _referenceDAO = null;
 
         public SpeciesDAO(string context)
         {
+            base._context = context;
             _context = context;
             _referenceDAO = new ReferenceDAO(context);
         }

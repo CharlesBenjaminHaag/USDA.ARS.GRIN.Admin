@@ -1,0 +1,140 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.FamilyEditViewModel
+@{
+    ViewBag.Title = TempData["context"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("FamilyEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.TableName)
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title">Detail</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            @Html.ValidationSummary()
+            @Html.Raw(Model.ErrorMessage)
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Name</label>
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    <label>Alternate Name</label>
+                    @Html.TextBoxFor(x => x.AlternateName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <label>Suprafamily Rank</label>
+                    @Html.DropDownListFor(x => x.SuprafamilyRankCode, new SelectList(new List<String>()), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Authority</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.Authority, new { @class = "form-control" })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Citation</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.CitationText, new { @class = "form-control", @disabled = true })
+                        @Html.HiddenFor(x => x.CitationID)
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-citation-search">...</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-top:1.0em;">
+                    <label>Note</label>
+                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-default">Save Edits</button>
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+        </div>
+    </div>
+}
+
+@Html.Partial("~/Views/Taxonomy/Shared/Modals/_NoteSearchModal.cshtml")
+@Html.Partial("~/Views/Taxonomy/Shared/Modals/_AuthorSearchModal.cshtml")
+@Html.Partial("~/Views/Taxonomy/Shared/Modals/_CitationSearchModal.cshtml")
+
+<script type="text/javascript">
+    $(document).on("click", "[id='btnSearchNotes']", function () {
+        var url = '@Url.Action("NoteSearch", "Taxonomy")';
+        var tableName = $("#TableName").val();
+        var searchText = $("#txtSearchNotes").val();
+
+        $.post(url, { tableName: tableName, searchText: searchText })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+            });
+    });
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        CKEDITOR.instances.txtNote.setData(noteText);
+    }
+
+    $(document).on("click", "[id='btnSearchAuthors']", function () {
+        var url = '@Url.Action("AuthoritySearch", "Taxonomy")';
+        var tableName = $("#TableName").val();
+        var searchText = $("#txtSearchAuthors").val();
+
+        $.post(url, { tableName: tableName, searchText: searchText })
+            .done(function (response) {
+                $("#section-author-search-results").html(response);
+            });
+    });
+
+    function SelectAuthor(authorText) {
+        $('#modal-author-search').modal('hide');
+        $("#Authority").val(authorText);
+    }
+
+    $(document).on("click", "[id='btnSearchCitations']", function () {
+        var url = '@Url.Action("CitationSearch", "Taxonomy")';
+        var searchText = $("#txtSearchCitations").val();
+
+        $.post(url, { searchText: searchText })
+            .done(function (response) {
+                $("#section-citation-search-results").html(response);
+            });
+    });
+
+    function SelectCitation(id) {
+        $('#modal-citation-search').modal('hide');
+        $("#CitationID").val(id);
+    }
+</script>

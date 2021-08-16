@@ -91,23 +91,23 @@
                             <div id="section-search-criteria" class="box-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Web Order Request ID</label>
-                                    @Html.TextBoxFor(x => x.ID, new { @class = "form-control" })
+                                    @Html.TextBoxFor(x => x.ID, new { @id="txtWebOrderRequestID", @class = "form-control" })
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
-                                    @Html.TextBoxFor(x => x.RequestorEmailAddress, new { @class = "form-control" })
+                                    @Html.TextBoxFor(x => x.RequestorEmailAddress, new { @id = "txtRequestorEmailAddress", @class = "form-control" })
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">First Name</label>
-                                    @Html.TextBoxFor(x => x.RequestorFirstName, new { @class = "form-control" })
+                                    @Html.TextBoxFor(x => x.RequestorFirstName, new { @id = "txtRequestorFirstName", @class = "form-control" })
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Last Name</label>
-                                    @Html.TextBoxFor(x => x.RequestorLastName, new { @class = "form-control" })
+                                    @Html.TextBoxFor(x => x.RequestorLastName, new { @id = "txtRequestorLastName", @class = "form-control" })
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Intended Use</label>
-                                    @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Select a code", new { @class = "form-control" })
+                                    @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Select a code", new { @id = "txtIntendedUseCode", @class = "form-control" })
                                 </div>
                                 <div class="form-group">
                                     <label>Order Submitted</label>
@@ -116,7 +116,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         @Html.HiddenFor(x => x.SelectedDateRange)
-                                        <input type="text" class="form-control pull-right" id="txtOrderDateRange" name="OrderDateRange">
+                                        <input type="text" class="form-control pull-right" id="txtSelectedDateRange" name="OrderDateRange">
                                     </div>
                                 </div>
                             </div>
@@ -191,12 +191,6 @@
             <div class="modal-body" id="modal-body">
                 <h5>This will flag this order and its requestor as NRR. Below is the email that the system will send to the requestor.</h5>
                 <textarea id="txtDenyNote" class="form-control" rows="15">
-                   Dear << NAME >>
-                   We are unable to process your request for the following reasons:
-                   [] REASON 1
-                   [] REASON 2
-                   Skeptically Yours,
-                   The USDA
                 </textarea>
             </div>
             <div class="modal-footer">
@@ -208,6 +202,10 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        Init();
+    });
+
     $(document).on({
         ajaxStart: function () {
             $(".overlay").show();
@@ -217,14 +215,19 @@
         }
     });
 
-    $(function () {
+    function Init()
+    {
         //Date picker
         $('#datepicker').datepicker({
             autoclose: true
-        })
-        //Date range picker
-        //$('#txtOrderDateRange').daterangepicker()
-    });
+        });
+        //Default field values
+        $("#txtWebOrderRequestID").val("");
+        $("#txtOrderDateRange").val("");
+
+        //Default display
+        LoadData("NRR_FLAG", 2);
+    }
 
     $(function () {
         $('input[name="OrderDateRange"]').daterangepicker({
@@ -233,11 +236,6 @@
                 $("#SelectedDateRange").val(start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
         });
-    });
-
-    $(document).ready(function () {
-        LoadData("NRR_FLAG", 2);
-        $("#txtOrderDateRange").val("");
     });
 
     $(function () {
@@ -283,14 +281,14 @@
         var id = 0;
 
         try {
-            id = $("#ID").val();
+            id = $("#txtWebOrderRequestID").val();
             statusCode = $("#SelectedStatusCode").val();
             timeFrameCode = $("#SelectedTimeFrameCode").val();
-            requestorEmail = $("#RequestorEmailAddress").val();
-            requestorFirstName = $("#RequestorFirstName").val();
-            requestorLastName = $("#RequestorLastName").val();
-            intendedUseCode = $("#IntendedUseCode").val();
-            selectedDateRange = $("#SelectedDateRange").val();
+            requestorEmail = $("#txtRequestorEmailAddress").val();
+            requestorFirstName = $("#txtRequestorFirstName").val();
+            requestorLastName = $("#txtRequestorLastName").val();
+            intendedUseCode = $("#txtIntendedUseCode").val();
+            selectedDateRange = $("#txtSelectedDateRange").val();
             SearchWebOrderRequests(id, statusCode, timeFrameCode, requestorEmail, requestorFirstName, requestorLastName, intendedUseCode, selectedDateRange);
         }
         catch (ex) {
@@ -303,7 +301,7 @@
         $("select").each(function () { this.selectedIndex = 0 });
     });
 
-    function SearchWebOrderRequests(id, statusCode, timeFrameCode, email, firstName, lastName, intendedUseCode, selectedDateRange)
+    function SearchWebOrderRequests(webOrderRequestId = 0, statusCode= "", timeFrameCode="", email="", firstName="", lastName="", intendedUseCode="", selectedDateRange="")
     {
         var link = "";
 
@@ -312,11 +310,12 @@
 
         try {
             link = '@Url.Action("_Search", "WebOrder")';
+            console.log("DEBUG " + webOrderRequestId + "," + statusCode + "," + timeFrameCode + "," + email + "," + firstName + "," + lastName + "," + intendedUseCode + "," + selectedDateRange);
             $.ajax(
                 {
                     type: 'GET',
                     url: link,
-                    data: { id: id, statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName: lastName, intendedUseCode: intendedUseCode, selectedDateRange: selectedDateRange },
+                    data: { id: webOrderRequestId, statusCode: statusCode, timeFrameCode: timeFrameCode, requestorEmail: email, requestorFirstName: firstName, requestorLastName: lastName, intendedUseCode: intendedUseCode, selectedDateRange: selectedDateRange },
                     success:
                         function (response) {
                             $("#section-data").html(response);

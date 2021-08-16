@@ -20,8 +20,10 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
         public Cooperator WebCooperator { get; set; }
 		public List<Cooperator> Cooperators { get; set; }
 		public List<Address> Addresses { get; set; }
-		
-		public IEnumerable<WebOrderRequestItem> WebOrderRequestItems { get; set; }
+        public int TotalGenera { get; set; }
+        public int TotalItems { get; set; }
+        public int TotalSites { get; set; }
+        public IEnumerable<WebOrderRequestItem> WebOrderRequestItems { get; set; }
 		public IEnumerable<WebOrderRequestAction> WebOrderRequestActions { get; set; }
 
 		public string GetRelatedAccessions()

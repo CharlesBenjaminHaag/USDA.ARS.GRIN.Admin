@@ -8,6 +8,7 @@ namespace USDA.ARS.GRIN.Admin.Models
 {
     public abstract class BaseModel
     {
+        public int ParentID { get; set; }
         public int ID { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedByCooperatorID { get; set; }
