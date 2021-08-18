@@ -130,7 +130,13 @@ namespace USDA.ARS.GRIN.Admin.Service
                 emailMessage.Subject = emailTemplate.Subject.Replace("[ID_HERE]", webOrderRequestId.ToString());
                 emailMessage.From = emailTemplate.From;
                 emailMessage.ReplyTo = emailTemplate.From;
-                emailMessage.Recipients = emailNotificationList.Split(',');
+                emailMessage.Recipients = emailNotificationList.Replace(";", ",").TrimEnd(new char[] { ',' }).Split(',');
+
+                if (type != "RRJ")
+                {
+                    emailMessage.BCC = "marty.reisinger@usda.gov,benjamin.haag@usda.gov";
+                }
+
                 emailMessage.Body = emailTemplate.Body.Replace("[ID_HERE]", webOrderRequestId.ToString());
                 resultContainer = _smtpService.SendMessage(emailMessage);
                 if (resultContainer.ResultMessage == ResultContainer.ResultCodeValue.OK.ToString())

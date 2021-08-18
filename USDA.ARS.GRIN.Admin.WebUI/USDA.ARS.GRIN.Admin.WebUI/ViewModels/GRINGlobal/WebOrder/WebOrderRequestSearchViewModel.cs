@@ -13,6 +13,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
         public string Action { get; set; }
         public string SelectedStatusCode { get; set; }
         public int SelectedTimeFrameCode { get; set; }
+        public string SelectedTimeFrameDesc { get; set; }
         public string SelectedDateRange { get; set; }
         public DateTime SelectedStartDate { get; set; }
         public DateTime SelectedEndDate { get; set; }

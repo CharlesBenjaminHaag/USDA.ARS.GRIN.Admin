@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Data.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.email_template.Table.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.sys_application.Table.sql" />
     <Content Include="SQL\dbo.sys_db_error.Table.sql" />

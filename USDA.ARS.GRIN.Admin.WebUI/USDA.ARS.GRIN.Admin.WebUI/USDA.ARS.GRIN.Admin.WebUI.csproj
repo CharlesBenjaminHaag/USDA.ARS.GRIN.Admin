@@ -403,6 +403,7 @@
     <Content Include="Views\Taxonomy\Shared\Modals\_AuthorSearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_AuthorSearchResultsLIst.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_CitationSearchResultsList.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -471,13 +472,13 @@
     <Compile Include="ViewModels\GRINGlobal\WebOrder\Email\EmailTemplateEditViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrder\Email\EmailTemplateHomeViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\GRINGlobalHomeViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\AccessionInventoryAttachmentListViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\Accession\AccessionInventoryAttachmentListViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\HomeViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\ValidationStatisticsViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestActionGroupViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestEditViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestListViewModel.cs" />
-    <Compile Include="ViewModels\GRINGlobal\WebOrderRequestSearchViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\Accession\ValidationStatisticsViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrder\WebOrderRequestActionGroupViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrder\WebOrderRequestEditViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrder\WebOrderRequestListViewModel.cs" />
+    <Compile Include="ViewModels\GRINGlobal\WebOrder\WebOrderRequestSearchViewModel.cs" />
     <Compile Include="ViewModels\SiteManagementHomeViewModel.cs" />
     <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentEditViewModel.cs" />
     <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentSearchViewModel.cs" />

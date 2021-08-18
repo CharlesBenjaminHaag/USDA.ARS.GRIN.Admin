@@ -24,13 +24,13 @@ namespace USDA.ARS.GRIN.Admin.Models
         public Address Address { get; set; }
         public Site Site { get; set; }
 
-        public Dictionary<string, int> Totals { get; set; }
+        public List<CodeValueReferenceItem> Totals { get; set; }
         public Cooperator()
         {
             WebCooperator = new WebCooperator();
             Address = new Address();
             Site = new Site();
-            Totals = new Dictionary<string, int>();
+            Totals = new List<CodeValueReferenceItem>();
         }
     }
 }

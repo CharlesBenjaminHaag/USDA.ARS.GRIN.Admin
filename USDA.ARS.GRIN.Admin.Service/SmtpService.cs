@@ -32,6 +32,14 @@ namespace USDA.ARS.GRIN.Admin.Service
             // CONSIDER FOR LATER RELEASE
             //MailAddress copy = new MailAddress("Notifications@contoso.com");
             //message.CC.Add(copy);
+            if (!String.IsNullOrEmpty(emailMessage.BCC))
+            {
+                string[] bccList = emailMessage.BCC.Split(',');
+                foreach (var bccEmail in bccList)
+                {
+                    message.Bcc.Add(bccEmail);
+                }
+            }
                 
             SmtpClient client = new SmtpClient(SMTP_SERVER);
             

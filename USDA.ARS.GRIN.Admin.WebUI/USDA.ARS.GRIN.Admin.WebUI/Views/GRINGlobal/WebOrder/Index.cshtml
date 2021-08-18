@@ -1,6 +1,6 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.WebOrderRequestSearchViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,122 +19,65 @@
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/moment/min/moment.min.js"></script>
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+
 <div class="row">
     <div class="col-md-3">
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab_browse" data-toggle="tab">Browse</a></li>
-                <li><a href="#tab_search" data-toggle="tab">Search</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="tab_browse">
-                    <div class="box box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Order Status</h3>
-                            @Html.HiddenFor(x => x.CurrentID)
-                            <div class="box-tools">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="section-user-pick-list" class="box-body no-padding">
-                            <div>
-                                <ul class="nav nav-pills nav-stacked">
-                                    @foreach (var status in Model.Statuses)
-                                    {
-                                        <li id="@status.Name"><a href="#"><i class="fa fa-circle"></i> @status.Name</a></li>
-                                    }
-                                    <li id="ANY"><a href="#"><i class="fa fa-circle"></i> Any</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <div class="box box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Submittal Time Frame</h3>
-                            <div class="box-tools">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="section-time-frame-pick-list" class="box-body no-padding">
-                            <ul class="nav nav-pills nav-stacked">
-                                <li id="1"><a href="#"><i class="fa fa-calendar"></i>Today</a></li>
-                                <li id="2"><a href="#"><i class="fa fa-calendar"></i> The Last 7 Days</a></li>
-                                <li id="3"><a href="#"><i class="fa fa-calendar"></i> The Last 30 Days</a></li>
-                                <li id="4"><a href="#"><i class="fa fa-calendar"></i> The Last 60 Days</a></li>
-                                <li id="0"><a href="#"><i class="fa fa-calendar"></i> Any</a></li>
-                            </ul>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Order Status</h3>
+                @Html.HiddenFor(x => x.CurrentID)
+                @Html.HiddenFor(x => x.SelectedStatusCode)
+                @Html.HiddenFor(x => x.SelectedTimeFrameCode)
+                @Html.HiddenFor(x => x.SelectedTimeFrameDesc)
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                 </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="tab_search">
-                    @using (Html.BeginForm("Search", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
-                    {
-                        @Html.HiddenFor(x => x.Action)
-                        @Html.HiddenFor(x => x.SelectedStatusCode)
-                        @Html.HiddenFor(x => x.SelectedTimeFrameCode)
-                        <div class="box box-solid">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Search Criteria</h3>
-                                <div class="box-tools">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="section-search-criteria" class="box-body">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Web Order Request ID</label>
-                                    @Html.TextBoxFor(x => x.ID, new { @id="txtWebOrderRequestID", @class = "form-control" })
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    @Html.TextBoxFor(x => x.RequestorEmailAddress, new { @id = "txtRequestorEmailAddress", @class = "form-control" })
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">First Name</label>
-                                    @Html.TextBoxFor(x => x.RequestorFirstName, new { @id = "txtRequestorFirstName", @class = "form-control" })
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Last Name</label>
-                                    @Html.TextBoxFor(x => x.RequestorLastName, new { @id = "txtRequestorLastName", @class = "form-control" })
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Intended Use</label>
-                                    @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Select a code", new { @id = "txtIntendedUseCode", @class = "form-control" })
-                                </div>
-                                <div class="form-group">
-                                    <label>Order Submitted</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        @Html.HiddenFor(x => x.SelectedDateRange)
-                                        <input type="text" class="form-control pull-right" id="txtSelectedDateRange" name="OrderDateRange">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                    }
-                    <button id="btnSearch" type="button" class="btn btn-primary">Search</button>
-                    <button id="btnReset" type="button" class="btn btn-primary">Reset</button>
-                </div>
-                <!-- /.tab-pane -->
             </div>
-            <!-- /.tab-content -->
+            <div id="section-user-pick-list" class="box-body no-padding">
+                <div>
+                    <ul class="nav nav-pills nav-stacked">
+                        @foreach (var status in Model.Statuses)
+                        {
+                            <li id="@status.Name"><a href="#"><i class="fa fa-tachometer"></i> @status.Name</a></li>
+                        }
+                        <li id="ALL_STATUSES"><a href="#"><i class="fa fa-tachometer"></i> Any</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.box-body -->
         </div>
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Submittal Time Frame</h3>
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="section-time-frame-pick-list" class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    <li id="1"><a href="#"><i class="fa fa-calendar"></i>Today</a></li>
+                    <li id="2"><a href="#"><i class="fa fa-calendar"></i> The Last 7 Days</a></li>
+                    <li id="3"><a href="#"><i class="fa fa-calendar"></i> The Last 30 Days</a></li>
+                    <li id="4"><a href="#"><i class="fa fa-calendar"></i> The Last 60 Days</a></li>
+                    <li id="0"><a href="#"><i class="fa fa-calendar"></i> Anytime</a></li>
+                </ul>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <a href="@Url.Action("Search","WebOrder")" class="btn btn-primary btn-block disabled">
+            <i class="fa fa-search"></i>
+            <b>Advanced Search</b>
+        </a>
     </div>
     <div class="col-md-9">
         <div class="box box-primary" style="padding:10px;">
             <div class="box-header with-border">
                 <h3 class="box-title">Web Orders</h3>
+                <div id="page-title" style="margin-top:.5em;"></div>
                 <input type="hidden" id="hidden-web-order-request-id" />
                 <input type="hidden" id="hidden-web-cooperator-id" />
 
@@ -226,7 +169,7 @@
         $("#txtOrderDateRange").val("");
 
         //Default display
-        LoadData("NRR_FLAG", 2);
+        LoadData("NRR_FLAG", 2, "The Last 7 Days");
     }
 
     $(function () {
@@ -247,10 +190,9 @@
 
             // Call method that retrieves details for selected user
             var status = $(this).attr('id');
-            $("#SelectedStatusCode").val(status);
-
             var timeFrameId = $("#SelectedTimeFrameCode").val();
-            LoadData(status, timeFrameId);
+            var timeFrameDesc = $("#SelectedTimeFrameDesc").val();
+            LoadData(status, timeFrameId, timeFrameDesc);
         });
     });
 
@@ -263,10 +205,9 @@
 
             // Call method that retrieves details for selected user
             var timeFrameCode = $(this).attr('id');
-            $("#SelectedTimeFrameCode").val(timeFrameCode);
-
+            var timeFrameDesc = $(this).text(); 
             var statusCode = $("#SelectedStatusCode").val();
-            LoadData(statusCode, timeFrameCode);
+            LoadData(statusCode, timeFrameCode, timeFrameDesc);
         });
     });
 
@@ -282,8 +223,8 @@
 
         try {
             id = $("#txtWebOrderRequestID").val();
-            statusCode = $("#SelectedStatusCode").val();
-            timeFrameCode = $("#SelectedTimeFrameCode").val();
+            statusCode = "";
+            timeFrameCode = "";
             requestorEmail = $("#txtRequestorEmailAddress").val();
             requestorFirstName = $("#txtRequestorFirstName").val();
             requestorLastName = $("#txtRequestorLastName").val();
@@ -332,10 +273,16 @@
         }
     }
 
-    function LoadData(statusCode, timeFrameCode)
+    function LoadData(statusCode, timeFrameCode, timeFrameDesc)
     {
         $("#SelectedStatusCode").val(statusCode);
         $("#SelectedTimeFrameCode").val(timeFrameCode);
+        $("#SelectedTimeFrameDesc").val(timeFrameDesc);
+
+        var searchLabel = "<span class='badge bg-blue' style = 'font-size:1em;' > " + statusCode + "</span >";
+        searchLabel = searchLabel + "<span class='badge bg-blue' style='font-size:1em; margin-left:.2em;'> " + timeFrameDesc + "</span>"
+
+        $("#page-title").html(searchLabel);
 
         var $getStatusElement = $('li#' + statusCode);
         $getStatusElement.addClass('active');

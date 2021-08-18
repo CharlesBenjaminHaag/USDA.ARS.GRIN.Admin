@@ -127,14 +127,30 @@
         var url = '@Url.Action("CitationSearch", "Taxonomy")';
         var searchText = $("#txtSearchCitations").val();
 
-        $.post(url, { searchText: searchText })
-            .done(function (response) {
+        //$.post(url, { searchText: searchText })
+        //    .done(function (response) {
+        //        $("#section-citation-search-results").html(response);
+        //    });
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: searchText,
+            success: function (response) {
                 $("#section-citation-search-results").html(response);
-            });
+            }
+        });
+
     });
 
     function SelectCitation(id) {
         $('#modal-citation-search').modal('hide');
+
+        //TODO: AJAX CALL TO CLONE/CREATE CITATION
+
         $("#CitationID").val(id);
     }
 </script>

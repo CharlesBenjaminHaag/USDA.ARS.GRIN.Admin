@@ -20,10 +20,11 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         #region WebCooperator
 
-        public Dictionary<string, int> GetTotals(int webCooperatorId)
+        public List<CodeValueReferenceItem> GetTotals(int webCooperatorId)
         {
             const string COMMAND_TEXT = "usp_WebOrderRequestCooperatorTotals_Select";
             Dictionary<string, int> dictTotals = new Dictionary<string, int>();
+            List<CodeValueReferenceItem> webCooperatorTotals = new List<CodeValueReferenceItem>();
 
             try
             {
@@ -40,7 +41,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         {
                             while (reader.Read())
                             {
-                                dictTotals.Add(reader["category"].ToString(), GetInt(reader["total"].ToString()));
+                                webCooperatorTotals.Add(new CodeValueReferenceItem{ CodeValueID = GetInt(reader["total"].ToString()), CodeValue = reader["category"].ToString(), Description = reader["display_css_class"].ToString() });
                             }
                         }
                     }
@@ -50,7 +51,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
             {
                 throw ex;
             }
-            return dictTotals;
+            return webCooperatorTotals;
         }
 
         #endregion
@@ -127,6 +128,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequest.WebOrderRequestActions = SearchActions(webOrderRequest.ID);
                                 webOrderRequest.EmailAddressList = emailAddressList;
+                                webOrderRequest.IsLocked = ParseBool(reader["is_locked"].ToString());
                                 webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
@@ -396,8 +398,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
                                 webOrderRequest.WebCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
+                                webOrderRequest.WebCooperator.Organization = reader["web_cooperator_organization"].ToString();
                                 webOrderRequest.WebCooperator.Address.PersonFullName = reader["web_cooperator_full_name"].ToString();
-                                webOrderRequest.WebCooperator.Address.OrganizationName = reader["web_cooperator_organization"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine1 = reader["web_cooperator_address_line_1"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();
@@ -501,7 +503,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public string GetEmailNotificationList(int webOrderRequestId)
         {
-            const string COMMAND_TEXT = "usp_WebOrderRequestEmailAddressListv2_Select";
+            const string COMMAND_TEXT = "usp_WebOrderRequestEmailAddressList_Select";
             string emailNotificationList = String.Empty;
             List<WebOrderRequest> webOrderRequests = new List<WebOrderRequest>();
 
@@ -515,14 +517,18 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
                         cmd.Parameters.AddWithValue("@web_order_request_id", webOrderRequestId);
+                        cmd.Parameters.Add("@email_recipients", SqlDbType.NVarChar, -1);
+                        cmd.Parameters["@email_recipients"].Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                        emailNotificationList = Convert.ToString(cmd.Parameters["@email_recipients"].Value);
 
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                emailNotificationList = reader["email_recipients"].ToString();
-                            }
-                        }
+                        //using (SqlDataReader reader = cmd.ExecuteReader())
+                        //{
+                        //    while (reader.Read())
+                        //    {
+                        //        emailNotificationList = reader["email_recipients"].ToString().Replace(';',',');
+                        //    }
+                        //}
                     }
                 }
             }

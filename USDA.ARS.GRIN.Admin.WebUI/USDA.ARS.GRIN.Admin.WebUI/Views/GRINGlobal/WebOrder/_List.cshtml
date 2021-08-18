@@ -14,12 +14,11 @@
                     <th></th>
                     <th>ID</th>
                     <th>Status</th>
-                    <th>Submitted</th>
+                    <th>Order Date/Time</th>
                     <th>By</th>
                     <th>Email</th>
-                    <th>City</th>
+                    <th>Organization</th>
                     <th>State</th>
-                    <th>Postal Code</th>
                     <th>Intended Use</th>
                     <th></th>
                 </tr>
@@ -39,9 +38,8 @@
                         <td>@webOrderRequest.OrderDate.ToShortDateString() at @webOrderRequest.OrderDate.ToLocalTime().ToShortTimeString()</td>
                         <td>@webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName</td>
                         <td>@webOrderRequest.WebCooperator.EmailAddress</td>
-                        <td>@webOrderRequest.WebCooperator.Address.City</td>
+                        <td>@webOrderRequest.WebCooperator.Organization</td>
                         <td>@webOrderRequest.WebCooperator.Address.State</td>
-                        <td>@webOrderRequest.WebCooperator.Address.ZIP</td>
                         <td>@webOrderRequest.IntendedUseCode</td>
                         <td>
                             @if (webOrderRequest.StatusCode.Contains("NRR"))

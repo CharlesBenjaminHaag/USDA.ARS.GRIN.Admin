@@ -15,6 +15,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        #region Web Order Request
         public ActionResult Index()
         {
             TempData["context"] = "Home";
@@ -28,7 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 {
                     viewModel.CurrentID = viewModel.Statuses.First().ID;
                 }
-                
+
                 viewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
                 return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", viewModel);
             }
@@ -38,6 +39,68 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
+
+        public ActionResult Search()
+        {
+            WebOrderRequestSearchViewModel webOrderRequestSearchViewModel = new WebOrderRequestSearchViewModel();
+
+            //TODO
+
+            return View("~/Views/GRINGlobal/WebOrder/Search.cshtml", webOrderRequestSearchViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Search(WebOrderRequestSearchViewModel webOrderRequestSearchViewModel)
+        {
+            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            Models.Query query = new Models.Query();
+
+            try
+            {
+                //if (webOrderRequestSearchViewModel.SelectedStatusCode != "ANY")
+                //{
+                //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.status_code", FieldValue = webOrderRequestSearchViewModel.SelectedStatusCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
+                //    query.QueryCriteria.Add(queryCriterion);
+                //}
+
+                //if (webOrderRequestSearchViewModel.SelectedTimeFrameCode > 0)
+                //{
+                //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "time_frame_code", FieldValue = webOrderRequestSearchViewModel.SelectedTimeFrameCode.ToString(), SearchOperatorCode = "=", DataType = "INT" };
+                //    query.QueryCriteria.Add(queryCriterion);
+                //}
+
+                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorEmailAddress))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = webOrderRequestSearchViewModel.RequestorEmailAddress.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorFirstName))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = webOrderRequestSearchViewModel.RequestorFirstName.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorLastName))
+                {
+                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = webOrderRequestSearchViewModel.RequestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+                    query.QueryCriteria.Add(queryCriterion);
+                }
+
+
+                // Re-initialize main index view model, adding search results.
+                webOrderRequestSearchViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
+                webOrderRequestSearchViewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
+                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
+                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", webOrderRequestSearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
 
         public PartialViewResult _List(string status, int timeFrameCode)
         {
@@ -70,7 +133,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             webOrderRequest.WebCooperatorID = webCooperatorId;
             webOrderRequest.StatusCode = statusCode;
             webOrderRequest.Note = actionNote;
-           
+
             resultContainer = service.UpdateWebOrderRequest(webOrderRequest);
             //webOrderRequests = service.GetWebOrderRequests("NRR_FLAGGED");
             return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequests);
@@ -96,7 +159,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             TempData["context"] = "Review Web Order Request #" + id;
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
-            
+
             try
             {
                 viewModel = LoadViewModel(id, true);
@@ -143,17 +206,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     }
                     else
                         if (viewModel.Action == "NRR_REJECT")
-                        {
-                            emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
-                            grinGlobalService.SendEmail(viewModel.ID, "CCL", emailRecipientList);
-                            grinGlobalService.SendEmail(viewModel.ID, "RRJ", viewModel.WebCooperator.EmailAddress);
-                            resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
-                        }
-                        else
+                    {
+                        emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
+                        grinGlobalService.SendEmail(viewModel.ID, "CCL", emailRecipientList);
+                        grinGlobalService.SendEmail(viewModel.ID, "RRJ", viewModel.WebCooperator.EmailAddress);
+                        resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                    }
+                    else
                             if (viewModel.Action == "NRR_INFO")
-                            {
-                                grinGlobalService.SendEmail(viewModel.ID, "RQI", viewModel.WebCooperator.EmailAddress);
-                            }
+                    {
+                        grinGlobalService.SendEmail(viewModel.ID, "RQI", viewModel.WebCooperator.EmailAddress);
+                    }
 
                     if (resultContainer.ResultCode == ResultContainer.ResultCodeValue.Error.ToString())
                     {
@@ -247,119 +310,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             return viewModel;
         }
-        public ActionResult Search(WebOrderRequestSearchViewModel webOrderRequestSearchViewModel)
-        {
-            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-            Models.Query query = new Models.Query();
 
-            try
-            {
-                //if (webOrderRequestSearchViewModel.SelectedStatusCode != "ANY")
-                //{
-                //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.status_code", FieldValue = webOrderRequestSearchViewModel.SelectedStatusCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
-                //    query.QueryCriteria.Add(queryCriterion);
-                //}
+        #endregion
 
-                //if (webOrderRequestSearchViewModel.SelectedTimeFrameCode > 0)
-                //{
-                //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "time_frame_code", FieldValue = webOrderRequestSearchViewModel.SelectedTimeFrameCode.ToString(), SearchOperatorCode = "=", DataType = "INT" };
-                //    query.QueryCriteria.Add(queryCriterion);
-                //}
-
-                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorEmailAddress))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = webOrderRequestSearchViewModel.RequestorEmailAddress.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorFirstName))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = webOrderRequestSearchViewModel.RequestorFirstName.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorLastName))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = webOrderRequestSearchViewModel.RequestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-
-                // Re-initialize main index view model, adding search results.
-                webOrderRequestSearchViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
-                webOrderRequestSearchViewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
-                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
-                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", webOrderRequestSearchViewModel);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return RedirectToAction("InternalServerError", "Error");
-            }
-        }
-
-        public PartialViewResult _Search(int id, string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange, string startDate, string endDate)
-        {
-            WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
-            GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-            Models.Query query = new Models.Query();
-
-            try
-            {
-                if (id > 0)
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.web_order_request_id", FieldValue = id.ToString(), SearchOperatorCode = "=", DataType = "INT" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(requestorEmail))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = requestorEmail, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(requestorFirstName))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = requestorFirstName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(requestorLastName))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = requestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(intendedUseCode))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.intended_use_code", FieldValue = intendedUseCode, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(selectedDateRange))
-                {
-                    string[] dateRangeTokens = selectedDateRange.Replace(" to ", "_").Split('_');
-                    if (dateRangeTokens != null)
-                    {
-                        QueryCriterion queryCriterionStart = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[0], SearchOperatorCode = ">=", DataType = "DATETIME" };
-                        query.QueryCriteria.Add(queryCriterionStart);
-
-                        QueryCriterion queryCriterionEnd = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[1], SearchOperatorCode = "<=", DataType = "DATETIME" };
-                        query.QueryCriteria.Add(queryCriterionEnd);
-                    }
-                }
-                webOrderRequestListViewModel.WebCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID;
-                webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
-
-                return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return PartialView("~/Views/Error/_Error.cshtml");
-            }
-        }
-
+        #region Email
         protected string GetEmailAddressList(int emailCategory, string siteShortName)
         {
             string emailAddressList = String.Empty;
@@ -421,6 +375,69 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return resultContainer;
         }
 
+        #endregion
+
+        //public PartialViewResult _Search(int id, string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange, string startDate, string endDate)
+        //{
+        //    WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
+        //    GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+        //    Models.Query query = new Models.Query();
+
+        //    try
+        //    {
+        //        if (id > 0)
+        //        {
+        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.web_order_request_id", FieldValue = id.ToString(), SearchOperatorCode = "=", DataType = "INT" };
+        //            query.QueryCriteria.Add(queryCriterion);
+        //        }
+
+        //        if (!String.IsNullOrEmpty(requestorEmail))
+        //        {
+        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = requestorEmail, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+        //            query.QueryCriteria.Add(queryCriterion);
+        //        }
+
+        //        if (!String.IsNullOrEmpty(requestorFirstName))
+        //        {
+        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = requestorFirstName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+        //            query.QueryCriteria.Add(queryCriterion);
+        //        }
+
+        //        if (!String.IsNullOrEmpty(requestorLastName))
+        //        {
+        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = requestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+        //            query.QueryCriteria.Add(queryCriterion);
+        //        }
+
+        //        if (!String.IsNullOrEmpty(intendedUseCode))
+        //        {
+        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.intended_use_code", FieldValue = intendedUseCode, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
+        //            query.QueryCriteria.Add(queryCriterion);
+        //        }
+
+        //        if (!String.IsNullOrEmpty(selectedDateRange))
+        //        {
+        //            string[] dateRangeTokens = selectedDateRange.Replace(" to ", "_").Split('_');
+        //            if (dateRangeTokens != null)
+        //            {
+        //                QueryCriterion queryCriterionStart = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[0], SearchOperatorCode = ">=", DataType = "DATETIME" };
+        //                query.QueryCriteria.Add(queryCriterionStart);
+
+        //                QueryCriterion queryCriterionEnd = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[1], SearchOperatorCode = "<=", DataType = "DATETIME" };
+        //                query.QueryCriteria.Add(queryCriterionEnd);
+        //            }
+        //        }
+        //        webOrderRequestListViewModel.WebCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID;
+        //        webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
+
+        //        return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(ex, ex.Message);
+        //        return PartialView("~/Views/Error/_Error.cshtml");
+        //    }
+        //}
 
         #region Email Templates
 
