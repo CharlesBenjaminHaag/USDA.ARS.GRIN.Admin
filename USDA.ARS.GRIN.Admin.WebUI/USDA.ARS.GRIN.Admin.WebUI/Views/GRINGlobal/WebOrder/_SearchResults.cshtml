@@ -1,0 +1,101 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal.WebOrderRequestListViewModel
+
+<div class="box-group" id="accordion">
+    @{
+        string headerHrefId = String.Empty;
+        string bodyId = String.Empty;
+    }
+    @Html.HiddenFor(x => x.WebCooperatorID)
+    @if (Model.WebOrderRequests.Count() > 0)
+    {
+        <table class="table table-hover table-striped ggtools" style="width:100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Order Date/Time</th>
+                    <th>By</th>
+                    <th>Email</th>
+                    <th>Organization</th>
+                    <th>State</th>
+                    <th>Intended Use</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var webOrderRequest in Model.WebOrderRequests)
+                {
+                    <tr>
+                        <td>
+                            @if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.WebCooperatorID))
+                            {
+                                <i class="fa fa-eye" style="color:red; margin-left:.5em;"></i>
+                            }
+                        </td>
+                        <td><span class="badge">@webOrderRequest.ID</span></td>
+                        <td>@webOrderRequest.StatusCode</td>
+                        <td>@webOrderRequest.OrderDate.ToShortDateString() at @webOrderRequest.OrderDate.ToLocalTime().ToShortTimeString()</td>
+                        <td>@webOrderRequest.WebCooperator.LastName, @webOrderRequest.WebCooperator.FirstName</td>
+                        <td>@webOrderRequest.WebCooperator.EmailAddress</td>
+                        <td>@webOrderRequest.WebCooperator.Organization</td>
+                        <td>@webOrderRequest.WebCooperator.Address.State</td>
+                        <td>@webOrderRequest.IntendedUseCode</td>
+                        <td>
+                            @if (webOrderRequest.StatusCode.Contains("NRR"))
+                            {
+                                if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID != Model.WebCooperatorID))
+                                {
+                                    <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
+                                        <i class="fa fa-book"></i> Detail
+                                    </button>
+                                }
+                                else
+                                {
+                                    if ((webOrderRequest.IsLocked) && (webOrderRequest.OwnedByCooperatorID == Model.WebCooperatorID))
+                                    {
+                                        <button class="btn btn-warning btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
+                                            <i class="fa fa-eye"></i> Continue Review
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        if (!webOrderRequest.IsLocked)
+                                        {
+                                            <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "WebOrder", new { id = webOrderRequest.ID })'">
+                                                <i class="fa fa-eye"></i> Begin Review
+                                            </button>
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <button class="btn btn-default btn-sm" onclick="location.href='@Url.Action("View", "WebOrder", new { id = webOrderRequest.ID })'">
+                                    <i class="fa fa-book"></i> Detail
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-info"></i>No Records Found</h4>
+            There are no web order requests that match your search criteria.
+        </div>
+    }
+</div>
+
+<script>
+    $('.ggtools').DataTable(
+        {
+            responsive: true
+        }
+    );
+</script>
+

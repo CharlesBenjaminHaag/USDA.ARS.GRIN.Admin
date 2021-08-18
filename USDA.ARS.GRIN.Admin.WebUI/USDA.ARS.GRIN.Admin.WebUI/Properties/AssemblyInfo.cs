@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyVersion("1.0.0")]
 //[assembly: AssemblyFileVersion("1.0.0")]
 //TRAINING
-[assembly: AssemblyVersion("1.3.16")]
-[assembly: AssemblyFileVersion("1.3.16")]
+[assembly: AssemblyVersion("1.3.17")]
+[assembly: AssemblyFileVersion("1.3.17")]

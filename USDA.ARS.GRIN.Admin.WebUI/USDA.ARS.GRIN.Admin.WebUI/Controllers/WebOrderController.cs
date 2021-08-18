@@ -13,6 +13,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
     [GrinGlobalAuthentication]
     public class WebOrderController : BaseController
     {
+        const string BASE_PATH = "~/Views/GRINGlobal/WebOrder/";
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         #region Web Order Request
@@ -31,7 +32,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
 
                 viewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
-                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", viewModel);
+                return View(BASE_PATH + "Index.cshtml", viewModel);
             }
             catch (Exception ex)
             {
@@ -43,20 +44,34 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult Search()
         {
             WebOrderRequestSearchViewModel webOrderRequestSearchViewModel = new WebOrderRequestSearchViewModel();
+            GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
-            //TODO
-
-            return View("~/Views/GRINGlobal/WebOrder/Search.cshtml", webOrderRequestSearchViewModel);
+            try 
+            {
+                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(service.GetWebOrderRequestIntendedUseCodes());
+                return View("~/Views/GRINGlobal/WebOrder/Search.cshtml", webOrderRequestSearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         [HttpPost]
-        public ActionResult Search(WebOrderRequestSearchViewModel webOrderRequestSearchViewModel)
+        public ActionResult Search(FormCollection formCollection)
         {
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
+            WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
             Models.Query query = new Models.Query();
 
             try
             {
+                if (!String.IsNullOrEmpty(formCollection["RequestorEmailAddress"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "web_cooperator_email", SearchOperatorCode = "LIKE", FieldValue = formCollection["RequestorEmailAddress"], DataType = "NVARCHAR" });
+                }
+
                 //if (webOrderRequestSearchViewModel.SelectedStatusCode != "ANY")
                 //{
                 //    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.status_code", FieldValue = webOrderRequestSearchViewModel.SelectedStatusCode, SearchOperatorCode = "=", DataType = "NVARCHAR" };
@@ -69,30 +84,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 //    query.QueryCriteria.Add(queryCriterion);
                 //}
 
-                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorEmailAddress))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = webOrderRequestSearchViewModel.RequestorEmailAddress.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorFirstName))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = webOrderRequestSearchViewModel.RequestorFirstName.ToString(), SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-                if (!String.IsNullOrEmpty(webOrderRequestSearchViewModel.RequestorLastName))
-                {
-                    QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = webOrderRequestSearchViewModel.RequestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-                    query.QueryCriteria.Add(queryCriterion);
-                }
-
-
-                // Re-initialize main index view model, adding search results.
-                webOrderRequestSearchViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
-                webOrderRequestSearchViewModel.Statuses = grinGlobalService.GetWebOrderRequestStatuses();
-                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(grinGlobalService.GetWebOrderRequestIntendedUseCodes(), "Name", "Description");
-                return View("~/Views/GRINGlobal/WebOrder/Index.cshtml", webOrderRequestSearchViewModel);
+                webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
+                return PartialView(BASE_PATH + "/_SearchResults.cshtml", webOrderRequestListViewModel);
             }
             catch (Exception ex)
             {

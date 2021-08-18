@@ -404,6 +404,7 @@
     <Content Include="Views\Taxonomy\Shared\Modals\_AuthorSearchResultsLIst.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_CitationSearchResultsList.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Search.cshtml" />
+    <Content Include="Views\GRINGlobal\WebOrder\_SearchResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
