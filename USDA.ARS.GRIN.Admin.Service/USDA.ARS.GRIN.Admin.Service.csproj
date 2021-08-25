@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessRightsManagementService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="GenesysService.cs" />

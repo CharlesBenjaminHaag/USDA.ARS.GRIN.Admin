@@ -1,15 +1,17 @@
 USE [gringlobal]
 GO
-/****** Object:  Trigger [dbo].[tr_scan_web_order_items]    Script Date: 8/1/2021 6:34:59 PM ******/
+/****** Object:  Trigger [dbo].[tr_scan_web_order_items]    Script Date: 8/24/2021 3:53:41 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
 
+
 ALTER TRIGGER [dbo].[tr_scan_web_order_items] ON [dbo].[web_order_request_item]
 AFTER INSERT
 AS
+BEGIN
 	BEGIN TRY
 		-- Web Order Request Attributes
 		DECLARE @web_order_request_id INT
@@ -27,6 +29,8 @@ AS
 		DECLARE @email_subject NVARCHAR(2000)
 		DECLARE @email_body NVARCHAR(4000)
 		DECLARE @email_sent BIT
+		DECLARE @email_recipients NVARCHAR(MAX)
+
 		DECLARE @web_order_request_action_id INT
 		DECLARE @error_code INT
 
@@ -63,7 +67,7 @@ AS
 		IF (@web_cooperator_email NOT LIKE '%.gov') AND (@web_cooperator_email NOT LIKE '%.edu')
 			BEGIN
 				SET @risk_factor_count = @risk_factor_count + 1
-				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_EMAIL', 'Non-official email address.', 1
+				EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_EMAIL', '', 1
 				
 				-- ===================================================================
 				-- NRR FLAG: COOPERATOR FLAG
@@ -71,29 +75,19 @@ AS
 				IF (@web_cooperator_status_code = 'FLAGGED')
 					BEGIN
 						SET @risk_factor_count = @risk_factor_count + 1
-						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_COOP', 'Cooperator has been flagged.', 1
+						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_COOP', '', 1
 					END
 
 				-- ===================================================================
 				-- NRR FLAG: INTENDED USE
 				-- ===================================================================
 				IF (@web_order_request_intended_use_code LIKE '%home%') 
-				OR (@web_order_request_intended_use_note LIKE '%home%') 
 				OR (@web_order_request_intended_use_note LIKE '%garden%')
 				OR (@web_order_request_intended_use_note LIKE '%home%garden%')
 					BEGIN
 						SET @risk_factor_count = @risk_factor_count + 1
-						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_USE', 'Intended use is other than research.', 1
+						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_USE', '', 1
 					END
-
-				-- ===================================================================
-				-- NRR FLAG: EMAIL DOMAIN
-				-- ===================================================================
-				--IF (@web_cooperator_email NOT LIKE '%.gov') AND (@web_cooperator_email NOT LIKE '%.edu')
-				--	BEGIN
-				--		SET @risk_factor_count = @risk_factor_count + 1
-				--		EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_EMAIL', 'Non-official email address.', 1
-				--	END
 
 				-- ===================================================================
 				-- NRR FLAG: HISTORY OF CANCELLED ORDERS
@@ -112,7 +106,7 @@ AS
 				IF (@cancelled_order_count > 0)
 					BEGIN
 						SET @risk_factor_count = @risk_factor_count + 1
-						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_HISTORY', 'Requestor has prior cancelled orders.', 1
+						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_HIST', '', 1
 					END
 
 				-- ===================================================================
@@ -134,43 +128,51 @@ AS
 												ON
 													a.taxonomy_species_id = ts.taxonomy_species_id
 														WHERE 
-														web_order_request_id IN 
-														(SELECT 
-															web_order_request_id 
-															FROM 
-															inserted))
+														web_order_request_id = @web_order_request_id)
 				IF (@web_order_request_genera_cnt > 2)
 					BEGIN
 						SET @risk_factor_count = @risk_factor_count + 1
-						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_GENERA', 'Request entails germplasm of more than one genus.', 1
+						EXEC usp_WebOrderRequestAction_Insert @error_code OUTPUT, @web_order_request_action_id, @web_order_request_id, 'NRR_FLAG_GEN', 'Request entails germplasm of more than one genus.', 1
 					END
 
-				IF (@risk_factor_count > 0)
-					BEGIN
-						SELECT 
-							@email_template_subject = REPLACE(subject,'[ID_HERE]',CONVERT(NVARCHAR, @web_order_request_id)),	
-							@email_template_body = REPLACE(body,'[ID_HERE]',CONVERT(NVARCHAR, @web_order_request_id)) 
-						FROM email_template
-						WHERE category_code = 'NRR'
-						
-						SET @email_sent = (SELECT email_sent FROM web_order_request WHERE web_order_request_id = @web_order_request_id)
-						IF (@email_sent = 0)
-							BEGIN
-								EXEC msdb.dbo.sp_send_dbmail  
-								@profile_name = 'GRIN-Global DB Mail',  
-								@recipients = 'benjamin.haag@usda.gov;marty.reisinger@usda.gov',  
-								@body = @email_template_body,  
-								@subject = @email_template_subject,
-								@body_format = 'HTML'; 
+			   -- ======================================================================================================
+			   -- DISABLED (8/24/21) Issue where DB mail appears to truncate email recipient lists consisting of approx.
+			   -- 5 emails or more.
+			   -- ======================================================================================================
+				--IF (@risk_factor_count > 0)
+				
+				--BEGIN
+				----		EXEC dbo.usp_WebOrderRequestEmailAddressList_Select @web_order_request_id, @email_recipients OUTPUT
+					
+				----		SET @email_sent = (SELECT email_sent FROM web_order_request WHERE web_order_request_id = @web_order_request_id)
+				----		IF (@email_sent = 0)
+				----			BEGIN
+				----				-- Get template
+				----				SELECT 
+				----					@email_template_subject = REPLACE(subject,'[ID_HERE]',CONVERT(NVARCHAR, @web_order_request_id)),	
+				----					@email_template_body = REPLACE(body,'[ID_HERE]',CONVERT(NVARCHAR, @web_order_request_id)) 
+				----				FROM email_template
+				----				WHERE category_code = 'NRR'
+								
+				----				-- Compile and send email
+				----				EXEC msdb.dbo.sp_send_dbmail  
+				----				@profile_name = 'GRIN-Global DB Mail',
+				----				@from_address = 'gringlobal-orders@usda.gov',
+				----				@reply_to = 'gringlobal-orders@usda.gov',
+				----				@recipients = 'marty.reisinger@usda.gov;benjamin.haag@usda.gov',
+				----				@blind_copy_recipients = @email_recipients, 
+				----				@body = @email_template_body,  
+				----				@subject = @email_template_subject,
+				----				@body_format = 'HTML'; 
 
-								-- Set flag.
-								UPDATE
-									web_order_request
-								SET
-									email_sent = 1
-								WHERE
-									@web_order_request_id = @web_order_request_id
-							END
+				----				-- Set flag.
+				----				UPDATE
+				----					web_order_request
+				----				SET
+				----					email_sent = 1
+				----				WHERE
+				----					web_order_request_id = @web_order_request_id
+				--END
 
 				IF (@risk_factor_count > 0)
 					BEGIN
@@ -178,14 +180,24 @@ AS
 							web_order_request 
 						SET 
 							status_code = 'NRR_FLAG',
-							modified_by = 48,
+							modified_by = 1,
 							modified_date = GETDATE()
 						WHERE 
-							web_order_request_id IN 
-							(SELECT web_order_request_id FROM inserted);
+							web_order_request_id = @web_order_request_id;
+
+						UPDATE 
+							web_order_request_item 
+						SET 
+							status_code = 'NRR_FLAG',
+							modified_by = 1,
+							modified_date = GETDATE()
+						WHERE 
+							web_order_request_id = @web_order_request_id;
+
 					END
-					END
-		END
+				END
+			
+		
 	END TRY
 	BEGIN CATCH
 		ROLLBACK;
@@ -201,5 +213,5 @@ AS
 		   ERROR_MESSAGE(),
 		   GETDATE());
 	END CATCH
-
+END
  

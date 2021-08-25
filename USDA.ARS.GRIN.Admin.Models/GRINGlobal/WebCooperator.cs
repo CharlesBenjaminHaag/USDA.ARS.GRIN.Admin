@@ -12,6 +12,7 @@ namespace USDA.ARS.GRIN.Admin.Models.GRINGlobal
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
+        public string Organization { get; set; }
         public string PrimaryPhoneNumber { get; set; }
         public string SecondaryPhoneNumber { get; set; }
         public Address PrimaryAddress { get; set; }

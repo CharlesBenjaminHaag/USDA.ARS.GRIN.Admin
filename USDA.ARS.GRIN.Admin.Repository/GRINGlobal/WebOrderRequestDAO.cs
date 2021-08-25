@@ -92,7 +92,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest = new WebOrderRequest();
                                 webOrderRequest.ID = GetInt(reader["web_order_request_id"].ToString());
 
-                                Cooperator webCooperator = new Cooperator();
+                                Models.Cooperator webCooperator = new Models.Cooperator();
                                 webCooperator.ID = GetInt(reader["web_cooperator_id"].ToString());
                                 webCooperator.Type = 2;
                                 webCooperator.Title = reader["web_cooperator_title"].ToString();
@@ -310,8 +310,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
                                 webOrderRequest.WebCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
+                                webOrderRequest.WebCooperator.Organization = reader["web_cooperator_organization"].ToString();
                                 webOrderRequest.WebCooperator.Address.PersonFullName = reader["web_cooperator_full_name"].ToString();
-                                webOrderRequest.WebCooperator.Address.OrganizationName = reader["web_cooperator_organization"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine1 = reader["web_cooperator_address_line_1"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();
@@ -332,7 +332,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.OwnedDate = GetDate(reader["owned_date"].ToString());
                                 webOrderRequest.OwnedByCooperatorID = GetInt(reader["owned_by"].ToString());
                                 webOrderRequest.OwnedByCooperatorName = reader["owned_by_name"].ToString();
-                                webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
+                                //webOrderRequest.WebOrderRequestItems = SearchItems(webOrderRequest.ID, ref emailAddressList);
                                 webOrderRequests.Add(webOrderRequest);
                             }                            }
                         }
@@ -463,8 +463,8 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                                 webOrderRequest.WebCooperator.LastName = reader["web_cooperator_last_name"].ToString();
                                 webOrderRequest.WebCooperator.FirstName = reader["web_cooperator_first_name"].ToString();
                                 webOrderRequest.WebCooperator.EmailAddress = reader["web_cooperator_email"].ToString();
+                                webOrderRequest.WebCooperator.Organization = reader["web_cooperator_organization"].ToString();
                                 webOrderRequest.WebCooperator.Address.PersonFullName = reader["web_cooperator_full_name"].ToString();
-                                webOrderRequest.WebCooperator.Address.OrganizationName = reader["web_cooperator_organization"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine1 = reader["web_cooperator_address_line_1"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine2 = reader["web_cooperator_address_line_2"].ToString();
                                 webOrderRequest.WebCooperator.Address.AddressLine3 = reader["web_cooperator_address_line_3"].ToString();

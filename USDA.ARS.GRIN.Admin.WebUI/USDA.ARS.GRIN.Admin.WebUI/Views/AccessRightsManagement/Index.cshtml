@@ -1,0 +1,113 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccessRightsManagement.AccessRightsManagementHomeViewModel
+@{
+    ViewBag.Title = "Access Rights Management Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #section-filter-alphabetic {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        /*background-color: rgb(50,50,50);*/
+        justify-content: space-around;
+    }
+    #section-filter-alphabetic button {
+            background-color: #367fa9;
+            border: none;
+            color: white;
+            margin-left: 3px;
+            margin-right: 3px;
+            margin-top: 3px;
+            margin-bottom: 3px;
+            padding: 4px;
+            font-size: 14px;
+            /*border: 1px solid black;*/
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+</style>
+
+<!-- ============================================================================================== -->
+<!-- SEARCH CRITERIA -->
+<!-- ============================================================================================== -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">New Search</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Saved Searches</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div id="section-search-criteria">
+                        @using (Html.BeginForm("CooperatorSearch", "AccessRightsManagement", FormMethod.Post, new { id = "frmEdit" }))
+                        {
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>User Name</label>
+                                        @Html.TextBoxFor(x => x.SysUserName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-horizontal">
+                                        <label>Email Address</label>
+                                        @Html.TextBoxFor(x => x.CooperatorEmailAddress, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-horizontal">
+                                        <label>First Name</label>
+                                        @Html.TextBoxFor(x => x.CooperatorFirstName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Last Name</label>
+                                        @Html.TextBoxFor(x => x.CooperatorLastName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Organization</label>
+                                    <div class="form-group form-horizontal">
+                                        @Html.TextBoxFor(x => x.Cooperator.Organization, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Status</label>
+                                        @Html.DropDownListFor(x => x.StatusCode, Model.CooperatorStatuses, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Site</label>
+                                        @Html.DropDownListFor(x => x.SiteID, Model.Sites, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
+                                <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+</div>
+
+

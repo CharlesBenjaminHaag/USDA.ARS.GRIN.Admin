@@ -20,6 +20,13 @@
                         @using (Html.BeginForm("Search", "WebOrder", FormMethod.Post, new { id = "frmEdit" }))
                         {
                             <div class="row">
+                                <div class="col-md-1">
+                                    <div class="form-group form-horizontal">
+                                        <label>ID</label>
+                                        @Html.TextBoxFor(x => x.ID, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                
                                 <div class="col-md-2">
                                     <div class="form-group form-horizontal">
                                         <label>Requestor Email</label>
@@ -38,22 +45,21 @@
                                         @Html.TextBoxFor(x => x.RequestorLastName, new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group form-horizontal">
                                         <label>Requestor Organization</label>
                                         @Html.TextBoxFor(x => x.RequestorOrganization, new { @class = "form-control" })
                                     </div>
                                 </div>
-
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group form-horizontal">
                                         <label>Intended Use</label>
                                         @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Any", new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-9">
                                     <div class="form-group form-horizontal">
                                     </div>
                                 </div>
@@ -106,7 +112,26 @@
     });
 
     function Init() {
+        var webOrderId = $("#ID").val();
+        var emailAddress = $("#RequestorEmailAddress").val();
+        var firstName = $("#RequestorFirstName").val();
+        var lastName = $("#RequestorLastName").val();
+        var organization = $("#RequestorOrganization").val();
+        var intendedUseCode = $("#IntendedUseCode").val();
+
         $(".overlay").hide();
+
+        //  If search params passed in, fire a search upon page load.
+        if ((webOrderId > 0) ||
+            !isBlank(emailAddress) ||
+            !isBlank(firstName) ||
+            !isBlank(lastName) ||
+            !isBlank(organization) ||
+            !isBlank(intendedUseCode))
+            {
+            alert("DEBUG SRCH FIRED " + webOrderId + " " + organization);
+            Search();
+        }
     }
 
     $(document).on({
@@ -120,9 +145,21 @@
 
     $(function () {
         $("#btnSearch").click(function () {
-            var link = '@Url.Action("Search", "WebOrder")';
+            Search();
+        });
+
+        $("#btnReset").click(function () {
+            $(this).closest('form').find("input[type=text], textarea").val("");
+            $("#section-search-criteria select").val("");
+            $('#section-search-results').html("");
+        });
+    });
+
+    function Search() {
+        var link = '@Url.Action("Search", "WebOrder")';
             var formData = new FormData();
 
+            formData.append("ID", $("#ID").val());
             formData.append("RequestorEmailAddress", $("#RequestorEmailAddress").val());
             formData.append("RequestorFirstName", $("#RequestorFirstName").val());
             formData.append("RequestorLastName", $("#RequestorLastName").val());
@@ -140,12 +177,14 @@
                     $("#section-search-results").html(response);
                 }
             });
-        });
+        }
 
-        $("#btnReset").click(function () {
-            $(this).closest('form').find("input[type=text], textarea").val("");
-            $("#section-search-criteria select").val("");
-            $('#section-search-results').html("");
-        });
-    });
+    function Reset() {
+        //TODO
+    }
+
+    function isBlank(str) {
+        return (!str || str == " ");
+    }
+
 </script>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
-using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccessRightsManagement;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
 //using log4net;
@@ -130,7 +130,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult Logout()
         {
             LoginViewModel viewModel = new LoginViewModel();
-
             Session.Clear();
             return View("~/Views/User/Login.cshtml", viewModel);
         }
@@ -146,22 +145,29 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error(ex, ex.Message);
                 return RedirectToAction("_Error", "Error");
             }
         }
 
-        public ActionResult _Applications()
+        public PartialViewResult _Applications()
         {
             UserApplicationsViewModel viewModel = new UserApplicationsViewModel();
 
             try
             {
                 viewModel.Applications = AuthenticatedUser.Applications;
+                if (viewModel.Applications.Count() == 0)
+                {
+                    throw new IndexOutOfRangeException("There are no applications config");
+                }
+
                 return PartialView("~/Views/User/_Applications.cshtml", viewModel);
             }
             catch (Exception ex)
             {
-                return RedirectToAction("_Error", "Error");
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
        

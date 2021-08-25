@@ -10,6 +10,7 @@ namespace USDA.ARS.GRIN.Admin.Models
     {
         public string ShortName { get; set; }
         public string LongName { get; set; }
+        public string DisplayName { get; set; }
         public string EmailAddressList { get; set; }
     }
 }

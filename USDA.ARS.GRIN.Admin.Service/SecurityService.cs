@@ -57,7 +57,7 @@ namespace USDA.ARS.GRIN.Admin.Service
            
             try
             {
-                query.QueryCriteria.Add(new QueryCriterion { FieldName = "su.user_name", SearchOperatorCode = "LIKE", DataType="NVARCHAR", FieldValue = userName });
+                query.QueryCriteria.Add(new QueryCriterion { FieldName = "su.user_name", SearchOperatorCode = "LIKE", DataType="NVARCHAR", FieldValue = userName.Trim() });
                 user = _userDAO.Search(query).FirstOrDefault();
                 if (user.ID == 0)
                 {

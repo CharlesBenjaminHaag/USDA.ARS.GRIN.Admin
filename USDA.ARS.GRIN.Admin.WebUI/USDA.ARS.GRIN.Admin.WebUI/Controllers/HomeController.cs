@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Reflection;
 using NLog;
 using USDA.ARS.GRIN.Admin.WebUI.ViewModels;
-using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccountManagement;
+using USDA.ARS.GRIN.Admin.WebUI.ViewModels.AccessRightsManagement;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Service;
 
@@ -77,24 +77,24 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             if (requestedUrl.ToLower().Contains("taxonomy"))
             {
                 userViewModel.ActiveContext = "taxonomy";
-                userViewModel.AppName1 = "Turbo";
+                userViewModel.AppName1 = "GGTools";
                 userViewModel.AppName2 = "Taxon";
                 userViewModel.AppAbbrev = "TT";
             }
             if (requestedUrl.ToLower().Contains("sitemanagement"))
             {
                 userViewModel.ActiveContext = "sitemanagement";
-                userViewModel.AppName1 = "ARS-GRIN";
+                userViewModel.AppName1 = "GGTools";
                 userViewModel.AppName2 = "CMS";
                 userViewModel.AppAbbrev = "CMS";
             }
 
-            if (requestedUrl.ToLower().Contains("accountmanagement"))
+            if (requestedUrl.ToLower().Contains("accessrightsmanagement"))
             {
-                userViewModel.ActiveContext = "accountmanagement";
-                userViewModel.AppName1 = "You";
-                userViewModel.AppName2 = "ser";
-                userViewModel.AppAbbrev = "AM";
+                userViewModel.ActiveContext = "accessrightsmanagement";
+                userViewModel.AppName1 = "GGTools";
+                userViewModel.AppName2 = "ARM";
+                userViewModel.AppAbbrev = "ARM";
             }
 
             if (requestedUrl.ToLower().Contains("weborder"))

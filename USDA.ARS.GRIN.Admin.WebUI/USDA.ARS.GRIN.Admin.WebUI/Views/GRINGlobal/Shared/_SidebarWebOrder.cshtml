@@ -22,16 +22,22 @@
                 <span>GGTools Home</span>
             </a>
         </li>
+        <li class="header">Order Manager</li>
         <li class="@Url.IsLinkActive("Index", "WebOrder")">
             <a href="@Url.Action("Index","WebOrder")">
                 <i class="fa fa-home"></i>
-                <span>Order Manager Home</span>
+                <span>Home</span>
             </a>
         </li>
-        <li class="header">ADMIN</li>
+        <li class="@Url.IsLinkActive("Search", "WebOrder")">
+            <a href="@Url.Action("Search","WebOrder")">
+                <i class="fa fa-search"></i>
+                <span>Search</span>
+            </a>
+        </li>
         <li class="@Url.IsLinkActive("EmailTemplateEdit","WebOrder" )">
             <a href="@Url.Action("EmailTemplateHome","WebOrder", new { id = 0 })">
-                <i class="fa fa-table"></i>
+                <i class="fa fa-wrench"></i>
                 <span>Email Templates</span>
             </a>
         </li>

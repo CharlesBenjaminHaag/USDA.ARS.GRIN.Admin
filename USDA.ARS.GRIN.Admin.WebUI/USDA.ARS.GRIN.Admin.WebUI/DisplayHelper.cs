@@ -64,6 +64,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI
             return "Dashboard";
         }
 
+        public static string GetEnvironment()
+        {
+            UserSession userSession = new UserSession();
+            
+            if (HttpContext.Current.Session != null)   
+            {
+                userSession = HttpContext.Current.Session["USER_SESSION"] as UserSession;
+            }
+            return userSession.Environment;    
+        }
+
         public static string GetDisplayString(string value)
         {
             if ((value.ToUpper() == "Y") || (value.ToUpper() == "TRUE"))

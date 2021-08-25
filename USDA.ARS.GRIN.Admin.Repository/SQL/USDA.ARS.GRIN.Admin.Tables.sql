@@ -14,3 +14,11 @@ GO
 
 ALTER TABLE [dbo].[web_order_request] ADD  CONSTRAINT [DF_web_order_request_email_sent]  DEFAULT ((0)) FOR [email_sent]
 GO
+
+ALTER TABLE [dbo].[sys_group_user_map]  WITH CHECK ADD  CONSTRAINT [fk_sgum_sg] FOREIGN KEY([sys_group_id])
+REFERENCES [dbo].[sys_group] ([sys_group_id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[sys_group_user_map] CHECK CONSTRAINT [fk_sgum_sg]
+GO

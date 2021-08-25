@@ -290,7 +290,7 @@
     <Content Include="Views\User\_LoginError.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_SidebarTaxonomy.cshtml" />
     <Content Include="Views\Taxonomy\Reports\Detail.cshtml" />
-    <Content Include="Views\AccountManagement\Index.cshtml" />
+    <Content Include="Views\AccessRightsManagement\Index.cshtml" />
     <Content Include="Views\Taxonomy\Crop\List.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\_List.cshtml" />
@@ -328,7 +328,7 @@
     <Content Include="Views\GRINGlobal\Shared\_SidebarGRINGlobal.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\Index.cshtml" />
     <Content Include="Views\GRINGlobal\Index.cshtml" />
-    <Content Include="Views\AccountManagement\User\_List.cshtml" />
+    <Content Include="Views\AccessRightsManagement\User\_List.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_List.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ValidatedList.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ValidationStatistics.cshtml" />
@@ -356,7 +356,7 @@
     <Content Include="Views\Taxonomy\CWRTrait\Index.cshtml" />
     <Content Include="Views\Taxonomy\CWRTrait\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\AddSubTaxa.cshtml" />
-    <Content Include="Views\AccountManagement\Cooperator\_Detail.cshtml" />
+    <Content Include="Views\AccessRightsManagement\Cooperator\_Detail.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\Manager.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Index.cshtml" />
@@ -381,7 +381,7 @@
     <Content Include="Views\Taxonomy\Folder\_RegulationMapItemList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_Edit.cshtml" />
     <Content Include="Views\Taxonomy\Geography\_Search.cshtml" />
-    <Content Include="Views\AccountManagement\User\Edit.cshtml" />
+    <Content Include="Views\AccessRightsManagement\User\Edit.cshtml" />
     <Content Include="Views\GRINGlobal\Shared\_SidebarWebOrder.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Email\Edit.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Email\_Detail.cshtml" />
@@ -405,6 +405,8 @@
     <Content Include="Views\Taxonomy\Shared\Modals\_CitationSearchResultsList.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Search.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\_SearchResults.cshtml" />
+    <Content Include="Views\AccessRightsManagement\Cooperator\_List.cshtml" />
+    <Content Include="Views\AccessRightsManagement\Cooperator\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -443,7 +445,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="ConfigurationHelper.cs" />
-    <Compile Include="Controllers\AccountManagementController.cs" />
+    <Compile Include="Controllers\AccessRightsManagementController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\GRINGlobalController.cs" />
@@ -466,8 +468,9 @@
     <Compile Include="UserNotFoundException.cs" />
     <Compile Include="Utilities\InputValidatorGreaterThanZero.cs" />
     <Compile Include="Utilities\RequiredIfAttribute.cs" />
-    <Compile Include="ViewModels\AccountManagement\AccountManagementHomeViewModel.cs" />
-    <Compile Include="ViewModels\AccountManagement\UserListViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\AccessRightsManagementHomeViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\Cooperator\CooperatorListViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\User\UserListViewModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GRINGlobal\WebOrder\Email\EmailTemplateEditViewModel.cs" />
@@ -505,7 +508,7 @@
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CropTraitEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapSearchViewModel.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
-    <Compile Include="ViewModels\AccountManagement\LoginViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\LoginViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderItemListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Genus\GenusEditViewModel.cs" />
@@ -522,12 +525,12 @@
     <Compile Include="ViewModels\Taxonomy\SearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\AddSubTaxaViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
-    <Compile Include="ViewModels\AccountManagement\UserEditViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\User\UserEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesSearchViewModel.cs" />
-    <Compile Include="ViewModels\AccountManagement\UserApplicationsViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\User\UserApplicationsViewModel.cs" />
     <Compile Include="ViewModels\SysUserListViewModel.cs" />
-    <Compile Include="ViewModels\AccountManagement\UserProfileViewModel.cs" />
+    <Compile Include="ViewModels\AccessRightsManagement\User\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\Utilities\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

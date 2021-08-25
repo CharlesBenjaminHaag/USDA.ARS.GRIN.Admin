@@ -57,17 +57,16 @@
         <div class="col-md-12" style="margin-bottom:20px;">
             @if (Model.IsReviewMode)
             {
+                if ((Model.IsLocked) && (Model.WebCooperatorID == Model.OwnedByCooperatorID))
+                {
+                    <button type="button" id="btn-unlock" class="btn btn-warning pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-unlock"></i><span id="button-label">End Review and Unlock</span>
+                    </button>
+                }
                 <input type="button" id="btnDeny" class="btn btn-danger pull-right open-modal" data-toggle="modal" data-target="#modal-deny" value="Deny..." />
                 <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" value="Approve..." />
                 <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" value="Add Note..." />
                 <input type="button" id="btnContactRequestor" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-contact-requestor" value="Request Additional Information..." />
-
-                if (Model.IsLocked)
-                {
-                    <button type="button" id="btn-unlock" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                        <i class="fa fa-unlock"></i><span id="button-label">Unlock</span>
-                    </button>
-                }
             }
             @*<a href="@Url.Action("Index", "WebOrder")" class="btn btn-default">Return to  Home Page</a>*@
         </div>
@@ -83,8 +82,33 @@
                     </div>
                     <!-- /.widget-user-image -->
                     <h3 class="widget-user-username">@Model.WebCooperator.FullName</h3>
-                    <h5 class="widget-user-desc">@Model.WebCooperator.EmailAddress</h5>
+                    <h5 class="widget-user-desc">
+                        <a href="@Url.Action("Search","WebOrder", new { @emailAddress = Model.WebCooperator.EmailAddress })" style="color:white; text-decoration:underline;">@Model.WebCooperator.EmailAddress</a>
+                    </h5>
                 </div>
+
+                <div class="box-body">
+                    <strong><i class="fa fa-book margin-r-5"></i> Organization</strong>
+                    <p class="text-muted">
+                        <a href="@Url.Action("Search","WebOrder", new { @organization = Model.WebCooperator.Organization })">@Model.WebCooperator.Organization</a>
+                    </p>
+                    <hr>
+                    <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                    <p class="text-muted">@Model.WebCooperator.Address.City, @Model.WebCooperator.Address.State</p>
+                </div>
+                <!-- /.box-body -->
+                
+            </div>
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Totals</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
                 <div class="box-footer no-padding">
                     <ul class="nav nav-stacked">
                         @foreach (var total in Model.WebCooperator.Totals)
@@ -92,23 +116,7 @@
                             <li><a href="#">@total.CodeValue<span class="@total.Description">@total.CodeValueID</span></a></li>
                         }
                     </ul>
-                </div>
-            </div>
-            <div class="box box-default">
-                @*<div class="box-header with-border">
-                    <h3 class="box-title">About Me</h3>
-                </div>*@
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <strong><i class="fa fa-book margin-r-5"></i> Organization</strong>
-                    <p class="text-muted">
-                        @Model.WebCooperator.Organization
-                    </p>
-                    <hr>
-                    <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-                    <p class="text-muted">@Model.WebCooperator.Address.City, @Model.WebCooperator.Address.State</p>
-                </div>
-                <!-- /.box-body -->
+                </div>              
             </div>
 
             <!-- TIMELINE -->

@@ -10,7 +10,6 @@ namespace USDA.ARS.GRIN.Admin.Models
     {
         public string Type { get; set; }
         public string PersonFullName { get; set; }
-        public string OrganizationName { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }
@@ -20,7 +19,7 @@ namespace USDA.ARS.GRIN.Admin.Models
 
         public string GetFormattedAddress()
         {
-            return ParseAddress(PersonFullName, OrganizationName, AddressLine1, AddressLine2, AddressLine3, "", "", City, "United States", ZIP, "", true);
+            return ParseAddress(PersonFullName, "", AddressLine1, AddressLine2, AddressLine3, "", "", City, "United States", ZIP, "", true);
         }
 
         public string ParseAddress(string personName, string Organisation, string address1, string address2, string address3, string address4, string address5, string town, string county, string postcode, string country, bool returnhtml)
