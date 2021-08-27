@@ -788,7 +788,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
                         {
                             while (reader.Read())
                             {
-                                ReferenceItem status = new ReferenceItem { ID = GetInt(reader["web_order_request_count"].ToString()), Name = reader["status_code"].ToString() };
+                                ReferenceItem status = new ReferenceItem { ID = GetInt(reader["web_order_request_count"].ToString()), Name = reader["status_code"].ToString(), Description = reader["title"].ToString() };
                                 statuses.Add(status);
                             }
                         }

@@ -27,6 +27,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.GRINGlobal
         public string ActiveTimeFrame { get; set; }
         public IQueryable<WebOrderRequest> WebOrderRequests { get; set; }
         public SelectList IntendedUseCodes { get; set; }
+        public SelectList StatusCodes { get; set; }
         public WebOrderRequestSearchViewModel()
         {
             this.Statuses = new List<ReferenceItem>();

@@ -3,6 +3,10 @@
     ViewBag.Title = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
+<script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
 <!-- ============================================================================================== -->
 <!-- SEARCH CRITERIA -->
 <!-- ============================================================================================== -->
@@ -23,10 +27,10 @@
                                 <div class="col-md-1">
                                     <div class="form-group form-horizontal">
                                         <label>ID</label>
-                                        @Html.TextBoxFor(x => x.ID, new { @class = "form-control" })
+                                        @Html.TextBoxFor(x => x.ID, new { @class = "form-control", Value = " " })
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-2">
                                     <div class="form-group form-horizontal">
                                         <label>Requestor Email</label>
@@ -53,14 +57,28 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group form-horizontal">
                                         <label>Intended Use</label>
                                         @Html.DropDownListFor(x => x.IntendedUseCode, Model.IntendedUseCodes, "Any", new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-2">
                                     <div class="form-group form-horizontal">
+                                        <label>Status</label>
+                                        @Html.DropDownListFor(x => x.SelectedStatusCode, Model.StatusCodes, "Any", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Start Date</label>
+                                        @Html.TextBoxFor(x => x.SelectedStartDate, new { @class = "form-control date-selector", Value = " " })
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>End Date</label>
+                                        @Html.TextBoxFor(x => x.SelectedEndDate, new { @class = "form-control date-selector", Value = " " })
                                     </div>
                                 </div>
                             </div>
@@ -118,6 +136,8 @@
         var lastName = $("#RequestorLastName").val();
         var organization = $("#RequestorOrganization").val();
         var intendedUseCode = $("#IntendedUseCode").val();
+        var startDate = $("#SelectedStartDate").val();
+        var endDate = $("#SelectedEndDate").val();
 
         $(".overlay").hide();
 
@@ -127,12 +147,16 @@
             !isBlank(firstName) ||
             !isBlank(lastName) ||
             !isBlank(organization) ||
-            !isBlank(intendedUseCode))
-            {
-            alert("DEBUG SRCH FIRED " + webOrderId + " " + organization);
-            Search();
-        }
+            !isBlank(intendedUseCode)) {
+                Search();
+            }
     }
+
+    $('.date-selector').datepicker({
+        todayBtn: true,
+        clearBtn: true,
+        calendarWeeks: true
+    });
 
     $(document).on({
         ajaxStart: function () {
@@ -165,6 +189,9 @@
             formData.append("RequestorLastName", $("#RequestorLastName").val());
             formData.append("RequestorOrganization", $("#RequestorOrganization").val());
             formData.append("IntendedUseCode", $("#IntendedUseCode").val());
+            formData.append("SelectedStatusCode", $("#SelectedStatusCode").val());
+            formData.append("SelectedStartDate", $("#SelectedStartDate").val());
+            formData.append("SelectedEndDate", $("#SelectedEndDate").val());
 
             $.ajax({
                 url: link,
@@ -178,10 +205,6 @@
                 }
             });
         }
-
-    function Reset() {
-        //TODO
-    }
 
     function isBlank(str) {
         return (!str || str == " ");

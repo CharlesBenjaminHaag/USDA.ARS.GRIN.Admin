@@ -8,7 +8,7 @@
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Templates</h3>
-                @Html.HiddenFor(x => x.CurrentID)
+                @Html.HiddenFor(x => x.ParentID)
                 <div class="box-tools">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
@@ -39,7 +39,7 @@
     $(document).ready(function () {
         try {
             var currentid = 0;
-            currentid = $("#CurrentID").val();
+            currentid = $("#ParentID").val();
             LoadData(currentid);
         }
         catch (ex) {

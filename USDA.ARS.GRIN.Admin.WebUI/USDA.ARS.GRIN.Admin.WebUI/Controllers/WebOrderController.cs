@@ -43,12 +43,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult Search(int webOrderRequestId = 0, string emailAddress = "", string firstName = "", string lastName = "", string organization = "")
         {
+            TempData["context"] = "Web Order Request Search";
             WebOrderRequestSearchViewModel webOrderRequestSearchViewModel = new WebOrderRequestSearchViewModel();
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
             try 
             {
-                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(service.GetWebOrderRequestIntendedUseCodes());
+                webOrderRequestSearchViewModel.StatusCodes = new SelectList(service.GetWebOrderRequestStatuses(),"Name","Name");
+                webOrderRequestSearchViewModel.IntendedUseCodes = new SelectList(service.GetWebOrderRequestIntendedUseCodes(),"Name","Description");
 
                 if (webOrderRequestId > 0)
                 {
@@ -93,7 +95,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                if (!String.IsNullOrEmpty(formCollection["ID"]))
+                if (!String.IsNullOrEmpty(formCollection["ID"].Trim()))
                 {
                     if (Int32.Parse(formCollection["ID"]) > 0)
                     {
@@ -126,6 +128,21 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "intended_use_code", SearchOperatorCode = "=", FieldValue = formCollection["IntendedUseCode"], DataType = "NVARCHAR" });
                 }
 
+                if (!String.IsNullOrEmpty(formCollection["SelectedStatusCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "status_code", SearchOperatorCode = "=", FieldValue = formCollection["SelectedStatusCode"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["SelectedStartDate"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "ordered_date", SearchOperatorCode = ">=", FieldValue = formCollection["SelectedStartDate"], DataType = "DATETIME" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["SelectedEndDate"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "ordered_date", SearchOperatorCode = "<=", FieldValue = formCollection["SelectedEndDate"], DataType = "DATETIME" });
+                }
+
                 webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
                 return PartialView(BASE_PATH + "/_SearchResults.cshtml", webOrderRequestListViewModel);
             }
@@ -135,8 +152,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-
-
         public PartialViewResult _List(string status, int timeFrameCode)
         {
             WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
@@ -184,12 +199,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult View(int id)
         {
-            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
             TempData["context"] = "View Web Order Request #" + id;
-            viewModel = LoadViewModel(id, false);
+            WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
+            viewModel = GetData(id, false);
             return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
         }
-
         public ActionResult Edit(int id)
         {
             TempData["context"] = "Review Web Order Request #" + id;
@@ -197,7 +211,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                viewModel = LoadViewModel(id, true);
+                viewModel = GetData(id, true);
                 return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
             }
             catch (Exception ex)
@@ -231,13 +245,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     {
                         resultContainer = grinGlobalService.UpdateWebOrderRequest(webOrderRequest);
                     }
-                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebUserID });
 
                     if (viewModel.Action == "NRR_APPROVE")
                     {
                         emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
                         grinGlobalService.SendEmail(viewModel.ID, "CAP", emailRecipientList);
-                        resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                        resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebUserID });
                     }
                     else
                         if (viewModel.Action == "NRR_REJECT")
@@ -245,7 +259,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         emailRecipientList = grinGlobalService.GetEmailNotificationList(viewModel.ID);
                         grinGlobalService.SendEmail(viewModel.ID, "CCL", emailRecipientList);
                         grinGlobalService.SendEmail(viewModel.ID, "RRJ", viewModel.WebCooperator.EmailAddress);
-                        resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                        resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = viewModel.ID, ActionCode = viewModel.Action, Note = viewModel.ActionNote, CreatedByCooperatorID = AuthenticatedUser.WebUserID });
                     }
                     else
                             if (viewModel.Action == "NRR_INFO")
@@ -274,7 +288,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-        private WebOrderRequestEditViewModel LoadViewModel(int id, bool reviewMode)
+        private WebOrderRequestEditViewModel GetData(int id, bool reviewMode)
         {
             ResultContainer resultContainer = null;
             WebOrderRequest webOrderRequest = null;
@@ -286,7 +300,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 if (reviewMode)
                 {
                     resultContainer = grinGlobalService.SetReviewStatus(id, AuthenticatedUser.Cooperator.WebCooperator.ID, true);
-                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID });
+                    resultContainer = grinGlobalService.AddWebOrderRequestAction(new WebOrderRequestAction { WebOrderRequestID = id, ActionCode = "NRR_REVIEW", CreatedByCooperatorID = AuthenticatedUser.WebUserID });
                 }
 
                 webOrderRequest = grinGlobalService.GetWebOrderRequest(id);
@@ -349,136 +363,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #endregion
 
-        #region Email
-        protected string GetEmailAddressList(int emailCategory, string siteShortName)
-        {
-            string emailAddressList = String.Empty;
-
-            // TODO
-
-            //         CASE s.site_short_name
-            //   when 'BRW' then 'lj.grauke@ars.usda.gov'
-            //  -- when 'CLO' then 'merrelyn.spinks@ars.usda.gov'
-            //   when 'COR' then 'Missy.Fix@ars.usda.gov'
-            //   when 'COT' then 'james.frelichowski@ars.usda.gov;janna.love@ars.usda.gov'
-            //   when 'DAV' then 'ordersNCGR.davis@ars.usda.gov'
-            //   when 'DBMU' then 'benjamin.haag@usda.gov'
-            //   when 'DLEG' then 'mjohnson@ag.arizona.edu'
-            //  -- when 'FLAX' then 'nc7mb@ars-grin.gov'
-            //  -- when 'FRA' then 'esnake@mis.net'
-            //   when 'GEN' then 'dawn.dellefave@ars.usda.gov;ben.gutierrez@ars.usda.gov'
-            //   --grin:
-            //         --gsho:
-            //   when 'GSOR' then 'lorie.bernhardt@ars.usda.gov'
-            //   when 'GSPI' then 'barbara.hellier@ars.usda.gov;alec.mccall@wsu.edu;stoutd@wsu.edu;lisa.taylor@usda.gov'
-            //   --gstr:
-            //         when 'GSZE' then 'maize@uiuc.edu'
-            //   when 'HILO' then 'Carol.MayoRiley@ars.usda.gov;Tracie.Matsumoto@ars.usda.gov'
-            //   when 'MAY' then 'tomas.ayala-silva@usda.gov;ricardo.goenaga@usda.gov'
-            //   when 'MIA' then 'Mike.Winterstein@usda.gov;Ricardo.Goenaga@usda.gov'
-            //   when 'NA' then 'kevin.conrad@ars.usda.gov'
-            //   when 'NC7' then 'nc7orders@ars.usda.gov;lisa.burke@ars.usda.gov'
-            //   when 'NE9' then 'Joanne.Labate@ARS.USDA.GOV;sherri.tennies@ars.usda.gov'
-            //   when 'NR6' then 'jesse.schartner@ars.usda.gov;mwmarti1@wisc.edu'
-            //   when 'NSGC' then 'harold.bockelman@ars.usda.gov'
-            //   when 'NSSL' then 'renee.white@ars.usda.gov'
-            //   when 'OPGC' then 'stieve.1@osu.edu'
-            //   --orders:
-            //         --when 'PALM' then 'danny.barney@ars.usda.gov'
-            //   when 'PARL' then 'Claire.Heinitz@ars.usda.gov'
-            //   when 'PEO' then 'karen.williams@ars.usda.gov'
-            //  -- when 'PGQO' then 'steven.a.king@aphis.usda.gov'
-            //   --puborder:
-            //         when 'RIV' then 'Robert.krueger@ars.usda.gov'
-            //   when 'SBML' then 'melanie.schori@ars.usda.gov'
-            //   when 'SOY' then 'Todd.Bedford@ars.usda.gov;esther.peregrine@ars.usda.gov'
-            //   when 'S9' then 'tiffany.fields@ars.usda.gov;ARS-S9Orders@ars.usda.gov'
-            //   when 'TGRC' then 'trchetelat@ucdavis.edu'
-            //   when 'TOB' then 'jessica_nifong@ncsu.edu'
-            //   when 'W6' then 'stoutd@wsu.edu;barbara.hellier@ars.usda.gov;lisa.taylor@usda.gov;david.vanklaveren@wsu.edu;alec.mccall@wsu.edu;'
-            //   else 'benjamin.haag@usda.gov'
-            //END AS email,
-            return emailAddressList;
-        }
-
-        protected ResultContainer SendEmail(int emailCategory, WebOrderRequest webOrderRequest)
-        {
-            ResultContainer resultContainer = new ResultContainer();
-
-            // TODO
-
-
-            return resultContainer;
-        }
-
-        #endregion
-
-        //public PartialViewResult _Search(int id, string statusCode, int timeFrameCode, string requestorEmail, string requestorFirstName, string requestorLastName, string intendedUseCode, string selectedDateRange, string startDate, string endDate)
-        //{
-        //    WebOrderRequestListViewModel webOrderRequestListViewModel = new WebOrderRequestListViewModel();
-        //    GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
-        //    Models.Query query = new Models.Query();
-
-        //    try
-        //    {
-        //        if (id > 0)
-        //        {
-        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.web_order_request_id", FieldValue = id.ToString(), SearchOperatorCode = "=", DataType = "INT" };
-        //            query.QueryCriteria.Add(queryCriterion);
-        //        }
-
-        //        if (!String.IsNullOrEmpty(requestorEmail))
-        //        {
-        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.email", FieldValue = requestorEmail, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-        //            query.QueryCriteria.Add(queryCriterion);
-        //        }
-
-        //        if (!String.IsNullOrEmpty(requestorFirstName))
-        //        {
-        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.first_name", FieldValue = requestorFirstName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-        //            query.QueryCriteria.Add(queryCriterion);
-        //        }
-
-        //        if (!String.IsNullOrEmpty(requestorLastName))
-        //        {
-        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wc.last_name", FieldValue = requestorLastName, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-        //            query.QueryCriteria.Add(queryCriterion);
-        //        }
-
-        //        if (!String.IsNullOrEmpty(intendedUseCode))
-        //        {
-        //            QueryCriterion queryCriterion = new QueryCriterion { FieldName = "wor.intended_use_code", FieldValue = intendedUseCode, SearchOperatorCode = "LIKE", DataType = "NVARCHAR" };
-        //            query.QueryCriteria.Add(queryCriterion);
-        //        }
-
-        //        if (!String.IsNullOrEmpty(selectedDateRange))
-        //        {
-        //            string[] dateRangeTokens = selectedDateRange.Replace(" to ", "_").Split('_');
-        //            if (dateRangeTokens != null)
-        //            {
-        //                QueryCriterion queryCriterionStart = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[0], SearchOperatorCode = ">=", DataType = "DATETIME" };
-        //                query.QueryCriteria.Add(queryCriterionStart);
-
-        //                QueryCriterion queryCriterionEnd = new QueryCriterion { FieldName = "wor.ordered_date", FieldValue = dateRangeTokens[1], SearchOperatorCode = "<=", DataType = "DATETIME" };
-        //                query.QueryCriteria.Add(queryCriterionEnd);
-        //            }
-        //        }
-        //        webOrderRequestListViewModel.WebCooperatorID = AuthenticatedUser.Cooperator.WebCooperator.ID;
-        //        webOrderRequestListViewModel.WebOrderRequests = grinGlobalService.SearchWebOrderRequests(query);
-
-        //        return PartialView("~/Views/GRINGlobal/WebOrder/_List.cshtml", webOrderRequestListViewModel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Error(ex, ex.Message);
-        //        return PartialView("~/Views/Error/_Error.cshtml");
-        //    }
-        //}
-
         #region Email Templates
 
         public ActionResult EmailTemplateHome()
         {
+            TempData["context"] = "Email Templates";
             try
             {
                 GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
@@ -499,6 +388,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult _EmailTemplateView(int id)
         {
+            TempData["context"] = "View Email Template";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
             EmailTemplate emailTemplate = new EmailTemplate();
@@ -526,6 +416,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult EmailTemplateEdit(int id)
         {
+            TempData["context"] = "Edit Email Template";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
             EmailTemplate emailTemplate = new EmailTemplate();
