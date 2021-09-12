@@ -147,6 +147,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.GRINGlobal
 
         public ResultContainer Update(WebOrderRequest entity)
         {
+            string webOrderRequestItemStatus = String.Empty;
             const string COMMAND_TEXT = "usp_WebOrderRequest_Update";
             ResultContainer resultContainer = new ResultContainer();
 

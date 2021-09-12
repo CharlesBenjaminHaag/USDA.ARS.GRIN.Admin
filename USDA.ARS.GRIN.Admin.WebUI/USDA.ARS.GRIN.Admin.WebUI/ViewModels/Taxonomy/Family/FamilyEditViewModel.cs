@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 using USDA.ARS.GRIN.Admin.Models;
 using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
@@ -9,9 +11,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class FamilyEditViewModel : BaseViewModel
     {
+        [Required]
         public string Name { get; set; }
         public string Authority { get; set; }
         public int TypeGenusID { get; set; }
+        public string TypeGenusName { get; set; }
         public string SuprafamilyRankCode { get; set; }
         public string SuprafamilyRankName { get; set; }
         public string AlternateName { get; set; }
@@ -23,7 +27,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public IEnumerable<Genus> Genera { get; set; }
         public IEnumerable<Family> SubFamilies { get; set; }
         public IEnumerable<Family> SubTribes { get; set; }
-
+        public IEnumerable<Citation> Citations { get; set; }
+        public SelectList SuprafamilyRankCodes { get; set; }
         public FamilyEditViewModel()
         {
             SysTable = new SysTable();
@@ -32,20 +37,21 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
             Genera = new List<Genus>().AsEnumerable();
             SubFamilies = new List<Family>().AsEnumerable();
             SubTribes = new List<Family>().AsEnumerable();
+            Citations = new List<Citation>().AsEnumerable();
         }
 
         public FamilyEditViewModel(Family family)
         {
+            SysTable = new SysTable();
+            SysTable.Name = "taxonomy_family";
             base.TableName = "taxonomy_family";
-            Genera = new List<Genus>().AsEnumerable();
-            SubFamilies = new List<Family>().AsEnumerable();
-            SubTribes = new List<Family>().AsEnumerable();
 
             ID = family.ID;
-            ParentID = family.ParentID;
+            CurrentID = family.ParentID;
             Name = family.Name;
             Authority = family.Authority;
             TypeGenusID = family.TypeGenusID;
+            TypeGenusName = family.TypeGenus.Name;
             SuprafamilyRankCode = family.SuprafamilyRankCode;
             SuprafamilyRankName = family.SuprafamilyRankName;
             AlternateName = family.AlternateName;
@@ -59,6 +65,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
             ModifiedByCooperatorID = family.ModifiedByCooperatorID;
             ModifiedByCooperatorName = family.ModifiedByCooperatorName;
             ModifiedDate = family.ModifiedDate;
+            Genera = family.Genera;
+            SubFamilies = family.SubFamilies;
+            SubTribes = family.SubTribes;
+
         }
     }
 }

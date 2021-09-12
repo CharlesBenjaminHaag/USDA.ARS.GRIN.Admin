@@ -5,10 +5,21 @@
 }
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
 
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+
+<div class="row">
+    <div class="col-md-2">
+        <a href="@Url.Action("GenusEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+            <i class="fa fa-plus"></i>
+            New
+        </a>
+    </div>
+</div>
+
 <!-- ============================================================================================== -->
 <!-- SEARCH CRITERIA -->
 <!-- ============================================================================================== -->
@@ -25,51 +36,37 @@
                     <div id="section-search-criteria">
                         @using (Html.BeginForm("GenusSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
                         {
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group form-horizontal">
-                                    <label>Created By</label>
-                                    @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "Select a cooperator", new { @class = "form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group form-horizontal">
-                                    <label>Name</label>
-                                    @Html.TextBoxFor(x => x.Name, new { @class="form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group form-horizontal">
-                                    <label>Sub-Genus Name</label>
-                                    @Html.TextBoxFor(x => x.SubGenusName, new { @class = "form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group form-horizontal">
-                                    <label>Hybrid Code</label>
-                                    @Html.TextBoxFor(x => x.HybridCode, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group form-horizontal">
-                                        <label>Section Name</label>
-                                        @Html.TextBoxFor(x => x.SectionName, new { @class = "form-control" })
+                                        <label>Created By</label>
+                                        @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All cooperators", new { @class = "form-control" })
                                     </div>
                                 </div>
-                                @*<div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group form-horizontal">
-                                        <label>Series Name</label>
-                                        @Html.TextBoxFor(x => x.SeriesName, new { @class = "form-control" })
+                                        <label>Name</label>
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group form-horizontal">
-                                        <label>Subseries Name</label>
-                                        @Html.TextBoxFor(x => x.SubSeriesName, new { @class = "form-control" })
+                                        <label>Hybrid Code</label>
+                                        @Html.DropDownListFor(x => x.HybridCode, Model.HybridCodes, "All hybrid codes", new { @class = "form-control" })
                                     </div>
-                                </div>*@
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Qualifier Code</label>
+                                        @Html.DropDownListFor(x => x.QualifyingCode, Model.QualifyingCodes, "All qualifier codes", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-horizontal">
+                                        <label>Note</label>
+                                        @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                                    </div>
+                                </div>
                             </div>
                             <div class="box-footer">
                                 <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
@@ -113,34 +110,9 @@
     </div>
 </div>
 
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
 
 <script type="text/javascript">
-
-    //$("#frmSearch").on("submit", function (event) {
-    //    var $this = $(this);
-    //    var frmValues = $this.serialize();
-    //    $.ajax({
-    //        type: $this.attr('method'),
-    //        url: $this.attr('action'),
-    //        data: frmValues
-    //    })
-    //        .done(function () {
-    //            //$("#para").text("Serialized! Input String is " + frmValues); 
-    //        })
-    //        .fail(function () {
-    //            //$("#para").text("An error occured");
-    //        });
-    //    event.preventDefault();
-    //});
-
-
-
-
-
-
-
-
-
     $(document).ready(function () {
         Init();
     });
@@ -167,9 +139,8 @@
             formData.append("Name", $("#Name").val());
             formData.append("SubGenusName", $("#SubGenusName").val());
             formData.append("HybridCode", $("#HybridCode").val());
-            formData.append("SectionName", $("#SectionName").val());
-            formData.append("SeriesName", $("#SeriesName").val());
-            formData.append("SubSeriesName", $("#SubSeriesName").val());
+            formData.append("QualifyingCode", $("#QualifyingCode").val());
+            formData.append("Note", $("#Note").val());
 
             $.ajax({
                 url: link,
@@ -189,6 +160,73 @@
             $("#section-search-criteria select").val("");
             $('#section-search-results').html("");
         });
+    });
+
+    /*
+    =============================================================================
+    FOLDERS
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        $('#modal-folder-edit').modal('show');
+    });
+
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "taxonomy_genus";
+        var dataSourceTitle = "Genus";
+        var itemList = GetSelectedItems();
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            alert("DEBUG SUCCESS");
+        },
+        error: function () {
+            //alert("error");
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table-genera").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>", "");
+            valueArray.push(itemId);
+        });
+        return valueArray;
+    }
+
+    /*
+    =============================================================================
+    DATATABLES
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnSelectAll']", function () {
+        var table = $('#data-table-genera').DataTable();
+        table.rows().select();
+    });
+
+    $(document).on("click", "[id='btnDeSelectAll']", function () {
+        var table = $('#data-table-genera').DataTable();
+        table.rows().deselect();
     });
 </script>
 

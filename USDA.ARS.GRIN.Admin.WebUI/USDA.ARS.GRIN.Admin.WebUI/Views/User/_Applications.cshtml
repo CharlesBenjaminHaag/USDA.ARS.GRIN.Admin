@@ -6,23 +6,27 @@
 
 @foreach (var application in Model.Applications)
 {
-    <div class="info-box">
-        <span class="info-box-icon bg-blue-active"><i class="fa fa-gears"></i></span>
-        <div class="info-box-content">
-            <span class="info-box-number">
-                @if (application.IsAuthorized)
-                {
-                    <a href="@Url.Action("LoadApplication", "Home", new { appContext = application.URL })">@application.Title</a>
-                }
-                else
-                {
-                    @application.Title <button class="btn btn-sm">Request Access</button>
-                }
-            </span>
-            <span class="info-box-text">@application.Description</span>
+    if (application.IsAuthorized)
+    {
+        <div class="info-box">
+            <span class="info-box-icon bg-blue-active"><i class="fa fa-gears"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-number">
+                    @if (application.IsAuthorized)
+                    {
+                        <a href="@Url.Action("LoadApplication", "Home", new { appContext = application.URL })">@application.Title</a>
+                    }
+                    else
+                    {
+                        <!--TODO: ADD REQUEST LOGIC?-->
+                        @application.Title <button class="btn btn-sm">Request Access</button>
+                    }
+                </span>
+                <span class="info-box-text">@application.Description</span>
+            </div>
+            <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box-content -->
-    </div>
+    }
 }
 
 

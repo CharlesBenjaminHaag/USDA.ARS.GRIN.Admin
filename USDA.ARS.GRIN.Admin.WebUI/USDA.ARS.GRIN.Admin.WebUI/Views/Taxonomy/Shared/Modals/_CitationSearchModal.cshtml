@@ -1,4 +1,5 @@
-﻿<div class="modal fade" id="modal-citation-search">
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationSearchViewModel
+<div class="modal fade" id="modal-citation-search">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,24 +8,31 @@
                 </button>
                 <h4 class="modal-title">Citation Search</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchCitations" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchCitations" class="btn btn-info btn-flat">Search</button>
-                            </span>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @using (Html.BeginForm("CitationSearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+                            {
+                                @Html.HiddenFor(x => x.FamilyID)
+                                @Html.HiddenFor(x => x.GenusID)
+                                @Html.HiddenFor(x => x.SpeciesID)
+                                @Html.HiddenFor(x => x.DataSourceName)
+                                <div class="input-group">
+                                    @Html.TextBoxFor(x => x.FullText, new { @class = "form-control" })
+                                    <span class="input-group-btn">
+                                        <button type="button" id="btnSearchCitations" class="btn btn-info btn-flat">Search</button>
+                                    </span>
+                                </div>
+                            }
                         </div>
                     </div>
+                    <div id="section-citation-search-results">
+                    </div>
                 </div>
-                <div id="section-citation-search-results">
-
+                <div class="modal-footer">
+                    <button type="button" id="btnCitationSearchReset" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Reset</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-            </div>
         </div>
         <!-- /.modal-content -->
     </div>

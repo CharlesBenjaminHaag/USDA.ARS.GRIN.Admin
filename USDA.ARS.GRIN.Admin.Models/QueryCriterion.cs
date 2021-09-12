@@ -14,6 +14,12 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string DataType { get; set; }
         public string SearchOperatorCode { get; set; }
         public string FieldValue { get; set; }
+        public string LogicalOperator { get; set; }
         public string SearchSyntax { get; set; }
+
+        public QueryCriterion()
+        {
+            LogicalOperator = " AND ";
+        }
     }
 }

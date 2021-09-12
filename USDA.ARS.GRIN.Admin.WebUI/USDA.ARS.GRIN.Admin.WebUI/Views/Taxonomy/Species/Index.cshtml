@@ -28,7 +28,9 @@
     }
 </style>
 
-
+<!-- ============================================================================================== -->
+<!-- SEARCH CRITERIA -->
+<!-- ============================================================================================== -->
 <div class="row">
     <div class="col-md-12">
         <!-- Custom Tabs -->
@@ -39,49 +41,51 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group form-horizontal">
-                                <label>Created By</label>
-                                @Html.HiddenFor(x => Model.DefaultCooperatorID, new { id = "hfDefaultCooperatorID" })
-                                @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, null, new { @id = "ddlSelectCooperator", @class = "form-control" })
+                    @using (Html.BeginForm("SpeciesSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Created By</label>
+                                    @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All cooperators", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-horizontal">
+                                    <label>Species Name</label>
+                                    @Html.TextBoxFor(x => x.FullName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group form-horizontal">
+                                    <label>Protologue</label>
+                                    @Html.TextBoxFor(x => x.Protologue, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Accepted?</label>
+                                    @Html.DropDownListFor(x => x.IsAcceptedName, Model.IsAccceptedNameOptions, "Either", new { @class = "form-control" })
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-horizontal">
-                                <label>Genus Name</label>
-                                @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group form-horizontal">
+                                    <label>Note</label>
+                                    @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-horizontal">
-                                <label>Species Name</label>
-                                @Html.TextBoxFor(x=>x.SpeciesName, new { @class = "form-control" })
-                            </div>
+                        <div class="box-footer">
+                            <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
+                            <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group form-horizontal">
-                                <label>Protologue</label>
-                                @Html.TextBoxFor(x => x.Protologue, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-horizontal">
-                                <label>Note</label>
-                                @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <input id="btnClear" type="button" class="btn btn-danger" value="Clear" />
-                        <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
-                    </div>
+                    }
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="tab_2">
-                    
+
                 </div>
             </div>
             <!-- /.tab-content -->
@@ -94,9 +98,8 @@
 <!-- SEARCH RESULTS -->
 <!-- ============================================================================================== -->
 <div class="box box-default" style="padding:10px;">
-    @Html.HiddenFor(x => x.DataSourceName)
     <div class="box-header with-border">
-        <h3 class="box-title">Species</h3>
+        <h3 class="box-title">Search Results</h3>
         <div class="box-tools pull-right">
             <div class="has-feedback">
             </div>
@@ -106,58 +109,27 @@
         </div>
     </div>
     <div class="box-body no-padding">
-        <div class="mailbox-controls">
-            @*<button type="button" class="btn btn-success btn-sm check-all-search-results">
-                    <i class="fa fa-check"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
-                    <i class="fa fa-check-circle-o"></i>
-                </button>*@
-            <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-items-to-folder">
-                <i class="fa fa-folder"></i>
-            </button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("SpeciesEdit", "Taxonomy")'">
-                <i class="fa fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-geography-search">
-                <i class="fa fa-globe"></i>
-            </button>
-            <button id="btnExport" type="button" class="btn btn-primary btn-sm">
-                <i class="fa fa-file-excel-o"></i> Export
-            </button>
-        </div>
-        <div class="table-responsive mailbox-messages">
-            <table id="tblResults" class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Authority</th>
-                        <th>Verified Date</th>
-                        <th>Protologue</th>
-                        <th>Synonym Code</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div id="section-search-results">
+
         </div>
     </div>
     <div class="overlay">
-            <i class="fa fa-refresh fa-spin"></i>
-        </div>
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
 </div>
-@Html.Partial("~/Views/Taxonomy/Folder/_Edit.cshtml")
-@Html.Partial("~/Views/Taxonomy/Geography/_Search.cshtml")
+
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_species" }); }
 
 <!-- Page Script -->
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $(".overlay").hide();
-
+        Init();
     });
+
+    function Init() {
+        $(".overlay").hide();
+    }
 
     $(document).on({
         ajaxStart: function () {
@@ -168,56 +140,101 @@
         }
     });
 
-    $(".selector-tab").click(function () {
-        @*var id = $(this).attr('id');
-        var action = $(this).attr('title');
-        var link = '@Url.Action("Action", "Taxonomy")';
-        var displaySection = '';
+    $(function () {
+        $("#btnSearch").click(function () {
+            var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+            var formData = new FormData();
 
-        $('.mailbox-messages input:checkbox').prop('checked', false);
+            formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
+            formData.append("FullName", $("#FullName").val());
+            formData.append("Protologue", $("#Protologue").val());
+            formData.append("IsAcceptedName", $("#IsAcceptedName").val());
+            formData.append("ResultsFormat", "1");
 
-        if (action != '') {
-            displaySection = "#" + id.replace("tab", "section");
-            link = link.replace("Action", action);
-            $(displaySection).load(link);
-        }*@
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-search-results").html(response);
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            $(this).closest('form').find("input[type=text], textarea").val("");
+            $("#section-search-criteria select").val("");
+            $('#section-search-results').html("");
+        });
     });
 
-    $("#btnSearch").click(function () {
-        var cooperatorId = 0;
-        var genusName = "";
-        var speciesName = "";
-        var synonymCode = "";
-        var protologue = "";
-
-        try {
-            cooperatorId = $("#ddlSelectCooperator").val();
-            genusName = $("#GenusName").val();
-            speciesName = $("#SpeciesName").val();
-            synonymCode = $("#SynonymCode").val();
-            protologue = $("#Protologue").val();
-            SearchSpecies(cooperatorId, genusName, speciesName, synonymCode, protologue);
-        }
-        catch (ex) {
-            console.log(ex.message);
-        }
+    /*
+    =============================================================================
+    FOLDERS
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        $('#modal-folder-edit').modal('show');
     });
 
-    function SearchSpecies(cooperatorId = 0, genusName = "", speciesName = "", synonymCode = "", protologue = "")
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "taxonomy_species";
+        var dataSourceTitle = "Species";
+        var itemList = GetSelectedItems();
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+        },
+        error: function () {
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table-species").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>", "");
+            valueArray.push(itemId);
+        });
+        return valueArray;
+    }
+
+
+
+// ****************************************************************************************************************
+// LEGACY CODE -- DataTable Ajax data source
+// ****************************************************************************************************************
+    @*<!--function SearchSpecies(cooperatorId = 0, genusName = "", speciesName = "", synonymCode = "", protologue = "")
     {
         try {
-            var url = '@Url.Action("SpeciesNameSearch", "Taxonomy")';
-
-
-
+            var url = '@Url.Action("SpeciesNameSearch", "Taxonomy")';*@
             //$(document).ready(function () {
             //    $('#tblResults').DataTable({
             //        "ajax": url
             //    });
             //});
-
-
-
             //table = $("#searchtable").DataTable();
             //var oData = table.rows('.selected').data();
             //$.each($(oData), function (key, value) {
@@ -226,11 +243,8 @@
             //        avail = "Add to Cart";
             //    }
             //    ids += value[accidindex] + ":" + avail + ",";
-
-
-
             //var table = $('#tblSpeciesDataTest').DataTable();
-            //table.clear();
+            //table.clear();-->
             @*$.ajax({
             url: '@Url.Action("SpeciesNameSearch","Taxonomy")',
             type: "GET",
@@ -244,38 +258,9 @@
             error: function (response) {
                 console.log(response);
             }*@
-       /* });*/
-        }
-        catch (ex) {
-            console.log(ex.message);
-        }
-    }
 
-    @*function GetUserSpecies()
-    {
-        var cooperatorId = 0;
-        try {
-            $.ajax({
-            url: '@Url.Action("SpeciesUserSearch","Taxonomy")',
-            type: "GET",
-            data: { cooperatorId : cooperatorId },
-            contentType: "application/json;",
-            dataType: 'json',
-            success: OnSuccess,
-            failure: function (response) {
-                console.log(response.d);
-            },
-            error: function (response) {
-                console.log(response.d);
-            }
-        });
-        }
-        catch (ex) {
-            console.log(ex.message);
-        }
-    }*@
 
-    function GetUsersDetails(ele) {
+    @*function GetUsersDetails(ele) {
         var dataRow = $('#tblSpeciesDataTest').DataTable().row($(ele).closest('tr')).data();
         var url = '@Url.Action("SpeciesEdit","Taxonomy", new { id = "SPECIES_ID" })';
         url = url.replace("SPECIES_ID", dataRow.ID);
@@ -294,8 +279,7 @@
             '<td></td>' +
             '</tr>' +
             '</table>';
-    }
-
+    }*@
     //function OnSuccess(response) {
     //    try {
     //        $("#tblSpeciesDataTest").DataTable(
@@ -348,119 +332,130 @@
     //    }
     //};
 
-    $('#tblSpeciesDataTest tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = $('#tblSpeciesDataTest').DataTable().row(tr);
+    //$('#tblSpeciesDataTest tbody').on('click', 'td.details-control', function () {
+    //    var tr = $(this).closest('tr');
+    //    var row = $('#tblSpeciesDataTest').DataTable().row(tr);
 
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
+    //    if (row.child.isShown()) {
+    //        // This row is already open - close it
+    //        row.child.hide();
+    //        tr.removeClass('shown');
+    //    }
+    //    else {
+    //        // Open this row
+    //        row.child(format(row.data())).show();
+    //        tr.addClass('shown');
+    //    }
+    //});
+    //$('#tblSpeciesDataTest tbody').on('click', 'tr', function () {
+    //    $(this).toggleClass('selected');
+    //});
+
+/*
+========================================================================================
+GEO PICKER
+========================================================================================
+*/
+
+$("#select-continents input:checkbox").click(function () {
+    var valueArray = [];
+
+    $("#select-continents input:checked").each(function () {
+        var id = $(this).attr("id");
+        valueArray.push(id);
+    }
+    );
+
+    $.ajax({
+        url: '@Url.Action("GetRegions","Taxonomy")',
+        type: "GET",
+        data: { continentIds:valueArray.toString() },
+        contentType: "application/json;",
+        dataType: 'json',
+        success: function (result) {
+            var items = '';
+
+            $("#select-regions").empty();
+
+            $.each(result, function (i, item) {
+                var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Name + "<span class='label pull-right'><input id=" + item.ID + " type='checkbox' /></span></a></li>";
+                $("#select-regions").append(liItem);
+            });
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
         }
     });
+});
 
-    $('#tblSpeciesDataTest tbody').on('click', 'tr', function () {
-        $(this).toggleClass('selected');
-    });
+$(document).on("click", "#select-regions input:checked", function () {
+    var valueArray = [];
 
-    $("#select-continents input:checkbox").click(function () {
-        var valueArray = [];
+    $("#select-regions input:checked").each(function () {
+        var id = $(this).attr("id");
+        valueArray.push(id);
+    }
+    );
 
-        $("#select-continents input:checked").each(function () {
-            var id = $(this).attr("id");
-            valueArray.push(id);
+    $.ajax({
+        url: '@Url.Action("GetCountries","Taxonomy")',
+        type: "GET",
+        data: { regionIds:valueArray.toString() },
+        contentType: "application/json;",
+        dataType: 'json',
+        success: function (result) {
+            var items = '';
+
+            $("#select-countries").empty();
+
+            $.each(result, function (i, item) {
+                var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Title + "<span class='label pull-right'><input id=" + item.Code + " type='checkbox' /></span></a></li>";
+                $("#select-countries").append(liItem);
+            });
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
         }
-        );
-
-        $.ajax({
-            url: '@Url.Action("GetRegions","Taxonomy")',
-            type: "GET",
-            data: { continentIds:valueArray.toString() },
-            contentType: "application/json;",
-            dataType: 'json',
-            success: function (result) {
-                var items = '';
-
-                $("#select-regions").empty();
-
-                $.each(result, function (i, item) {
-                    var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Name + "<span class='label pull-right'><input id=" + item.ID + " type='checkbox' /></span></a></li>";
-                    $("#select-regions").append(liItem);
-                });
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            }
-        });
     });
+});
 
-    $(document).on("click", "#select-regions input:checked", function () {
-        var valueArray = [];
+$(document).on("click", "#select-countries input:checked", function () {
+    var valueArray = [];
 
-        $("#select-regions input:checked").each(function () {
-            var id = $(this).attr("id");
-            valueArray.push(id);
+    $("#select-countries input:checked").each(function () {
+        var id = $(this).attr("id");
+        valueArray.push(id);
+    }
+    );
+
+    $.ajax({
+        url: '@Url.Action("GetMunicipalities","Taxonomy")',
+        type: "GET",
+        data: { countryCodes:valueArray.toString() },
+        contentType: "application/json;",
+        dataType: 'json',
+        success: function (result) {
+            var items = '';
+
+            $("#select-municipalities").empty();
+
+            $.each(result, function (i, item) {
+                var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Name + "<span class='label pull-right'><input id=" + item.ID + " type='checkbox' /></span></a></li>";
+                $("#select-municipalities").append(liItem);
+            });
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
         }
-        );
-
-        $.ajax({
-            url: '@Url.Action("GetCountries","Taxonomy")',
-            type: "GET",
-            data: { regionIds:valueArray.toString() },
-            contentType: "application/json;",
-            dataType: 'json',
-            success: function (result) {
-                var items = '';
-
-                $("#select-countries").empty();
-
-                $.each(result, function (i, item) {
-                    var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Title + "<span class='label pull-right'><input id=" + item.Code + " type='checkbox' /></span></a></li>";
-                    $("#select-countries").append(liItem);
-                });
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            }
-        });
     });
+});
 
-    $(document).on("click", "#select-countries input:checked", function () {
-        var valueArray = [];
 
-        $("#select-countries input:checked").each(function () {
-            var id = $(this).attr("id");
-            valueArray.push(id);
-        }
-        );
-
-        $.ajax({
-            url: '@Url.Action("GetMunicipalities","Taxonomy")',
-            type: "GET",
-            data: { countryCodes:valueArray.toString() },
-            contentType: "application/json;",
-            dataType: 'json',
-            success: function (result) {
-                var items = '';
-
-                $("#select-municipalities").empty();
-
-                $.each(result, function (i, item) {
-                    var liItem = "<li><a href='#'><i class='fa fa-globe'></i>" + item.Name + "<span class='label pull-right'><input id=" + item.ID + " type='checkbox' /></span></a></li>";
-                    $("#select-municipalities").append(liItem);
-                });
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            }
-        });
-    });
-
+    /*
+    ========================================================================================
+    EXCEL EXPORT
+    ========================================================================================
+    */
     $(function () {
         var table = $('#tblSpeciesDataTest').dataTable();
 
@@ -469,6 +464,21 @@
             window.open('data:application/vnd.ms-excel,' +
                 encodeURIComponent(table[0].outerHTML));
         });
+    });
+
+    /*
+    =============================================================================
+    DATATABLES
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnSelectAll']", function () {
+        var table = $('#data-table-species').DataTable();
+        table.rows().select();
+    });
+
+    $(document).on("click", "[id='btnDeSelectAll']", function () {
+        var table = $('#data-table-species').DataTable();
+        table.rows().deselect();
     });
 
 </script>

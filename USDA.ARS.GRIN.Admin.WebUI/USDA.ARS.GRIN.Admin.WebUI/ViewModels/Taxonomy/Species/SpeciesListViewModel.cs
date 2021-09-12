@@ -7,9 +7,9 @@ using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class FamilyListViewModel : BaseViewModel
+    public class SpeciesListViewModel : BaseViewModel
     {
-        public int Format { get; set; }
-        public IQueryable<Family> Families { get; set; }
+        public bool IsAcceptedName { get; set; }
+        public IQueryable<Species> SpeciesList { get; set; }
     }
 }

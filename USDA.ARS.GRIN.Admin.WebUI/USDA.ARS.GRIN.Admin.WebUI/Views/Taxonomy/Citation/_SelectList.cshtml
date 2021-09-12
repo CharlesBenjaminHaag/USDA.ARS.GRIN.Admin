@@ -1,0 +1,38 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationListViewModel
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Citations.Count() > 0)
+        {
+
+            foreach (var citation in Model.Citations)
+            {
+            <tr>
+                <td>
+                    <div style="word-wrap:break-word; padding:.4em;">
+                      @Html.Raw(citation.Title)
+                    </div>
+                </td>
+                <td>
+                    <button id="btnCitation" value="@citation.Title" class="btn btn-primary btn-small proto" onclick="AddCitation(@citation.ID);return false;">Select</button>
+                </td>
+            </tr>
+            }
+        }
+        else 
+        { 
+            <tr>
+                <td colspan="2">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                        No records matched your search criteria.
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

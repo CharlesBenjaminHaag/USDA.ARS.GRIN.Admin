@@ -28,7 +28,9 @@ namespace USDA.ARS.GRIN.Admin.Models
                 if (i == 0)
                     sbWhereClause.Append(" WHERE ");
                 else
-                    sbWhereClause.Append(" AND ");
+                {
+                    sbWhereClause.Append(" " + queryCriterion.LogicalOperator + " ");
+                }
 
                 sbWhereClause.Append(queryCriterion.FieldName);
                 sbWhereClause.Append(" ");

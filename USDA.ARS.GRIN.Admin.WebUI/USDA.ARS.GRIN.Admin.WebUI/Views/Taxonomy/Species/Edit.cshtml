@@ -4,30 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .field-validation-error {
-        background-color: red;
-        color: white;
-        padding: 5px;
-    }
-
-    .map-heading {
-        font-size: 1.2em;
-    }
-
-    .map-attribute {
-        font-size: 1.2em;
-    }
-
-    .widget-user-2 .widget-user-username {
-        margin-left: 0px;
-    }
-
-    .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
-        margin-left: 0px;
-    }
-</style>
-
+<!--
+======================================================================================================
+REVISION HISTORY
+======================================================================================================
+-->
 @if (Model.ID > 0)
 {
     <div class="row">
@@ -37,589 +18,275 @@
             </div>
         </div>
     </div>
-
-    @*<div class="row">
-        <div class="col-md-12">
-            <div class="callout callout-success">
-                <h4>@Model.Name</h4>
-                <p>@Model.NameAuthority</p>
-            </div>
-        </div>
-    </div>*@
 }
 
-@using (Html.BeginForm("SpeciesEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+@using (Html.BeginForm("GenusEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
-    @Html.ValidationSummary(true)
-
-    <!-- DETAILS SECTION -->
-    <div class="row">
-       
-    @{
-        string columnCssClass = String.Empty;
-        if (!String.IsNullOrEmpty(Model.SynonymCode) || (!String.IsNullOrEmpty(Model.InfraspecificTypeCode)))
-        {
-            columnCssClass = "col-md-9";
-        }
-        else
-        {
-            columnCssClass = "col-md-12";
-        }
-    }
-
-    @if (!String.IsNullOrEmpty(Model.SynonymCode) || (!String.IsNullOrEmpty(Model.InfraspecificTypeCode)))
-    {
-        <div class="row">
-            <div class="col-md-12">
-                <!-- SPECIES WIDGET -->
-                <div class="box box-widget widget-user-2">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header bg-olive-active">
-                        @*<div class="widget-user-image">
-                                <img class="img-circle" src="" alt="User Avatar">
-                            </div>*@
-                        <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">@Html.Raw(Model.ParentSpecies.Name)</h3>
-                        <h5 class="widget-user-desc"><strong>Accepted Name</strong></h5>
-                    </div>
-                    <div class="box-footer">
-                        <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
-                        <p class="text-muted">
-                            @Html.Raw(Model.ParentSpecies.GenusName)
-                        </p>
-                        <strong><i class="fa fa-leaf margin-r-5"></i>Protologue</strong>
-                        <p class="text-muted">
-                            @Html.Raw(Model.ParentSpecies.Protologue)
-                        </p>
-                        <strong><i class="fa fa-book margin-r-5"></i>Authority</strong>
-                        <p class="text-muted">
-                            @Html.Raw(Model.ParentSpecies.Authority)
-                        </p>
-                        <a href="@Url.Action("SpeciesEdit","Taxonomy", new { @id = Model.ParentSpecies.ID })" class="btn btn-default">Go to Species</a>
-                    </div>
-                </div>
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.CurrentID)
+    @Html.HiddenFor(x => x.GenusID)
+    @Html.HiddenFor(x => x.DataSourceName)
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
+        <div class="box-body">
+            @Html.ValidationSummary()
+            @Html.Raw(Model.ErrorMessage)
+
+            @if (Model.IsSynonym)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Synonym of</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(x => x.CurrentName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            <span class="input-group-btn">
+                                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { @id = Model.CurrentID })" class="btn btn-primary btn-flat">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
             }
 
-<div class="row">
-    <div class="col-md-12">
+        </div>
+    </div>
+
+    if (Model.ID > 0)
+    {
+        <!--
+        ======================================================================================================
+        SYNONYMS
+        ======================================================================================================
+        -->
         <div class="box box-default">
-            <div class="box-header" style="background-color:#ebebeb;">
-                <h3 class="box-title">Detail (@Model.ID)</h3>
+            <div class="box-header">
+                <h3 class="box-title"><a name="section-related-synonyms"></a>Synonyms</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
                     </button>
                 </div>
             </div>
-            @Html.HiddenFor(x => x.Action)
-            @Html.HiddenFor(x => x.CreatedByCooperatorID)
-            @Html.HiddenFor(x => x.VerifierCooperatorID)
-            @Html.HiddenFor(x => x.ModifiedByCooperatorID)
-            @Html.HiddenFor(x => x.OwnedByCooperatorID)
-            @Html.HiddenFor(x => x.ID)
-            @Html.HiddenFor(x => x.Name)
-            @Html.HiddenFor(x => x.CurrentTaxonomySpeciesID)
-            @Html.HiddenFor(x => x.SynonymCode)
-            @Html.HiddenFor(x => x.InfraspecificTypeCode)
             <div class="box-body">
-                @if (Model.ID > 0)
-                {
-                    @*<div class="row">
-                            <div class="col-md-12">
-                                <div class="callout callout-info" style="vertical-align:middle;">
-                                    <img src="~/Content/img/info.png" style="margin:0px;" />
-                                    <label>Created by&nbsp;&nbsp;</label>@Model.CreatedByCooperatorID on @Model.CreatedDate, <label>Last Modified by </label> @Model.ModifiedByCooperatorID on @Model.ModifiedDate
-                                </div>
-                            </div>
-                        </div>*@
-                }
-                <div class="row">
-                    <div id="btn-container" class="col-md-12">
-                        <input type="submit" class="btn btn-success pull-right" style="margin-right:5px;" value="Save" />
-                        @if ((Model.ID > 0) && String.IsNullOrEmpty(Model.SynonymCode))
-                        {
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-default">Add Synonym</button>
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "B" })">Basionym</a></li>
-                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, synonymCode = "S" })">Synonym</a></li>
-                                </ul>
-                            </div>
+                <div id="section-synonyms">
 
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-default">Add Infraspecific Taxon</button>
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, infraspecificTypeCode = "V" })">Variety</a></li>
-                                    <li><a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, infraspecificTypeCode = "F" })">Form</a></li>
-                                </ul>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-horizontal">
-                            <div class="box-body">
-
-                                @if (Model.ID > 0)
-                                {
-                                    <div class="form-group my-auto">
-                                        <label for="txtGenus" class="col-sm-2 control-label">ID</label>
-                                        <div class="col-sm-1">
-                                            <input type="text" id="txtSpeciesID" disabled="" value="@Model.ID" class="form-control" />
-                                        </div>
-                                    </div>
-                                }
-                                <div>
-                                    <div class="form-group">
-                                        <label for="txtGenus" class="col-sm-2 control-label">Genus</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                <input type="text" id="txtGenusName" disabled="" value="@Model.GenusName" class="form-control" />
-                                                @Html.HiddenFor(x => x.GenusID, new { id = "hfGenusID" })
-                                                @Html.HiddenFor(x => x.GenusName, new { id = "hfGenusName" })
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
-                                                </span>
-                                            </div>
-                                            @Html.ValidationMessageFor(x => x.GenusID, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="txtSpeciesName" class="col-sm-2 control-label">Species Name</label>
-                                        <div class="col-sm-10">
-                                            @Html.TextBoxFor(x => x.SpeciesName, new { @id = "txtSpeciesName", @class = "form-control" })
-                                            @Html.HiddenFor(x => x.SpeciesName)
-                                            @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="txtAuthority" class="col-sm-2 control-label">Name Authority</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                @Html.TextBoxFor(x => x.Authority, new { @id = "txtAuthority", @class = "form-control" })
-                                                @Html.HiddenFor(x => x.AuthorityID, new { @id = "hfAuthorityID" })
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--VARIETY FIELDS-->
-                                    @if (Model.InfraspecificTypeCode == "V")
-                                    {
-                                        <div class="form-group">
-                                            <label for="txtVarietyName" class="col-sm-2 control-label">Variety Name</label>
-                                            <div class="col-sm-10">
-                                                @Html.TextBoxFor(x => x.VarietyName, new { @id = "txtVarietyName", @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="txtVarietyAuthority" class="col-sm-2 control-label">Variety Authority</label>
-                                            <div class="col-sm-10">
-                                                @Html.TextBoxFor(x => x.VarietyAuthority, new { @id = "txtVarietyAuthority", @class = "form-control" })
-                                            </div>
-                                        </div>
-                                    }
-
-                                    <!-- FORMA FIELDS -->
-                                    @if (Model.InfraspecificTypeCode == "F")
-                                    {
-                                        <div class="form-group">
-                                            <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Rank Type</label>
-                                            <div class="col-sm-10">
-                                                @Html.TextBoxFor(x => x.FormaRankType, new { @id = "txtFormaRankType", @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="txtForma" class="col-sm-2 control-label">Forma Name</label>
-                                            <div class="col-sm-10">
-                                                @Html.TextBoxFor(x => x.FormaName, new { @id = "txtFormaName", @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="txtFormaRankType" class="col-sm-2 control-label">Forma Authority</label>
-                                            <div class="col-sm-10">
-                                                @Html.TextBoxFor(x => x.FormaAuthority, new { @id = "txtFormaAuthority", @class = "form-control" })
-                                            </div>
-                                        </div>
-                                    }
-
-                                    <div class="form-group">
-                                        <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                        <div class="col-sm-10" style="margin-top:10px;">
-                                            @Html.CheckBoxFor(x => x.IsSpecificHybrid, new { id = "cbxIsSpecificHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Specific Hybrid</label>
-                                        </div>
-                                        <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                        <div class="col-sm-10">
-                                            @Html.CheckBoxFor(x => x.IsSubSpecificHybrid, new { id = "cbxIsSubSpecificHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Sub-Specific Hybrid</label>
-                                        </div>
-                                        <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                        <div class="col-sm-10">
-                                            @Html.CheckBoxFor(x => x.IsVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Varietal Hybrid</label>
-                                        </div>
-                                        <label for="txtDisplayName" class="col-sm-2 control-label"> </label>
-                                        <div class="col-sm-10">
-                                            @Html.CheckBoxFor(x => x.IsSubVarietalHybrid, new { id = "cbxIsSubVarietalHybrid", style = "margin-left:5x;" })<label style="margin-left:10px;">Sub-Varietal Hybrid</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Protologue</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                @Html.TextBoxFor(x => x.Protologue, new { @id = "txtProtologue", @class = "form-control" })
-                                                @Html.HiddenFor(x => x.ProtologueID, new { @id = "hfProtologueID" })
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-protologue-search">...</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">Note</label>
-                                        <div class="col-sm-10">
-                                            <div class="input-group">
-                                                @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-note-search">...</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+            <div class="box-footer">
+                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, genusId = Model.GenusID, })" class="btn btn-default">
+                    <i class="fa fa-leaf"></i>
+                    Add Synonym
+                </a>
+                @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-genus-search">
+                        <i class="fa fa-chain"></i>
+                        Link Synonym
+                    </button>*@
+            </div>
+            @*<div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>*@
         </div>
-    </div>
-</div>
-    </div>
-  
+
+        <!--
+        ======================================================================================================
+        CITATIONS
+        ======================================================================================================
+        -->
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title"><a name="section-related-citations"></a>Related Citations</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div id="section-citations">
+
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" id="btnAddCitation" class="btn btn-default" data-toggle="modal" data-target="#modal-citation-search">
+                    <i class="fa fa-book"></i>
+                    Add Citation
+                </button>
+            </div>
+            @*<div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>*@
+        </div>
+
+        <!--
+        ======================================================================================================
+        USAGE
+        ======================================================================================================
+        -->
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title"><a name="section-related-citations"></a>Economic Uses</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div id="section-citations">
+
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" id="btnAddCitation" class="btn btn-default" data-toggle="modal" data-target="#modal-citation-search">
+                    <i class="fa fa-money"></i>
+                    Add Economic Use
+                </button>
+            </div>
+            @*<div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>*@
+        </div>
+        <!--
+        ======================================================================================================
+        GEOGRAPHY
+        ======================================================================================================
+        -->
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title"><a name="section-related-citations"></a>Related Geographies</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div id="section-citations">
+
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" id="btnAddCitation" class="btn btn-default" data-toggle="modal" data-target="#modal-citation-search">
+                    <i class="fa fa-globe"></i>
+                    Add Geography
+                </button>
+            </div>
+            @*<div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>*@
+        </div>
+    }
 }
 
-<!--
-=====================================================================================
-MODALS
-=====================================================================================
--->
-<div class="modal fade" id="modal-genus-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Genus Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchGenus" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchGenus" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-genus-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-                @*<button type="button" id="btn-set-protologue" class="btn btn-primary">Select</button>*@
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="modal-protologue-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Protologue Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchProtologues" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchProtologues" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-protologue-search-results">
-
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-                @*<button type="button" id="btn-set-protologue" class="btn btn-primary">Select</button>*@
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="modal-note-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Note Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchNotes" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchNotes" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-note-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-                @*<button type="button" id="btn-set-protologue" class="btn btn-primary">Select</button>*@
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="modal-author-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Author Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchAuthors" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchAuthors" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-author-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-                @*<button type="button" id="btn-set-protologue" class="btn btn-primary">Select</button>*@
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<!--
-=====================================================================================
-CITATIONS
-=====================================================================================
--->
-@if (Model.ID > 0)
-{
-    <!--
-    =====================================================================================
-    CITATIONS
-    =====================================================================================
-    -->
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title">Related Citations</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div id="section-crop-map-list" class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    @Html.Partial("~/Views/Taxonomy/Citation/_DetailedList.cshtml", Model.Citations, new ViewDataDictionary { { "SpeciesID", Model.ID } })
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--
-    =====================================================================================
-    COMMON NAMES
-    =====================================================================================
-    -->
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title">Related Common Names</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div id="section-crop-map-list" class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    @Html.Partial("~/Views/Taxonomy/Shared/_CommonNameList.cshtml", Model.CommonNames, new ViewDataDictionary { { "SpeciesID", Model.ID } })
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    @*@Html.Partial("~/Views/Taxonomy/Shared/_GeographyList.cshtml", Model.Geographies)*@
-    @*@Html.Partial("~/Views/Taxonomy/Shared/_CommonNameList.cshtml", Model.CommonNames, new ViewDataDictionary { { "SpeciesID", Model.ID } })*@
-    @*@Html.Partial("~/Views/Taxonomy/Shared/_UsageList.cshtml", Model.Usages)
-        @Html.Partial("~/Views/Taxonomy/Shared/_RegulationList.cshtml", Model.RegulationMappings.AsEnumerable())*@
-}
-
-
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy"); }
+@{ Html.RenderAction("_AuthorSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_CitationSearchModal", "Taxonomy", new { taxonId = Model.ID, dataSourceName = "taxononomy_species" }); }
 
 <script type="text/javascript">
 
-    //$(document).ready(function () {
-    //    $('form').dirtyForms({
-    //        dialog: { title: 'Wait!' },
-    //        message: 'You forgot to save your details. If you leave now, they will be lost forever.'
-    //    });
-    //});
 
-    $('form input').keydown(function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            return false;
+     /*
+    ===========================================================================
+    CITATION SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchCitations']", function () {
+        var dataSourceName = $("#DataSourceName").val();
+        var citationText = $("#FullText").val();
+
+        var link = '@Url.Action("CitationSearch", "Taxonomy")';
+        var formData = new FormData();
+        try {
+            formData.append("ResultsFormat", 2);
+            formData.append("DataSourceName", dataSourceName);
+            formData.append("FullText", citationText);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citation-search-results").html(response);
+                }
+            });
         }
+        catch (ex) {
+            console.log(ex);
+        }
+
     });
 
-    //$("#btn-set-genus-id").click(function () {
-    //    $('#modal-genus-search').modal('hide');
-    //    alert("GENUS SELECTED");
-    //});
-
-    function SelectGenus(ID, genusText) {
-        $('#modal-genus-search').modal('hide');
-
-        $("#txtGenusName").val(genusText);
-        $("#hfGenusName").val(genusText);
-        $("#hfGenusName").change();
-        $("#hfGenusID").val(ID);
+    function SelectCitation(id) {
+        $('#modal-citation-search').modal('hide');
+        $("#CitationID").val(id);
     }
 
-    function SelectProtologue(ID, protologueText) {
-        $('#modal-protologue-search').modal('hide');
-        $("#txtProtologue").val(protologueText);
-        $("#hfProtologueID").val(ID)
+    function GetCitations(taxonName) {
+    var taxonId = $("#ID").val();
+    var link = '@Url.Action("CitationSearch", "Taxonomy")';
+    var formData = new FormData();
+    try {
+            formData.append(taxonName + "ID", taxonId);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citations").html(response);
+                }
+            });
+        }
+            catch (ex) {
+            console.log(ex);
+        }
     }
 
-    function SelectAuthor(ID, authorFullName) {
-        $('#modal-author-search').modal('hide');
-        $("#txtAuthority").val(authorFullName);
-        $("#hfAuthorityID").val(ID)
-    }
+    function AddCitation(citationId) {
 
-    function SelectNote(ID, noteText) {
-        $('#modal-note-search').modal('hide');
+        var familyId = $("#ID").val();
 
-        alert("SELECTED NOTE " + noteText);
+        ResetCitationSearch();
+        $('#modal-citation-search').modal('hide');
 
-
-        $("#txtNote").val(noteText);
-        //$("#hfNoteID").val(ID)
-    }
-
-    $(".proto").click(function () {
-        event.preventDefault();
-    });
-
-    function hide_modal() {
-        $('#modal-genus-search').modal('hide');
-
-        // TO DO
-
-        //alert("GENUS SELECTED");
-    }
-
-    $("#btnSearchGenus").click(function () {
-        var url = '@Url.Action("FindGenus","Taxonomy")';
-        var inputSearchString = $("#txtSearchGenus").val();
-
-        $.post(url, { searchString: inputSearchString })
-            .done(function (response) {
-                $("#section-genus-search-results").html(response);
+        $.ajax({
+            url: '@Url.Action("CitationAdd","Taxonomy")',
+            type: "GET",
+            data: {citationId: citationId, taxonId: familyId, dataSource: "taxonomy_species" },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                GetCitations("Species","taxonomy_species");
+            },
+            error: function () {
+                alert("error");
+            }
         });
-    });
 
-    $("#btnSearchProtologues").click(function () {
+    }
 
-        var url = "/Taxonomy/SpeciesProtologueSearch/";
-        var inputSearchText = $("#txtSearchProtologues").val();
-
-        $.post(url, { searchText: inputSearchText })
-            .done(function (response) {
-                $("#section-protologue-search-results").html(response);
-            });
-    });
-
-    $("#btnSearchAuthors").click(function () {
-
-        var url = "/Taxonomy/SpeciesNameAuthoritySearch/";
-        var inputSearchText = $("#txtSearchAuthors").val();
-
-        $.post(url, { searchText: inputSearchText })
-            .done(function (response) {
-                $("#section-author-search-results").html(response);
-            });
-    });
-
-    $("#btnSearchNotes").click(function () {
-
-        var url = "/Taxonomy/SpeciesNoteSearch/";
-        var inputSearchText = $("#txtSearchNotes").val();
-
-        $.post(url, { searchText: inputSearchText })
-            .done(function (response) {
-                $("#section-note-search-results").html(response);
-            });
-    });
-
+    function ResetCitationSearch() {
+        $("#FullText").val();
+        $("#section-citation-search-results").html();
+    }
 </script>
-
-
-

@@ -1,0 +1,42 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.FamilyListViewModel
+<br />
+<table id="data-table-families" class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Families.Count() > 0)
+        {
+            foreach (var family in Model.Families)
+            {
+                <tr>
+                    <td><span class="label label-default">@family.ID</span></td>
+                    <td>@Html.Raw(family.FullName)</td>
+                    <td><button id="btnAuthor1" value="@family.FullName" class="btn btn-primary btn-sm proto" onclick="SelectFamily(@family.ID, this.value);return false;">Select</button></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:5px;">
+                        @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                        Your search returned no matches.
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('#data-table-families').DataTable(
+        {
+            responsive: true
+        }
+    );
+</script>

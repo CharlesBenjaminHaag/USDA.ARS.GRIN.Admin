@@ -13,6 +13,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public int NomenNumber { get; set; }
         public bool IsSpecificHybrid { get; set; }
         public string SpeciesName { get; set; }
+        public string FullName { get; set; }
         public bool IsAcceptedName { get; set; }
         public string ShowIsAcceptedName { get; set; }
         public string Authority { get; set; }

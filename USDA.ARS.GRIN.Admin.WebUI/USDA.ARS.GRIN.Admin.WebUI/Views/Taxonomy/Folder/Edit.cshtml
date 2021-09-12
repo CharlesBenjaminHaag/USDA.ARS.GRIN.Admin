@@ -6,7 +6,7 @@
 
 @using (Html.BeginForm("FolderEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
-    @Html.HiddenFor(x => x.ID, new { @name = "hfFolderID" })
+    @Html.HiddenFor(x => x.ID)
     @Html.HiddenFor(x => x.DataSourceName)
     @Html.HiddenFor(x => x.DataSourceTitle)
     <div class="row">
@@ -116,16 +116,12 @@
             </button>
         </div>
     </div>
-    <div id="section-folder-item-container" class="box-body no-padding">
-        @{ Html.RenderAction("FolderItemList", "Taxonomy", new { targetFolderId = Model.ID, dataSource = Model.DataSourceName });}
+    <div id="section-folder-items" class="box-body no-padding">
+       
     </div>
     <!-- /.box-body -->
     <div class="box-footer no-padding">
         <div class="mailbox-controls">
-            <!-- Check all button -->
-            @*<button type="button" class="btn btn-primary btn-sm checkbox-toggle">
-                    <img src="~/Content/img/check.png" />
-                </button>*@
             <div class="pull-right">
                 <button type="button" disabled class="btn btn-default btn-sm">
                     Export
@@ -186,40 +182,83 @@
 </div>
 <script type="text/javascript">
 
-    //===================================================================================
-    // Delete an invidual item from the folder.
-    //===================================================================================
-    $(document).on("click", "[id*='btnDelete']", function(){
-        var btnId = $(this).attr('id');
-        var controlIdString = btnId.split("_")
-        var folderContainerControlId = "#section-folder-item-container";
-        var folderId = $("#ID").val();
-        var folderItemId = controlIdString[2];
-        var dataSource = $("#DataSource").val();
-        var url = '@Url.Action("FolderItemDelete", "Taxonomy")';
+    $(document).ready(function () {
+        Init();
+    });
 
-        $.get(url, { targetFolderId: folderId, itemId: folderItemId, dataSource : dataSource })
-        .done(function (response) {
-            $(folderContainerControlId).html(response);
+    function Init() {
+        try {
+            GetItems();
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    $(document).on("click", "[id*='btnDelete']", function () {
+
+        var btnId = $(this).attr('id');
+        var folderItemId = btnId.split("_")[1];
+
+        alert("DEBUG DELETE " + folderItemId);
+
+        $.ajax({
+            url: '@Url.Action("FolderItemDelete", "Taxonomy")',
+            type: "GET",
+            data: { id: folderItemId },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                GetItems();
+            },
+            error: function () {
+            }
         });
     });
+
+    function GetItems() {
+        var folderId = $("#ID").val();
+        var dataSourceName = $("#DataSourceName").val(); 
+        var link = '@Url.Action("FolderItemList", "Taxonomy")';
+        var formData = new FormData();
+
+        try {
+            formData.append("FolderID", folderId);
+            formData.append("DataSourceName", dataSourceName);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-folder-items").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
 
     //===================================================================================
     // Check/un-check all items.
     //===================================================================================
-    $(function () {
-        $('.check-all-search-results').on('click', function () {
-            $('.mailbox-messages input:checkbox').prop('checked', true);
-        });
-        $('.uncheck-all-search-results').on('click', function () {
-            $('.mailbox-messages input:checkbox').prop('checked', false);
-        });
-    });
+    //$(function () {
+    //    $('.check-all-search-results').on('click', function () {
+    //        $('.mailbox-messages input:checkbox').prop('checked', true);
+    //    });
+    //    $('.uncheck-all-search-results').on('click', function () {
+    //        $('.mailbox-messages input:checkbox').prop('checked', false);
+    //    });
+    //});
 
     //===================================================================================
     // Delete all checked items.
     //===================================================================================
-    $(document).on("click", "[id*='btnMultipleDelete']", function(){
+    @* $(document).on("click", "[id*='btnMultipleDelete']", function () {
         var folderId = $("#ID").val();
         var valueArray = [];
         var url = "";
@@ -231,16 +270,17 @@
         $("#section-folder-item-container input:checked").each(function () {
             var id = $(this).attr("id");
             valueArray.push(id);
-            }
+        }
         );
 
         url = '@Url.Action("FolderItemsDelete", "Taxonomy")';
 
-        $.get(url, {folderId: folderId, folderItemIdList: valueArray.toString(), dataSource: dataSource })
+        $.get(url, { folderId: folderId, folderItemIdList: valueArray.toString(), dataSource: dataSource })
             .done(function (response) {
                 $("#section-folder-item-container").html(response);
-        });
-    });
+            });
+    });*@
+
 
 </script>
 

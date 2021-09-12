@@ -4,6 +4,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .box-body row {
+        background-color: yellow;
+    }
+
+    .info-box-number a {
+        color: white;
+        text-decoration: underline;
+    }
+</style>
+
+<!--
+======================================================================================================
+REVISION HISTORY
+======================================================================================================
+-->
 @if (Model.ID > 0)
 {
     <div class="row">
@@ -18,10 +34,12 @@
 @using (Html.BeginForm("GenusEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
 {
     @Html.HiddenFor(x => x.ID)
-    @Html.HiddenFor(x => x.TableName)
+    @Html.HiddenFor(x => x.CurrentID)
+    @Html.HiddenFor(x => x.FamilyID)
+    @Html.HiddenFor(x => x.DataSourceName)
     <div class="box box-default">
         <div class="box-header">
-            <h3 class="box-title">Detail</h3>
+            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -31,46 +49,94 @@
         <div class="box-body">
             @Html.ValidationSummary()
             @Html.Raw(Model.ErrorMessage)
-            <div class="row">
+
+            @if (Model.IsSynonym)
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Synonym of</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(x => x.CurrentName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            <span class="input-group-btn">
+                                <a href="@Url.Action("GenusEdit","Taxonomy", new { @id = Model.CurrentID })" class="btn btn-primary btn-flat">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+            }
+
+            <div class="row" style="margin-top:.9em;">
+
+                <div class="col-md-4">
+                    <label for="txtFamily">Family</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.FamilyFullName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(x => x.FamilyFullName, "", new { @class = "text-danger" })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-family-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        <span class="input-group-btn">
+                            <a href="@Url.Action("FamilyEdit","Taxonomy", new { @id = Model.FamilyID })" class="btn btn-primary btn-flat">
+                                <i class="fa fa-link"></i>
+                            </a>
+                        </span>
+                    </div>
+                    @Html.ValidationMessageFor(x => x.FamilyID, "", new { @class = "text-danger" })
+                </div>
                 <div class="col-md-4">
                     <label>Name</label>
                     @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-2">
+                    <label>Qualifier Code</label>
+                    @Html.DropDownListFor(x => x.QualifyingCode, Model.QualifyingCodes, "All qualifier codes", new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
                     <label>Hybrid Code</label>
-                    @Html.TextBoxFor(x => x.HybridCode, new { @class = "form-control" })
+                    @Html.DropDownListFor(x => x.HybridCode, Model.HybridCodes, "All hybrid codes", new { @class = "form-control" })
                 </div>
-                <div class="col-md-6">
-                    <label>Authority</label>
-                    <div class="input-group">
-                        @Html.TextBoxFor(x => x.Authority, new { @class = "form-control" })
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
-                        </span>
-                    </div>
-                </div>
+
             </div>
-            <div class="row">
+            <div class="row" style="margin-top:.9em;">
                 <div class="col-md-4">
                     <label>Sub-Genus Name</label>
                     @Html.TextBoxFor(x => x.SubGenusName, new { @class = "form-control" })
                 </div>
                 <div class="col-md-4">
-                    <label>Sub-SectionName</label>
-                    @Html.TextBoxFor(x => x.SubSectionName, new { @class = "form-control" })
+                    <label>Section Name</label>
+                    @Html.TextBoxFor(x => x.SectionName, new { @class = "form-control" })
                 </div>
                 <div class="col-md-4">
+                    <label>Subection Name</label>
+                    @Html.TextBoxFor(x => x.SubSectionName, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Citation</label>
+            <div class="row" style="margin-top:.9em;">
+                <div class="col-md-4">
+                    <label>Series Name</label>
+                    @Html.TextBoxFor(x => x.SeriesName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <label>Subseries Name</label>
+                    @Html.TextBoxFor(x => x.SubSeriesName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <label>Authority</label>
                     <div class="input-group">
-                        @Html.TextBoxFor(x => x.CitationText, new { @class = "form-control", @disabled = true })
-                        @Html.HiddenFor(x => x.CitationID)
+                        @Html.TextBoxFor(x => x.Authority, new { @class = "form-control" })
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-citation-search">...</button>
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">...</button>
                         </span>
                     </div>
                 </div>
@@ -85,23 +151,324 @@
                 </div>
             </div>
             <div class="box-footer">
-                <button type="submit" class="btn btn-default">Save Edits</button>
-                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-note-search">
+                    <i class="fa fa-search"></i>
+                    Search Notes...
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                    Save Edits
+                </button>
             </div>
+
         </div>
     </div>
 }
-@Html.Partial("~/Views/Taxonomy/Shared/Modals/_NoteSearchModal.cshtml")
-@Html.Partial("~/Views/Taxonomy/Shared/Modals/_AuthorSearchModal.cshtml")
-@Html.Partial("~/Views/Taxonomy/Shared/Modals/_CitationSearchModal.cshtml")
+
+@if (Model.ID > 0)
+{
+    <!--
+    ======================================================================================================
+    SPECIES
+    ======================================================================================================
+    -->
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-related-species"></a>Related Species</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div id="section-species">
+
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="button" id="btnAddSynonym" class="btn btn-default" data-toggle="modal" data-target="#modal-family-search">
+                <i class="fa fa-leaf"></i>
+                Add Species
+            </button>
+        </div>
+        @*<div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>*@
+    </div>
+
+    <!--
+    ======================================================================================================
+    SYNONYMS
+    ======================================================================================================
+    -->
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-related-synonyms"></a>Synonyms</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div id="section-synonyms">
+
+            </div>
+        </div>
+        <div class="box-footer">
+            <a href="@Url.Action("GenusEdit","Taxonomy", new { id=0, currentId=Model.ID, familyId=Model.FamilyID,  })" , class="btn btn-default">
+                <i class="fa fa-leaf"></i>
+                Add Synonym
+            </a>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-genus-search">
+                <i class="fa fa-chain"></i>
+                Link Synonym
+            </button>
+        </div>
+        @*<div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>*@
+    </div>
+
+    <!--
+    ======================================================================================================
+    CITATIONS
+    ======================================================================================================
+    -->
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-related-citations"></a>Related Citations</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div id="section-citations">
+
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="button" id="btnAddCitation" class="btn btn-default" data-toggle="modal" data-target="#modal-citation-search">
+                <i class="fa fa-book"></i>
+                Add Citation
+            </button>
+        </div>
+        @*<div class="overlay">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>*@
+    </div>
+}
+
+@{ Html.RenderAction("_FamilySearchModal", "Taxonomy"); }
+@{ Html.RenderAction("_AuthorSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_CitationSearchModal", "Taxonomy", new { taxonId = Model.ID, dataSourceName = "taxononomy_genus" }); }
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        Init();
+    });
+
+    function Init() {
+        try {
+            GetSpecies();
+            GetCitations("Genus", "taxonomy_genus");
+            GetSynonyms();
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    function GetSpecies() {
+        var genusId = $("#ID").val();
+        var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+        var formData = new FormData();
+        try {
+            formData.append("GenusID", genusId);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-species").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    function GetSynonyms() {
+        var genusId = $("#ID").val();
+        var link = '@Url.Action("GenusSearch", "Taxonomy")';
+        var formData = new FormData();
+        try {
+            formData.append("CurrentGenusID", genusId);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-synonyms").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    /*
+    ===========================================================================
+    FAMILY SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchFamilies']", function () {
+        var dataSourceName = $("#DataSourceName").val();
+        var familyName = $("#txtSearchFamilyName").val();
+        var link = '@Url.Action("FamilySearch", "Taxonomy")';
+        var formData = new FormData();
+
+        try {
+            formData.append("ResultsFormat", 2);
+            formData.append("DataSourceName", dataSourceName);
+            formData.append("Name", familyName);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-family-search-results").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+
+    });
+
+    function SelectFamily(familyId, familyName) {
+        $('#modal-family-search').modal('hide');
+        $("#FamilyID").val(familyId);
+        $("#FamilyFullName").val(familyName);
+    }
+
+    /*
+    ===========================================================================
+    CITATION SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchCitations']", function () {
+        var dataSourceName = $("#DataSourceName").val();
+        var citationText = $("#FullText").val();
+
+        var link = '@Url.Action("CitationSearch", "Taxonomy")';
+        var formData = new FormData();
+        try {
+            formData.append("ResultsFormat", 2);
+            formData.append("DataSourceName", dataSourceName);
+            formData.append("FullText", citationText);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citation-search-results").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+
+    });
+
+    function SelectCitation(id) {
+        $('#modal-citation-search').modal('hide');
+        $("#CitationID").val(id);
+    }
+
+    function GetCitations(taxonName) {
+    var taxonId = $("#ID").val();
+    var link = '@Url.Action("CitationSearch", "Taxonomy")';
+    var formData = new FormData();
+    try {
+            formData.append(taxonName + "ID", taxonId);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citations").html(response);
+                }
+            });
+        }
+            catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    function AddCitation(citationId) {
+
+        var familyId = $("#ID").val();
+
+        ResetCitationSearch();
+        $('#modal-citation-search').modal('hide');
+
+        $.ajax({
+            url: '@Url.Action("CitationAdd","Taxonomy")',
+            type: "GET",
+            data: {citationId: citationId, taxonId: familyId, dataSource: "taxonomy_genus" },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                GetCitations("Genus","taxonomy_genus");
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+    }
+
+    function ResetCitationSearch() {
+        $("#FullText").val();
+        $("#section-citation-search-results").html();
+    }
+
+    /*
+    ===========================================================================
+    NOTE SEARCH MODAL
+    ===========================================================================
+    */
     $(document).on("click", "[id='btnSearchNotes']", function () {
         var url = '@Url.Action("NoteSearch", "Taxonomy")';
-        var tableName = $("#TableName").val();
+        var dataSourceName = $("#DataSourceName").val();
         var searchText = $("#txtSearchNotes").val();
 
-        $.post(url, { tableName: tableName, searchText: searchText })
+        $.post(url, { dataSourceName: dataSourceName, searchText: searchText })
             .done(function (response) {
                 $("#section-note-search-results").html(response);
             });
@@ -112,12 +479,17 @@
         CKEDITOR.instances.txtNote.setData(noteText);
     }
 
+    /*
+    ===========================================================================
+    AUTHOR SEARCH MODAL
+    ===========================================================================
+    */
     $(document).on("click", "[id='btnSearchAuthors']", function () {
         var url = '@Url.Action("AuthoritySearch", "Taxonomy")';
-        var tableName = $("#TableName").val();
+        var dataSourceName = $("#DataSourceName").val();
         var searchText = $("#txtSearchAuthors").val();
 
-        $.post(url, { tableName: tableName, searchText: searchText })
+        $.post(url, { dataSourceName: dataSourceName, searchText: searchText })
             .done(function (response) {
                 $("#section-author-search-results").html(response);
             });
@@ -126,19 +498,5 @@
     function SelectAuthor(authorText) {
         $('#modal-author-search').modal('hide');
         $("#Authority").val(authorText);
-    }
-     $(document).on("click", "[id='btnSearchCitations']", function () {
-        var url = '@Url.Action("CitationSearch", "Taxonomy")';
-        var searchText = $("#txtSearchCitations").val();
-
-        $.post(url, { searchText: searchText })
-            .done(function (response) {
-                $("#section-citation-search-results").html(response);
-            });
-    });
-
-    function SelectCitation(id) {
-        $('#modal-citation-search').modal('hide');
-        $("#CitationID").val(id);
     }
 </script>

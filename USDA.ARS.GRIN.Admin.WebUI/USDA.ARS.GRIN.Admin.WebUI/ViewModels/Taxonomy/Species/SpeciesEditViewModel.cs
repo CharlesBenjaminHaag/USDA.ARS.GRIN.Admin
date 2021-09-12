@@ -17,6 +17,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public string SpeciesName { get; set; }
         public bool IsAcceptedName { get; set; }
         public string Authority { get; set; }
+        public bool IsSynonym { get; set; }
         public bool IsSubSpecificHybrid { get; set; }
         public string SubSpeciesName { get; set; }
         public string SubSpeciesAuthority { get; set; }
@@ -52,14 +53,53 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public IEnumerable<CommonName> CommonNames { get; set; }
         public IEnumerable<Usage> Usages { get; set; }
         public IEnumerable<RegulationMapping> RegulationMappings { get; set; }
-        public Species ParentSpecies { get; set; }
+        public Species CurrentSpecies { get; set; }
 
         public SpeciesEditViewModel()
         {
-            ParentSpecies = new Species();
+            CurrentSpecies = new Species();
             Citations = new List<Citation>().AsEnumerable();
             Usages = new List<Usage>().AsEnumerable();
             RegulationMappings = new List<RegulationMapping>().AsEnumerable();
+        }
+
+        public SpeciesEditViewModel(Species species): base()
+        {
+            ID = species.ID;
+            CurrentID = species.CurrentTaxonomySpeciesID;
+            CurrentTaxonomySpeciesID = species.CurrentTaxonomySpeciesID;
+            NomenNumber = species.NomenNumber;
+            IsSpecificHybrid = species.IsSpecificHybrid;
+            SpeciesName = species.SpeciesName;
+            Name = species.Name;
+            IsAcceptedName = species.IsAcceptedName;
+            Authority = species.Authority;
+            IsSubSpecificHybrid = species.IsSubSpecificHybrid;
+            SubSpeciesName = species.SubSpeciesName;
+            SubSpeciesAuthority = species.SubSpeciesAuthority;
+            IsVarietalHybrid = species.IsVarietalHybrid;
+            VarietyName = species.VarietyName;
+            VarietyAuthority = species.VarietyAuthority;
+            FormaName = species.FormaName;
+            FormaAuthority = species.FormaAuthority;
+            FormaRankType = species.FormaRankType;
+            GenusID = species.GenusID;
+            GenusName = species.GenusName;
+            Protologue = species.Protologue;
+            NameAuthority = species.NameAuthority;
+            GenusID = species.GenusID;
+            GenusName = species.GenusName;
+            Authority = species.Authority;
+            SynonymCode = species.SynonymCode;
+            CreatedDate = species.CreatedDate;
+            CreatedByCooperatorID = species.CreatedByCooperatorID;
+            CreatedByCooperatorName = species.CreatedByCooperatorName;
+            ModifiedDate = species.ModifiedDate;
+            ModifiedByCooperatorID = species.ModifiedByCooperatorID;
+            ModifiedByCooperatorName = species.ModifiedByCooperatorName;
+            Note = species.Note;
+            Citations = species.Citations;
+            CommonNames = species.CommonNames;
         }
     }
 }

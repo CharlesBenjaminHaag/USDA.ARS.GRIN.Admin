@@ -291,11 +291,8 @@
     <Content Include="Views\Taxonomy\Shared\_SidebarTaxonomy.cshtml" />
     <Content Include="Views\Taxonomy\Reports\Detail.cshtml" />
     <Content Include="Views\AccessRightsManagement\Index.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\List.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\_List.cshtml" />
-    <Content Include="Views\Taxonomy\Species\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\CropForCWR\Index_OLD.cshtml" />
     <Content Include="Views\SiteManagement\PVP\Index.cshtml" />
     <Content Include="Views\SiteManagement\CGC\Index.cshtml" />
     <Content Include="Views\SiteManagement\CGC\Edit.cshtml" />
@@ -304,22 +301,16 @@
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\_List.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\Index.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\_SearchCriteria.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_Detail.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\_CropMapTraits.cshtml" />
     <Content Include="Views\Taxonomy\CWRTrait\_SearchResults.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Trait\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_NoteSearchResultsList.cshtml" />
-    <Content Include="Views\Taxonomy\Citation\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_UserSearchList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\Edit.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\Index.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Search.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\_SearchResults.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\_List.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\_List.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_CWRMapItemList.cshtml" />
     <Content Include="Views\Utilities\Index.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\Index.cshtml" />
@@ -334,7 +325,6 @@
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ValidationStatistics.cshtml" />
     <Content Include="Views\GRINGlobal\Inventory\AccessionInventoryAttachment\_ErrorList.cshtml" />
     <Content Include="Views\User\_Applications.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_CropForCWRItemList.cshtml" />
     <Content Include="Views\Error\_Error.cshtml" />
     <Content Include="Views\GRINGlobal\Order\Index.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Index.cshtml" />
@@ -345,10 +335,8 @@
     <Content Include="Views\Taxonomy\Shared\_CommonNameList.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_UsageList.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_RegulationList.cshtml" />
-    <Content Include="Views\Taxonomy\Citation\_DetailedList.cshtml" />
     <Content Include="Views\Taxonomy\Reports\_FiscalYearSummary.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Crop\Trait\Index.cshtml" />
     <Content Include="Views\GRINGlobal\WebOrder\Edit.cshtml" />
     <Content Include="Views\User\_Confirmation.cshtml" />
     <Content Include="Views\User\PasswordReset.cshtml" />
@@ -358,27 +346,18 @@
     <Content Include="Views\Taxonomy\Species\AddSubTaxa.cshtml" />
     <Content Include="Views\AccessRightsManagement\Cooperator\_Detail.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\Manager.cshtml" />
-    <Content Include="Views\Taxonomy\Citation\_SearchResults.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\_List.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Index.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Citation\_LiteratureSearchResults.cshtml" />
-    <Content Include="Views\Taxonomy\Citation\_LiteratureDetail.cshtml" />
+    <Content Include="Views\Taxonomy\Home\Literature\_LiteratureSearchResults.cshtml" />
+    <Content Include="Views\Taxonomy\Home\Literature\_LiteratureDetail.cshtml" />
     <Content Include="Views\SiteManagement\CGC\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Species\_SearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Species\_Widget.cshtml" />
-    <Content Include="Views\Taxonomy\Literature\Index.cshtml" />
-    <Content Include="Views\Taxonomy\Literature\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_FolderEditModal.cshtml" />
+    <Content Include="Views\Taxonomy\Home\Literature\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Home\Literature\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Geography\Index.cshtml" />
     <Content Include="Views\Taxonomy\Geography\Search.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_SpeciesItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_RegulationItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_CWRTraitItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_CitationItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_LiteratureItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_FamilyItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_GenusItemList.cshtml" />
-    <Content Include="Views\Taxonomy\Folder\_RegulationMapItemList.cshtml" />
     <Content Include="Views\Taxonomy\Folder\_Edit.cshtml" />
     <Content Include="Views\Taxonomy\Geography\_Search.cshtml" />
     <Content Include="Views\AccessRightsManagement\User\Edit.cshtml" />
@@ -398,7 +377,7 @@
     <Content Include="Views\Taxonomy\Family\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Family\Index.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_NoteSearchModal.cshtml" />
-    <Content Include="Views\Taxonomy\Shared\Modals\_AddToFolderModal.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_FolderEditModal.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_CitationSearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_AuthorSearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_AuthorSearchResultsLIst.cshtml" />
@@ -407,6 +386,12 @@
     <Content Include="Views\GRINGlobal\WebOrder\_SearchResults.cshtml" />
     <Content Include="Views\AccessRightsManagement\Cooperator\_List.cshtml" />
     <Content Include="Views\AccessRightsManagement\Cooperator\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_GenusSearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Genus\_SelectList.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_FamilySearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Family\_SelectList.cshtml" />
+    <Content Include="Views\Taxonomy\Species\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_SpeciesSearchModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -487,6 +472,7 @@
     <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentEditViewModel.cs" />
     <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Citation\CitationListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRHomeViewModel.cs" />
@@ -527,6 +513,7 @@
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
     <Compile Include="ViewModels\AccessRightsManagement\User\UserEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\SpeciesListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesSearchViewModel.cs" />
     <Compile Include="ViewModels\AccessRightsManagement\User\UserApplicationsViewModel.cs" />
     <Compile Include="ViewModels\SysUserListViewModel.cs" />
@@ -665,8 +652,6 @@
     <Folder Include="ViewModels\Home\" />
     <Folder Include="ViewModels\Shared\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
-    <Folder Include="Views\Taxonomy\Crop\CWRMap\" />
-    <Folder Include="Views\Taxonomy\Home\" />
     <Folder Include="Views\Utilities\_UPLOADS\" />
   </ItemGroup>
   <ItemGroup>

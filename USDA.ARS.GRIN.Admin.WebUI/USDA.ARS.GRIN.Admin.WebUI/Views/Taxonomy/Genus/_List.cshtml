@@ -1,38 +1,35 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.GenusListViewModel
-<div class="mailbox-controls">
-    @*<button type="button" class="btn btn-success btn-sm check-all-search-results">
+
+@if ((Model.Action != "Parent") && (Model.Action != "Folder"))
+{
+    <div class="mailbox-controls">
+        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
             <i class="fa fa-check"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
-            <i class="fa fa-check-square"></i>
-        </button>*@
-    @*<button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CropTraitEdit", "Taxonomy", new { speciesId = Model.SpeciesID, cropId = Model.CropId, cropMapId = Model.CropMapID, cropTraitid = 0 })'">
-            <i class="fa fa-plus"></i>
-        </button>*@
-    @*<button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
-            <i class="fa fa-trash"></i>
-        </button>*@
-
-    <button type="button" id="btnAddItemsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-items-to-folder">
-        <i class="fa fa-folder"></i>
-    </button>
-    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("GenusEdit", "Taxonomy", new { id = 0 })'">
-        <i class="fa fa-plus"></i>
-    </button>
-    <div class="pull-right">
-        <button type="button" disabled class="btn btn-default btn-sm">
-            Export
+        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check-circle-o"></i>
         </button>
+        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("GenusEdit", "Taxonomy", new { id = 0 })'">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
     </div>
-</div>
-<table id="data-table" class="table table-striped" style=" width:100%;">
+}
+<table id="data-table-genera" class="table table-striped" style=" width:100%;">
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Hybrid Code</th>
-            <th>Sub-Genus Name</th>
-            <th>Section Name</th>
+            <th>Qualifier Code</th>
+            <th>TBD</th>
             <th>Last Modified</th>
             <th>By</th>
             <th></th>
@@ -52,10 +49,9 @@
                     @genus.HybridCode
                 </td>
                 <td>
-                    @genus.SubGenusName
+                    @genus.QualifyingCode
                 </td>
                 <td>
-                    @genus.SectionName
                 </td>
                 <td>
                     @if (genus.ModifiedDate != DateTime.MinValue)
@@ -70,6 +66,12 @@
                     <a href="@Url.Action("GenusEdit", "Taxonomy", new { id = genus.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                         <i class="fa fa-edit"></i>
                     </a>
+                    @if (Model.Action == "Folder")
+                    {
+                        <button id="btnDeleteFolderItem_@genus.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
+                            <i class="fa fa-trash"></i> Remove From Folder
+                        </button>
+                    }
                 </td>
             </tr>
         }
@@ -77,10 +79,13 @@
 </table>
 
 <script type="text/javascript">
-    $('#data-table').DataTable(
+    $('#data-table-genera').DataTable(
         {
             responsive: true,
-            select: true
+            select: true,
+            'checkboxes': {
+                'selectRow': true
+            }
         }
     );
 </script>

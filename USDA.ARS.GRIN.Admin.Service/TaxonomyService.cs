@@ -50,6 +50,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _familyDAO.Search(query);
         }
 
+        public IQueryable<Family> GetFamilyFolderItems(int folderId)
+        {
+            return _familyDAO.GetFolderItems(folderId);
+        }
+
         public Family GetFamily(int id)
         {
             return _familyDAO.Get(id);
@@ -57,12 +62,12 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public ResultContainer AddFamily(Family family)
         {
-            return null;
+            return _familyDAO.Add(family);
         }
 
         public ResultContainer UpdateFamily(Family family)
         {
-            return null;
+            return _familyDAO.Update(family);
         }
 
         #endregion
@@ -72,6 +77,11 @@ namespace USDA.ARS.GRIN.Admin.Service
         public IEnumerable<Genus> GenusSearch(Query query)
         {
             return _genusDAO.Search(query);
+        }
+
+        public IQueryable<Genus> GetGenusFolderItems(int folderId)
+        {
+            return _genusDAO.GetFolderItems(folderId);
         }
 
         public Genus GetGenus(int id)
@@ -84,7 +94,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         }
         public ResultContainer UpdateGenus(Genus genus)
         {
-            return _genusDAO.Add(genus);
+            return _genusDAO.Update(genus);
         }
 
         public IQueryable<Genus> FindGenus(string searchString)
@@ -98,6 +108,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         public IQueryable<Species> SpeciesSearch(Query query)
         {
             return _speciesDAO.Search(query);
+        }
+        public IQueryable<Species> GetSpeciesFolderItems(int folderId)
+        {
+            return _speciesDAO.GetFolderItems(folderId);
         }
 
         public Species GetSpecies(int id)
@@ -335,18 +349,22 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _citationDAO.GetByLiterature(literatureId);
         }
 
-        public IEnumerable<Citation> FindCitations(int searchType, Query query)
+        public IEnumerable<Citation> FindCitations(Query query)
         {
-            return _citationDAO.Search(searchType, query);
+            return _citationDAO.Search(query);
         }
 
-        public List<Citation> FindCitations(int speciesId)
+        public List<Citation> GetCitations(int speciesId)
         {
             return _referenceDAO.GetCitations(speciesId);
         }
         public ResultContainer AddCitation(Citation citation)
         {
             return _citationDAO.Add(citation);
+        }
+        public ResultContainer AddTaxonCitation(int citationId, int taxonId, string dataSource)
+        {
+            return _citationDAO.AddTaxonCitation(citationId, taxonId, dataSource);
         }
 
         public ResultContainer UpdateCitation(Citation citation)
@@ -415,7 +433,7 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public DataTable GetFolderItems(int folderId, string dataSource)
         {
-            return _folderDAO.FindFolderItems(folderId, dataSource);
+            return _folderDAO.GetFolderItems(folderId, dataSource);
         }
 
         public int DeleteFolderItem(int itemId)
@@ -478,9 +496,9 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _referenceDAO.AuthoritySearch(tableName, searchString);
         }
-        public IEnumerable<Citation> CitationSearch(string searchString)
+        public IEnumerable<Citation> CitationSearch(Query query)
         {
-            return _referenceDAO.CitationSearch(searchString);
+            return _citationDAO.Search(query);
         }
         public List<Cooperator> GetCreatedByCooperators(string tableName)
         {

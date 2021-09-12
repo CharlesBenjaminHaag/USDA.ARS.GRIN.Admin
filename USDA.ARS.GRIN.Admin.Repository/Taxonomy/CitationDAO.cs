@@ -11,9 +11,12 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
 {
     public class CitationDAO : BaseDAO, IRepository<Citation>
     {
+        FolderDAO _folderDAO = null;
+
         public CitationDAO(string context)
         {
             _context = context;
+            _folderDAO = new FolderDAO(context);
         }
         public ResultContainer Add(Citation entity)
         {
@@ -96,7 +99,19 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
 
         public IQueryable<Citation> Search(Query query)
         {
-            throw new NotImplementedException();
+            string sqlWhereClause = String.Empty;
+            IQueryable<Citation> citations = new List<Citation>().AsQueryable();
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                citations = Search(sqlWhereClause);
+                return citations;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
         }
 
         public IQueryable<Citation> GetByCategory(string category, int id)
@@ -191,78 +206,60 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             return citations.AsQueryable();
         }
 
-        public IQueryable<Citation> Search(int searchType, Query query)
-        {
-            int i = 0;
-            StringBuilder sbWhereClause = new StringBuilder();
-            foreach (QueryCriterion queryCriterion in query.QueryCriteria)
-            {
-                if (i == 0)
-                    sbWhereClause.Append(" WHERE ");
-                else
-                    sbWhereClause.Append(" AND ");
+        //public IQueryable<Citation> Search(int searchType, Query query)
+        //{
+        //    int i = 0;
+        //    StringBuilder sbWhereClause = new StringBuilder();
+        //    foreach (QueryCriterion queryCriterion in query.QueryCriteria)
+        //    {
+        //        if (i == 0)
+        //            sbWhereClause.Append(" WHERE ");
+        //        else
+        //            sbWhereClause.Append(" AND ");
 
-                sbWhereClause.Append(queryCriterion.FieldName);
-                sbWhereClause.Append(" ");
-                sbWhereClause.Append(queryCriterion.SearchOperatorCode);
-                sbWhereClause.Append(" ");
+        //        sbWhereClause.Append(queryCriterion.FieldName);
+        //        sbWhereClause.Append(" ");
+        //        sbWhereClause.Append(queryCriterion.SearchOperatorCode);
+        //        sbWhereClause.Append(" ");
 
-                if (queryCriterion.DataType == "NVARCHAR")
-                {
-                    if (queryCriterion.FieldValue == "NULL")
-                    {
-                        sbWhereClause.Append(queryCriterion.FieldValue);
-                    }
-                    else
-                    {
-                        sbWhereClause.Append("'");
-                        if (queryCriterion.SearchOperatorCode == "LIKE")
-                        {
-                            sbWhereClause.Append("%");
-                        }
-                        sbWhereClause.Append(queryCriterion.FieldValue);
-                        if (queryCriterion.SearchOperatorCode == "LIKE")
-                        {
-                            sbWhereClause.Append("%");
-                        }
-                        sbWhereClause.Append("'");
-                    }
-                }
-                i++;
-            }
+        //        if (queryCriterion.DataType == "NVARCHAR")
+        //        {
+        //            if (queryCriterion.FieldValue == "NULL")
+        //            {
+        //                sbWhereClause.Append(queryCriterion.FieldValue);
+        //            }
+        //            else
+        //            {
+        //                sbWhereClause.Append("'");
+        //                if (queryCriterion.SearchOperatorCode == "LIKE")
+        //                {
+        //                    sbWhereClause.Append("%");
+        //                }
+        //                sbWhereClause.Append(queryCriterion.FieldValue);
+        //                if (queryCriterion.SearchOperatorCode == "LIKE")
+        //                {
+        //                    sbWhereClause.Append("%");
+        //                }
+        //                sbWhereClause.Append("'");
+        //            }
+        //        }
+        //        i++;
+        //    }
            
-            return Search(searchType, sbWhereClause.ToString());
-        }
+        //    return Search(searchType, sbWhereClause.ToString());
+        //}
 
-        public IQueryable<Citation> Search(int searchType, string searchString)
+        public IQueryable<Citation> Search(string searchString)
         {
-            String commandText = String.Empty;
+            const string COMMAND_TEXT = "usp_TaxonomyCitations_Search";
             List<Citation> citations = new List<Citation>();
 
             try
             {
-                switch (searchType)
-                {
-                    case 0:
-                        commandText = "usp_TaxonomyCitationsByLiterature_Select";
-                        break;
-                    case 1:
-                        commandText = "usp_TaxonomyCitationsBySpecies_Search";
-                        break;
-                    case 2:
-                        commandText = "usp_TaxonomyCitationsByGenus_Search";
-                        break;
-                    case 3:
-                        commandText = "usp_TaxonomyCitationsByFamily_Search";
-                        break;
-                    case 4:
-                        commandText = "usp_TaxonomyCitationsByAccession_Search";
-                        break;
-                }
 
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
                 {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
@@ -274,16 +271,21 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                             {
                                 Citation citation = new Citation();
                                 citation.ID = Int32.Parse(reader["citation_id"].ToString());
-                                citation.Title = reader["citation_title"].ToString();
-                                citation.TypeCode = reader["type_code"].ToString();
-                                citation.DOIReference = reader["doi_reference"].ToString();
-                                citation.CitationYear = reader["citation_year"].ToString();
+                                citation.FamilyID = GetInt(reader["taxonomy_family_id"].ToString());
+                                citation.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
                                 citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
-                                citation.SpeciesName = reader["species_name"].ToString();
-                                citation.TaxonName = reader["species_name"].ToString();
-                                citation.AuthorName = reader["editor_author_name"].ToString();
-                                citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
-                                citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
+                                citation.CitationText = reader["citation_text"].ToString();
+                                citation.URL = reader["url"].ToString();
+                                citation.Literature.ID = GetInt(reader["literature_id"].ToString());
+                                citation.Literature.ReferenceTitle = reader["reference_title"].ToString();
+                                citation.Literature.EditorAuthorName = reader["editor_author_name"].ToString();
+                                citation.Literature.PublicationYear = reader["publication_year"].ToString();
+                                citation.Title = reader["citation_title"].ToString();
+                                citation.AuthorName = reader["author_name"].ToString();
+                                citation.CitationYear = reader["citation_year"].ToString();
+                                citation.Reference = reader["reference"].ToString();
+                                citation.DOIReference = reader["doi_reference"].ToString();
+                                citation.TypeCode = reader["type_code"].ToString();
                                 citation.Note = reader["note"].ToString();
                                 citations.Add(citation);
                             }
@@ -373,11 +375,6 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                 throw ex;
             }
             return resultContainer;
-        }
-
-        public IQueryable<Citation> Search(string searchString)
-        {
-            throw new NotImplementedException();
         }
 
         #region Literature
@@ -527,6 +524,86 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             return SearchLiterature(sbWhereClause.ToString());
         }
 
+        public ResultContainer AddTaxonCitation(int citationId, int taxonId, string dataSource)
+        {
+            string commandText = String.Empty;
+            string taxonIdParamName = String.Empty; 
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                switch (dataSource)
+                {
+                    case "taxonomy_family":
+                        commandText = "usp_TaxonomyCitationFamilyClone_Insert";
+                        taxonIdParamName = "@taxonomy_family_id";
+                        break;
+                    case "taxonomy_genus":
+                        commandText = "usp_TaxonomyCitationGenusClone_Insert";
+                        taxonIdParamName = "@taxonomy_genus_id";
+                        break;
+                    case "taxonomy_species":
+                        commandText = "usp_TaxonomyCitationSpeciesClone_Insert";
+                        taxonIdParamName = "@taxonomy_species_id";
+                        break;
+                }
+
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = commandText;
+                        cmd.Parameters.AddWithValue("@citation_id", citationId);
+                        cmd.Parameters.AddWithValue(taxonIdParamName, taxonId);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        SqlParameter familyIdParam = new SqlParameter();
+                        familyIdParam.SqlDbType = System.Data.SqlDbType.Int;
+                        familyIdParam.ParameterName = "@out_citation_id";
+                        familyIdParam.Direction = System.Data.ParameterDirection.Output;
+                        familyIdParam.Value = 0;
+                        cmd.Parameters.Add(familyIdParam);
+
+                        cmd.ExecuteNonQuery();
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultContainer.ResultCode))
+                        {
+                            if (Int32.Parse(resultContainer.ResultCode) > 0)
+                            {
+                                throw new Exception(resultContainer.ResultCode + resultContainer.ResultMessage);
+                            }
+                        }
+                        resultContainer.EntityID = GetInt(cmd.Parameters["@out_citation_id"].Value.ToString());
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                switch (ex.Errors[0].Number)
+                {
+                    case 547: // Foreign Key violation
+                        string s = ex.Message;
+                        s = s.Substring(s.IndexOf("column "));
+                        string[] array = s.Split('.');
+                        s = array[0].Substring(array[0].IndexOf('\''));
+                        break;
+                }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
 
         #endregion
     }

@@ -199,7 +199,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
         }
    
-        public DataTable FindFolderItems(int folderId, string dataSource)
+        public DataTable GetFolderItems(int folderId, string dataSource)
         {
             DataTable results = new DataTable();
             Folder folder = new Folder();
@@ -215,10 +215,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandText = GetStoredProcedureName(dataSource);
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
 
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                        {
-                            adapter.Fill(results);
-                        }
                     }
                 }
             }
@@ -246,7 +242,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
                         cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderItem.FolderID);
                         cmd.Parameters.AddWithValue("@item_id", folderItem.ItemID);
-                        cmd.Parameters.AddWithValue("@data_source", folderItem.DataSource);
+                        cmd.Parameters.AddWithValue("@data_source_name", folderItem.DataSource);
                         cmd.Parameters.AddWithValue("@created_by", folderItem.CreatedByCooperatorID);
 
                         SqlParameter retErrorParam = new SqlParameter();

@@ -1,0 +1,41 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.GenusListViewModel 
+<table id="data-table-select-list-genus" class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Genera.Count() > 0)
+        {
+            foreach (var genus in Model.Genera)
+            {
+                <tr>
+                    <td><span class="label label-default">@genus.ID</span></td>
+                    <td>@Html.Raw(genus.Name)</td>
+                    <td><button id="btnAuthor1" value="@genus.Name" class="btn btn-primary btn-sm proto" onclick="SelectGenus(@genus.ID, this.value);return false;">Select</button></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:5px;">
+                        @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                        Your search returned no matches.
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('#data-table-select-list-genus').DataTable(
+        {
+            responsive: true
+        }
+    );
+</script>

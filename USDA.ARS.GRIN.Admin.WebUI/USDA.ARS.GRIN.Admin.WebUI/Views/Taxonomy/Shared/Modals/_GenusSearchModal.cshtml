@@ -1,29 +1,31 @@
-﻿<div class="modal fade" id="modal-author-search">
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.GenusListViewModel
+<div class="modal fade" id="modal-genus-search">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Author Search</h4>
+                <h4 class="modal-title">Genus Search</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="input-group">
-                            <input type="text" id="txtSearchAuthors" class="form-control">
+                            <input type="text" id="txtSearchGenus" class="form-control">
                             <span class="input-group-btn">
-                                <button type="button" id="btnSearchAuthors" class="btn btn-info btn-flat">Search</button>
+                                <button type="button" id="btnSearchGenus" class="btn btn-info btn-flat">Search</button>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div id="section-author-search-results">
+                <div id="section-genus-search-results">
 
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                @*<button type="button" id="btn-set-protologue" class="btn btn-primary">Select</button>*@
             </div>
         </div>
         <!-- /.modal-content -->

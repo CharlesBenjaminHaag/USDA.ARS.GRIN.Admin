@@ -1,24 +1,87 @@
-﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Citation>
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var citation in Model)
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationListViewModel
+@using System.Data.SqlClient;
+
+<div style="margin-top:15px;">
+    @*<div class="mailbox-controls">
+        <button type="button" class="btn btn-success btn-sm check-all-search-results disabled">
+            <i class="fa fa-check"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results disabled">
+            <i class="fa fa-check-circle-o"></i>
+        </button>
+        <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm disabled" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CitationEdit", "Taxonomy", new { id = 0 })'">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
+    </div>*@
+    <div class="table-responsive mailbox-messages">
+        @*@if (Model.Citations.Count() > 0)
+        {*@
+        <table id="data-table-citations" class="table table-hover table-striped ggtools">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Text</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    if (Model.Citations.Count() > 0)
+                    {
+                        foreach (var citation in Model.Citations)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="label label-default">@citation.ID</span>
+                                </td>
+                                <td>
+                                    @citation.CitationText
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("CitationEdit", "Taxonomy", new { id = citation.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                }
+            </tbody>
+        </table>
+        @*}
+        else
         {
-            <tr>
-                <td>
-                    <div style="word-wrap:break-word;">
-                        @citation.Title>
-                    </div>
-                </td>
-                <td>
-                    <button id="btnCitation" value="@citation.Title" class="btn btn-primary btn-small proto" onclick="SelectCitation(@citation.ID, this.value);return false;">Select</button>
-                </td>
-            </tr>
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                Your search returned no matches.
+            </div>
+        }*@
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $('#data-table-citations').DataTable(
+    {
+        responsive: true,
+        select: true,
+        'checkboxes': {
+        'selectRow': true
         }
-    </tbody>
-</table>
+    }
+);
+</script>
+
+ 
+

@@ -9,6 +9,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
     public class Family : BaseModel, IEntity
     {
         public string Name { get; set; }
+        public string FullName { get; set; }
         public string Authority { get; set; }
         public int TypeGenusID { get; set; }
         public string SuprafamilyRankCode { get; set; }
@@ -17,16 +18,19 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string SubFamilyName { get; set; }
         public string TribeName { get; set; }
         public string SubTribeName { get; set; }
-
+        public Genus TypeGenus { get; set; }
         public IEnumerable<Genus> Genera { get; set; }
         public IEnumerable<Family> SubFamilies { get; set; }
         public IEnumerable<Family> SubTribes { get; set; }
+        public IEnumerable<Citation> Citations { get; set; }
 
         public Family()
         {
+            TypeGenus = new Genus();
             Genera = new List<Genus>().AsEnumerable();
             SubFamilies = new List<Family>().AsEnumerable();
             SubTribes = new List<Family>().AsEnumerable();
+            Citations = new List<Citation>().AsEnumerable();
         }
     }
 }

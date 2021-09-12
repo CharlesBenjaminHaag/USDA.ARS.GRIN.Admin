@@ -1,7 +1,6 @@
 ﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Note>
 <br />
-<h4>@Model.Count() results found</h4>
-<table class="table table-striped">
+<table id="data-table-notes" class="table table-striped" style="width:100%;">
     <thead>
         <tr>
             <th>Note</th>
@@ -18,7 +17,7 @@
                         @Html.Raw(note.NoteText)
                     </td>
                     <td>
-                        <button id="btnAuthor1" value="@note.NoteText" class="btn btn-primary btn-small proto pull-right" onclick="SelectNote(this.value);return false;">Select</button>
+                        <button id="btnAuthor1" value="@note.NoteText" class="btn btn-primary btn-sm proto pull-right" onclick="SelectNote(this.value);return false;">Select</button>
                     </td>
                 </tr>
             }
@@ -35,3 +34,10 @@
         }
     </tbody>
 </table>
+<script type="text/javascript">
+    $('#data-table-notes').DataTable(
+        {
+            responsive: true
+        }
+    );
+</script>

@@ -99,16 +99,12 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Data.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.email_template.Table.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.sys_application.Table.sql" />
-    <Content Include="SQL\dbo.sys_db_error.Table.sql" />
-    <Content Include="SQL\dbo.vw_AcctMgmtSysApplication.View.sql" />
-    <Content Include="SQL\dbo.vw_AcctMgmtSysTableFields.View.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.AcctMgmt.StoredProcedures.sql" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.Sys.StoredProcedures.SQL" />
-    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.StoredProcedures.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.Constraints.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Views.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Triggers.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.WebOrder.Tables.Alter.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

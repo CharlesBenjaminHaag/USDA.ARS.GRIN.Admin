@@ -67,8 +67,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             string requestedUrl = String.Empty;
             UserEditViewModel userViewModel = new UserEditViewModel();
-            userViewModel.AppName1 = "GRINGlobal";
-            userViewModel.AppName2 = "Admin";
+            userViewModel.AppName1 = "GG";
+            userViewModel.AppName2 = "Tools";
             userViewModel.AppAbbrev = "GGA";
 
             // Determine the title to display, based on the selected application.
@@ -77,8 +77,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             if (requestedUrl.ToLower().Contains("taxonomy"))
             {
                 userViewModel.ActiveContext = "taxonomy";
-                userViewModel.AppName1 = "GGTools";
-                userViewModel.AppName2 = "Taxon";
+                userViewModel.AppName1 = "GG";
+                userViewModel.AppName2 = "TaxonEditor";
                 userViewModel.AppAbbrev = "TT";
             }
             if (requestedUrl.ToLower().Contains("sitemanagement"))
@@ -92,8 +92,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             if (requestedUrl.ToLower().Contains("accessrightsmanagement"))
             {
                 userViewModel.ActiveContext = "accessrightsmanagement";
-                userViewModel.AppName1 = "GGTools";
-                userViewModel.AppName2 = "ARM";
+                userViewModel.AppName1 = "GG";
+                userViewModel.AppName2 = "AccessManager";
                 userViewModel.AppAbbrev = "ARM";
             }
 

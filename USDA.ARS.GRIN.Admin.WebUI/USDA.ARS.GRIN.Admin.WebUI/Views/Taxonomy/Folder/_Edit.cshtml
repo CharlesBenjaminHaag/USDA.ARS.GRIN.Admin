@@ -32,14 +32,10 @@
                                                             Select
                                                             <span class="fa fa-caret-down"></span>
                                                         </button>
-                                                        <ul id="folder-category-list" class="dropdown-menu">
-
-                                                            @*<li><a href="#">Problems</a></li>
-                                                                <li><a href="#">To-Do List</a></li>
-                                                                <li><a href="#">Benjamin's Category</a></li>
-                                                                <li class="divider"></li>
-                                                                <li><a href="#">Separated link</a></li>*@
-                                                        </ul>
+                                                        <select id="folder-category-list" class="dropdown-menu">
+                                                            <option>DEBUG 1</option>
+                                                            <option>DEBUG 2</option>
+                                                        </select>
                                                     </div>
                                                     <!-- /btn-group -->
                                                     <input type="text" id="txtFolderCategory" class="form-control">
@@ -67,7 +63,7 @@
             <div class="modal-footer">
                 <span class="input-group-btn">
                     <button type="button" id="btnCancel" data-dismiss="modal" class="btn btn-danger btn-flat">Cancel</button>
-                    <button type="button" id="btnAddSelectedItemsToFolder" class="btn btn-info btn-flat">Save</button>
+                    <button type="button" id="btnSaveFolder" class="btn btn-info btn-flat">Save</button>
                 </span>
             </div>
         </div>
