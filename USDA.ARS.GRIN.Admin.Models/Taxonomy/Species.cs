@@ -8,8 +8,6 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
 {
     public class Species : BaseModel
     {
-        public int ID { get; set; }
-        public int CurrentTaxonomySpeciesID { get; set; }
         public int NomenNumber { get; set; }
         public bool IsSpecificHybrid { get; set; }
         public string SpeciesName { get; set; }
@@ -38,7 +36,8 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public bool IsNamePending { get; set; }
         public string SynonymCode { get; set; }
         public int VerifierCooperatorID { get; set; }
-        public string NameVerifiedDate { get; set; }
+        public string VerifiedByCooperatorName { get; set; }
+        public DateTime NameVerifiedDate { get; set; }
         public string Name { get; set; }
         public string ProtologueVirtualPath { get; set; }
         public string AlternateName { get; set; }

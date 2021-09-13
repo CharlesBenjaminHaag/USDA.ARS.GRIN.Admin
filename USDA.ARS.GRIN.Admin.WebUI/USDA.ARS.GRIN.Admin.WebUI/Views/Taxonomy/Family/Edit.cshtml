@@ -291,7 +291,7 @@
     function GetCitations(dataSourceTitle, dataSourceName) {
         var taxonId = $("#ID").val();
         var link = '@Url.Action("CitationSearch", "Taxonomy")';
-        
+
         try {
                 var formData = new FormData();
                 formData.append(dataSourceTitle + "ID", taxonId);
@@ -365,7 +365,7 @@
     ===========================================================================
     */
     $(document).on("click", "[id='btnSearchCitations']", function () {
-        var dataSourceName = $().val("#DataSourceName");
+        var dataSourceName = $("#DataSourceName").val();
         var citationText = $("#FullText").val();
 
         var link = '@Url.Action("CitationSearch", "Taxonomy")';
@@ -427,12 +427,21 @@
     ===========================================================================
     */
     $(document).on("click", "[id='btnSearchGenus']", function () {
-        var url = '@Url.Action("GenusNameSearch","Taxonomy")';
-        var inputSearchString = $("#txtSearchGenus").val();
+        var link = '@Url.Action("GenusSearch", "Taxonomy")';
+        var formData = new FormData();
 
-        $.post(url, { searchString: inputSearchString })
-            .done(function (response) {
+        formData.append("Name", $("#Name").val());
+        formData.append("Format", "2");
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
                 $("#section-genus-search-results").html(response);
+            }
         });
     });
 

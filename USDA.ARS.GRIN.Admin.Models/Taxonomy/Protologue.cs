@@ -10,6 +10,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
     {
         public int ID { get; set; }
         public string Text { get; set; }
+        public string URL { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedByCooperatorID { get; set; }
         public DateTime ModifiedDate { get; set; }

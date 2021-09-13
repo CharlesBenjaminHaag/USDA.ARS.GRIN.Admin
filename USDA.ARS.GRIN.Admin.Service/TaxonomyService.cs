@@ -500,6 +500,12 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.Search(query);
         }
+
+        public IEnumerable<Protologue> ProtologueSearch(string searchText)
+        {
+            return _referenceDAO.ProtologueSearch(searchText);
+        }
+
         public List<Cooperator> GetCreatedByCooperators(string tableName)
         {
             return _speciesDAO.GetCreatedByCooperators(tableName);

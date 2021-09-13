@@ -11,6 +11,7 @@ namespace USDA.ARS.GRIN.Admin.Models
         public int ReferenceID { get; set; }
         public int ParentID { get; set; }
         public int ID { get; set; }
+        public int CurrentID { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedByCooperatorID { get; set; }
         public string CreatedByCooperatorName { get; set; }

@@ -66,10 +66,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     species.ModifiedDate = DateTime.Now;
                     species.OwnedDate = DateTime.Now;
 
-                    if (species.CurrentTaxonomySpeciesID == 0)
+                    if (species.CurrentID == 0)
                         cmd.Parameters.AddWithValue("@current_taxonomy_species_id", DBNull.Value);
                     else
-                        cmd.Parameters.AddWithValue("@current_taxonomy_species_id", species.CurrentTaxonomySpeciesID);
+                        cmd.Parameters.AddWithValue("@current_taxonomy_species_id", species.CurrentID);
 
                     cmd.Parameters.AddWithValue("@nomen_number", species.NomenNumber);
                     cmd.Parameters.AddWithValue("@is_specific_hybrid", species.IsSpecificHybrid);
@@ -174,7 +174,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     species.OwnedDate = DateTime.Now;
 
                     cmd.Parameters.AddWithValue("@taxonomy_species_id", species.ID);
-                    cmd.Parameters.AddWithValue("@current_taxonomy_species_id", species.CurrentTaxonomySpeciesID);
+                    cmd.Parameters.AddWithValue("@current_taxonomy_species_id", species.CurrentID);
                     cmd.Parameters.AddWithValue("@nomen_number", species.NomenNumber  );
                     cmd.Parameters.AddWithValue("@is_specific_hybrid", species.IsSpecificHybrid);
                     cmd.Parameters.AddWithValue("@species_name", species.SpeciesName);
@@ -263,7 +263,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             while (reader.Read())
                             {
                                 species.ID = GetInt(reader["taxonomy_species_id"].ToString());
-                                species.CurrentTaxonomySpeciesID = GetInt(reader["current_taxonomy_species_id"].ToString());
+                                species.CurrentID = GetInt(reader["current_taxonomy_species_id"].ToString());
                                 species.NomenNumber = GetInt(reader["nomen_number"].ToString());
                                 species.IsSpecificHybrid = (reader["is_specific_hybrid"].ToString() == "Y") ? true : false;
                                 species.SpeciesName = reader["species_name"].ToString();
@@ -286,13 +286,12 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 species.IsNamePending = (reader["is_name_pending"].ToString() == "Y") ? true : false;
                                 species.SynonymCode = reader["synonym_code"].ToString();
                                 species.VerifierCooperatorID = GetInt(reader["verifier_cooperator_id"].ToString());
-                                species.NameVerifiedDate = reader["name_verified_date"].ToString();
+                                species.NameVerifiedDate = GetDate(reader["name_verified_date"].ToString());
                                 species.Name = reader["name"].ToString();
                                 species.NameAuthority = reader["name_authority"].ToString();
                                 species.Protologue = reader["protologue"].ToString();
                                 species.ProtologueVirtualPath = reader["protologue_virtual_path"].ToString();
                                 species.Note = reader["note"].ToString();
-
                                 species.AlternateName = reader["alternate_name"].ToString();
                                 species.CreatedDate = GetDate(reader["created_date"].ToString());
                                 species.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
@@ -336,7 +335,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             {
                                 Species species = new Species();
                                 species.ID = GetInt(reader["taxonomy_species_id"].ToString());
-                                species.CurrentTaxonomySpeciesID = GetInt(reader["current_taxonomy_species_id"].ToString());
+                                species.CurrentID = GetInt(reader["current_taxonomy_species_id"].ToString());
                                 species.NomenNumber = GetInt(reader["nomen_number"].ToString());
                                 species.IsSpecificHybrid = (reader["is_specific_hybrid"].ToString() == "Y") ? true : false;
                                 species.SpeciesName = reader["species_name"].ToString();
@@ -359,7 +358,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 species.IsNamePending = (reader["is_name_pending"].ToString() == "Y") ? true : false;
                                 species.SynonymCode = reader["synonym_code"].ToString();
                                 species.VerifierCooperatorID = GetInt(reader["verifier_cooperator_id"].ToString());
-                                species.NameVerifiedDate = reader["name_verified_date"].ToString();
+                                species.NameVerifiedDate = GetDate(reader["name_verified_date"].ToString());
                                 species.Name = reader["name"].ToString();
                                 species.NameAuthority = reader["name_authority"].ToString();
                                 species.Protologue = reader["protologue"].ToString();

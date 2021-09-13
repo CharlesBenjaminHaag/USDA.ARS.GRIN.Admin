@@ -1,5 +1,5 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.GenusListViewModel 
-<table id="data-table-select-list-genus" class="table table-responsive table-striped">
+<table id="data-table-select-list-genus" class="table table-responsive table-striped" style="width:100%">
     <thead>
         <tr>
             <th>ID</th>
@@ -14,8 +14,8 @@
             {
                 <tr>
                     <td><span class="label label-default">@genus.ID</span></td>
-                    <td>@Html.Raw(genus.Name)</td>
-                    <td><button id="btnAuthor1" value="@genus.Name" class="btn btn-primary btn-sm proto" onclick="SelectGenus(@genus.ID, this.value);return false;">Select</button></td>
+                    <td>@Html.Raw(genus.FullName)</td>
+                    <td><button id="btnAuthor1" value="@genus.FullName" class="btn btn-primary btn-sm proto" onclick="SelectGenus(@genus.ID, this.value);return false;">Select</button></td>
                 </tr>
             }
         }

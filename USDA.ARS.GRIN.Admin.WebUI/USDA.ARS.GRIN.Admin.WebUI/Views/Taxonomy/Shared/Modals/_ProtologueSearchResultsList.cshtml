@@ -1,0 +1,50 @@
+﻿@model List<USDA.ARS.GRIN.Admin.Models.Taxonomy.Protologue>
+<br />
+<table id="data-table-notes" class="table table-striped" style="width:100%;">
+    <thead>
+        <tr>
+            <th>Note</th>
+            <th>URL</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() > 0)
+        {
+            foreach (var protologue in Model)
+            {
+                <tr>
+                    <td>
+                        @protologue.Text
+                    </td>
+                    <td>
+                        @if (!String.IsNullOrEmpty(protologue.URL))
+                        { 
+                        <a href="@protologue.URL">@protologue.URL</a>                        
+                        }
+                    </td>
+                    <td>
+                        <button id="btnAuthor1" value="@protologue.Text" class="btn btn-primary btn-sm proto pull-right" onclick="SelectProtologue(this.value);return false;">Select</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:5px;">
+                        Your search returned no matches.
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('#data-table-notes').DataTable(
+        {
+            responsive: true
+        }
+    );
+</script>

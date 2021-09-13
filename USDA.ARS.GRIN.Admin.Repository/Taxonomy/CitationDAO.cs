@@ -20,15 +20,116 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
         }
         public ResultContainer Add(Citation entity)
         {
+            const string COMMAND_TEXT = "usp_TaxonomyCitation_Insert";
             ResultContainer resultContainer = new ResultContainer();
 
             try
             {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
 
+                        cmd.Parameters.AddWithValue("@literature_id", entity.LiteratureID);
+
+                        if (!String.IsNullOrEmpty(entity.CitationTitle))
+                            cmd.Parameters.AddWithValue("@citation_title", entity.CitationTitle);
+                        else
+                            cmd.Parameters.AddWithValue("@citation_title", DBNull.Value);
+
+                        if (!String.IsNullOrEmpty(entity.AuthorName))
+                            cmd.Parameters.AddWithValue("@author_name", entity.AuthorName);
+                        else
+                            cmd.Parameters.AddWithValue("@author_name", DBNull.Value);
+
+                        if (!String.IsNullOrEmpty(entity.CitationYear))
+                            cmd.Parameters.AddWithValue("@citation_year", entity.CitationYear);
+                        else
+                            cmd.Parameters.AddWithValue("@citation_year", DBNull.Value);
+
+                        //if (!String.IsNullOrEmpty(entity.Authority))
+                        //    cmd.Parameters.AddWithValue("@genus_authority", entity.Authority);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@genus_authority", DBNull.Value);
+
+                        //if (!String.IsNullOrEmpty(entity.SubGenusName))
+                        //    cmd.Parameters.AddWithValue("@subgenus_name", entity.SubGenusName);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@subgenus_name", DBNull.Value);
+
+                        //if (!String.IsNullOrEmpty(entity.SectionName))
+                        //    cmd.Parameters.AddWithValue("@section_name", entity.SectionName);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@section_name", DBNull.Value);
+
+                        if (!String.IsNullOrEmpty(entity.Title))
+                            cmd.Parameters.AddWithValue("@title", entity.Title);
+                        else
+                            cmd.Parameters.AddWithValue("@title", DBNull.Value);
+
+                        //if (!String.IsNullOrEmpty(entity.SeriesName))
+                        //    cmd.Parameters.AddWithValue("@series_name", entity.SeriesName);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@series_name", DBNull.Value);
+
+                        //if (!String.IsNullOrEmpty(entity.SubSeriesName))
+                        //    cmd.Parameters.AddWithValue("@subseries_name", entity.SubSeriesName);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@subseries_name", DBNull.Value);
+
+                        if (!String.IsNullOrEmpty(entity.Note))
+                            cmd.Parameters.AddWithValue("@note", entity.Note);
+                        else
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+
+                        cmd.Parameters.AddWithValue("@created_by", entity.CreatedByCooperatorID);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        SqlParameter genusIdParam = new SqlParameter();
+                        genusIdParam.SqlDbType = System.Data.SqlDbType.Int;
+                        genusIdParam.ParameterName = "@out_citation_id";
+                        genusIdParam.Direction = System.Data.ParameterDirection.Output;
+                        genusIdParam.Value = 0;
+                        cmd.Parameters.Add(genusIdParam);
+
+                        cmd.ExecuteNonQuery();
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultContainer.ResultCode))
+                        {
+                            if (Int32.Parse(resultContainer.ResultCode) > 0)
+                            {
+                                throw new Exception(resultContainer.ResultCode + resultContainer.ResultMessage);
+                            }
+                        }
+                        resultContainer.EntityID = GetInt(cmd.Parameters["@out_taxonomy_genus_id"].Value.ToString());
+                    }
+                }
             }
             catch (SqlException ex)
             {
-
+                switch (ex.Errors[0].Number)
+                {
+                    case 547: // Foreign Key violation
+                        string s = ex.Message;
+                        s = s.Substring(s.IndexOf("column "));
+                        string[] array = s.Split('.');
+                        s = array[0].Substring(array[0].IndexOf('\''));
+                        break;
+                }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return resultContainer;
         }

@@ -37,7 +37,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="@Url.Action("Explorer","Taxonomy")"><i class="fa fa-bookmark"></i> EXPLORER</a></li>
+                    @*<li><a href="@Url.Action("Explorer","Taxonomy")"><i class="fa fa-bookmark"></i> EXPLORER</a></li>*@
                     <li><a href="@Url.Action("FamilyHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
 
                     @if (HttpContext.Current.Request.Url.ToString().Contains("GenusEdit"))
@@ -50,10 +50,12 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#section-detail"><i class="fa fa-bookmark"></i> Summary</a></li>
-                                <li><a href="#section-related-species"><i class="fa fa-bookmark"></i> Genera</a></li>
-                                <li><a href="#section-related-synonyms"><i class="fa fa-bookmark"></i> Synonyms</a></li>
-                                <li><a href="#section-related-citations"><i class="fa fa-bookmark"></i> Citations</a></li>
+                                <li><a href="#section-top-summary"><i class="fa fa-bookmark"></i> Summary</a></li>
+                                <li><a href="#section-top-synonyms"><i class="fa fa-bookmark"></i> Synonyms</a></li>
+                                <li><a href="#section-top-subtaxa"><i class="fa fa-bookmark"></i> Subtaxa</a></li>
+                                <li><a href="#section-top-citations"><i class="fa fa-bookmark"></i> Citations</a></li>
+                                <li><a href="#section-top-uses"><i class="fa fa-bookmark"></i> Economic Uses</a></li>
+                                <li><a href="#section-top-geographies"><i class="fa fa-bookmark"></i> Geographies</a></li>
                             </ul>
                         </li>
                     }
@@ -124,9 +126,10 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-bookmark"></i> Summary</a></li>
-                                <li><a href="#"><i class="fa fa-bookmark"></i> Synonyms</a></li>
-                                <li><a href="#"><i class="fa fa-bookmark"></i> Citations</a></li>
+                                <li><a href="#section-top-summary"><i class="fa fa-bookmark"></i> Summary</a></li>
+                                <li><a href="#section-top-synonyms"><i class="fa fa-bookmark"></i> Synonyms</a></li>
+                                <li><a href="#section-top-subtaxa"><i class="fa fa-bookmark"></i> Subtaxa</a></li>
+                                <li><a href="#section-top-citations"><i class="fa fa-bookmark"></i> Citations</a></li>
                             </ul>
                         </li>
                     }

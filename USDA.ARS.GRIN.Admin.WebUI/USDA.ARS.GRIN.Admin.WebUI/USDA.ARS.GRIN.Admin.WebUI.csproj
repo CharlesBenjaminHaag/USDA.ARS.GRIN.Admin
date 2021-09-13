@@ -392,6 +392,8 @@
     <Content Include="Views\Taxonomy\Family\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\Species\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_SpeciesSearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_ProtologueSearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_ProtologueSearchResultsList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

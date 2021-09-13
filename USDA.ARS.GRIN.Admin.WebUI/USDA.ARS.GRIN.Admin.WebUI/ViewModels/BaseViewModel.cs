@@ -25,6 +25,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public string CurrentName { get; set; }
         public string CurrentCodeValue { get; set; }
         public string Action { get; set; }
+        public string Context { get; set; }
         public SysTable SysTable { get; set; }
         public string TableName { get; set; }
         public string DataSourceName { get; set; }

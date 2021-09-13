@@ -741,26 +741,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult GenusNameSearch(string searchString)
-        {
-            const string LAYOUT_VIEW_NAME = BASE_PATH + "Genus/_SelectList.cshtml";
-            Query query = new Query();
-            GenusListViewModel genusListViewModel = new GenusListViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-         
-            try
-            {
-                query.QueryCriteria.Add(new QueryCriterion { FieldName="genus_name", SearchOperatorCode = "LIKE", FieldValue = searchString, DataType = "NVARCHAR" });
-                genusListViewModel.Genera = _taxonomyService.GenusSearch(query);
-                return PartialView(LAYOUT_VIEW_NAME, genusListViewModel);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return RedirectToAction("InternalServerError", "Error");
-            }
-        }
-
         [HttpPost]
         public PartialViewResult GenusSearch(FormCollection formCollection)
         {
@@ -770,6 +750,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
+                genusListViewModel.Format = 1;
+                genusListViewModel.ListViewName = "Family/_List.cshtml";
+
                 if (!String.IsNullOrEmpty(formCollection["FamilyID"]))
                 {
                     genusListViewModel.Action = "Parent";
@@ -788,7 +771,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                 if (!String.IsNullOrEmpty(formCollection["Name"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "genus_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["Name"], DataType = "NVARCHAR", LogicalOperator = "OR" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "full_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["Name"], DataType = "NVARCHAR", LogicalOperator = "OR" });
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "subgenus_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["Name"], DataType = "NVARCHAR", LogicalOperator = "OR" });
                 }
 
@@ -812,8 +795,13 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "note", SearchOperatorCode = "LIKE", FieldValue = formCollection["Note"], DataType = "NVARCHAR" });
                 }
 
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                {
+                    genusListViewModel.Format = 2;
+                    genusListViewModel.ListViewName = "Genus/_SelectList.cshtml";
+                }
                 genusListViewModel.Genera = taxonomyService.GenusSearch(query);
-                return PartialView(BASE_PATH + "Genus/_List.cshtml", genusListViewModel);
+                return PartialView(BASE_PATH + genusListViewModel.ListViewName, genusListViewModel);
             }
             catch (Exception ex)
             {
@@ -955,9 +943,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_genus_id", SearchOperatorCode = "=", FieldValue = formCollection["GenusID"], DataType = "INT" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["CurrentSpeciesID"]))
+                if (!String.IsNullOrEmpty(formCollection["CurrentID"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "current_taxonomy_species_id", SearchOperatorCode = "=", FieldValue = formCollection["CurrentSpeciesID"], DataType = "INT" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "current_taxonomy_species_id", SearchOperatorCode = "=", FieldValue = formCollection["CurrentID"], DataType = "INT" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
@@ -1002,7 +990,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult SpeciesEdit(int id = 0, int currentId = 0, string synonymCode = "", string infraspecificTypeCode = "")
+        public ActionResult SpeciesEdit(int id = 0, int currentId = 0, string synonymCode = "", string infraspecificTypeCode = "", string context="")
         {
             Species species = new Species();
             SpeciesEditViewModel speciesEditViewModel = null;
@@ -1016,6 +1004,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     TempData["context"] = String.Format("Edit Species [{0}]", id);
                     species = taxonomyService.GetSpecies(id);
                     speciesEditViewModel = new SpeciesEditViewModel(species);
+                    speciesEditViewModel.SynonymCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_SYNONYM_CODE"), "CodeValue", "Title");
                     speciesEditViewModel.DataSourceName = "taxonomy_species";
 
                     // If species is has a parent, retrive the parent record.
@@ -1028,71 +1017,46 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 }
                 else
                 {
-                    // ADD
+                    // ADD NEW SPECIES
                     speciesEditViewModel = new SpeciesEditViewModel(species);
+                    speciesEditViewModel.SynonymCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_SYNONYM_CODE"), "CodeValue", "Title");
                     speciesEditViewModel.DataSourceName = "taxonomy_species";
-
+                  
                     if (currentId > 0)
                     {
-                        TempData["context"] = "Add Species Synonym";
+                        // Based on the value of the context parameter, configure the viewmodel for one of several possible sub-taxa.
+                        if (!String.IsNullOrEmpty(context))
+                        {
+                            speciesEditViewModel.Context = context;
+                            switch (context)
+                            {
+                                case "sub":
+                                    TempData["context"] = "Add Subvariety";
+                                    break;
+                                case "var":
+                                    TempData["context"] = "Add Variety";
+                                    break;
+                                case "for":
+                                    TempData["context"] = "Add Form";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            TempData["context"] = "Add Species Synonym";
+                        }
                         speciesEditViewModel.CurrentSpecies = taxonomyService.GetSpecies(currentId);
                         speciesEditViewModel.CurrentID = currentId;
                         speciesEditViewModel.CurrentName = speciesEditViewModel.CurrentSpecies.FullName;
-                        speciesEditViewModel.IsSynonym = true;                        
+                        speciesEditViewModel.IsSynonym = true;
+                        speciesEditViewModel.GenusID = speciesEditViewModel.CurrentSpecies.GenusID;
+                        speciesEditViewModel.GenusName = speciesEditViewModel.CurrentSpecies.GenusName;
                     }
                     else
                     {
                         TempData["context"] = "Add Species";
                     }
                 }
-        
-                //if (id > 0)
-                //{
-                //    TempData["context"] = "Edit Species";
-                //    species = taxonomyService.GetSpecies(id);
-                //}
-                //else
-                //{
-                //    if (currentId > 0)
-                //    {
-                //        if (synonymCode == "B")
-                //        {
-                //            TempData["context"] = "Add Basionym";
-                //        }
-                //        else
-                //        {
-                //            if (synonymCode == "S")
-                //            {
-                //                TempData["context"] = "Add Synonym";
-                //            }
-                //        }
-
-                //        if (infraspecificTypeCode == "V")
-                //        {
-                //            TempData["context"] = "Add Variety";
-                //        }
-                //        else
-                //        {
-                //            if (infraspecificTypeCode == "F")
-                //            {
-                //                TempData["context"] = "Add Form";
-                //            }
-                //        }
-
-                //        speciesEditViewModel.CurrentTaxonomySpeciesID = currentId;
-                //        speciesEditViewModel.SynonymCode = synonymCode;
-                //        speciesEditViewModel.InfraspecificTypeCode = infraspecificTypeCode;
-                //        speciesEditViewModel.CurrentSpecies = taxonomyService.GetSpecies(currentId);
-                //        speciesEditViewModel.GenusID = speciesEditViewModel.CurrentSpecies.GenusID;
-                //        speciesEditViewModel.GenusName = speciesEditViewModel.CurrentSpecies.GenusName;
-                //    }
-                //    else
-                //    {
-                //        TempData["context"] = "Add Species";
-                //        speciesEditViewModel.CurrentTaxonomySpeciesID = currentId;
-                //        speciesEditViewModel.SynonymCode = synonymCode;
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -1108,27 +1072,23 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             ResultContainer resultContainer = new ResultContainer();
             TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
 
-            if (!ModelState.IsValid)
-            {
-                return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
-            }
-
             try
             {
                 species.ID = viewModel.ID;
-                species.CurrentTaxonomySpeciesID = viewModel.CurrentTaxonomySpeciesID;
+                species.CurrentID = viewModel.CurrentID;
                 species.NomenNumber = viewModel.NomenNumber;
                 species.IsSpecificHybrid = viewModel.IsSpecificHybrid;
-                species.SpeciesName = viewModel.SpeciesName;
-                species.Name = viewModel.Name;
+                species.SpeciesName = viewModel.Name;
                 species.IsAcceptedName = viewModel.IsAcceptedName;
                 species.Authority = viewModel.Authority;
+                species.IsSpecificHybrid = viewModel.IsSpecificHybrid;
                 species.IsSubSpecificHybrid = viewModel.IsSubSpecificHybrid;
+                species.IsFormaHybrid = viewModel.IsFormaHybrid;
+                species.IsVarietalHybrid = viewModel.IsVarietalHybrid;
                 species.SubSpeciesName = viewModel.SubSpeciesName;
                 species.SubSpeciesAuthority = viewModel.SubSpeciesAuthority;
-                //viewModel.IsVarietalHybrid = species.IsVarietalHybrid;
-                //viewModel.VarietyName = species.VarietyName;
-                //viewModel.VarietyAuthority = species.VarietyAuthority;
+                species.VarietyName = viewModel.VarietyName;
+                species.VarietyAuthority = viewModel.VarietyAuthority;
                 species.FormaName = viewModel.FormaName;
                 species.FormaAuthority = viewModel.FormaAuthority;
                 species.FormaRankType = viewModel.FormaRankType;
@@ -1139,8 +1099,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 species.Authority = viewModel.Authority;
                 species.Note = viewModel.Note;
                 species.SynonymCode = viewModel.SynonymCode;
+                
                 if (viewModel.ID > 0)
                 {
+                    if (viewModel.Context == "verify")
+                    {
+                        species.VerifierCooperatorID = AuthenticatedUser.CooperatorID;
+                        species.NameVerifiedDate = DateTime.Now;
+                    }
+
                     species.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
                     resultContainer = _taxonomyService.UpdateSpecies(species);
                 }
@@ -1149,6 +1116,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     species.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
                     resultContainer = _taxonomyService.AddSpecies(species);
                     viewModel.ID = resultContainer.EntityID;
+
                 }
 
                 if (resultContainer.ResultCode == "2601")
@@ -1157,7 +1125,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
                 }
 
-                return RedirectToAction("SpeciesEdit", "Taxonomy", new { id = viewModel.ID });
+                return RedirectToAction("SpeciesEdit", "Taxonomy", new { id = viewModel.ID, currentId = 0, synonymCode = "", infraspecificTypeCode = "" });
             }
             catch (Exception ex)
             {
@@ -1246,7 +1214,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "" });
             citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "" });
             citationTypeCodes.Add(new ReferenceItem { ID = 4, Name = "NULL", Description = "" });
-            viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "ID", "Name");
+            viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "Name", "Name");
 
             viewModel.SearchViewModel = searchViewModel;
 
@@ -1268,11 +1236,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 if (!String.IsNullOrEmpty(formCollection["DataSourceName"]))
                 {
                     dataSourceIdFieldName = formCollection["DataSourceName"] + "_id";
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = dataSourceIdFieldName, SearchOperatorCode = "IS NOT", FieldValue = "NULL", DataType = "INT" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["FamilyID"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_family_id", SearchOperatorCode = "=", FieldValue = formCollection["FamilyID"], DataType = "INT" });
+                    if (Int32.Parse(formCollection["FamilyID"]) > 0)
+                    {
+                        query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_family_id", SearchOperatorCode = "=", FieldValue = formCollection["FamilyID"], DataType = "INT" });
+                    }
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["GenusID"]))
@@ -1290,6 +1262,27 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = dataSourceIdFieldName, SearchOperatorCode = "IS NOT", FieldValue = "NULL", DataType = "NVARCHAR" });
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "citation_text", SearchOperatorCode = "LIKE", FieldValue = formCollection["FullText"], DataType = "NVARCHAR" });
                 }
+
+                if (!String.IsNullOrEmpty(formCollection["TypeCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "type_code", SearchOperatorCode = "=", FieldValue = formCollection["TypeCode"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Reference"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "reference", SearchOperatorCode = "LIKE", FieldValue = formCollection["Reference"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["DOIReference"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "doi_reference", SearchOperatorCode = "LIKE", FieldValue = formCollection["DOIReference"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Title"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "title", SearchOperatorCode = "LIKE", FieldValue = formCollection["Title"], DataType = "NVARCHAR" });
+                }
+
 
                 if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
                 {
@@ -2288,6 +2281,20 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView(BASE_PATH + "Shared/Modals/_AuthorSearchModal.cshtml");
         }
 
+        public PartialViewResult _ProtologueSearchModal()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return PartialView(BASE_PATH + "Shared/Modals/_ProtologueSearchModal.cshtml");
+        }
+
+
         public PartialViewResult _NoteSearchModal()
         {
             try
@@ -2335,6 +2342,23 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 Log.Error(ex, ex.Message);
                 return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        public ActionResult ProtologueSearch(string searchText)
+        {
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                IEnumerable<Protologue> protologues = new List<Protologue>().AsEnumerable();
+                protologues = _taxonomyService.ProtologueSearch(searchText);
+                return PartialView(BASE_PATH + "Shared/Modals/_ProtologueSearchResultsList.cshtml", protologues);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
 

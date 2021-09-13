@@ -28,8 +28,10 @@
             <th>ID</th>
             <th>Name</th>
             <th>Accepted?</th>
+            <th>Synonym Code</th>
             <th>Protologue</th>
-            <th>Verified Date</th>
+            <th>Verified</th>
+            <th>By</th>
             <th>Last Modified</th>
             <th>By</th>
             <th></th>
@@ -42,8 +44,17 @@
             <td><span class="badge">@species.ID</span></td>
             <td>@Html.Raw(species.FullName)</td>
             <td>@Html.Raw(DisplayHelper.GetBooleanDisplayString(species.IsAcceptedName))</td>
+            <td>@species.SynonymCode</td>
             <td>@Html.Raw(species.Protologue)</td>
-            <td>@species.NameVerifiedDate</td>
+            <td>
+                @if (species.NameVerifiedDate != DateTime.MinValue)
+                {
+                    @species.NameVerifiedDate.ToShortDateString()
+                }
+            </td>
+            <td>
+                @species.VerifiedByCooperatorName
+            </td>
             <td>
                 @if (species.ModifiedDate != DateTime.MinValue)
                 {

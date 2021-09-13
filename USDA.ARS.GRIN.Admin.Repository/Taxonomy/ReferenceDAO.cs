@@ -176,6 +176,38 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return authors.AsEnumerable();
         }
 
+        public IEnumerable<Protologue> ProtologueSearch(string searchText)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomySpeciesProtologue_Search";
+            List<Protologue> protologues = new List<Protologue>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@search_text", searchText);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                protologues.Add(new Protologue { Text = reader["protologue"].ToString(), URL = reader["protologue_virtual_path"].ToString() });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return protologues.AsEnumerable();
+        }
+
         public IEnumerable<Citation> CitationSearch(string searchText)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCitation_Search";
