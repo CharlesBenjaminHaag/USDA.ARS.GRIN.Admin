@@ -28,10 +28,42 @@ REVISION HISTORY
 }
 
 <div class="row" style="padding-bottom:10px;">
-    <div class="col-md-6">
+    <div class="col-md-12">
         @if (Model.ID > 0)
         {
-            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "syn" })" class="btn btn-default">
+            
+
+            
+
+            @*<a class="btn btn-app">
+                <i class="fa fa-save"></i> Save
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-yellow">3</span>
+                <i class="fa fa-bullhorn"></i> Notifications
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-green">300</span>
+                <i class="fa fa-barcode"></i> Products
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-purple">891</span>
+                <i class="fa fa-users"></i> Users
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-teal">67</span>
+                <i class="fa fa-inbox"></i> Orders
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-aqua">12</span>
+                <i class="fa fa-envelope"></i> Inbox
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-red">531</span>
+                <i class="fa fa-heart-o"></i> Likes
+            </a>*@
+
+            @*<a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "syn" })" class="btn btn-default">
                 <i class="fa fa-plus"></i>
                 <i class="fa fa-exchange"></i>
                 Synonym
@@ -65,14 +97,11 @@ REVISION HISTORY
                 <i class="fa fa-plus"></i>
                 <i class="fa fa-globe"></i>
                 Geography
-            </a>
+            </a>*@
         }
     </div>
-    <div class="col-md-6">
-        <button id="btnSave" type="button" class="btn btn-primary pull-right">
-            <i class="fa fa-save"></i>
-            Save Edits
-        </button>
+    <div class="col-md-3">
+        
         @if ((Model.ID > 0) && (Model.VerifierCooperatorID <= 0))
         {
             <button id="btnVerify" type="button" class="btn btn-success pull-right" style="margin-right:.2em;">
@@ -101,8 +130,66 @@ REVISION HISTORY
         <div class="box-body">
             @Html.ValidationSummary()
             @Html.Raw(Model.ErrorMessage)
+
+            <a class="btn btn-app">
+                <i class="fa fa-leaf"></i> + Synonym
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-leaf"></i> + Variety
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-leaf"></i> Subvariety
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-leaf"></i> Subspecies
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-book"></i> Citation
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-globe"></i> Geography
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-dollar"></i> Economic Use
+            </a>
+            <a class="btn btn-app">
+                <i class="fa fa-address-book"></i> Common Names
+            </a>
+            <a class="btn btn-app">
+                <span class="badge bg-green">12</span>
+                <i class="fa fa-barcode"></i> Products
+            </a>
+
             @if (Model.IsSynonym)
             {
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-app">
+                            <i class="fa fa-leaf"></i> + Synonym
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-leaf"></i> + Variety
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-leaf"></i> Subvariety
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-leaf"></i> Subspecies
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-book"></i> Citation
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-globe"></i> Geography
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-dollar"></i> Economic Use
+                        </a>
+                        <a class="btn btn-app">
+                            <i class="fa fa-address-book"></i> Common Names
+                        </a>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-4">
                         <label>Synonym of</label>
@@ -175,8 +262,8 @@ REVISION HISTORY
                             else
                             {
                                 <label>Name</label>
-                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
                             }
                         }
                     }
@@ -312,6 +399,10 @@ REVISION HISTORY
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-note-search">
                 <i class="fa fa-search"></i>
                 Search Notes...
+            </button>
+            <button id="btnSave" type="button" class="btn btn-primary pull-right">
+                <i class="fa fa-save"></i>
+                Save Edits
             </button>
         </div>
     </div>

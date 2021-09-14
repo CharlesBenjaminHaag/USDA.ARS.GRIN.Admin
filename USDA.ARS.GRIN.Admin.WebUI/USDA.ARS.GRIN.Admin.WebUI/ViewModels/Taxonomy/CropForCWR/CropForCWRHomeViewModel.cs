@@ -10,6 +10,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CropForCWRHomeViewModel : BaseViewModel
     {
+        public string Name { get; set; }
         public CropForCWRHomeViewModel()
         {
             this.DataSourceName = "taxonomy_cwr_crop";

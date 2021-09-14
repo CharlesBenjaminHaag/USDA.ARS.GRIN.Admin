@@ -90,15 +90,18 @@
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    @TempData["context"]
+                    @Html.Raw(TempData["page_title"])
                     @*@ViewContext.RouteData.Values["controller"].ToString() -- @ViewContext.RouteData.Values["action"].ToString()*@
-                    <small>GGTools @DisplayHelper.GetVersion()</small>
-                    &nbsp;<span class="badge bg-red-active">@DisplayHelper.GetEnvironment()</span>
+                    
+                    @*<div class="pull-right">
+                        <small>GGTools @DisplayHelper.GetVersion()</small>
+                        &nbsp;<span class="badge bg-red-active">@DisplayHelper.GetEnvironment()</span>
+                    </div>*@
                 </h1>
-                <ol class="breadcrumb">
+                @*<ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i>@ViewContext.RouteData.Values["controller"].ToString()</a></li>
                     <li class="active"> @ViewContext.RouteData.Values["action"].ToString()</li>
-                </ol>
+                </ol>*@
             </section>
             <section class="content">
                 @RenderBody()

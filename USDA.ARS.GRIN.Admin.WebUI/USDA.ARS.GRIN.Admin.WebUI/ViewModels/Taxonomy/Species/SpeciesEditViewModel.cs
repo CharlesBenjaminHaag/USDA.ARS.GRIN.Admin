@@ -12,7 +12,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
     {
         public int NomenNumber { get; set; }
         public bool IsSpecificHybrid { get; set; }
+        [Required]
+        public string Name { get; set; }
         public string SpeciesName { get; set; }
+        public string FullName { get; set; }
         public bool IsAcceptedName { get; set; }
         public string Authority { get; set; }
         public bool IsSynonym { get; set; }
@@ -41,8 +44,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int VerifierCooperatorID { get; set; }
         public string VerifiedByCooperatorName { get; set; }
         public DateTime NameVerifiedDate { get; set; }
-        [Required]
-        public string Name { get; set; }
         public string ProtologueVirtualPath { get; set; }
         public string AlternateName { get; set; }
         public int AccessionCount { get; set; }
@@ -73,6 +74,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
             IsSpecificHybrid = species.IsSpecificHybrid;
             SpeciesName = species.SpeciesName;
             Name = species.Name;
+            FullName = species.FullName;
             IsAcceptedName = species.IsAcceptedName;
             Authority = species.Authority;
             IsSubSpecificHybrid = species.IsSubSpecificHybrid;

@@ -28,7 +28,6 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public TaxonomyService(string context)
         {
-            // TODO: REFACTOR 
             this._familyDAO = new FamilyDAO(context);
             this._genusDAO = new GenusDAO(context);
             this._speciesDAO = new SpeciesDAO(context);
@@ -128,17 +127,6 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Update(species);
         }
 
-        //TODO: Need?
-        public List<Species> FindSpecies(string searchString, bool includeSynonyms)
-        {
-            return _speciesDAO.Search(searchString, includeSynonyms);
-        }
-
-        public IQueryable<Species> FindSpecies(string searchText)
-        {
-            return _speciesDAO.Search("WHERE species_name LIKE '%" + searchText + "%'");
-        }
-
         public IEnumerable<Species> FindAllSpecies()
         {
             return _speciesDAO.FindAll();
@@ -147,39 +135,6 @@ namespace USDA.ARS.GRIN.Admin.Service
         public List<Species> FindCachedSpecies()
         {
             return _speciesDAO.FindAllCached();
-        }
-
-        public IEnumerable<Species> FindUserSpecies(int cooperatorId)
-        {
-            return _speciesDAO.Search("WHERE ts.created_by = " + cooperatorId);
-        }
-
-        public IEnumerable<Species> FindRecentSpecies()
-        {
-            return _speciesDAO.Search("WHERE ts.modified_date > DATEADD(MONTH, -1, GETDATE())");
-        }
-
-        public List<ReferenceItem> FindSpeciesAuthors(string searchText)
-        {
-            return _speciesDAO.FindSpeciesAuthors(searchText);
-        }
-
-        public List<ReferenceItem> FindSpeciesProtologues(string searchText)
-        {
-            return _speciesDAO.FindSpeciesProtologues(searchText);
-        }
-
-        public List<ReferenceItem> FindSpeciesNotes(string searchText)
-        {
-            return _speciesDAO.FindSpeciesNotes(searchText);
-        }
-
-        
-
-        public List<Accession> GetAccessions(int speciesId)
-        {
-            //return _speciesDAO.GetSpeciesAccessions(speciesId);
-            return null;
         }
 
         #endregion Species

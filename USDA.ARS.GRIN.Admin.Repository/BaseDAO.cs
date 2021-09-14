@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -304,7 +304,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             else
                 return 0;
         }
-
         protected int GetInt(string intValue)
         {
             int convertedInt = 0;
@@ -318,7 +317,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 return -9;
             }
         }
-
         protected DateTime GetDate(string dateTime)
         {
             DateTime convertedDateTime;
@@ -330,7 +328,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             else
                 return DateTime.MinValue;
         }
-
         public bool ParseBool(string boolValue)
         {
              
@@ -363,8 +360,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 }
             }
         }
-
-       
 
         public IEnumerable<SearchOperator> GetAllSearchOperators()
         {
@@ -423,5 +418,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return databaseFieldName;
 
         }
+        
     }
 }

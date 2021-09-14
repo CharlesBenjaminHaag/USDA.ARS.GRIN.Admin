@@ -44,11 +44,22 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         [Route("Taxonomy/CropForCWR/Home")]
         public ActionResult CropForCWRHome()
         {
-            TempData["context"] = "Crop For CWR Home";
-            CropForCWRHomeViewModel viewModel = new CropForCWRHomeViewModel();
-            viewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
-            viewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
-            return View("~/Views/Taxonomy/CropForCWR/Index.cshtml", viewModel);
+            TempData["page_title"] = "Crop For CWR Home";
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            CropForCWRHomeViewModel cropForCWRHomeViewModel = new CropForCWRHomeViewModel();        
+
+            try
+            {
+                cropForCWRHomeViewModel.DataSourceName = "taxonomy_cwr_crop;";
+                cropForCWRHomeViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_cwr_crop"), "ID", "FullName");
+                cropForCWRHomeViewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
+                return View(BASE_PATH + "CropForCWR/Index.cshtml", cropForCWRHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
        
         [HttpGet]
@@ -175,11 +186,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             try
             {
-                cWRMapHomeViewModel.SysTable.Name = taxonomyService.GetSysTable(242).Name;
-                cWRMapHomeViewModel.DataSourceName = cWRMapHomeViewModel.SysTable.Name;
-                cWRMapHomeViewModel.DataSourceTitle = cWRMapHomeViewModel.SysTable.Title;
-                TempData["context"] = "CWR Map Home";
-
+                TempData["page_title"] = "CWR Map Home";
+                cWRMapHomeViewModel.DataSourceName = "taxonomy_cwr_map";
                 cWRMapHomeViewModel.Cooperators = new SelectList(AuthenticatedUserSession.Application.Cooperators, "ID", "FullName");
                 cWRMapHomeViewModel.DefaultCooperatorID = AuthenticatedUser.CooperatorID;
                 cWRMapHomeViewModel.CWRTraitViewModel = new CWRTraitViewModel(taxonomyService.GetTraitClassCodes(), taxonomyService.GetBreedingTypeCodes());
@@ -353,9 +361,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult CWRTraitHome()
         {
+            TempData["page_title"] = "Crop Trait Home";
             CropTraitHomeViewModel viewModel = new CropTraitHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            TempData["context"] = "Crop Trait Home";
             return View("~/Views/Taxonomy/CWRTrait/Index.cshtml", viewModel);
         }
 
@@ -722,7 +730,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult GenusHome()
         {
-            TempData["context"] = "Genus Home";
+            TempData["page_title"] = "Genus Home";
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             GenusHomeViewModel genusHomeViewModel = new GenusHomeViewModel();
 
@@ -751,7 +759,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 genusListViewModel.Format = 1;
-                genusListViewModel.ListViewName = "Family/_List.cshtml";
+                genusListViewModel.ListViewName = "Genus/_List.cshtml";
 
                 if (!String.IsNullOrEmpty(formCollection["FamilyID"]))
                 {
@@ -821,7 +829,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 if (id > 0)
                 {
-                    TempData["context"] = String.Format("Edit Genus [{0}]", id);
+                    TempData["page_title"] = String.Format("Edit Genus [{0}]", id);
                     genus = taxonomyService.GetGenus(id);
                     genusEditViewModel = new GenusEditViewModel(genus);
                 }
@@ -1001,9 +1009,9 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 if (id > 0)
                 {
                     // EDIT
-                    TempData["context"] = String.Format("Edit Species [{0}]", id);
                     species = taxonomyService.GetSpecies(id);
                     speciesEditViewModel = new SpeciesEditViewModel(species);
+                    TempData["page_title"] = String.Format("Edit Species [{0}]", id) + speciesEditViewModel.FullName;
                     speciesEditViewModel.SynonymCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_SYNONYM_CODE"), "CodeValue", "Title");
                     speciesEditViewModel.DataSourceName = "taxonomy_species";
 
@@ -1132,49 +1140,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 Log.Error(ex, ex.Message + ex.StackTrace);
                 return RedirectToAction("InternalServerError", "Error");
             }
-        }
-
-        public ActionResult SpeciesProtologueSearch(string searchText)
-        {
-            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
-            
-            try
-            {
-                referenceItems = taxonomyService.FindSpeciesNotes(searchText);
-                return PartialView(BASE_PATH + "Species/_NoteSearchResults.cshtml", referenceItems);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error");
-                return PartialView("~/Views/Error/_Error.cshtml");
-            }
-        }
-
-        public ActionResult SpeciesNameAuthoritySearch(string searchText)
-        {
-            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
-
-            try
-            {
-                referenceItems = taxonomyService.FindSpeciesAuthors(searchText);
-                return PartialView(BASE_PATH + "Species/_NoteSearchResults.cshtml", referenceItems);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error");
-                return PartialView("~/Views/Error/_Error.cshtml");
-            }
-        }
-
-        [HttpPost]
-        public JsonResult SpeciesCache(string prefix)
-        {
-            IEnumerable<Species> speciesList = null;
-            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            speciesList = taxonomyService.FindSpecies(prefix,false);
-            return Json(speciesList, JsonRequestBehavior.AllowGet);
         }
      
         [HttpGet]
@@ -1537,7 +1502,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult LiteratureHome()
         {
-            TempData["context"] = "Literature";
+            TempData["page_title"] = "Literature";
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
             LiteratureHomeViewModel literatureHomeViewModel = new LiteratureHomeViewModel();
             literatureHomeViewModel.SysTable = taxonomyService.GetSysTable(48);
@@ -2135,6 +2100,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult RegulationHome()
         {
+            TempData["page_title"] = "Regulation";
             RegulationHomeViewModel viewModel = new RegulationHomeViewModel();
             return View("~/Views/Taxonomy/Regulation/Index.cshtml", viewModel);
         }
@@ -2150,41 +2116,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View("~/Views/Taxonomy/Regulation/Edit.cshtml");
         }
 
-
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public PartialViewResult UserRegulations()
+        public ActionResult RegulationMapHome()
         {
-            RegulationListViewModel viewModel = new RegulationListViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-            try
-            {
-                viewModel.Regulations = _taxonomyService.FindUserRegulations(AuthenticatedUser.CooperatorID);
-            }
-            catch (Exception ex)
-            { 
-            
-            }
-            return PartialView("~/Views/Taxonomy/Regulation/_List.cshtml", viewModel);
+            TempData["page_title"] = "Regulation Map";
+            return View("Index.cshtml");
         }
-
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public PartialViewResult RecentRegulations()
-        {
-            RegulationListViewModel viewModel = new RegulationListViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-            try
-            {
-                viewModel.Regulations = _taxonomyService.FindRecentRegulations();
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return PartialView("~/Views/Taxonomy/Regulation/_List.cshtml", viewModel);
-        }
-
         #endregion
 
         #region Geography

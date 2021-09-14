@@ -4,13 +4,76 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="row">
+    <div class="col-md-2">
+        <a href="@Url.Action("FamilyEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+            <i class="fa fa-plus"></i>
+            New
+        </a>
+    </div>
+</div>
+
 <!-- ============================================================================================== -->
-<!-- TABBED VIEW -->
+<!-- SEARCH CRITERIA -->
 <!-- ============================================================================================== -->
-<div class="box box-primary" style="padding:10px;">
-    @Html.HiddenFor(x => x.DataSourceName)
+<div class="row">
+    <div class="col-md-12">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">New Search</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Saved Searches</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div id="section-search-criteria">
+                        @Html.HiddenFor(x => x.DataSourceName)
+                        @using (Html.BeginForm("FamilySearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+                        {
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Created By</label>
+                                        @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All Cooperators", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Name</label>
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-horizontal">
+                                        <label>Note</label>
+                                        @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
+                                <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+</div>
+
+<!-- ============================================================================================== -->
+<!-- SEARCH RESULTS -->
+<!-- ============================================================================================== -->
+<div class="box box-default" style="padding:10px;">
     <div class="box-header with-border">
-        <h3 class="box-title">Crop For CWR</h3>
+        <h3 class="box-title">Search Results</h3>
         <div class="box-tools pull-right">
             <div class="has-feedback">
             </div>
@@ -18,183 +81,49 @@
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <!-- /.box-tools -->
     </div>
-    <!-- /.box-header -->
     <div class="box-body no-padding">
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-                <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-crops" title="CropForCWRListByUser" class="selector-tab" data-toggle="tab" aria-expanded="true">By User</a>
-                </li>
-                <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="CropForCWRListRecent" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Modified</a>
-                </li>
-                <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
-                        <i class="fa fa-search"></i>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <!-- ============================================================================================== -->
-                <!-- BY-USER TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane active" id="tab_1">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group form-horizontal">
-                                    <label>Created By</label>
-                                    @Html.HiddenFor(x => Model.DefaultCooperatorID, new { id = "hfDefaultCooperatorID" })
-                                    @Html.DropDownListFor(x => x.DefaultCooperatorID, Model.Cooperators, null, new { @id = "ddlSelectCooperator", @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div id="section-by-user">
-                        </div>
-                    </div>
-                </div>
+        <div id="section-search-results">
 
-                <!-- ============================================================================================== -->
-                <!-- RECENTLY-ADDED TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_2">
-                    <div class="box-body">
-                        <div id="section-recently-added">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================================================================== -->
-                <!-- CROP SEARCH TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_3">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-7" style="padding-left:0px;">
-                                        <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtSearchText" name="SearchText" placeholder="Type crop name ..." class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="section-search-results" class="crop-search-results">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
 </div>
-
-@Html.Partial("~/Views/Taxonomy/Folder/_Edit.cshtml")
-
-<!-- Page Script -->
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_family" }); }
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var cooperatorId = $("#hfDefaultCooperatorID").val();
-        $("#ddlSelectCooperator").val(cooperatorId);
-        DisplayRecordsByCooperator(cooperatorId);
+        Init();
     });
 
-    $(".selector-tab").click(function () {
-        var id = $(this).attr('id');
-        var action = $(this).attr('title');
-        var link = '@Url.Action("Action", "Taxonomy")';
-        var displaySection = '';
+    function Init() {
+        $(".overlay").hide();
+    }
 
-        // Clear any checked items.
-        $('.mailbox-messages input:checkbox').prop('checked', false);
-
-        if (action != '') {
-            displaySection = "#" + id.replace("tab", "section");
-            link = link.replace("Action", action);
-            $(displaySection).load(link);
-            InitializeDataTable();
+    $(document).on({
+        ajaxStart: function () {
+            $(".overlay").show();
+        },
+        ajaxStop: function () {
+            $(".overlay").hide();
         }
     });
 
-    $(document).on("click", "[id*='btnSearch']", function () {
-        var value = $("#txtSearchText").val();
-
-        var url = '@Url.Action("CropForCWRSearch", "Taxonomy")';
-
-        $.get(url, { searchText: value })
-        .done(function (response) {
-            $("#section-search-results").html(response);
-        });
-    });
-
-    $("#ddlSelectCooperator").change(function () {
-        var cooperatorId = $(this).val();
-        DisplayRecordsByCooperator(cooperatorId);
-    });
-
-    @*$("#btnSearch").click(function () {
-        var value = $("#txtCropName").val();
-
-        $.ajax({
-            url: '@Url.Action("CropForCWRSearch", "Taxonomy")',
-            type: "GET",
-            data: {searchText: value},
-            cache: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "html",
-            success: function (response) {
-                $("#section-search-results").html(response);
-                InitializeDataTable();
-            }
-        });
-
-
-
-    });*@
-
-    function DisplayRecordsByCooperator(cooperatorId)
-    {
-        @*var link = '@Url.Action("CropForCWRListByUser", "Taxonomy")';
-        $.ajax(
-            {
-                type: 'POST',
-                url: link,
-                data: { cooperatorId : cooperatorId },
-                success:
-                    function (response) {
-                        $("#section-by-user").html(response);
-                    },
-                error:
-                    function (response) {
-                        console.log(response);
-                    }
-            });*@
-    }
-
-    function InitializeDataTable()
-    {
+    function InitializeDataTable() {
         $(document).ready(function () {
             //if (!$.fn.DataTable.isDataTable('#search-results')) {
-                //$('#search-results').DataTable().destroy();
-                $('table.ggtools').DataTable({
-                    'destroy': true,
-                    'paging': true,
-                    'lengthChange': false,
-                    'searching': false,
-                    'ordering': true,
-                    'info': true,
-                    'autoWidth': false
-                });
+            //$('#search-results').DataTable().destroy();
+            $('table.ggtools').DataTable({
+                'destroy': true,
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            });
             //}
         });
     }

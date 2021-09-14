@@ -1,15 +1,79 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.RegulationHomeViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Taxonomy: Regulation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="row">
+    <div class="col-md-2">
+        <a href="@Url.Action("FamilyEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+            <i class="fa fa-plus"></i>
+            New
+        </a>
+    </div>
+</div>
+
 <!-- ============================================================================================== -->
-<!-- TABBED VIEW -->
+<!-- SEARCH CRITERIA -->
 <!-- ============================================================================================== -->
-<div class="box box-primary" style="padding:10px;">
+<div class="row">
+    <div class="col-md-12">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">New Search</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Saved Searches</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div id="section-search-criteria">
+                        @Html.HiddenFor(x => x.DataSourceName)
+                        @using (Html.BeginForm("FamilySearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+                        {
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Created By</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-horizontal">
+                                        <label>Note</label>
+                                        @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-horizontal">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
+                                <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+</div>
+
+<!-- ============================================================================================== -->
+<!-- SEARCH RESULTS -->
+<!-- ============================================================================================== -->
+<div class="box box-default" style="padding:10px;">
     <div class="box-header with-border">
-        <h3 class="box-title">Regulations</h3>
+        <h3 class="box-title">Search Results</h3>
         <div class="box-tools pull-right">
             <div class="has-feedback">
             </div>
@@ -19,72 +83,16 @@
         </div>
     </div>
     <div class="box-body no-padding">
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-                <li class="active" style="background-color:#ebebeb;">
-                    <a href="#tab_1" id="tab-my-records" title="UserRegulations" class="selector-tab" data-toggle="tab" aria-expanded="true">Created by Me</a>
-                </li>
-                <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_2" id="tab-recently-added" title="RecentRegulations" class="selector-tab" data-toggle="tab" aria-expanded="false">Recently Added</a>
-                </li>
-                <li class="" style="background-color:#ebebeb;">
-                    <a href="#tab_3" id="tab-search" title="" class="selector-tab" data-toggle="tab" aria-expanded="false">
-                        <i class="fa fa-search"></i>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <!-- ============================================================================================== -->
-                <!-- MY-RECORDS TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane active" id="tab_1">
-                    <div class="box-body">
-                        <div id="section-my-records">
-                        </div>
-                    </div>
-                </div>
+        <div id="section-search-results">
 
-                <!-- ============================================================================================== -->
-                <!-- RECENTLY-ADDED TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_2">
-                    <div class="box-body">
-                        <div id="section-recently-added">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================================================================== -->
-                <!-- SEARCH TAB -->
-                <!-- ============================================================================================== -->
-                <div class="tab-pane" id="tab_3">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-md-7" style="padding-left:0px;">
-                                        <div class="input-group" style="margin-left:0px;">
-                                            <input type="text" id="txtName" name="SearchText" placeholder="Type all or part of the regulation text ..." class="form-control">
-                                            <span class="input-group-btn">
-                                                <button type="button" id="btnSearch" class="btn btn-primary btn-flat">Search</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="section-search-results" class="crop-search-results">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
 </div>
+
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_family" }); }
 
 <!-- Page Script -->
 <script type="text/javascript">

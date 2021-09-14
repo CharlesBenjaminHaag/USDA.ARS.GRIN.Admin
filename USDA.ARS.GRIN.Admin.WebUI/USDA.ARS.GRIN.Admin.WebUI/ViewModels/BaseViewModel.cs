@@ -1,14 +1,10 @@
 ﻿using System;
-using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.ComponentModel.DataAnnotations;
 using USDA.ARS.GRIN.Admin.Models;
-using USDA.ARS.GRIN.Admin.Models.Taxonomy;
-using USDA.ARS.GRIN.Admin.Service;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
 {
@@ -20,7 +16,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int Format { get; set; }
         public string ListViewName { get; set; }
         public int ID { get; set; }
-
         public int CurrentID { get; set; }
         public string CurrentName { get; set; }
         public string CurrentCodeValue { get; set; }
@@ -48,7 +43,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public DateTime OwnedDate { get; set; }
         protected List<Cooperator> AuthorizedCooperators { get; set; }
         public SelectList Cooperators { get; set; }
-
         public string RevisionHistoryText
         { 
             get

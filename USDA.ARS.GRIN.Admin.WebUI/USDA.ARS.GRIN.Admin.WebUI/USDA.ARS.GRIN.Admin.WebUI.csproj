@@ -394,6 +394,10 @@
     <Content Include="Views\Taxonomy\Shared\Modals\_SpeciesSearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_ProtologueSearchModal.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_ProtologueSearchResultsList.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\Literature\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\Literature\_SelectList.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\Literature\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\Literature\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,7 +12,7 @@ using System.CodeDom;
 
 namespace USDA.ARS.GRIN.Admin.Repository
 {
-    public class SpeciesDAO : BaseDAO, IRepository<Species>
+    public class SpeciesDAO : BaseTaxonomyDAO, IRepository<Species>
     {
         protected ReferenceDAO _referenceDAO = null;
 
@@ -74,27 +74,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 throw ex;
             }
             return speciesList.AsQueryable();
-        }
-
-        public List<ReferenceItem> FindSpeciesAuthors(string searchText)
-        {
-            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
-
-            return referenceItems;
-        }
-
-        public List<ReferenceItem> FindSpeciesProtologues(string searchText)
-        {
-            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
-
-            return referenceItems;
-        }
-
-        public List<ReferenceItem> FindSpeciesNotes(string searchText)
-        {
-            List<ReferenceItem> referenceItems = new List<ReferenceItem>();
-
-            return referenceItems;
         }
 
         private List<Species> GetSpecies()

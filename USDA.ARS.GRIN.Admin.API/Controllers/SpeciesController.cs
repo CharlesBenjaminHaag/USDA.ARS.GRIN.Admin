@@ -29,7 +29,6 @@ namespace USDA.ARS.GRIN.Admin.API.Controllers
 
             try
             {
-                speciesList = _taxonomyService.FindSpecies("malus", includeSynonyms);
                 return Ok(speciesList);
             }
             catch (Exception ex)

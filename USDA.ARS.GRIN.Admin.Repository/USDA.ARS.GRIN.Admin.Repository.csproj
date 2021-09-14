@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseTaxonomyDAO.cs" />
     <Compile Include="GRINGlobal\ApplicationDAO.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="GRINGlobal\EmailTemplateDAO.cs" />
@@ -101,6 +102,7 @@
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Data.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.StoredProcedures.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.Constraints.sql" />
+    <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.Language.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Views.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Tables.sql" />
     <Content Include="SQL\USDA.ARS.GRIN.Admin.Triggers.sql" />

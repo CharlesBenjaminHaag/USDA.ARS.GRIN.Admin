@@ -88,7 +88,7 @@
                     <label>Type Genus</label>
                     <div class="input-group">
                         <input type="text" id="txtGenusName" disabled="" value="@Model.TypeGenusName" class="form-control" />
-                        @Html.HiddenFor(x => x.TypeGenusID, new { id = "hfGenusID" })
+                        @Html.HiddenFor(x => x.TypeGenusID)
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
                         </span>
@@ -152,10 +152,6 @@
                 <i class="fa fa-leaf"></i>
                 Add Genus
             </a>
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-genus-search">
-                <i class="fa fa-chain"></i>
-                Link Genus
-            </button>
         </div>
     </div>
 
@@ -345,9 +341,6 @@
         var url = '@Url.Action("AuthoritySearch", "Taxonomy")';
         var searchText = $("#txtSearchAuthors").val();
 
-        //DEBUG
-        alert(dataSourceName + " " + searchText);
-
         $.post(url, { dataSourceName: dataSourceName, searchText: searchText })
             .done(function (response) {
                 $("#section-author-search-results").html(response);
@@ -431,7 +424,7 @@
         var formData = new FormData();
 
         formData.append("Name", $("#Name").val());
-        formData.append("Format", "2");
+        formData.append("ResultsFormat", "2");
         $.ajax({
             url: link,
             type: 'POST',
