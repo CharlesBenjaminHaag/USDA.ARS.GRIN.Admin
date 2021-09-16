@@ -223,39 +223,6 @@
 
         }
 
-        @*$("#btnCreateFolderSearchResults").click(function () {
-        var valueArray = [];
-        var title = "";
-        var category = "Crop";
-        var source = "";
-
-        $('#modal-add-search-results-to-folder').modal('hide');
-
-        title = $("#txtSearchResultsFolderTitle").val();
-
-        $(".active input:checked").each(function () {
-            var id = $(this).attr("id");
-            valueArray.push(id);
-            }
-        );
-
-        $.ajax({
-            url: '@Url.Action("AddToFolder","Taxonomy")',
-            type: "GET",
-            data: {folderId: 0, folderTitle: title, dataSource: 'taxonomy_cwr_map', values:valueArray.toString() },
-            cache: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                //alert("DEBUG SUCCESS");
-            },
-            error: function () {
-                //alert("error");
-            }
-        });
-    });*@
-
-
         /*
         =============================================================================
         DATATABLES

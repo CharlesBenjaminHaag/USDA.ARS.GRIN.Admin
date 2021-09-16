@@ -16,7 +16,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         private Citation _citation = new Citation();
         private IEnumerable<Citation> _citations;
         private IEnumerable<CodeValueReferenceItem> _genepoolCodes;
-        private IQueryable<CropForCWR> _taxonomyCrops;
+        private IQueryable<Models.Taxonomy.CropForCWR> _taxonomyCrops;
 
         public int ID { get; set; }
         public int GenusID { get; set; }
@@ -35,7 +35,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int CitationID { get; set; }
         public string CitationTitle { get; set; }
 
-        public List<CWRTrait> CWRTraits { get; set; }
+        public List<Models.Taxonomy.CWRTrait> CWRTraits { get; set; }
         public IEnumerable<SelectListItem> Crops
         {
             get
@@ -68,21 +68,21 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public CWRMapViewModel()
         { }
 
-        public CWRMapViewModel(List<CodeValueReferenceItem> genePoolCodes, IQueryable<CropForCWR> cropsForCwr, List<Citation> citations)
+        public CWRMapViewModel(List<CodeValueReferenceItem> genePoolCodes, IQueryable<Models.Taxonomy.CropForCWR> cropsForCwr, List<Citation> citations)
         {
             _genepoolCodes = genePoolCodes;
             _taxonomyCrops = cropsForCwr;
             _citations = citations;
-            CWRTraits = new List<CWRTrait>();
+            CWRTraits = new List<Models.Taxonomy.CWRTrait>();
         }
 
-        public CWRMapViewModel(List<CodeValueReferenceItem> genePoolCodes, IQueryable<CropForCWR> cropsForCwr)
+        public CWRMapViewModel(List<CodeValueReferenceItem> genePoolCodes, IQueryable<Models.Taxonomy.CropForCWR> cropsForCwr)
         {
             _genepoolCodes = genePoolCodes;
             _taxonomyCrops = cropsForCwr;
             _citations = new List<Citation>();
             //Citations = new List<Citation>().AsEnumerable();
-            CWRTraits = new List<CWRTrait>();
+            CWRTraits = new List<Models.Taxonomy.CWRTrait>();
         }
     }
 }

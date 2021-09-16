@@ -4,9 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
 <div class="row">
     <div class="col-md-2">
-        <a href="@Url.Action("FamilyEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+        <a href="@Url.Action("CropForCWREdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
             <i class="fa fa-plus"></i>
             New
         </a>
@@ -91,7 +97,9 @@
         <i class="fa fa-refresh fa-spin"></i>
     </div>
 </div>
-@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_family" }); }
+
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_crop_for_cwr" }); }
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -111,21 +119,93 @@
         }
     });
 
-    function InitializeDataTable() {
-        $(document).ready(function () {
-            //if (!$.fn.DataTable.isDataTable('#search-results')) {
-            //$('#search-results').DataTable().destroy();
-            $('table.ggtools').DataTable({
-                'destroy': true,
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
+     $("#btnSearch").click(function () {
+            var link = '@Url.Action("CropForCWRSearch", "Taxonomy")';
+            var formData = new FormData();
+
+            formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
+            formData.append("Name", $("#Name").val());
+            formData.append("Note", $("#Note").val());
+
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-search-results").html(response);
+                }
             });
-            //}
         });
+
+    /*
+    =============================================================================
+    FOLDERS
+    =============================================================================
+    */
+
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        var itemList = GetSelectedItems();
+        $("#ItemIDList").val(itemList);
+        $('#modal-folder-edit').modal('show');
+    });
+
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "taxonomy_cwr_crop";
+        var dataSourceTitle = "Crop For CWR";
+        var itemList = GetSelectedItems();
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+        },
+        error: function () {
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table-crops-for-cwr").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>","");
+            valueArray.push(itemId);
+        });
+        return valueArray;
     }
+
+    /*
+    =============================================================================
+    DATATABLES
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnSelectAll']", function () {
+        var table = $('#data-table-crops-for-cwr').DataTable();
+        table.rows().select();
+    });
+
+    $(document).on("click", "[id='btnDeSelectAll']", function () {
+        var table = $('#data-table-crops-for-cwr').DataTable();
+        table.rows().deselect();
+    });
 
 </script>

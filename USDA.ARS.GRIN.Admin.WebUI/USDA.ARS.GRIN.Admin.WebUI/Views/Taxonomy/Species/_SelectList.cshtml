@@ -1,0 +1,48 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesListViewModel
+
+<table id="data-table-species" class="table table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Accepted?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var species in Model.SpeciesList)
+        {
+        <tr>
+            <td><span class="badge">@species.ID</span></td>
+            <td>@Html.Raw(species.FullName)</td>
+            <td>@Html.Raw(DisplayHelper.GetBooleanDisplayString(species.IsAcceptedName))</td>
+            <td>
+                <button value="@species.FullName" class="btn btn-primary btn-sm proto" onclick="SelectSpecies(@species.ID, this.value);return false;">Select</button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#data-table-species').DataTable(
+        {
+            responsive: true,
+            select: true,
+            buttons: [
+                {
+                    text: 'Select all',
+                    action: function () {
+                        table.rows().select();
+                    }
+                },
+                {
+                    text: 'Select none',
+                    action: function () {
+                        table.rows().deselect();
+                    }
+                }
+            ]
+        }
+    );
+</script>

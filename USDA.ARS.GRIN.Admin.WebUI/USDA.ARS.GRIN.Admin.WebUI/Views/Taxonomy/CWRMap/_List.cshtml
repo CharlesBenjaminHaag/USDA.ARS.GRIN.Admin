@@ -1,18 +1,19 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRMapSearchViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRMapListViewModel
 
-<div style="margin-top:15px;">
+@if ((Model.Action != "Parent") && (Model.Action != "Folder") && (Model.Format != 3))
+{
     <div class="mailbox-controls">
-        <button type="button" class="btn btn-success btn-sm check-all-search-results">
+        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
             <i class="fa fa-check"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
-            <i class="fa fa-check-square"></i>
+        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check-circle-o"></i>
         </button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CWRMapEdit", "Taxonomy", new { cropId = Model.CropID })'">
+        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("FamilyEdit", "Taxonomy", new { id = 0 })'">
             <i class="fa fa-plus"></i>
-        </button>
-        <button type="button" id="btnDeleteMultiple" class="btn btn-danger btn-sm">
-            <i class="fa fa-trash-o"></i>
         </button>
         <div class="pull-right">
             <button type="button" disabled class="btn btn-default btn-sm">
@@ -20,108 +21,112 @@
             </button>
         </div>
     </div>
-    <div class="table-responsive mailbox-messages">
-        <table id="data-list-crops" class="table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th width="5%"></th>
-                    <th>ID</th>
-                    <th>Common Name</th>
-                    <th>Crop?</th>
-                    <th>Graftstock?</th>
-                    <th>Potential?</th>
-                    <th>Genepool</th>
-                    <th>Created</th>
-                    <th>By</th>
-                    <th>Last Modified</th>
-                    <th>By</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.CWRMaps != null)
+}
+<table id="data-table" class="table table-responsive table-striped" style=" width:100%;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Common Name</th>
+            <th>Crop?</th>
+            <th>Graftstock?</th>
+            <th>Potential?</th>
+            <th>Genepool</th>
+            <th>Created</th>
+            <th>By</th>
+            <th>Last Modified</th>
+            <th>By</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.CWRMaps != null)
+        {
+            if (Model.CWRMaps.Count() > 0)
+            {
+                foreach (var cwrMap in Model.CWRMaps)
                 {
-                    if (Model.CWRMaps.Count > 0)
-                    {
-                        foreach (var cwrMap in Model.CWRMaps)
-                        {
-                            <tr>
-                                <td>
-                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@cwrMap.ID">
-                                </td>
-                                <td>
-                                    <span class="label label-default">@cwrMap.ID</span>
-                                </td>
-                                <td>
-                                    @cwrMap.CommonName
-                                </td>
-                                <td>
-                                    @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsCrop.ToString()))
-                                </td>
-                                <td>
-                                    @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsGraftStock.ToString()))
-                                </td>
-                                <td>
-                                    @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsPotential.ToString()))
-                                </td>
-                                <td>
-                                    @cwrMap.GenepoolCode
-                                </td>
-                                <td>
-                                    @cwrMap.CreatedDate.ToShortDateString()
-                                </td>
-                                <td>
-                                    @cwrMap.CreatedByCooperatorName
-                                </td>
-                                <td>
-                                    @if (cwrMap.ModifiedDate != DateTime.MinValue)
-                                    {
-                                        @cwrMap.ModifiedDate.ToShortDateString()
-                                    }
-                                </td>
-                                <td>
-                                    @cwrMap.ModifiedByCooperatorName
-                                </td>
-                                <td>
-                                    <a href="@Url.Action("CwrMapDelete", "Taxonomy", new { cropId = Model.CropID, cropMapid = cwrMap.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>
-                                    <a href="@Url.Action("CwrMapEdit", "Taxonomy", new {cropId = Model.CropID, cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </td>
-                                <td>
-                        
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    { 
-                        <tr>
-                            <td colspan="12">
-                                <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
-                                    No records found.
-                                </div>
-                            </td>
-                        </tr>
-                    }
+                    <tr>
+                        <td>
+                            <span class="badge">@cwrMap.ID</span>
+                        </td>
+                        <td>
+                            @cwrMap.CommonName
+                        </td>
+                        <td>
+                            @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsCrop.ToString()))
+                        </td>
+                        <td>
+                            @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsGraftStock.ToString()))
+                        </td>
+                        <td>
+                            @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsPotential.ToString()))
+                        </td>
+                        <td>
+                            @cwrMap.GenepoolCode
+                        </td>
+                        <td>
+                            @cwrMap.CreatedDate.ToShortDateString()
+                        </td>
+                        <td>
+                            @cwrMap.CreatedByCooperatorName
+                        </td>
+                        <td>
+                            @if (cwrMap.ModifiedDate != DateTime.MinValue)
+                            {
+                                @cwrMap.ModifiedDate.ToShortDateString()
+                            }
+                        </td>
+                        <td>
+                            @cwrMap.ModifiedByCooperatorName
+                        </td>
+                        <td>
+                            <a href="@Url.Action("CwrMapDelete", "Taxonomy", new { cropMapid = cwrMap.ID })" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a href="@Url.Action("CwrMapEdit", "Taxonomy", new { cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
                 }
-            </tbody>
-        </table>
-    </div>
-</div>
-
+            }
+            else
+            {
+                <tr>
+                    <td colspan="12">
+                        <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                            No records found.
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
 
 <script type="text/javascript">
-    $(function () {
-        $('.check-all-search-results').on('click', function () {
-            $('.mailbox-messages input:checkbox').prop('checked', true);
-        });
-        $('.uncheck-all-search-results').on('click', function () {
-            $('.mailbox-messages input:checkbox').prop('checked', false);
-        });
-    });
+    $('#data-table').DataTable(
+        {
+            responsive: true,
+            select: true,
+            buttons: [
+                {
+                    text: 'Select all',
+                    action: function () {
+                        table.rows().select();
+                    }
+                },
+                {
+                    text: 'Select none',
+                    action: function () {
+                        table.rows().deselect();
+                    }
+                }
+            ]
+        }
+    );
 </script>
 

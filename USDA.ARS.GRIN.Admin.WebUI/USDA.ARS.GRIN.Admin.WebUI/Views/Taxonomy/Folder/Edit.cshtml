@@ -200,8 +200,6 @@
         var btnId = $(this).attr('id');
         var folderItemId = btnId.split("_")[1];
 
-        alert("DEBUG DELETE " + folderItemId);
-
         $.ajax({
             url: '@Url.Action("FolderItemDelete", "Taxonomy")',
             type: "GET",

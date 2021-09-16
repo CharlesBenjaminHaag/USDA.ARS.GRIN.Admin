@@ -61,9 +61,7 @@
                             }
                         </td>
                         <td>
-                            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = species.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                <i class="fa fa-edit"></i>
-                            </a>
+                            <button value="@species.FullName" class="btn btn-primary btn-sm proto" onclick="SelectSpecies(@species.ID, this.value);return false;">Select</button>
                         </td>
                     </tr>
                     }

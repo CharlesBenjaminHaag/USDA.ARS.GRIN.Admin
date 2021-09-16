@@ -1,26 +1,25 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesListViewModel
-<div class="modal fade" id="modal-species-search">
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropForCWRListViewModel
+<div class="modal fade" id="modal-crop-for-cwr-search">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Species Search</h4>
+                <h4 class="modal-title">Crop For CWR Search</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="input-group">
-                            @Html.TextBoxFor(x=>x.FullName, new  { @class= "form-control" }) 
+                            @Html.TextBoxFor(x => x.CropName, new { @class="form-control" })
                             <span class="input-group-btn">
-                                <button type="button" id="btnSearchSpecies" class="btn btn-info btn-flat">Search</button>
+                                <button type="button" id="btnSearchCropsForCWR" class="btn btn-info btn-flat">Search</button>
                             </span>
                         </div>
-                        @Html.CheckBoxFor(x => x.IsAcceptedName, new { style = "margin-left:5x;" })<label style="margin-left:10px;">Accepted Names Only</label>
                     </div>
                 </div>
-                <div id="section-species-search-results">
+                <div id="section-crop-for-cwr-search-results">
 
                 </div>
             </div>
@@ -32,3 +31,4 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+

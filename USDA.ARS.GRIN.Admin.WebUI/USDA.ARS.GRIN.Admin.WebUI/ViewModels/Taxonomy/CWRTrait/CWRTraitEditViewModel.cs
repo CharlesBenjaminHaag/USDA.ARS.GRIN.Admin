@@ -10,7 +10,7 @@ using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class CWRTraitViewModel : BaseViewModel
+    public class CWRTraitEditViewModel : BaseViewModel
     {
         private IEnumerable<CodeValueReferenceItem> _traitClassCodes;
         private IEnumerable<CodeValueReferenceItem> _breedingTypeCodes;
@@ -30,14 +30,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string OntologyTraitIdentifier { get; set; }
         public int CitationID { get; set; }
         public string CitationTitle { get; set; }
-        public CWRMap CWRMap { get; set; }
-        public CropForCWR CropForCWR { get; set; }
+        public Models.Taxonomy.CWRMap CWRMap { get; set; }
+        public Models.Taxonomy.CropForCWR CropForCWR { get; set; }
         public Species Species { get; set; }
-        public CWRTraitViewModel()
-         {
+        public CWRTraitEditViewModel()
+        {
         }
 
-        public CWRTraitViewModel(List<CodeValueReferenceItem> traitClassCodes, List<CodeValueReferenceItem> breedingTypeCodes)
+        public CWRTraitEditViewModel(List<CodeValueReferenceItem> traitClassCodes, List<CodeValueReferenceItem> breedingTypeCodes)
         {
             _traitClassCodes = traitClassCodes;
             _breedingTypeCodes = breedingTypeCodes;

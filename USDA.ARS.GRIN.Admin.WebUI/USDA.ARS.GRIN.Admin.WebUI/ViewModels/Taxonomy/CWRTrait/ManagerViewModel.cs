@@ -10,8 +10,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class ManagerViewModel: BaseViewModel
     {
-        public List<CropForCWR> CropsForCWR { get; set; }
+        public List<Models.Taxonomy.CropForCWR> CropsForCWR { get; set; }
         public List<Species> Species { get; set; }
-        public List<CWRTrait> CWRTraits { get; set; }
+        public List<Models.Taxonomy.CWRTrait> CWRTraits { get; set; }
     }
 }

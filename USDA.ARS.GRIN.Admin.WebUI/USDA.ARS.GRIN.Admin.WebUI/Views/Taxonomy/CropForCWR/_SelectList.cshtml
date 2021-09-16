@@ -1,0 +1,37 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CropForCWRListViewModel
+<table id="data-table-crops-for-cwr" class="table table-responsive table-striped" style=" width:100%;">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.CropsForCWR != null)
+        {
+            if (Model.CropsForCWR.Count() > 0)
+            {
+                foreach (var cropForCWR in Model.CropsForCWR)
+                {
+                    <tr>
+                        <td>
+                            @cropForCWR.CropName
+                        </td>
+                        <td>
+                        <td><button value="@cropForCWR.CropName" class="btn btn-primary btn-sm proto" onclick="SelectCropForCWR(@cropForCWR.ID, this.value);return false;">Select</button>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#data-table-crops-for-cwr').DataTable(
+        {
+            responsive: true,
+            select: true,
+        }
+    );
+</script>

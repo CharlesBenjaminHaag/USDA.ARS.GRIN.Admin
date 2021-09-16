@@ -43,14 +43,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 
         [Required]
         public string CropName { get; set; }
-        public IQueryable<CWRMap> CWRMaps { get; set; }
-        public CWRTraitViewModel CWRTraitViewModel { get; set; }
+        public IQueryable<Models.Taxonomy.CWRMap> CWRMaps { get; set; }
+        public CWRTraitEditViewModel CWRTraitViewModel { get; set; }
         public List<Genus> Genera { get; set; }
 
         public CropForCWRViewModel()
         {
-            CWRMaps = new List<CWRMap>().AsQueryable();
-            CWRTraitViewModel = new CWRTraitViewModel();
+            CWRMaps = new List<Models.Taxonomy.CWRMap>().AsQueryable();
+            CWRTraitViewModel = new CWRTraitEditViewModel();
         }
     }
 }

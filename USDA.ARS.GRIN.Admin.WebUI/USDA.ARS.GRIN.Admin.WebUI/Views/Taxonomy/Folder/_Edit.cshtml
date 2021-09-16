@@ -94,47 +94,4 @@
         $('#modal-add-items-to-folder').modal('hide');
     });
 
-    @*$("#btnAddSelectedItemsToFolder").click(function () {
-        var valueArray = [];
-        var folderTitle = "";
-        var folderCategory = "";
-        var folderDescription = "";
-        var isShared = false;
-        var dataSourceName = "";
-        var dataSourceTitle = "";
-
-        $('#modal-add-search-results-to-folder').modal('hide');
-
-        folderTitle = $("#txtFolderTitle").val();
-        folderCategory = $("#txtFolderCategory").val();
-        folderDescription = $("#txtFolderDescription").val();
-        //TODO isShared = ;
-        dataSourceName = $("#DataSourceName").val();
-        dataSourceTitle = $("#DataSourceTitle").val();
-
-        // Get selected rows
-        var table = $('#tblSpeciesDataTest').DataTable();
-        var data = table.rows({ selected: true }).data();
-
-        var newarray = [];
-        for (var i = 0; i < data.length; i++) {
-            newarray.push(data[i]["ID"]);
-        }
-        var sData = newarray.join();
-
-        $.ajax({
-            url: '@Url.Action("AddToFolder","Taxonomy")',
-            type: "GET",
-            data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared: isShared, dataSourceName: dataSourceName, dataSourceTitle: dataSourceTitle, values:sData.toString() },
-            cache: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-
-            },
-            error: function () {
-                alert("Error occured during AJAX request.");
-            }
-        });
-    });*@
 </script>

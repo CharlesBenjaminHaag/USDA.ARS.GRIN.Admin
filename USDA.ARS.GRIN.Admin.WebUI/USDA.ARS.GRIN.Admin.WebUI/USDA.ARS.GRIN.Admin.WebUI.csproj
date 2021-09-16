@@ -309,10 +309,8 @@
     <Content Include="Views\Taxonomy\Folder\Edit.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\Index.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\CropForCWR\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\_List.cshtml" />
     <Content Include="Views\Utilities\Index.cshtml" />
-    <Content Include="Views\Taxonomy\CWRMap\_SearchResults.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\Index.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\_List.cshtml" />
     <Content Include="Views\GRINGlobal\Accession\Index.cshtml" />
@@ -398,6 +396,10 @@
     <Content Include="Views\Taxonomy\Citation\Literature\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Literature\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Literature\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_CropForCWRSearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\CWRTrait\_Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\_SelectList.cshtml" />
+    <Content Include="Views\Taxonomy\CropForCWR\_SelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -482,23 +484,20 @@
     <Compile Include="ViewModels\Taxonomy\Citation\CitationSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRHomeViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRSearchViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWRViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CropForCWR\CropEditViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRTrait\CropTraitHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWREditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapHomeViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRTrait\CropTraitListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitHomeViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitSearchViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\ManagerViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Family\FamilyEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Family\FamilyHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Family\FamilyListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderEditViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRTrait\CropTraitEditViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapSearchViewModel.cs" />
     <Compile Include="ViewModels\DashboardViewModel.cs" />
     <Compile Include="ViewModels\AccessRightsManagement\LoginViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Folder\FolderHomeViewModel.cs" />
@@ -513,6 +512,9 @@
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Regulation\RegulationMap\RegulationMapEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Regulation\RegulationMap\RegulationMapHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Regulation\RegulationMap\RegulationMapListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\SearchComparisonOperatorViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\SearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\AddSubTaxaViewModel.cs" />
@@ -658,6 +660,8 @@
     <Folder Include="ViewModels\Home\" />
     <Folder Include="ViewModels\Shared\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
+    <Folder Include="ViewModels\Taxonomy\Species\CommonNames\" />
+    <Folder Include="ViewModels\Taxonomy\Species\EcomomicUse\" />
     <Folder Include="Views\Utilities\_UPLOADS\" />
   </ItemGroup>
   <ItemGroup>

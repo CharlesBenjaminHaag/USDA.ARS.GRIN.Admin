@@ -13,18 +13,33 @@ namespace USDA.ARS.GRIN.Admin.Repository
 {
     public class CropForCwrDAO : BaseDAO, IRepository<CropForCWR>
     {
-        private string _context;
         protected ReferenceDAO _referenceDAO = null;
                
         public CropForCwrDAO(string context)
         {
-            _context = context;
+            base._context = context;
             _referenceDAO = new ReferenceDAO(context);
         }
-
-        public List<CropForCWR> Demo()
+        public IQueryable<CropForCWR> Search(Query query)
         {
-            const string COMMAND_TEXT = "usp_Taxonomy_Demo_CwrCrops_Select";
+            string sqlWhereClause = String.Empty;
+            IQueryable<CropForCWR> cropForCWRs = new List<CropForCWR>().AsQueryable();
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                cropForCWRs = Search(sqlWhereClause);
+                return cropForCWRs;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public IQueryable<CropForCWR> Search(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCwrCrops_Search";
             List<CropForCWR> cropForCwrList = new List<CropForCWR>();
 
             try
@@ -36,6 +51,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -52,7 +69,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
                                 crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                                 crop.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
-                               
+                                crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+
                                 if (reader["note"] != DBNull.Value)
                                 {
                                     crop.Note = reader["note"].ToString();
@@ -67,7 +86,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             {
                 throw ex;
             }
-            return cropForCwrList;
+            return cropForCwrList.AsQueryable();
         }
 
         public ResultContainer Add(CropForCWR entity)
@@ -229,19 +248,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
             
         }
 
-        public ResultContainer Remove(CropForCWR entity)
+        public IQueryable<CropForCWR> GetFolderItems(int folderId)
         {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<CropForCWR> Search(Query query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<CropForCWR> Search(string searchString)
-        {
-            const string COMMAND_TEXT = "usp_TaxonomyCwrCrops_Search";
+            const string COMMAND_TEXT = "usp_TaxonomyFolderCropForCWRItemMaps_Select";
             List<CropForCWR> cropForCwrList = new List<CropForCWR>();
 
             try
@@ -254,31 +263,32 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
 
-                        cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
+                        cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                CropForCWR crop = new CropForCWR();
-                                crop.ID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
-                                crop.CropName = reader["crop_name"].ToString();
-                                crop.Note = reader["note"].ToString();
-                                crop.CropWildRelativeCount = GetInt(reader["cwr_count"].ToString());
-                                crop.CreatedDate = GetDate(reader["created_date"].ToString());
-                                crop.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
-                                crop.CreatedByCooperatorName = reader["created_by_name"].ToString();
-                                crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                                crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
-                                crop.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
-                                crop.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                                crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                CropForCWR cropForCWR = new CropForCWR();
+                                cropForCWR.ReferenceID = GetInt(reader["taxonomy_folder_item_id"].ToString());
+                                cropForCWR.ID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                cropForCWR.CropName = reader["crop_name"].ToString();
+                                cropForCWR.Note = reader["note"].ToString();
+                                cropForCWR.CropWildRelativeCount = GetInt(reader["cwr_count"].ToString());
+                                cropForCWR.CreatedDate = GetDate(reader["created_date"].ToString());
+                                cropForCWR.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                cropForCWR.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                                cropForCWR.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                cropForCWR.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                                cropForCWR.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                                cropForCWR.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                                cropForCWR.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
 
                                 if (reader["note"] != DBNull.Value)
                                 {
-                                    crop.Note = reader["note"].ToString();
+                                    cropForCWR.Note = reader["note"].ToString();
                                 }
-                                cropForCwrList.Add(crop);
+                                cropForCwrList.Add(cropForCWR);
                             }
                         }
                     }
@@ -289,6 +299,10 @@ namespace USDA.ARS.GRIN.Admin.Repository
                 throw ex;
             }
             return cropForCwrList.AsQueryable();
+        }
+        public ResultContainer Remove(CropForCWR entity)
+        {
+            throw new NotImplementedException();
         }
 
         public IQueryable<CWRMap> GetCWRMaps(int cropForCwrId)

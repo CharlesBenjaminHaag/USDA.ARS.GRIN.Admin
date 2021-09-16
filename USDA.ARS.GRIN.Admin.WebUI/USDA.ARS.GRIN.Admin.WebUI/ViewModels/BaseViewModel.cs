@@ -71,7 +71,16 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
                 return sbRevisionHistoryText.ToString();
             }
         }
-       
+        public Dictionary<string, string> YesNoOptions
+        {
+            get
+            {
+                Dictionary<string, string> yesNoOptions = new Dictionary<string, string>();
+                yesNoOptions.Add("Y", "Yes");
+                yesNoOptions.Add("N", "No");
+                return yesNoOptions;
+            }
+        }
         public BaseViewModel()
         {
         }

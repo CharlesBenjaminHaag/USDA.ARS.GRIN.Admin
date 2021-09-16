@@ -127,16 +127,6 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.Update(species);
         }
 
-        public IEnumerable<Species> FindAllSpecies()
-        {
-            return _speciesDAO.FindAll();
-        }
-
-        public List<Species> FindCachedSpecies()
-        {
-            return _speciesDAO.FindAllCached();
-        }
-
         #endregion Species
 
         // ****************************************************************************
@@ -144,29 +134,18 @@ namespace USDA.ARS.GRIN.Admin.Service
         // ****************************************************************************
         #region Crop for CWR
 
-        public IQueryable<CropForCWR> FindCropsForCWR(string searchText)
+        public IEnumerable<CropForCWR> CropForCWRSearch(Query query)
         {
-            return _cropForCwrDAO.Search("WHERE crop_name LIKE '%" + searchText + "%'");
+            return _cropForCwrDAO.Search(query);
         }
-
-        public IQueryable<CropForCWR> FindRecentCropsForCWR()
+        public IEnumerable<CropForCWR> GetCropForCWRFolderItems(int folderId)
         {
-            return _cropForCwrDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())"); 
-        }
-
-        public IQueryable<CropForCWR> FindUserCropsForCWR(int cooperatorId)
-        {
-            return _cropForCwrDAO.Search("WHERE created_by = " + cooperatorId.ToString());
+            return _cropForCwrDAO.GetFolderItems(folderId);
         }
 
         public CropForCWR GetCropForCWR(int id)
         {
             return _cropForCwrDAO.Get(id);
-        }
-       
-        public IQueryable<CropForCWR> GetCropsForCWR()
-        {
-            return _cropForCwrDAO.Search("");
         }
 
         public ResultContainer AddCropForCWR(CropForCWR cropForCwr)
@@ -185,14 +164,9 @@ namespace USDA.ARS.GRIN.Admin.Service
         // ****************************************************************************
         #region CWR Map
 
-        public IQueryable<CWRMap> GetCWRMaps(int cropForCwrId)
+        public IQueryable<CWRMap> CWRMapSearch(Query query)
         {
-            return _cropForCwrDAO.GetCWRMaps(cropForCwrId);
-        }
-
-        public IQueryable<CWRMap> FindCWRMaps(string searchText)
-        {
-            return _cwrMapDAO.Search("WHERE crop_common_name LIKE '%" + searchText + "%'");
+            return _cwrMapDAO.Search(query);
         }
 
         public CWRMap GetCWRMap(int id)
@@ -200,22 +174,12 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _cwrMapDAO.Get(id);
         }
 
-        public IQueryable<CWRMap> FindUserCWRMaps(int cooperatorId)
+        public IEnumerable<CWRMap> GetCWRMapFolderItems(int folderId)
         {
-            return _cwrMapDAO.Search("WHERE created_by = " + cooperatorId.ToString());
+            return _cwrMapDAO.GetFolderItems(folderId);
         }
 
-        public IQueryable<CWRMap> FindRecentCWRMaps()
-        {
-            return _cwrMapDAO.Search("WHERE modified_date > DATEADD(MONTH, -1, GETDATE())");
-        }
-
-        public IQueryable<CWRMap> FindRelatedCWRMaps(int cropForCwrId)
-        {
-            return _cwrMapDAO.Search("WHERE taxonomy_cwr_crop_id = " + cropForCwrId);
-        }
-
-        public ResultContainer AddCWRMap(CWRMap cropMap)
+    public ResultContainer AddCWRMap(CWRMap cropMap)
         {
             return _cwrMapDAO.Add(cropMap);
         }
@@ -237,30 +201,16 @@ namespace USDA.ARS.GRIN.Admin.Service
             return null;
         }
 
-        #endregion CropMap
+        #endregion 
 
         // ****************************************************************************
         // CWR TRAIT
         // ****************************************************************************
         #region CWR Trait
 
-        public IQueryable<CWRTrait> GetCWRTraits(int cropMapId)
+        public IQueryable<CWRTrait> CWRTraitSearch(Query query)
         {
-            return _cwrTraitDAO.FindAll();     
-        }
-
-        public IQueryable<CWRTrait> FindCWRTraits(string searchText)
-        {
-            return _cwrTraitDAO.Search("WHERE vtctcl.title LIKE '%" + searchText + "%' OR vtbtl.title LIKE '%" + searchText + "%'");
-        }
-
-        public IQueryable<CWRTrait> FindUserCWRTraits(int cooperatorId)
-        {
-            return _cwrTraitDAO.Search("WHERE tct.created_by = " + cooperatorId);
-        }
-        public IQueryable<CWRTrait> FindRecentCWRTraits()
-        {
-            return _cwrTraitDAO.Search("WHERE tct.modified_date > DATEADD(MONTH, -1, GETDATE())");
+            return _cwrTraitDAO.Search(query);
         }
 
         public CWRTrait GetCWRTrait(int id)
@@ -295,24 +245,12 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.Get(id);
         }
-        public IEnumerable<Citation> GetCitationsByCategory(string category, int id)
-        {
-            return _citationDAO.GetByCategory(category, id);
-        }
-        public IEnumerable<Citation> GetCitationsByLiterature(int literatureId)
-        {
-            return _citationDAO.GetByLiterature(literatureId);
-        }
 
-        public IEnumerable<Citation> FindCitations(Query query)
+        public IEnumerable<Citation> CitationSearch(Query query)
         {
             return _citationDAO.Search(query);
         }
 
-        public List<Citation> GetCitations(int speciesId)
-        {
-            return _referenceDAO.GetCitations(speciesId);
-        }
         public ResultContainer AddCitation(Citation citation)
         {
             return _citationDAO.Add(citation);
@@ -450,10 +388,6 @@ namespace USDA.ARS.GRIN.Admin.Service
         public IEnumerable<Authority> AuthoritySearch(string tableName, string searchString)
         {
             return _referenceDAO.AuthoritySearch(tableName, searchString);
-        }
-        public IEnumerable<Citation> CitationSearch(Query query)
-        {
-            return _citationDAO.Search(query);
         }
 
         public IEnumerable<Protologue> ProtologueSearch(string searchText)

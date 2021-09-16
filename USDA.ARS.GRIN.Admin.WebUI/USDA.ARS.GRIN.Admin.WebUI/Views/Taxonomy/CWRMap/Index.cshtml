@@ -4,15 +4,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
 <div class="row">
     <div class="col-md-2">
-        <a href="@Url.Action("FamilyEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+        <a href="@Url.Action("CWRMapEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
             <i class="fa fa-plus"></i>
             New
         </a>
     </div>
 </div>
-
 
 <!-- ============================================================================================== -->
 <!-- SEARCH CRITERIA -->
@@ -29,7 +34,7 @@
                 <div class="tab-pane active" id="tab_1">
                     <div id="section-search-criteria">
                         @Html.HiddenFor(x => x.DataSourceName)
-                        @using (Html.BeginForm("FamilySearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+                        @using (Html.BeginForm("CWRMapSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
                         {
                             <div class="row">
                                 <div class="col-md-2">
@@ -39,21 +44,63 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group form-horizontal">
-                                        <label>Name</label>
-
+                                    <label>Crop</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.CropName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.HiddenFor(x => x.CropForCWID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-crop-for-cwr-search">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label>Species</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.HiddenFor(x => x.SpeciesID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Genepool Code</label>
+                                        @Html.DropDownListFor(x => x.GenepoolCode, Model.GenepoolCodes, "All Genepool Codes", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-horizontal">
+                                        <label>Crop Common Name</label>
+                                        @Html.TextBoxFor(x => x.CropCommonName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group form-horizontal">
                                         <label>Note</label>
                                         @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                     <div class="form-group form-horizontal">
+                                        <label>Is Crop</label>
+                                        @Html.DropDownListFor(x => x.IsCrop, Model.IsCropOptions, "Either", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Is Graftstock</label>
+                                        @Html.DropDownListFor(x => x.IsGraftStock, Model.IsGraftStockOptions, "Either", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Is Potential</label>
+                                        @Html.DropDownListFor(x => x.IsPotential, Model.IsGraftStockOptions, "Either", new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +111,6 @@
                         }
                     </div>
                 </div>
-                <!-- /.tab-pane -->
                 <div class="tab-pane" id="tab_2">
 
                 </div>
@@ -99,80 +145,16 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!--
 =====================================================================================
 CWR-TRAIT MODAL
 =====================================================================================
 -->
-<div class="modal fade" id="modal-cwr-trait">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Apply CWR Trait to Selected Records</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row" style="margin-bottom:1.2rem;">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Trait Class</label>
-                        <div class="col-sm-10">
-                            @Html.DropDownListFor(x => Model.CWRTraitViewModel.TraitClassCode, Model.CWRTraitViewModel.TraitClassCodes, "Select a trait class code", new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:1.2rem;">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Breeding Type</label>
-                        <div class="col-sm-10">
-                            @Html.DropDownListFor(x => x.CWRTraitViewModel.BreedingTypeCode, Model.CWRTraitViewModel.BreedingTypeCodes, "Select a breeding type code", new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:1.2rem;">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Breeding Usage</label>
-                        <div class="col-sm-10">
-                            @Html.TextBoxFor(x => x.CWRTraitViewModel.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
-                        <div class="col-sm-10">
-                            @Html.TextBoxFor(x => x.CWRTraitViewModel.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
+<!--</div>-->
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" id="btnSaveTrait" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_family" }); }
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_cwr_map" }); }
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_cwr_map" }); }
+@{ Html.RenderAction("_CropForCWRSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_cwr_map" }); }
 
 <!-- Page Script -->
 <script type="text/javascript">
@@ -192,7 +174,170 @@ CWR-TRAIT MODAL
             $(".overlay").hide();
         }
     });
-    
+
+    $("#btnSearch").click(function () {
+        var link = '@Url.Action("CWRMapSearch", "Taxonomy")';
+        var formData = new FormData();
+
+        formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
+        formData.append("Name", $("#Name").val());
+        formData.append("CropForCWRID", $("#CropForCWRID").val());
+        formData.append("SpeciesID", $("#SpeciesID").val());
+        formData.append("CropCommonName", $("#CropCommonName").val());
+        formData.append("GenepoolCode", $("#GenepoolCode").val());
+        formData.append("IsCrop", $("#IsCrop").val());
+        formData.append("IsGenepool", $("#IsGenepool").val());
+        formData.append("IsPotential", $("#IsPotential").val());
+        formData.append("Note", $("#Note").val());
+
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-search-results").html(response);
+            }
+        });
+    });
+
+    $("#btnReset").click(function () {
+        $(this).closest('form').find("input[type=text], textarea").val("");
+        $("#section-search-criteria select").val("");
+        $('#section-search-results').html("");
+    });
+
+    /*
+    =============================================================================
+    FOLDERS
+    =============================================================================
+    */
+
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        var itemList = GetSelectedItems();
+        $("#ItemIDList").val(itemList);
+        $('#modal-folder-edit').modal('show');
+    });
+
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "taxonomy_cwr_map";
+        var dataSourceTitle = "CWR Map";
+        var itemList = GetSelectedItems();
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+        },
+        error: function () {
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>","");
+            valueArray.push(itemId);
+        });
+        return valueArray;
+    }
+
+    /*
+    ===========================================================================
+    SPECIES MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchSpecies']", function () {
+        var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+        var isAcceptedName = $('#IsAcceptedName').is(':checked');
+
+        var formData = new FormData();
+        formData.append("FullName", $("#FullName").val());
+        formData.append("IsAcceptedName", isAcceptedName);
+        formData.append("ResultsFormat", "2");
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-species-search-results").html(response);
+            }
+        });
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-species-search').modal('hide');
+        $("#SpeciesName").val(speciesText);
+        $("#SpeciesID").val(ID);
+    }
+
+    /*
+    ===========================================================================
+    CROP FOR CWR MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchCropsForCWR']", function () {
+        var link = '@Url.Action("CropForCWRSearch", "Taxonomy")';
+
+        var formData = new FormData();
+        formData.append("CropName", $("#CropName").val());
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-crop-for-cwr-search-results").html(response);
+            }
+        });
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-crop-for-cwr-search').modal('hide');
+        $("#CropForCWRName").val(speciesText);
+        $("#CropForCWRID").val(ID);
+    }
+
+    /*
+    =============================================================================
+    DATATABLES
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnSelectAll']", function () {
+        var table = $('#data-table').DataTable();
+        table.rows().select();
+    });
+
+    $(document).on("click", "[id='btnDeSelectAll']", function () {
+        var table = $('#data-table').DataTable();
+        table.rows().deselect();
+    });
+
 
      $("#btnSaveTrait").click(function () {
         var valueArray = [];
@@ -227,5 +372,5 @@ CWR-TRAIT MODAL
             }
         });
      });
-    
+
 </script>

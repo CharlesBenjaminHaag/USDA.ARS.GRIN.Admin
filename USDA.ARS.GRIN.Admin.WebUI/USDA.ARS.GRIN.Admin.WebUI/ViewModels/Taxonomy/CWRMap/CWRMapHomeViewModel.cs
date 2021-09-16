@@ -14,11 +14,42 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CWRMapHomeViewModel : BaseViewModel
     {
-        public CWRTraitViewModel CWRTraitViewModel { get; set; }
- 
+        public int SpeciesID { get; set; }
+        public string SpeciesName { get; set; }
+        public int CropForCWID { get; set; }
+        public string CropName { get; set; }
+        public string CropCommonName { get; set; }
+        public string IsCrop { get; set; }
+        public string GenepoolCode { get; set; }
+        public string IsGraftStock { get; set; }
+        public string IsPotential { get; set; }
+
+        public SelectList IsCropOptions
+        {
+            get 
+            {
+                return new SelectList(YesNoOptions, "Key", "Value");
+            }
+        }
+
+        public SelectList GenepoolCodes { get; set; }
+
+        public SelectList IsGraftStockOptions
+        {
+            get
+            {
+                return new SelectList(YesNoOptions, "Key", "Value");
+            }
+        }
+        public SelectList IsPotentialOptions
+        {
+            get
+            {
+                return new SelectList(YesNoOptions, "Key", "Value");
+            }
+        }
         public CWRMapHomeViewModel()
         {
-            CWRTraitViewModel = new CWRTraitViewModel();
         }
     }
 }

@@ -12,18 +12,21 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
 {
     public class CwrTraitDAO : BaseDAO, IRepository<CWRTrait>
     {
-        private string _context;
         protected ReferenceDAO _referenceDAO = null;
 
         public CwrTraitDAO(string context)
         {
-            _context = context;
+            base._context = context;
             _referenceDAO = new ReferenceDAO(context);
         }
-
-        public List<CWRTrait> Demo()
+        public IQueryable<CWRTrait> Search(Query query)
         {
-            const string COMMAND_TEXT = "usp_Taxonomy_Demo_CwrTraits_Select";
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<CWRTrait> Search(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCwrTraits_Search";
             List<CWRTrait> cWRTraitList = new List<CWRTrait>();
 
             try
@@ -36,14 +39,30 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
 
+                        cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 CWRTrait cWrTrait = new CWRTrait();
+                                cWrTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
+                                cWrTrait.CWRMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
+                                cWrTrait.CropForCWRID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
+                                cWrTrait.CropForCWRName = reader["crop_for_cwr_name"].ToString();
+                                cWrTrait.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                cWrTrait.SpeciesName = reader["species_name"].ToString();
+                                cWrTrait.TraitClassCode = reader["trait_class_code"].ToString();
                                 cWrTrait.TraitClassTitle = reader["trait_class_title"].ToString();
                                 cWrTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
+                                cWrTrait.TraitClassCode = reader["breeding_type_code"].ToString();
+                                cWrTrait.BreedingTypeCode = reader["breeding_type_code"].ToString();
                                 cWrTrait.BreedingTypeTitle = reader["breeding_type_title"].ToString();
+                                cWrTrait.BreedingUsageNote = reader["breeding_usage_note"].ToString();
+                                cWrTrait.OntologyTraitIdentifier = reader["ontology_trait_identifier"].ToString();
+                                cWrTrait.CitationID = GetInt(reader["citation_id"].ToString());
+                                cWrTrait.CreatedDate = GetDate(reader["created_date"].ToString());
+                                cWrTrait.CreatedByCooperatorName = reader["created_by_name"].ToString();
                                 cWRTraitList.Add(cWrTrait);
                             }
                         }
@@ -54,7 +73,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             {
                 throw ex;
             }
-            return cWRTraitList;
+            return cWRTraitList.AsQueryable();
         }
 
         public ResultContainer Add(CWRTrait entity)
@@ -273,64 +292,5 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             }
             return resultContainer;
         }
-
-        public IQueryable<CWRTrait> Search(Query query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<CWRTrait> Search(string searchString)
-        {
-            const string COMMAND_TEXT = "usp_TaxonomyCwrTraits_Search";
-            List<CWRTrait> cWRTraitList = new List<CWRTrait>();
-
-            try
-            {
-                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand())
-                    {
-                        cmd.Connection = cn;
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandText = COMMAND_TEXT;
-
-                        cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                CWRTrait cWrTrait = new CWRTrait();
-                                cWrTrait.ID = GetInt(reader["taxonomy_cwr_trait_id"].ToString());
-                                cWrTrait.CWRMapID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
-                                cWrTrait.CropForCWRID = GetInt(reader["taxonomy_cwr_crop_id"].ToString());
-                                cWrTrait.CropForCWRName = reader["crop_for_cwr_name"].ToString();
-                                cWrTrait.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
-                                cWrTrait.SpeciesName = reader["species_name"].ToString();
-                                cWrTrait.TraitClassCode = reader["trait_class_code"].ToString();
-                                cWrTrait.TraitClassTitle = reader["trait_class_title"].ToString();
-                                cWrTrait.IsPotential = ParseBool(reader["is_potential"].ToString());
-                                cWrTrait.TraitClassCode = reader["breeding_type_code"].ToString();
-                                cWrTrait.BreedingTypeCode = reader["breeding_type_code"].ToString();
-                                cWrTrait.BreedingTypeTitle = reader["breeding_type_title"].ToString();
-                                cWrTrait.BreedingUsageNote = reader["breeding_usage_note"].ToString();
-                                cWrTrait.OntologyTraitIdentifier = reader["ontology_trait_identifier"].ToString();
-                                cWrTrait.CitationID = GetInt(reader["citation_id"].ToString());
-                                cWrTrait.CreatedDate = GetDate(reader["created_date"].ToString());
-                                cWrTrait.CreatedByCooperatorName = reader["created_by_name"].ToString();
-                                cWRTraitList.Add(cWrTrait);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return cWRTraitList.AsQueryable();
-        }
-
-       
     }
 }
