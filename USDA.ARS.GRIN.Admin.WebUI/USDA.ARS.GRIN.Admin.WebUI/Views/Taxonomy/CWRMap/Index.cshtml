@@ -46,7 +46,7 @@
                                 <div class="col-md-4">
                                     <label>Crop</label>
                                     <div class="input-group">
-                                        @Html.TextBoxFor(x => x.CropName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.TextBoxFor(x => x.CropForCWRName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
                                         @Html.HiddenFor(x => x.CropForCWID)
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-crop-for-cwr-search">
@@ -304,6 +304,8 @@ CWR-TRAIT MODAL
 
         var formData = new FormData();
         formData.append("CropName", $("#CropName").val());
+        formData.append("ResultsFormat", "2");
+
         $.ajax({
             url: link,
             type: 'POST',
@@ -317,9 +319,9 @@ CWR-TRAIT MODAL
         });
     });
 
-    function SelectSpecies(ID, speciesText) {
+    function SelectCropForCWR(ID, cropName) {
         $('#modal-crop-for-cwr-search').modal('hide');
-        $("#CropForCWRName").val(speciesText);
+        $("#CropForCWRName").val(cropName);
         $("#CropForCWRID").val(ID);
     }
 

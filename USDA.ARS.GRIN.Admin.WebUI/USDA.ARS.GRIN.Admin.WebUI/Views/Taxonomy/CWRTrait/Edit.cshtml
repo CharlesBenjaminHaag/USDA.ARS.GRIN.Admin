@@ -1,350 +1,49 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRTraitViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRTraitEditViewModel
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
-<style>
-    .map-heading {
-        font-size: 1.2em;
-    }
 
-    .map-attribute {
-        font-size: 1.2em;
-    }
-
-    .widget-user-2 .widget-user-username {
-        margin-left: 0px;
-    }
-
-    .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
-        margin-left: 0px;
-    }
-</style>
-
-<div id="section-data-list">
-
-    @{
-        string IDLabel = String.Empty;
-
-        if (Model.ID > 0)
-        {
-            IDLabel = "(" + Model.ID + ")";
-        }
-        else
-        {
-            IDLabel = String.Empty;
-        }
-    }
-
-    @if (Model.ID > 0)
-    {
-        <div class="row">
-            <div class="col-md-12">
-                <div class="callout callout-info" style="vertical-align:middle;">
-                    @Html.Raw(Model.RevisionHistoryText)
-                </div>
-            </div>
-        </div>
-    }
-    <div class="row">
-        <div class="col-md-3">
-            <!-- SPECIES WIDGET -->
-            <div class="box box-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-olive-active">
-                    @*<div class="widget-user-image">
-                            <img class="img-circle" src="" alt="User Avatar">
-                        </div>*@
-                    <!-- /.widget-user-image -->
-                    <h3 class="widget-user-username">@Html.Raw(Model.Species.Name)</h3>
-                    <h5 class="widget-user-desc"><strong>Species</strong></h5>
-                </div>
-                <div class="box-footer">
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
-                    <p class="text-muted">
-                        @Html.Raw(Model.Species.GenusName)
-                    </p>
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Family</strong>
-                    <p class="text-muted">
-                        @Html.Raw(Model.Species.FamilyName)
-                    </p>
-                    <strong><i class="fa fa-book margin-r-5"></i>Place of Publication</strong>
-                    <p class="text-muted">
-                        @Html.Raw(Model.Species.Protologue)
-                    </p>
-                    <a href="@Url.Action("SpeciesEdit","Taxonomy", new { @id = Model.SpeciesID })" class="btn btn-default">Go To Species</a>
-                </div>
-            </div>
-
-            <!-- CROP FOR CWR WIDGET -->
-            <div class="box box-widget widget-user-2">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-orange-active">
-                    @*<div class="widget-user-image">
-                            <img class="img-circle" src="" alt="User Avatar">
-                        </div>*@
-                    <!-- /.widget-user-image -->
-                    <h3 class="widget-user-username">@Html.Raw(@Model.CropForCWR.CropName)</h3>
-                    <h5 class="widget-user-desc"><strong>Crop for CWR</strong></h5>
-                </div>
-                <div class="box-footer">
-                    @if (!String.IsNullOrEmpty(Model.CWRMap.GenepoolCode))
-                    {
-                        <strong><i class="fa fa-chain margin-r-5"></i>Genepool</strong>
-                        <p class="text-muted">
-                            @Html.Raw(Model.CWRMap.GenepoolCode)
-                        </p>
-                    }
-
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Is Crop</strong>
-                    <p class="text-muted">
-                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsCrop))
-                    </p>
-                    @if (Model.CWRMap.IsCrop)
-                    {
-                        <strong><i class="fa fa-leaf margin-r-5"></i>Common Name</strong>
-                        <p class="text-muted">
-                            @Html.Raw(Model.CWRMap.CommonName)
-                        </p>
-                    }
-                    <strong><i class="fa fa-book margin-r-5"></i>Graftstock?</strong>
-                    <p class="text-muted">
-                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsGraftStock))
-                    </p>
-                    <strong><i class="fa fa-book margin-r-5"></i>Potential?</strong>
-                    <p class="text-muted">
-                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.CWRMap.IsPotential))
-                    </p>
-                    <a href="@Url.Action("CWRCropEdit","Taxonomy", new { @id = Model.CropForCWR.ID })" class="btn btn-default">Go to Crop</a>
-                    <a href="@Url.Action("CWRMapEdit","Taxonomy", new { @id = Model.CWRMap.ID })" class="btn btn-default">Go to Map</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Detail @IDLabel</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                @using (Html.BeginForm("CWRTraitEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
-                {
-                    @Html.HiddenFor(x => x.ID, new { name = "ID" })
-                    @Html.HiddenFor(x => x.CWRMapID, new { name = "CropMapID" })
-                    @Html.HiddenFor(x => x.CropForCWRID)
-                    @Html.HiddenFor(x => x.SpeciesID)
-                    <div class="box-body">
-                        @Html.ValidationSummary()
-                        <div class="row">
-                            <div class="col-md-4">
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Trait Class</label>
-                                    @Html.DropDownListFor(x => x.TraitClassCode, Model.TraitClassCodes, "Select a trait class code", new { @id = "ddlTraitClassCodes", @class = "form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Breeding Type</label>
-                                    @Html.DropDownListFor(x => x.BreedingTypeCode, Model.BreedingTypeCodes, "Select a breeding type code", new { @id = "ddlBreedingTypeCodes", @class = "form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Ontology Trait Identifier</label>
-                                    @Html.TextBoxFor(x => x.OntologyTraitIdentifier, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                @Html.CheckBoxFor(x => x.IsPotential)<label style="margin-left:10px;">Is Potential</label>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top:.8em;">
-                            <div class="col-md-12">
-                                <label>Breeding Usage Note</label>
-                                @Html.TextAreaFor(x => x.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
-                                <script>
-                                    CKEDITOR.replace('txtBreedingUsageNote');
-                                </script>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top:1em;">
-                            <div class="col-md-12">
-                                <label>Note</label>
-                                <p id="note-preview" class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                    @Html.Raw(Model.Note)
-                                </p>
-                                @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                                <input id="hfNote" type="hidden" />
-                                <button type="button" class="btn btn-default btn-flat pull-right" style="margin-top:10px;" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
-                                <script>
-                                    CKEDITOR.replace('txtNote');
-                                </script>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="ddlCitations">Citation</label>
-                                    @Html.DropDownListFor(x => x.CitationID, Model.Citations, htmlAttributes: new { @class = "form-control", id = "ddlCitations" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-default">Save Edits</button>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
 <!--
-=====================================================================================
-MODALS
-=====================================================================================
+======================================================================================================
+REVISION HISTORY
+======================================================================================================
 -->
-
-<div class="modal fade" id="modal-note-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Note Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchNotes" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchNotes" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-note-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @Html.Raw(Model.RevisionHistoryText)
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
-</div>
+}
 
-<div class="modal fade" id="modal-citation-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+@using (Html.BeginForm("CWRTraitEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.CurrentID)
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
                 </button>
-                <h4 class="modal-title">Citation Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchCitations" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchCitations" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-citation-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
             </div>
         </div>
-        <!-- /.modal-content -->
+        <div class="box-body">
+        
+        </div>
     </div>
-    <!-- /.modal-dialog -->
-</div>
+}
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        SetDefaults();
-    });
-
-    function SetDefaults() {
-        // Load citations related to the species component of the map.
-        var speciesId = $("#SpeciesID").val();
-        LoadCitations(speciesId);
-    }
-
-    $("#btnSave").click(function () {
-        $("#frmEdit").submit();
-    });
-
-    $("#ddlTraitClassCodes").change(function () {
-        var selectedValue = $(this).val();
-        LoadBreedingTypeCodes(selectedValue);
-    });
-
-    function SetCitation() {
-        var citationId = $("#hfSelectedCitationID").val();
-        $('#ddlSelectCitation').val(citationId);
-    }
-
-    $("#btnSearchNotes").click(function () {
-        var noteContext = "taxonomy_cwr_trait";
-        var url = "/Taxonomy/FindNotes/";
-
-        var inputSearchString = $("#txtSearchNotes").val();
-
-        $.post(url, { searchString: inputSearchString, context: noteContext })
-            .done(function (response) {
-                $("#section-note-search-results").html(response);
-        });
-    });
-
-    $("#btnSearchCitations").click(function () {
-
-        var url = "/Taxonomy/FindCitations/";
-
-        var inputSearchString = $("#txtSearchCitations").val();
-
-        $.post(url, { searchString: inputSearchString })
-            .done(function (response) {
-                $("#section-citation-search-results").html(response);
-        });
-    });
-
-    $(document).ready(function () {
-        $("#txtNote").on("input", function () {
-            var formattedText = jQuery.parseHTML($(this).val());
-            // Print entered value in a div box
-            $("#note-preview").html(formattedText);
-        });
-    });
-
+    
     function SelectNote(noteText) {
         $('#modal-note-search').modal('hide');
         CKEDITOR.instances.txtNote.setData(noteText);
-    }
-
-    function SelectCitation(id, title) {
-        $('#modal-citation-search').modal('hide');
-        $("#txtCitationTitle").val(title);
-        $("#hfCitationID").val(id);
     }
 
     function LoadBreedingTypeCodes(traitClassCode) {

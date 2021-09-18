@@ -302,7 +302,7 @@
     <Content Include="Views\Taxonomy\CropForCWR\_List.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\Index.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_Detail.cshtml" />
-    <Content Include="Views\Taxonomy\CWRTrait\_SearchResults.cshtml" />
+    <Content Include="Views\Taxonomy\CWRTrait\_List.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_NoteSearchResultsList.cshtml" />
     <Content Include="Views\Taxonomy\Citation\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\Shared\_UserSearchList.cshtml" />
@@ -400,6 +400,7 @@
     <Content Include="Views\Taxonomy\CWRTrait\_Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\_SelectList.cshtml" />
+    <Content Include="Views\Taxonomy\CropForCWR\_CropForCWRWidget.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -489,7 +490,7 @@
     <Compile Include="ViewModels\Taxonomy\CropForCWR\CropForCWREditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapListViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\CWRMap\CWRMapEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\CWRTrait\CWRTraitEditViewModel.cs" />

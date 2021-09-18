@@ -1,0 +1,115 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRTraitListViewModel
+
+@if ((Model.Action != "Parent") && (Model.Action != "Folder") && (Model.Format != 3))
+{
+    <div class="mailbox-controls">
+        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check"></i>
+        </button>
+        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check-circle-o"></i>
+        </button>
+        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CwrTraitEdit", "Taxonomy", new { id = 0 })'">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
+    </div>
+}
+<table id="data-table" class="table table-hover table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Species</th>
+            <th>Crop</th>
+            <th>Trait Class</th>
+            <th>Breeding Type</th>
+            <th>Potential?</th>
+            <th>Breeding Usage</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.CWRTraits.Count() > 0)
+        {
+            foreach (var trait in Model.CWRTraits)
+            {
+                <tr>
+                    <td>
+                        <span class="badge">@trait.ID</span>
+                    </td>
+                    <td>
+                        @trait.SpeciesName
+                    </td>
+                    <td>
+                        @trait.CropForCWRName
+                    </td>
+                    <td>
+                        @trait.TraitClassTitle
+                    </td>
+                    <td>
+                        @trait.BreedingTypeTitle
+                    </td>
+                    <td>
+                        @Html.Raw(DisplayHelper.GetBooleanDisplayString(trait.IsPotential))
+                    </td>
+                    <td>
+                        @Html.Raw(trait.BreedingUsageNote)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("CWRTraitEdit", "Taxonomy", new { speciesId = trait.SpeciesID, cropForCwrId = trait.CropForCWRID, cwrMapId = trait.CWRMapID, cwrTraitId = trait.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        @if (Model.Action == "Folder")
+                        {
+                            <button id="btnDeleteFolderItem_@trait.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
+                                <i class="fa fa-trash"></i> Remove From Folder
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <div class="callout callout-info" style="vertical-align:middle; margin-top:20px;">
+                        @*<img src="~/Content/img/info.png" style="margin:0px;" />*@
+                        There are no traits associated with this map.
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('#data-table').DataTable(
+        {
+            responsive: true,
+            select: true,
+            buttons: [
+                {
+                    text: 'Select all',
+                    action: function () {
+                        table.rows().select();
+                    }
+                },
+                {
+                    text: 'Select none',
+                    action: function () {
+                        table.rows().deselect();
+                    }
+                }
+            ]
+        }
+    );
+</script>

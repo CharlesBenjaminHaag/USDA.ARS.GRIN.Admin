@@ -217,6 +217,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _cwrTraitDAO.Get(id);
         }
+        public IQueryable<CWRTrait> GetCWRTraitFolderItems(int folderId)
+        {
+            return _cwrTraitDAO.GetFolderItems(folderId);
+        }
 
         public ResultContainer AddCropTrait(CWRTrait cwrTrait)
         {

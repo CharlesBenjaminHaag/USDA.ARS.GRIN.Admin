@@ -87,6 +87,12 @@
                             <a href="@Url.Action("CwrMapEdit", "Taxonomy", new { cwrMapId = cwrMap.ID })" class="btn btn-primary btn-sm pull-right row-edit">
                                 <i class="fa fa-edit"></i>
                             </a>
+                            @if (Model.Action == "Folder")
+                            {
+                                <button id="btnDeleteFolderItem_@cwrMap.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
+                                    <i class="fa fa-trash"></i> Remove From Folder
+                                </button>
+                            }
                         </td>
                         <td>
                         </td>

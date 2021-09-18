@@ -2,6 +2,7 @@
 <table id="data-table-crops-for-cwr" class="table table-responsive table-striped" style=" width:100%;">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Name</th>
             <th></th>
         </tr>
@@ -15,10 +16,13 @@
                 {
                     <tr>
                         <td>
+                            <span class="badge">@cropForCWR.ID</span>
+                        </td>
+                        <td>
                             @cropForCWR.CropName
                         </td>
                         <td>
-                        <td><button value="@cropForCWR.CropName" class="btn btn-primary btn-sm proto" onclick="SelectCropForCWR(@cropForCWR.ID, this.value);return false;">Select</button>
+                            <button value="@cropForCWR.CropName" class="btn btn-primary btn-sm proto pull-right" onclick="SelectCropForCWR(@cropForCWR.ID, this.value);return false;">Select</button>
                         </td>
                     </tr>
                 }

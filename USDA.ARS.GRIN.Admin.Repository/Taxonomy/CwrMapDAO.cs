@@ -175,7 +175,7 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                             while (reader.Read())
                             {
                                 CWRMap cwrMap = new CWRMap();
-                                cwrMap.ReferenceID = GetInt(reader["taxonomy_folder_id"].ToString());
+                                cwrMap.ReferenceID = GetInt(reader["taxonomy_folder_item_id"].ToString());
                                 cwrMap.ID = GetInt(reader["taxonomy_cwr_map_id"].ToString());
                                 cwrMap.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
                                 cwrMap.SpeciesName = reader["species_name"].ToString();
