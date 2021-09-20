@@ -1,4 +1,4 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationListViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.LiteratureListViewModel
 <table class="table table-responsive table-striped">
     <thead>
         <tr>
@@ -7,19 +7,19 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.Citations.Count() > 0)
+        @if (Model.LiteratureList.Count() > 0)
         {
 
-            foreach (var citation in Model.Citations)
+            foreach (var literature in Model.LiteratureList)
             {
             <tr>
                 <td>
                     <div style="word-wrap:break-word; padding:.4em;">
-                      @Html.Raw(citation.Title)
+                      @Html.Raw(literature.ReferenceTitle)
                     </div>
                 </td>
                 <td>
-                    <button id="btnCitation" value="@citation.Title" class="btn btn-primary btn-small proto" onclick="AddCitation(@citation.ID);return false;">Select</button>
+                    <button id="btnSelectLiterature" value="@literature.ReferenceTitle" class="btn btn-primary btn-small proto" onclick="SelectLiterature(@literature.ID, this.value);return false;">Select</button>
                 </td>
             </tr>
             }

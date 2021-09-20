@@ -60,41 +60,9 @@
     {
         IDLabel = String.Empty;
     }
-  
+
     <div class="row">
-        @*<div class="col-md-3">
-
-            @if (Model.ID > 0)
-            {
-                <div id="section-literature-detail">
-                    @{Html.RenderAction("_LiteratureDetail", "Taxonomy", new { id = Model.LiteratureID });}
-                </div>
-            }
-
-            <div class="box box-widget widget-user-2">
-                <div class="widget-user-header bg-olive-active">
-                    <h3 class="widget-user-username">@Html.Raw(Model.Species.Name)</h3>
-                    <h5 class="widget-user-desc"><strong>Species</strong></h5>
-                </div>
-                <div class="box-footer">
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Genus</strong>
-                    <p class="text-muted">
-                        @Html.Raw(Model.Species.GenusName)
-                    </p>
-                    <strong><i class="fa fa-leaf margin-r-5"></i>Family</strong>
-                    <p class="text-muted">
-                        @Html.Raw(Model.Species.FamilyName)
-                    </p>
-                    <strong><i class="fa fa-book margin-r-5"></i>Place of Publication</strong>
-                    <p class="text-muted">
-                        @Html.Raw(Model.Species.Protologue)
-                    </p>
-                    <button class="btn btn-default ">Go To Species</button>
-                </div>
-            </div>
-        </div>*@
         <div class="col-md-12">
-
             <div class="box box-default">
                 <div class="box-header">
                     <h3 class="box-title">
@@ -108,7 +76,18 @@
                 </div>
                 <div class="box-body">
                     <div class="row">
-
+                        <div class="col-md-3">
+                            <label>Literature</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(x => x.LiteratureReferenceTitle, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                                @Html.HiddenFor(x => x.LiteratureID)
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-literature-search">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Citation Type</label>
@@ -117,7 +96,7 @@
                         </div>
 
                         <!-- /.col -->
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <!-- /.form-group -->
                             <div class="form-group">
                                 <label>Citation Title</label>
@@ -126,18 +105,17 @@
                             <!-- /.form-group -->
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label>Author</label>
                             @Html.TextBoxFor(x => x.AuthorName, new { @id = "txtAuthorName", @class = "form-control" })
                         </div>
-                        <!-- /.col -->
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label>URL</label>
                             @Html.TextBoxFor(x => x.URL, new { @id = "txtURL", @class = "form-control" })
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label>Reference</label>
                             @Html.TextBoxFor(x => x.Reference, new { @id = "txtReference", @class = "form-control" })
                         </div>
@@ -165,103 +143,38 @@
     </div>
 }
 
-<div class="modal fade" id="modal-note-search">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Note Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchNotes" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchNotes" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-note-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div class="modal fade" id="modal-literature-search">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Literature Search</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <input type="text" id="txtSearchLiterature" class="form-control">
-                            <span class="input-group-btn">
-                                <button type="button" id="btnSearchLiterature" class="btn btn-info btn-flat">Search</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="section-literature-search-results">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_LiteratureSearch", "Taxonomy", new { taxonId = Model.ID }); }
 
 <script>
-    $("#btnSearchNotes").click(function () {
-        var noteContext = "taxonomy_cwr_map";
-        var url = "/Taxonomy/FindNotes/";
-        var inputSearchString = $("#txtSearchNotes").val();
+    /*
+    ===========================================================================
+    LITERATURE SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchLiterature']", function () {
+        var link = '@Url.Action("LiteratureSearch", "Taxonomy")';
+        var searchText = $('#txtSearchLiterature').val();
 
-        $.post(url, { searchString: inputSearchString, context: noteContext })
-            .done(function (response) {
-                $("#section-note-search-results").html(response);
-            });
-    });
-
-    function SelectNote(noteText) {
-        $('#modal-note-search').modal('hide');
-        $("#txtNote").val(noteText);
-    }
-
-    $("#btnSearchLiterature").click(function () {
-        var noteContext = "taxonomy_cwr_map";
-        var url = "/Taxonomy/FindLiterature/";
-        var inputSearchString = $("#txtSearchLiterature").val();
-
-        $.post(url, { searchString: inputSearchString })
-            .done(function (response) {
+        var formData = new FormData();
+        formData.append("SearchText", searchText);
+        formData.append("ResultsFormat", "2");
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
                 $("#section-literature-search-results").html(response);
-            });
+            }
+        });
     });
 
-    function SelectLiterature(id) {
+    function SelectLiterature(ID, title) {
         $('#modal-literature-search').modal('hide');
-
+        $("#LiteratureReferenceTitle").val(title);
+        $("#LiteratureID").val(ID);
     }
 </script>

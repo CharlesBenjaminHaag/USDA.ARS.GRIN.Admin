@@ -22,9 +22,11 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string LiteratureReferenceTitle { get; set; }
         public string TypeCode { get; set; }
         public string CitationTitle { get; set; }
+        public string CitationAuthorName { get; set; }
         public string CitationText { get; set; }
-        public string AuthorName { get; set; }
+        public string LiteratureEditorAuthorName { get; set; }
         public string CitationYear { get; set; }
+        public string LiteraturePublicationYear { get; set; }
         public string Reference { get; set; }
         public string DOIReference { get; set; }
         public string URL { get; set; }

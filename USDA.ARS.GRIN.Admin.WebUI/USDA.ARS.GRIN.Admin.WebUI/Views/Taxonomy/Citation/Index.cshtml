@@ -142,172 +142,14 @@
     </div>
 </div>
 
+<div id="section-search-results-container" class="box box-primary">
+
+</div>
+
 @{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
 @{ Html.RenderAction("_FamilySearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
 @{ Html.RenderAction("_GenusSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
 @{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
-
-<!-- ============================================================================================== -->
-<!-- OLD -->
-<!-- ============================================================================================== -->
-<div id="section-search-results-container" class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">Search Results</h3>
-    </div>
-    <div class="box-body">
-
-        <div style="margin-top:15px;">
-            <div class="mailbox-controls">
-                <button type="button" class="btn btn-success btn-sm check-all-search-results disabled">
-                    <i class="fa fa-check"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results disabled">
-                    <i class="fa fa-check-circle-o"></i>
-                </button>
-                <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm disabled" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
-                    <i class="fa fa-folder"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CitationEdit", "Taxonomy", new { id = 0 })'">
-                    <i class="fa fa-plus"></i>
-                </button>
-                <div class="pull-right">
-                    <button type="button" disabled class="btn btn-default btn-sm">
-                        Export
-                    </button>
-                </div>
-            </div>
-            <div class="table-responsive mailbox-messages">
-
-                @if (Model.Citations != null)
-                {
-                    if (Model.Citations.Count() > 0)
-                    {
-                        <table class="table table-hover table-striped ggtools">
-                            <thead>
-                                <tr>
-                                    <th width="5%"></th>
-                                    <th>ID</th>
-                                    <th>Type</th>
-                                    <th>Taxon Name</th>
-                                    <th>Lit. Abbrev.</th>
-                                    <th>Reference Title</th>
-                                    <th>Author(s)</th>
-                                    <th>Publication Year(s)</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null)
-                                {
-                                    if (Model.Citations.Count() > 0)
-                                    {
-                                        foreach (var citation in Model.Citations)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@citation.ID">
-                                                </td>
-                                                <td>
-                                                    <span class="label label-default">@citation.ID</span>
-                                                </td>
-                                                <td>
-                                                    @citation.TypeCode
-                                                </td>
-                                                <td>
-                                                    @citation.TaxonName
-                                                </td>
-                                                <td>
-                                                    @citation.LiteratureAbbreviation
-                                                </td>
-                                                <td>
-                                                    @citation.LiteratureReferenceTitle
-                                                </td>
-                                                <td>
-                                                    @citation.AuthorName
-                                                </td>
-                                                <td>
-                                                    @citation.CitationYear
-                                                </td>
-                                                <td>
-                                                    <a href="@Url.Action("CitationEdit", "Taxonomy", new { id = citation.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h4><i class="icon fa fa-info"></i> Alert!</h4>
-                            Your search returned no matches.
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-
-
-    </div>
-</div>
-
-<!--
-=====================================================================================
-MODALS
-=====================================================================================
--->
-@Html.Partial("~/Views/Taxonomy/Species/_SearchModal.cshtml")
-@*<script>
-        //$(document).on({
-        //    ajaxStart: function () {
-        //        $(".overlay").show();
-        //    },
-        //    ajaxStop: function () {
-        //        $(".overlay").hide();
-        //    }
-        //});
-
-        $(document).ready(function () {
-            //$("#txtSpeciesName").autocomplete({
-            //    source: function (request, response) {
-
-            //        alert("debug " + request.term);
-
-            //        $.ajax({
-            //            url: "/Taxonomy/SpeciesCache",
-            //            type: "POST",
-            //            dataType: "json",
-            //            data: { prefix: request.term },
-            //            success: function (data) {
-            //                response($.map(data, function (item) {
-            //                    return { label: item.Name, value: item.ID };
-            //                }))
-
-            //            }
-            //        })
-            //    },
-            //    minLength: 0,
-            //    select: function (event, ui) {
-            //        event.preventDefault();
-            //        $("#hfSpeciesID").val(ui.item.value);
-            //        $("#txtSpeciesName").val(ui.item.label);
-            //    },
-            //    messages: {
-            //        noResults: "",
-            //        results: function (count) {
-            //            return count + (count > 1 ? ' results' : ' result ') + ' found';
-            //        }
-            //    }
-            //});
-        })
-    </script>*@
-
 
 <script type="text/javascript">
 
@@ -364,9 +206,9 @@ MODALS
 
         $("#btnReset").click(function () {
             $(this).closest('form').find("input[type=text], textarea").val("");
-            $("FamilyID").val(0);
-            $("GenusID").val(0);
-            $("SpeciesID").val(0);
+            $("#FamilyID").val(0);
+            $("#GenusID").val(0);
+            $("#SpeciesID").val(0);
             $("#section-search-criteria select").val("");
             $('#section-search-results').html("");
         });

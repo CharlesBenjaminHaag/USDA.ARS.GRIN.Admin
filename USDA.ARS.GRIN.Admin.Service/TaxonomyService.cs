@@ -287,11 +287,11 @@ namespace USDA.ARS.GRIN.Admin.Service
         }
 
 
-        public List<Literature> SearchLiterature(string searchText)
+        public IQueryable<Literature> SearchLiterature(string searchText)
         {
             return _citationDAO.SearchLiterature(searchText);
         }
-        public List<Literature> SearchLiterature(Query query)
+        public IQueryable<Literature> SearchLiterature(Query query)
         {
             return _citationDAO.SearchLiterature(query);
         }

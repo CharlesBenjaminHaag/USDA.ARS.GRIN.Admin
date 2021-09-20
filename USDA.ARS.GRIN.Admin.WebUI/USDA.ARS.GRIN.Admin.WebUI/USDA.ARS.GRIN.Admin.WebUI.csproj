@@ -401,6 +401,7 @@
     <Content Include="Views\Taxonomy\Species\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\_Widget.cshtml" />
+    <Content Include="Views\Taxonomy\Citation\Literature\_Search.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -510,6 +511,7 @@
     <Compile Include="ViewModels\Taxonomy\IndexViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Literature\LiteratureEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Literature\LiteratureHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Literature\LiteratureListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationListViewModel.cs" />
