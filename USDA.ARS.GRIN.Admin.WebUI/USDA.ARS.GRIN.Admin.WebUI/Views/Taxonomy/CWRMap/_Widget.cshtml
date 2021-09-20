@@ -1,0 +1,34 @@
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRMapEditViewModel
+<div class="box box-widget widget-user-2">
+    <div class="widget-user-header bg-orange-active">
+        <h3 class="widget-user-username">@Model.CropForCWRName</h3>
+        @if (Model.IsCrop)
+        {
+            <h5 class="widget-user-desc"><strong>@Model.CropCommonName</strong></h5>
+        }
+    </div>
+    <div class="box-footer">
+        @if (!String.IsNullOrEmpty(Model.GenepoolCode))
+        {
+            <strong><i class="fa fa-chain margin-r-5"></i>Genepool</strong>
+            <p class="text-muted">
+                @Html.Raw(Model.GenepoolCode)
+            </p>
+        }
+
+        <strong><i class="fa fa-leaf margin-r-5"></i>Is Crop</strong>
+        <p class="text-muted">
+            @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.IsCrop))
+        </p>
+        <strong><i class="fa fa-book margin-r-5"></i>Graftstock?</strong>
+        <p class="text-muted">
+            @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.IsGraftStock))
+        </p>
+        <strong><i class="fa fa-book margin-r-5"></i>Potential?</strong>
+        <p class="text-muted">
+            @Html.Raw(DisplayHelper.GetBooleanDisplayString(Model.IsPotential))
+        </p>
+        <a href="@Url.Action("CropForCWREdit","Taxonomy", new { cropForCwrId = Model.CropForCWRID })" class="btn btn-default">Go to Crop</a>
+        <a href="@Url.Action("CWRMapEdit","Taxonomy", new { cwrMapId  = Model.ID })" class="btn btn-default">Go to Map</a>
+    </div>
+</div>

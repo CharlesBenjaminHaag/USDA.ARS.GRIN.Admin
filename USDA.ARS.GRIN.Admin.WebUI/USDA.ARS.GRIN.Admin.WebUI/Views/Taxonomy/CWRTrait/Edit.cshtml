@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .widget-user-2 .widget-user-username, .widget-user-2 .widget-user-desc {
+        margin-left: 0px;
+    }
+</style>
+
 <!--
 ======================================================================================================
 REVISION HISTORY
@@ -24,27 +30,112 @@ REVISION HISTORY
 {
     @Html.HiddenFor(x => x.ID)
     @Html.HiddenFor(x => x.CurrentID)
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
+    @Html.HiddenFor(x=>x.CWRMapID)
+    @Html.HiddenFor(x=>x.DataSourceName)
+    <div id="section-validation-summary" class="callout callout-danger" style="display:none;">
+        <h4>Validation Error</h4>
+        <ul id="validation-error-list">
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            @{ Html.RenderAction("_CWRMapWidget", "Taxonomy", new { id = Model.CWRMapID });}
+            @{ Html.RenderAction("_SpeciesWidget", "Taxonomy", new { id = Model.SpeciesID });}
         </div>
-        <div class="box-body">
-        
+        <div class="col-md-10">
+            <div class="box box-default">
+                <div class="box-header">
+                    <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group form-horizontal">
+                                <label>Trait Class Code</label>
+                                @Html.DropDownListFor(x => x.TraitClassCode, Model.TraitClassCodes, "All Trait Class Codes", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-horizontal">
+                                <label>Breeding Type Code</label>
+                                @Html.DropDownListFor(x => x.BreedingTypeCode, Model.BreedingTypeCodes, "All Breeding Type Codes", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-horizontal">
+                                <label>Breeding Usage Note</label>
+                                @Html.TextBoxFor(x => x.BreedingUsageNote, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-horizontal">
+                                <label>Ontology Trait Identifier</label>
+                                @Html.TextBoxFor(x => x.OntologyTraitIdentifier, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-horizontal">
+                                @Html.CheckBoxFor(x => x.IsPotential, new { @id = "cbxIsPotential" })<label class="label-checkbox">Is Potential</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:1.0em;">
+                            <label>Note</label>
+                            @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                            <script>
+                                CKEDITOR.replace('txtNote');
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="button" id="btnSubmit" class="btn btn-default">Save Edits</button>
+                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-note-search">Search Notes...</button>
+                </div>
+            </div>
         </div>
     </div>
 }
 
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+
 <script type="text/javascript">
-    
-    function SelectNote(noteText) {
-        $('#modal-note-search').modal('hide');
-        CKEDITOR.instances.txtNote.setData(noteText);
-    }
+
+    $(document).on("click", "[id='btnSubmit']", function () {
+        //var speciesId = $("#SpeciesID").val();
+        //var cropForCwrId = $("#CropForCWRID").val();
+
+        //$("#validation-error-list").empty();
+        //if (speciesId <= 0) {
+        //    $("#validation-error-list").append("<li>You must select a species.</li>");
+        //}
+
+        //if (cropForCwrId <= 0) {
+        //    $("#validation-error-list").append("<li>You must select a crop.</li>");
+
+        //}
+
+        //var isCrop = $("#cbxIsCrop").prop("checked");
+        //var commonName = $("#txtCropCommonName").val().trim();
+
+        //if (isCrop == true) {
+        //    if (commonName.length <= 0) {
+        //        $("#validation-error-list").append("<li>Because Is Crop is selected, you must specify the Common Name.</li>");
+        //    }
+        //}
+
+        if ($('#validation-error-list li').length > 0) {
+            $("#section-validation-summary").show();
+        }
+        else {
+            $(frmEdit).submit();
+        }
+    });
 
     function LoadBreedingTypeCodes(traitClassCode) {
         var breedingTypeCodesSelect = $('#ddlBreedingTypeCodes');
@@ -91,5 +182,26 @@ REVISION HISTORY
                 };
             });
         }
+    }
+
+    /*
+    ===========================================================================
+    NOTE SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchNotes']", function () {
+        var url = '@Url.Action("NoteSearch", "Taxonomy")';
+        var dataSourceName = $("#DataSourceName").val();
+        var searchText = $("#txtSearchNotes").val();
+
+        $.post(url, { dataSourceName: dataSourceName, searchText: searchText })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+            });
+    });
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        CKEDITOR.instances.txtNote.setData(noteText);
     }
 </script>

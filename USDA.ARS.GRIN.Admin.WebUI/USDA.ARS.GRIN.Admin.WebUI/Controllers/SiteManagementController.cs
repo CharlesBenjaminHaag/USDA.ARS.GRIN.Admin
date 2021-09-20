@@ -23,7 +23,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult CGC()
         {
             SiteManagementHomeViewModel siteManagementHomeViewModel = new SiteManagementHomeViewModel();
-            TempData["context"] = "CGC Content";
+            TempData["page_title"] = "CGC Content";
             return View(BASE_PATH + "CGC/Index.cshtml",siteManagementHomeViewModel);
         }
 

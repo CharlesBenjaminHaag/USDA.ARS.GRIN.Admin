@@ -2,37 +2,40 @@
 
 @if ((Model.Action != "Parent") && (Model.Action != "Folder") && (Model.Format != 3))
 {
-    <div class="mailbox-controls">
-        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
-            <i class="fa fa-check"></i>
+<div class="mailbox-controls">
+    <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
+        <i class="fa fa-check"></i>
+    </button>
+    <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+        <i class="fa fa-check-circle-o"></i>
+    </button>
+    <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+        <i class="fa fa-folder"></i>
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("FamilyEdit", "Taxonomy", new { id = 0 })'">
+        <i class="fa fa-plus"></i>
+    </button>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-cwr-trait-edit">
+        <i class="fa fa-plus"></i> Add Trait
+    </button>
+    <div class="pull-right">
+        <button type="button" disabled class="btn btn-default btn-sm">
+            Export
         </button>
-        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
-            <i class="fa fa-check-circle-o"></i>
-        </button>
-        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
-            <i class="fa fa-folder"></i>
-        </button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("FamilyEdit", "Taxonomy", new { id = 0 })'">
-            <i class="fa fa-plus"></i>
-        </button>
-        <div class="pull-right">
-            <button type="button" disabled class="btn btn-default btn-sm">
-                Export
-            </button>
-        </div>
     </div>
+</div>
 }
 <table id="data-table" class="table table-responsive table-striped" style=" width:100%;">
     <thead>
         <tr>
             <th>ID</th>
             <th>Common Name</th>
-            <th>Crop?</th>
+            <th>CWR Crop Name</th>
+            <th>Species Name</th>
+            <th>Is Crop?</th>
             <th>Graftstock?</th>
             <th>Potential?</th>
             <th>Genepool</th>
-            <th>Created</th>
-            <th>By</th>
             <th>Last Modified</th>
             <th>By</th>
             <th></th>
@@ -53,6 +56,8 @@
                         <td>
                             @cwrMap.CommonName
                         </td>
+                        <td>@cwrMap.CropForCWRName</td>
+                        <td>@cwrMap.SpeciesName</td>
                         <td>
                             @Html.Raw(DisplayHelper.GetDisplayString(cwrMap.IsCrop.ToString()))
                         </td>
@@ -64,12 +69,6 @@
                         </td>
                         <td>
                             @cwrMap.GenepoolCode
-                        </td>
-                        <td>
-                            @cwrMap.CreatedDate.ToShortDateString()
-                        </td>
-                        <td>
-                            @cwrMap.CreatedByCooperatorName
                         </td>
                         <td>
                             @if (cwrMap.ModifiedDate != DateTime.MinValue)

@@ -400,7 +400,7 @@
     <Content Include="Views\Taxonomy\CWRTrait\_Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\CropForCWR\_SelectList.cshtml" />
-    <Content Include="Views\Taxonomy\CropForCWR\_CropForCWRWidget.cshtml" />
+    <Content Include="Views\Taxonomy\CWRMap\_Widget.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,11 +12,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
     public class CWRTraitEditViewModel : BaseViewModel
     {
-        private IEnumerable<CodeValueReferenceItem> _traitClassCodes;
-        private IEnumerable<CodeValueReferenceItem> _breedingTypeCodes;
-        private IEnumerable<Citation> _citations;
-       
-        public int ID { get; set; }
+        public bool AddToFolder { get; set; }
         public int CWRMapID { get; set; }
         public int CropForCWRID { get; set; }
         public string CropForCWRName { get; set; }
@@ -33,25 +29,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public Models.Taxonomy.CWRMap CWRMap { get; set; }
         public Models.Taxonomy.CropForCWR CropForCWR { get; set; }
         public Species Species { get; set; }
+        public IEnumerable<SelectListItem> TraitClassCodes { get; set; }
+        public IEnumerable<SelectListItem> BreedingTypeCodes { get; set; }
+
         public CWRTraitEditViewModel()
         {
+            DataSourceName = "taxonomy_cwr_trait";
         }
-
-        public CWRTraitEditViewModel(List<CodeValueReferenceItem> traitClassCodes, List<CodeValueReferenceItem> breedingTypeCodes)
-        {
-            _traitClassCodes = traitClassCodes;
-            _breedingTypeCodes = breedingTypeCodes;
-        }
-        public IEnumerable<SelectListItem> TraitClassCodes
-        {
-            get { return new SelectList(_traitClassCodes, "CodeValue", "Title"); }
-        }
-
-        public IEnumerable<SelectListItem> BreedingTypeCodes
-        {
-            get { return new SelectList(_breedingTypeCodes, "CodeValue", "Title"); }
-        }
-
-        public IEnumerable<SelectListItem> Citations { get; set; }
     }
 }

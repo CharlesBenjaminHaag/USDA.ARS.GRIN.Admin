@@ -1,54 +1,61 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CWRTraitEditViewModel
-<div class="modal fade" id="modal-cwr-trait">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Apply CWR Trait to Selected Records</h4>
+<div class="modal fade" id="modal-cwr-trait-edit">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Apply CWR Trait to Selected Records</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-bottom:1.2rem;">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Trait Class</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownListFor(x => Model.TraitClassCode, Model.TraitClassCodes, "Select a trait class code", new { @id = "ddlModalTraitClassCodes", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:1.2rem;">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Breeding Type</label>
+                            <div class="col-sm-10">
+                                @Html.DropDownListFor(x => x.BreedingTypeCode, Model.BreedingTypeCodes, "Select a breeding type code", new { @id = "ddlModalBreedingTypeCodes", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom:1.2rem;">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Breeding Usage Note</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.BreedingUsageNote, new { @id = "txtModalBreedingUsageNote", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(x => x.OntologyTraitIdentifier, new { @id = "txtModalOntologyTraitIdentifier", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="txtName" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+                                <div class="form-group form-horizontal">
+                                    @Html.CheckBoxFor(x => x.AddToFolder, new { @id = "cbxAddToFolder" })<label class="label-checkbox">Add New Traits to Folder</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnAddTrait" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="row" style="margin-bottom:1.2rem;">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Trait Class</label>
-                        <div class="col-sm-10">
-                            @Html.DropDownListFor(x => Model.TraitClassCode, Model.TraitClassCodes, "Select a trait class code", new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:1.2rem;">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Breeding Type</label>
-                        <div class="col-sm-10">
-                            @Html.DropDownListFor(x => x.CWRTraitViewModel.BreedingTypeCode, Model.BreedingTypeCodes, "Select a breeding type code", new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:1.2rem;">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Breeding Usage</label>
-                        <div class="col-sm-10">
-                            @Html.TextBoxFor(x => x.CWRTraitViewModel.BreedingUsageNote, new { @id = "txtBreedingUsageNote", @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="txtName" class="col-sm-2 control-label">Ontology Trait Identifier</label>
-                        <div class="col-sm-10">
-                            @Html.TextBoxFor(x => x.CWRTraitViewModel.OntologyTraitIdentifier, new { @id = "txtOntologyTraitIdentifier", @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" id="btnSaveTrait" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>-->
+        </div>
     </div>
-<!-- /.modal-content -->
-</div>-->
-<!-- /.modal-dialog -->

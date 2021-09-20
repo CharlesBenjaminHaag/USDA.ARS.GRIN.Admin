@@ -19,7 +19,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         #region Web Order Request
         public ActionResult Index()
         {
-            TempData["context"] = "Home";
+            TempData["page_title"] = "Home";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             WebOrderRequestSearchViewModel viewModel = new WebOrderRequestSearchViewModel();
 
@@ -43,7 +43,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult Search(int webOrderRequestId = 0, string emailAddress = "", string firstName = "", string lastName = "", string organization = "")
         {
-            TempData["context"] = "Web Order Request Search";
+            TempData["page_title"] = "Web Order Request Search";
             WebOrderRequestSearchViewModel webOrderRequestSearchViewModel = new WebOrderRequestSearchViewModel();
             GRINGlobalService service = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
 
@@ -173,7 +173,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult Update(int webOrderRequestId, int webCooperatorId, string statusCode, string actionNote)
         {
-            TempData["context"] = "Review";
+            TempData["page_title"] = "Review";
             ResultContainer resultContainer = null;
             WebOrderRequest webOrderRequest = new WebOrderRequest();
             List<WebOrderRequest> webOrderRequests = null;
@@ -199,14 +199,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult View(int id)
         {
-            TempData["context"] = "View Web Order Request #" + id;
+            TempData["page_title"] = "View Web Order Request #" + id;
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
             viewModel = GetData(id, false);
             return View("~/Views/GRINGlobal/WebOrder/Edit.cshtml", viewModel);
         }
         public ActionResult Edit(int id)
         {
-            TempData["context"] = "Review Web Order Request #" + id;
+            TempData["page_title"] = "Review Web Order Request #" + id;
             WebOrderRequestEditViewModel viewModel = new WebOrderRequestEditViewModel();
 
             try
@@ -367,7 +367,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult EmailTemplateHome()
         {
-            TempData["context"] = "Email Templates";
+            TempData["page_title"] = "Email Templates";
             try
             {
                 GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
@@ -388,7 +388,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public PartialViewResult _EmailTemplateView(int id)
         {
-            TempData["context"] = "View Email Template";
+            TempData["page_title"] = "View Email Template";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
             EmailTemplate emailTemplate = new EmailTemplate();
@@ -416,7 +416,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult EmailTemplateEdit(int id)
         {
-            TempData["context"] = "Edit Email Template";
+            TempData["page_title"] = "Edit Email Template";
             GRINGlobalService grinGlobalService = new GRINGlobalService(this.AuthenticatedUserSession.Environment);
             EmailTemplateEditViewModel emailTemplateEditViewModel = new EmailTemplateEditViewModel();
             EmailTemplate emailTemplate = new EmailTemplate();

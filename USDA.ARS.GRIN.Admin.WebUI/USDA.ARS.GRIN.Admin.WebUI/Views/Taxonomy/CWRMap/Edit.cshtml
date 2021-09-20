@@ -27,13 +27,13 @@
     @Html.HiddenFor(x => x.CurrentID)
 
 
-<div id="section-validation-summary" class="callout callout-danger" style="display:none;">
-    <h4>Validation Error</h4>
-    <ul id="validation-error-list">
-        <li>You must select a species.</li>
-        <li>You must select a crop.</li>
-    </ul>
-</div>
+    <div id="section-validation-summary" class="callout callout-danger" style="display:none;">
+        <h4>Validation Error</h4>
+        <ul id="validation-error-list">
+            <li>You must select a species.</li>
+            <li>You must select a crop.</li>
+        </ul>
+    </div>
 
 <div class="box box-default">
     <div class="box-header">
@@ -130,12 +130,22 @@
 
     function Init() {
         try {
-            //TODO
-
+            var isCrop = $("#cbxIsCrop").prop("checked");
+            if (isCrop == true) {
+                $("#txtCropCommonName").prop('disabled', false);
+            }
+            else {
+                $("#txtCropCommonName").prop('disabled', true);
+            }
         }
         catch (ex) {
             console.log(ex);
         }
+    }
+
+    function Validate()
+    {
+
     }
 
     $('#cbxIsCrop').click(function () {
@@ -173,7 +183,17 @@
             
         }
 
-        if ($('#validation-error-list li').length > 1) {
+        var isCrop = $("#cbxIsCrop").prop("checked");
+        var commonName = $("#txtCropCommonName").val().trim();
+        
+        if (isCrop == true)
+        {
+            if (commonName.length <= 0) {
+                $("#validation-error-list").append("<li>Because Is Crop is selected, you must specify the Common Name.</li>");      
+            }
+        }
+
+        if ($('#validation-error-list li').length > 0) {
             $("#section-validation-summary").show();
         }
         else {

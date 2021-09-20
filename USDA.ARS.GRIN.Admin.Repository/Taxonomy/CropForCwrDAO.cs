@@ -236,7 +236,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 crop.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
                             }
                         }
-                        crop.CWRMaps = GetCWRMaps(crop.ID);
                     }
                 }   
             }

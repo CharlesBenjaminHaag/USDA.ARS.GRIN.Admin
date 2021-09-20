@@ -145,16 +145,10 @@
     </div>
 </div>
 
-<!--
-=====================================================================================
-CWR-TRAIT MODAL
-=====================================================================================
--->
-<!--</div>-->
-
 @{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_cwr_map" }); }
 @{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_cwr_map" }); }
 @{ Html.RenderAction("_CropForCWRSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_cwr_map" }); }
+@{ Html.RenderAction("_CWRTraitEditModal", "Taxonomy"); }
 
 <!-- Page Script -->
 <script type="text/javascript">
@@ -340,8 +334,32 @@ CWR-TRAIT MODAL
         table.rows().deselect();
     });
 
+    $(document).on("click", "[id='btnAddTrait']", function () {
+        var link = '@Url.Action("AddCWRTrait", "Taxonomy")';
+        var formData = new FormData();
 
-     $("#btnSaveTrait").click(function () {
+        formData.append("TraitClassCode", $("#ddlModalTraitClassCodes").val());
+        formData.append("BreedingTypeCode", $("#ddlModalBreedingTypeCodes").val());
+        formData.append("BreedingUsageNote", $("#txtModalBreedingUsageNote").val());
+        formData.append("OntologyTraitIdentifier", $("#txtModalOntologyTraitIdentifier").val());
+        formData.append("CWRMapIDList", GetSelectedItems());
+        //formData.append("Note", $("#Note").val());
+
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $('#modal-cwr-trait-edit').modal('hide');
+            }
+        });
+    });
+
+
+    @*$("#btnSaveTrait").click(function () {
         var valueArray = [];
         var traitClassCode = "";
         var breedingTypeCode = "";
@@ -373,6 +391,6 @@ CWR-TRAIT MODAL
                 $("#section-my-records").load(link);
             }
         });
-     });
+     });*@
 
 </script>

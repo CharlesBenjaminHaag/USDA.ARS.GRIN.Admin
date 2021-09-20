@@ -14,7 +14,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         public ActionResult Index()
         {
-            TempData["context"] = "NRR Review Tool";
+            TempData["page_title"] = "NRR Review Tool";
             WebOrderRequestSearchViewModel viewModel = new WebOrderRequestSearchViewModel();
 
             try

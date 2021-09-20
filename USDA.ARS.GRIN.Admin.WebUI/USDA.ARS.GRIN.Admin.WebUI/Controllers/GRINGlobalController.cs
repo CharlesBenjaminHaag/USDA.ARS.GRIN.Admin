@@ -147,7 +147,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         public ActionResult OrdersHome()
         {
-            TempData["context"] = "NRR Review";
+            TempData["page_title"] = "NRR Review";
             return View("~/Views/GRINGlobal/Order/Index.cshtml");
         }
 

@@ -23,7 +23,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 dashboardViewModel.AuthenticatedUser = this.AuthenticatedUser;
-                TempData["context"] = "My Profile";
+                TempData["page_title"] = "My Profile";
 
                 if (!String.IsNullOrEmpty(appContext))
                 {
