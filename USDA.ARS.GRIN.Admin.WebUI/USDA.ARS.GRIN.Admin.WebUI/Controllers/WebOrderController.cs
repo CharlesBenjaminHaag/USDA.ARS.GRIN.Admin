@@ -133,12 +133,14 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "status_code", SearchOperatorCode = "=", FieldValue = formCollection["SelectedStatusCode"], DataType = "NVARCHAR" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["SelectedStartDate"]))
+                if (  (!String.IsNullOrEmpty(formCollection["SelectedStartDate"])) && (formCollection["SelectedStartDate"].Trim().Length > 0))
                 {
+                    var DEBUG = formCollection["SelectedStartDate"].Trim().Length;
+
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "ordered_date", SearchOperatorCode = ">=", FieldValue = formCollection["SelectedStartDate"], DataType = "DATETIME" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["SelectedEndDate"]))
+                if ((!String.IsNullOrEmpty(formCollection["SelectedEndDate"])) && (formCollection["SelectedEndDate"].Trim().Length > 0))
                 {
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "ordered_date", SearchOperatorCode = "<=", FieldValue = formCollection["SelectedEndDate"], DataType = "DATETIME" });
                 }
