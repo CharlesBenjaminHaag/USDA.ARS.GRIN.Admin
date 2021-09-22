@@ -61,15 +61,15 @@
                     @family.ModifiedByCooperatorName
                 </td>
                 <td>
-                    <a href="@Url.Action("FamilyEdit", "Taxonomy", new { id = family.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                        <i class="fa fa-edit"></i>
-                    </a>
                     @if (Model.Action == "Folder")
                     {
                         <button id="btnDeleteFolderItem_@family.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
                             <i class="fa fa-trash"></i> Remove From Folder
                         </button>
                     }
+                    <a href="@Url.Action("FamilyEdit", "Taxonomy", new { id = family.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
                 </td>
             </tr>
         }

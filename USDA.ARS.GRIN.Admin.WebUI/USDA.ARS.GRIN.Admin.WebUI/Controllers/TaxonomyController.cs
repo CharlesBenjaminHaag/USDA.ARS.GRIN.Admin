@@ -1438,20 +1438,17 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = dataSourceIdFieldName, SearchOperatorCode = "IS NOT", FieldValue = "NULL", DataType = "INT" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["FamilyID"]))
+                if ((!String.IsNullOrEmpty(formCollection["FamilyID"])) && (Int32.Parse(formCollection["FamilyID"]) > 0))
                 {
-                    if (Int32.Parse(formCollection["FamilyID"]) > 0)
-                    {
-                        query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_family_id", SearchOperatorCode = "=", FieldValue = formCollection["FamilyID"], DataType = "INT" });
-                    }
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_family_id", SearchOperatorCode = "=", FieldValue = formCollection["FamilyID"], DataType = "INT" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["GenusID"]))
+                if ((!String.IsNullOrEmpty(formCollection["GenusID"])) && (Int32.Parse(formCollection["GenusID"]) > 0))
                 {
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_genus_id", SearchOperatorCode = "=", FieldValue = formCollection["GenusID"], DataType = "INT" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["SpeciesID"]))
+                if ((!String.IsNullOrEmpty(formCollection["SpeciesID"])) && (Int32.Parse(formCollection["SpeciesID"]) > 0))
                 {
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_species_id", SearchOperatorCode = "=", FieldValue = formCollection["SpeciesID"], DataType = "INT" });
                 }
@@ -1467,19 +1464,30 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "type_code", SearchOperatorCode = "=", FieldValue = formCollection["TypeCode"], DataType = "NVARCHAR" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["Reference"]))
+                if (!String.IsNullOrEmpty(formCollection["Abbreviation"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "reference", SearchOperatorCode = "LIKE", FieldValue = formCollection["Reference"], DataType = "NVARCHAR" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "abbreviation", SearchOperatorCode = "LIKE", FieldValue = formCollection["Abbreviation"], DataType = "NVARCHAR" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "standard_abbreviation", SearchOperatorCode = "LIKE", FieldValue = formCollection["Abbreviation"], DataType = "NVARCHAR", LogicalOperator = "OR" });
                 }
 
-                if (!String.IsNullOrEmpty(formCollection["DOIReference"]))
+                if (!String.IsNullOrEmpty(formCollection["Author"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "doi_reference", SearchOperatorCode = "LIKE", FieldValue = formCollection["DOIReference"], DataType = "NVARCHAR" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = " editor_author_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["Author"], DataType = "NVARCHAR" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["Title"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "title", SearchOperatorCode = "LIKE", FieldValue = formCollection["Title"], DataType = "NVARCHAR" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "reference_title", SearchOperatorCode = "LIKE", FieldValue = formCollection["Title"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Year"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "publication_year", SearchOperatorCode = "LIKE", FieldValue = formCollection["Year"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Note"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "note", SearchOperatorCode = "LIKE", FieldValue = formCollection["Note"], DataType = "NVARCHAR" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
@@ -1515,23 +1523,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public PartialViewResult CitationList(string category, int id)
-        {
-            CitationSearchViewModel viewModel = new CitationSearchViewModel();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-            try
-            {
-                //viewModel.Citations = _taxonomyService.GetCitationsByCategory(category, id);
-                return PartialView("~/Views/Taxonomy/Citation/_SearchResults.cshtml", viewModel);
-            }
-            catch (Exception ex)
-            {
-                return PartialView("~/Views/Error/_Error.cshtml", viewModel);
-            }
         }
 
         public ActionResult CitationEdit(int id = 0)
@@ -1646,22 +1637,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return PartialView("~/Views/Taxonomy/Citation/_Detail.cshtml", citation);
         }
 
-        public PartialViewResult FindCitations(int speciesId, string searchString)
-        {
-            IEnumerable<Citation> citationList = new List<Citation>().AsEnumerable();
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-            try
-            {
-                //TODO
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-            }
-            return PartialView("~/Views/Taxonomy/Citation/_List.cshtml", citationList);
-        }
-
         #endregion
 
         #region Literature
@@ -1675,7 +1650,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             try
             {
                 List<CodeValueReferenceItem> literatureTypeCodes = taxonomyService.GetCodeValues("LITERATURE_TYPE");
-                literatureHomeViewModel.LiteratureTypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
+                literatureHomeViewModel.TypeCodes = new SelectList(literatureTypeCodes, "CodeValue", "Title");
                 return View(BASE_PATH + "Citation/Literature/Index.cshtml", literatureHomeViewModel);
             }
             catch (Exception ex)
@@ -1786,6 +1761,31 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     query.QueryCriteria.Add(new QueryCriterion { FieldName = "reference_title", SearchOperatorCode = "LIKE", FieldValue = formCollection["SearchText"], DataType = "NVARCHAR", LogicalOperator = "OR" });
                 }
 
+                if (!String.IsNullOrEmpty(formCollection["Abbreviation"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "abbreviation", SearchOperatorCode = "LIKE", FieldValue = formCollection["Abbreviation"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["StandardAbbreviation"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "standard_abbreviation", SearchOperatorCode = "LIKE", FieldValue = formCollection["StandardAbbreviation"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ReferenceTitle"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "reference_title", SearchOperatorCode = "LIKE", FieldValue = formCollection["ReferenceTitle"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["EditorAuthorName"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "editor_author_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["EditorAuthorName"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["TypeCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "literature_type_code", SearchOperatorCode = "=", FieldValue = formCollection["TypeCode"], DataType = "NVARCHAR" });
+                }
+
                 if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
                 {
                     literatureListViewModel.Format = Int32.Parse(formCollection["ResultsFormat"]);
@@ -1801,24 +1801,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return PartialView("~/Views/Error/_Error.cshtml");
             }
         }
-
-        public ActionResult FindLiterature(string searchString)
-        {
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-
-            try
-            {
-                IEnumerable<Literature> literatureList = new List<Literature>().AsEnumerable();
-                literatureList = _taxonomyService.SearchLiterature(searchString);
-                return PartialView("~/Views/Taxonomy/Citation/_LiteratureSearchResults.cshtml", literatureList);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return RedirectToAction("InternalServerError", "Error");
-            }
-        }
-
         
         [HttpGet]
         public PartialViewResult _LiteratureDetail(int id)
@@ -2110,15 +2092,15 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         citationListViewModel.ReferenceID = folderId;
                         citationListViewModel.Format = 3;
                         citationListViewModel.Action = "Folder";
-                        //citationListViewModel.Citations =
+                        citationListViewModel.Citations = _taxonomyService.GetCitationFolderItems(folderId);
                         return PartialView(BASE_PATH + "Citation/_List.cshtml", citationListViewModel);
                     case "literature":
-                        
-                        
-                        
-                        
-                        
-                        return PartialView(BASE_PATH + "Citation/_List.cshtml");
+                        LiteratureListViewModel literatureListViewModel = new LiteratureListViewModel();
+                        literatureListViewModel.ReferenceID = folderId;
+                        literatureListViewModel.Format = 3;
+                        literatureListViewModel.Action = "Folder";
+                        literatureListViewModel.LiteratureList = _taxonomyService.GetLiteratureFolderItems(folderId);
+                        return PartialView(BASE_PATH + "Citation/Literature/_List.cshtml", literatureListViewModel);
                     case "taxonomy_cwr_crop":
                         CropForCWRListViewModel cropForCWRListViewModel = new CropForCWRListViewModel();
                         cropForCWRListViewModel.ReferenceID = folderId;
@@ -2141,14 +2123,25 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         cwrTraitListViewModel.CWRTraits = _taxonomyService.GetCWRTraitFolderItems(folderId);
                         return PartialView(BASE_PATH + "CWRTrait/_List.cshtml", cwrTraitListViewModel);
                     case "taxonomy_regulation":
-
-
-
+                        //TODO
                         return PartialView(BASE_PATH + "Regulation/_List.cshtml", genusListViewModel);
                     case "taxonomy_regulation_map":
-
-
-
+                        //TODO
+                        return PartialView(BASE_PATH + "Regulation/RegulationMap/_List.cshtml", genusListViewModel);
+                    case "taxonomy_common_name":
+                        //TODO
+                        return PartialView(BASE_PATH + "CommonName/_List.cshtml", genusListViewModel);
+                    case "taxonomy_use":
+                        //TODO
+                        return PartialView(BASE_PATH + "Species/Use/_List.cshtml", genusListViewModel);
+                    case "taxonomy_geography_map":
+                        //TODO
+                        return PartialView(BASE_PATH + "Species/GeographyMap/_List.cshtml", genusListViewModel);
+                    case "taxonomy_ista_seed":
+                        //TODO
+                        return PartialView(BASE_PATH + "Species/ISTASeed/_List.cshtml", genusListViewModel);
+                    case "author":
+                        //TODO
                         return PartialView(BASE_PATH + "Regulation/RegulationMap/_List.cshtml", genusListViewModel);
                 }
                 return PartialView(BASE_PATH + partialViewName);
@@ -2232,8 +2225,80 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult RegulationHome()
         {
             TempData["page_title"] = "Regulation";
-            RegulationHomeViewModel viewModel = new RegulationHomeViewModel();
-            return View("~/Views/Taxonomy/Regulation/Index.cshtml", viewModel);
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            RegulationHomeViewModel regulationHomeViewModel = new RegulationHomeViewModel();
+
+            try
+            {
+                regulationHomeViewModel.DataSourceName = "taxonomy_regulation";
+                regulationHomeViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_regulation"), "ID", "FullName");
+                regulationHomeViewModel.RegulationLevelCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_NOXIOUS_LEVEL"), "CodeValue", "Title");
+                regulationHomeViewModel.RegulationTypeCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_NOXIOUS_TYPE"), "CodeValue", "Title");
+                return View(BASE_PATH + "Regulation/Index.cshtml", regulationHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult RegulationSearch(FormCollection formCollection)
+        {
+            string resultsViewName = "Regulation/_List.cshtml";
+            string resultsFormat = String.Empty;
+            string dataSourceIdFieldName = String.Empty;
+            Query query = new Query();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            RegulationListViewModel regulationListViewModel = new RegulationListViewModel();
+
+            try
+            {
+                if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["RegulationTypeCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_type_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationTypeCode"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["RegulationLevelCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_level_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationLevelCode"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Description"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "description", SearchOperatorCode = "LIKE", FieldValue = formCollection["Description"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["URL"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "url_1", SearchOperatorCode = "LIKE", FieldValue = formCollection["URL"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Note"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "note", SearchOperatorCode = "LIKE", FieldValue = formCollection["Note"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                {
+                    resultsFormat = formCollection["ResultsFormat"];
+                    if (resultsFormat == "2")
+                        resultsViewName = "Regulation/_SelectList.cshtml";
+                }
+                regulationListViewModel.Regulations = taxonomyService.RegulationSearch(query); 
+                return PartialView(BASE_PATH + resultsViewName, regulationListViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
         }
 
         public ActionResult RegulationEdit(int id)

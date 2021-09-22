@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
 <div class="row">
     <div class="col-md-2">
         <a href="@Url.Action("CitationEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
@@ -20,6 +26,7 @@
 
     @using (Html.BeginForm("CitationSearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
     {
+        @Html.HiddenFor(x => x.ItemIdList)
         <div class="box-header with-border">
             <h3 class="box-title">Search</h3>
 
@@ -35,7 +42,7 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div class="row pad-top">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <label>Search Type</label>
                     <select id="ddlSearchType" class="form-control">
                         <option value="family">Family</option>
@@ -77,35 +84,37 @@
                 </div>
                 <div class="col-md-2">
                     <label>Citation Type</label>
-                    @Html.DropDownListFor(x => x.TypeCode, Model.CitationTypeCodes, "Select a type code", new { @class = "form-control" })
+                    @Html.DropDownListFor(x => x.TypeCode, Model.CitationTypeCodes, "Select a type code", new { @id = "ddlCitationTypes", @class = "form-control" })
                 </div>
-                <div class="col-md-3">
-                    <label>Vol. and Page</label>
-                    @Html.TextBoxFor(x => x.Reference, new { @class = "form-control" })
-                </div>
-                <div class="col-md-3">
-                    <label>DOI Reference</label>
-                    @Html.TextBoxFor(x => x.DOIReference, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="row pad-top">
+                @*<div class="col-md-3">
+                        <label>Vol. and Page</label>
+                        @Html.TextBoxFor(x => x.Reference, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>DOI Reference</label>
+                        @Html.TextBoxFor(x => x.DOIReference, new { @class = "form-control" })
+                    </div>*@
+                @*</div>
+                    <div class="row pad-top">*@
                 <div class="col-md-2">
-                    <label>Lit. Abbrev.</label>
+                    <label>Std. Abbrev.</label>
                     @Html.TextBoxFor(x => x.Abbreviation, new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>Article or Chapter Title</label>
-                    @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
                 </div>
                 <div class="col-md-2">
                     <label>Author</label>
                     @Html.TextBoxFor(x => x.Author, new { @class = "form-control" })
                 </div>
+            </div>
+            <div class="row pad-top">
+                <div class="col-md-2">
+                    <label>Article or Chapter Title</label>
+                    @Html.TextBoxFor(x => x.ReferenceTitle, new { @class = "form-control" })
+                </div>
                 <div class="col-md-3">
                     <label>Year</label>
                     @Html.TextBoxFor(x => x.Year, new { @class = "form-control" })
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <label>Note</label>
                     @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
                 </div>
@@ -142,10 +151,6 @@
     </div>
 </div>
 
-<div id="section-search-results-container" class="box box-primary">
-
-</div>
-
 @{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
 @{ Html.RenderAction("_FamilySearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
 @{ Html.RenderAction("_GenusSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
@@ -162,95 +167,262 @@
         var formGroupName = "#form-group-" + searchType;
 
         $(".overlay").hide();
+
+        $("#ddlCitationTypes").prop('disabled', true);
+
+        $(".overlay").hide();
         $("#form-group-family").hide();
         $("#form-group-genus").hide();
         $("#form-group-species").hide();
         $(formGroupName).show();
+
+        if (searchType == "species") {
+            $("#ddlCitationTypes").prop('disabled', false);
+        }
     }
 
-    $(document).on({
-        ajaxStart: function () {
-            $(".overlay").show();
-        },
-        ajaxStop: function () {
-            $(".overlay").hide();
-        }
-    });
+/*
+* =================================================================================================================
+* EVENT HANDLERS
+* =================================================================================================================
+*/
 
-    $(function () {
-        $("#btnSearch").click(function () {
-            var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
-            var link = '@Url.Action("CitationSearch", "Taxonomy")';
-            var formData = new FormData();
+$(document).on({
+    ajaxStart: function () {
+        $(".overlay").show();
+    },
+    ajaxStop: function () {
+        $(".overlay").hide();
+    }
+});
 
-            formData.append("DataSourceName", dataSourceName);
-            formData.append("FamilyID", $("#FamilyID").val());
-            formData.append("FamilyName", $("#FamilyName").val());
-            formData.append("TypeCode", $("#TypeCode").val());
-            formData.append("Reference", $("#Reference").val());
-            formData.append("DOIReference", $("#DOIReference").val());
-            formData.append("Title", $("#Title").val());
+$("#ddlSearchType").change(function () {
+    Init();
+});
 
-            $.ajax({
-                url: link,
-                type: 'POST',
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData,
-                success: function (response) {
-                    $("#section-search-results").html(response);
-                }
-            });
-        });
-
-        $("#btnReset").click(function () {
-            $(this).closest('form').find("input[type=text], textarea").val("");
-            $("#FamilyID").val(0);
-            $("#GenusID").val(0);
-            $("#SpeciesID").val(0);
-            $("#section-search-criteria select").val("");
-            $('#section-search-results').html("");
-        });
-    });
-
-    /*
-    ===========================================================================
-    FAMILY SEARCH MODAL
-    ===========================================================================
-    */
-    $(document).on("click", "[id='btnSearchFamilies']", function () {
+$(function () {
+    $("#btnSearch").click(function () {
         var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
-        var familyName = $("#txtSearchFamilyName").val();
-        var link = '@Url.Action("FamilySearch", "Taxonomy")';
+        var link = '@Url.Action("CitationSearch", "Taxonomy")';
         var formData = new FormData();
 
-        try {
-            formData.append("ResultsFormat", 2);
-            formData.append("DataSourceName", dataSourceName);
-            formData.append("Name", familyName);
-            $.ajax({
-                url: link,
-                type: 'POST',
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData,
-                success: function (response) {
-                    $("#section-family-search-results").html(response);
-                }
-            });
-        }
-        catch (ex) {
-            console.log(ex);
-        }
+        formData.append("DataSourceName", dataSourceName);
+        formData.append("FamilyID", $("#FamilyID").val());
+        formData.append("GenusID", $("#GenusID").val());
+        formData.append("SpeciesID", $("#SpeciesID").val());
+        formData.append("TypeCode", $("#ddlCitationTypes").val());
+        formData.append("Abbreviation", $("#Abbreviation").val());
+        formData.append("Author", $("#Author").val());
+        formData.append("Title", $("#Title").val());
+        formData.append("Year", $("#Year").val());
+        formData.append("Note", $("#Note").val());
 
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-search-results").html(response);
+            }
+        });
     });
 
-    function SelectFamily(familyId, familyName) {
-        $('#modal-family-search').modal('hide');
-        $("#FamilyID").val(familyId);
-        $("#FamilyName").val(familyName);
+    $("#btnReset").click(function () {
+        $(this).closest('form').find("input[type=text], textarea").val("");
+        $("#FamilyID").val(0);
+        $("#GenusID").val(0);
+        $("#SpeciesID").val(0);
+        $("#section-search-criteria select").val("");
+        $('#section-search-results').html("");
+    });
+});
+
+/*
+===========================================================================
+FAMILY SEARCH MODAL
+===========================================================================
+*/
+$(document).on("click", "[id='btnSearchFamilies']", function () {
+    var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
+    var familyName = $("#txtSearchFamilyName").val();
+    var link = '@Url.Action("FamilySearch", "Taxonomy")';
+    var formData = new FormData();
+
+    try {
+        formData.append("ResultsFormat", 2);
+        formData.append("DataSourceName", dataSourceName);
+        formData.append("Name", familyName);
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-family-search-results").html(response);
+            }
+        });
+    }
+    catch (ex) {
+        console.log(ex);
     }
 
+});
+
+function SelectFamily(familyId, familyName) {
+    $('#modal-family-search').modal('hide');
+    $("#FamilyID").val(familyId);
+    $("#FamilyName").val(familyName);
+    }
+
+/*
+===========================================================================
+GENUS SEARCH MODAL
+===========================================================================
+*/
+$(document).on("click", "[id='btnSearchGenus']", function () {
+    var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
+    var genusName = $("#txtSearchGenus").val();
+    var link = '@Url.Action("GenusSearch", "Taxonomy")';
+    var formData = new FormData();
+
+    try {
+        formData.append("ResultsFormat", 2);
+        formData.append("DataSourceName", dataSourceName);
+        formData.append("Name", genusName);
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-genus-search-results").html(response);
+            }
+        });
+    }
+    catch (ex) {
+        console.log(ex);
+    }
+
+});
+
+function SelectGenus(id, name) {
+    $('#modal-genus-search').modal('hide');
+    $("#GenusID").val(id);
+    $("#GenusName").val(name);
+}
+
+/*
+===========================================================================
+SPECIES SEARCH MODAL
+===========================================================================
+*/
+$(document).on("click", "[id='btnSearchSpecies']", function () {
+    var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
+    var genusName = $("#txtSearchSpecies").val();
+    var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+    var formData = new FormData();
+
+    try {
+        formData.append("ResultsFormat", 2);
+        formData.append("DataSourceName", dataSourceName);
+        formData.append("Name", genusName);
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-species-search-results").html(response);
+            }
+        });
+    }
+    catch (ex) {
+        console.log(ex);
+    }
+
+});
+
+    function SelectSpecies(id, name) {
+    $('#modal-species-search').modal('hide');
+    $("#SpeciesID").val(id);
+    $("#SpeciesName").val(name);
+}
+
+/*
+    =============================================================================
+    FOLDERS
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        $('#modal-folder-edit').modal('show');
+    });
+
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "citation";
+        var dataSourceTitle = "Citation";
+        var itemList = GetSelectedItems();
+
+        alert("DEBUG " + itemList);
+
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+           
+        },
+        error: function () {
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>", "");
+            valueArray.push(itemId);
+        });
+        return valueArray;
+    }
+
+/*
+=============================================================================
+DATATABLES
+=============================================================================
+*/
+$(document).on("click", "[id='btnSelectAll']", function () {
+var table = $('#data-table').DataTable();
+table.rows().select();
+});
+
+$(document).on("click", "[id='btnDeSelectAll']", function () {
+var table = $('#data-table').DataTable();
+table.rows().deselect();
+});
 </script>

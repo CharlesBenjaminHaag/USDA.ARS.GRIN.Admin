@@ -221,7 +221,59 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
             }
             return citation;
         }
-     
+
+        public IQueryable<Citation> GetFolderItems(int folderId)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyFolderCitationItemMaps_Select";
+            List<Citation> citations = new List<Citation>();
+
+            try
+            {
+
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Citation citation = new Citation();
+                                citation.ReferenceID = Int32.Parse(reader["taxonomy_folder_item_id"].ToString());
+                                citation.ID = Int32.Parse(reader["citation_id"].ToString());
+                                citation.FamilyID = GetInt(reader["taxonomy_family_id"].ToString());
+                                citation.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
+                                citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                citation.CitationText = reader["citation_text"].ToString();
+                                citation.URL = reader["url"].ToString();
+                                citation.Literature.ID = GetInt(reader["literature_id"].ToString());
+                                citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
+                                citation.LiteratureAbbreviation = reader["standard_abbreviation"].ToString();
+                                citation.LiteratureEditorAuthorName = reader["editor_author_name"].ToString();
+                                citation.LiteraturePublicationYear = reader["publication_year"].ToString();
+                                citation.Title = reader["citation_title"].ToString();
+                                citation.CitationYear = reader["citation_year"].ToString();
+                                citation.Reference = reader["reference"].ToString();
+                                citation.DOIReference = reader["doi_reference"].ToString();
+                                citation.TypeCode = reader["type_code"].ToString();
+                                citation.Note = reader["note"].ToString();
+                                citations.Add(citation);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return citations.AsQueryable();
+        }
+
         public ResultContainer Remove(Citation entity)
         {
             throw new NotImplementedException();
@@ -243,142 +295,6 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                 throw ex;
             }
         }
-
-        public IQueryable<Citation> GetByCategory(string category, int id)
-        {
-            List<Citation> citations = new List<Citation>();
-
-            try
-            {
-                String commandText = "usp_TaxonomyCitationsByCategory_Select";
-
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@source", category);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                Citation citation = new Citation();
-                                citation.ID = Int32.Parse(reader["citation_id"].ToString());
-                                citation.TypeCode = reader["type_code"].ToString();
-                                citation.TaxonName = reader["taxon_name"].ToString();
-                                citation.Title = reader["citation_title"].ToString();
-                                citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
-                                citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
-                                citation.LiteratureEditorAuthorName = reader["author_name"].ToString();
-                                citation.Reference = reader["reference"].ToString();
-                                citation.CitationYear = reader["citation_year"].ToString();
-                                citation.IsAcceptedName = ParseBool(reader["is_accepted_name"].ToString());
-                                
-                                citations.Add(citation);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return citations.AsQueryable();
-        }
-
-        public IQueryable<Citation> GetByLiterature(int literatureId)
-        {
-            List<Citation> citations = new List<Citation>();
-
-            try
-            {
-                String commandText = "usp_TaxonomyCitationsByLiterature_Select";
-
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@literature_id", literatureId );
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                Citation citation = new Citation();
-                                citation.ID = Int32.Parse(reader["citation_id"].ToString());
-                                citation.Title = reader["citation_title"].ToString();
-                                citation.TypeCode = reader["type_code"].ToString();
-                                citation.DOIReference = reader["doi_reference"].ToString();
-                                citation.CitationYear = reader["citation_year"].ToString();
-                                citation.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
-                                citation.SpeciesName = reader["species_name"].ToString();
-                                citation.TaxonName = reader["species_name"].ToString();
-                                citation.LiteratureEditorAuthorName = reader["editor_author_name"].ToString();
-                                citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
-                                citation.LiteratureAbbreviation = reader["abbreviation"].ToString();
-                                citation.Note = reader["note"].ToString();
-                                citations.Add(citation);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return citations.AsQueryable();
-        }
-
-        //public IQueryable<Citation> Search(int searchType, Query query)
-        //{
-        //    int i = 0;
-        //    StringBuilder sbWhereClause = new StringBuilder();
-        //    foreach (QueryCriterion queryCriterion in query.QueryCriteria)
-        //    {
-        //        if (i == 0)
-        //            sbWhereClause.Append(" WHERE ");
-        //        else
-        //            sbWhereClause.Append(" AND ");
-
-        //        sbWhereClause.Append(queryCriterion.FieldName);
-        //        sbWhereClause.Append(" ");
-        //        sbWhereClause.Append(queryCriterion.SearchOperatorCode);
-        //        sbWhereClause.Append(" ");
-
-        //        if (queryCriterion.DataType == "NVARCHAR")
-        //        {
-        //            if (queryCriterion.FieldValue == "NULL")
-        //            {
-        //                sbWhereClause.Append(queryCriterion.FieldValue);
-        //            }
-        //            else
-        //            {
-        //                sbWhereClause.Append("'");
-        //                if (queryCriterion.SearchOperatorCode == "LIKE")
-        //                {
-        //                    sbWhereClause.Append("%");
-        //                }
-        //                sbWhereClause.Append(queryCriterion.FieldValue);
-        //                if (queryCriterion.SearchOperatorCode == "LIKE")
-        //                {
-        //                    sbWhereClause.Append("%");
-        //                }
-        //                sbWhereClause.Append("'");
-        //            }
-        //        }
-        //        i++;
-        //    }
-           
-        //    return Search(searchType, sbWhereClause.ToString());
-        //}
-
         public IQueryable<Citation> Search(string searchString)
         {
             const string COMMAND_TEXT = "usp_TaxonomyCitations_Search";
@@ -407,11 +323,11 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                                 citation.CitationText = reader["citation_text"].ToString();
                                 citation.URL = reader["url"].ToString();
                                 citation.Literature.ID = GetInt(reader["literature_id"].ToString());
-                                citation.Literature.ReferenceTitle = reader["reference_title"].ToString();
-                                citation.Literature.EditorAuthorName = reader["editor_author_name"].ToString();
-                                citation.Literature.PublicationYear = reader["publication_year"].ToString();
+                                citation.LiteratureReferenceTitle = reader["reference_title"].ToString();
+                                citation.LiteratureAbbreviation = reader["standard_abbreviation"].ToString();
+                                citation.LiteratureEditorAuthorName = reader["editor_author_name"].ToString();
+                                citation.LiteraturePublicationYear = reader["publication_year"].ToString();
                                 citation.Title = reader["citation_title"].ToString();
-                                citation.LiteratureEditorAuthorName = reader["author_name"].ToString();
                                 citation.CitationYear = reader["citation_year"].ToString();
                                 citation.Reference = reader["reference"].ToString();
                                 citation.DOIReference = reader["doi_reference"].ToString();
@@ -579,6 +495,47 @@ namespace USDA.ARS.GRIN.Admin.Repository.Taxonomy
                 throw ex;
             }
             return literature;
+        }
+
+        public IQueryable<Literature> GetLiteratureFolderItems(int folderId)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyFolderLiteratureItemMaps_Select";
+            List<Literature> literatureReferences = new List<Literature>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
+                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Literature literature = new Literature();
+                                literature.ReferenceID = Int32.Parse(reader["taxonomy_folder_item_id"].ToString());
+                                literature.ID = Int32.Parse(reader["literature_id"].ToString());
+                                literature.Abbreviation = reader["abbreviation"].ToString();
+                                literature.StandardAbbreviation = reader["standard_abbreviation"].ToString();
+                                literature.ReferenceTitle = reader["reference_title"].ToString();
+                                literature.EditorAuthorName = reader["editor_author_name"].ToString();
+                                literature.TypeCode = reader["literature_type_code"].ToString();
+                                literature.PublicationYear = reader["publication_year"].ToString();
+                                literatureReferences.Add(literature);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return literatureReferences.AsQueryable();
         }
 
         public ResultContainer InsertLiterature(Literature literature)

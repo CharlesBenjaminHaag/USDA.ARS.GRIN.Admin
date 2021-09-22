@@ -77,24 +77,21 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
-        public IQueryable<Regulation> FindUserRegulations(int cooperatorId)
-        {
-            return Search("WHERE tr.created_by = " + cooperatorId);
-        }
-
-        public IQueryable<Regulation> FindRecentRegulations()
-        {
-            return Search("WHERE tr.created_date > DATEADD(MONTH, -1, GETDATE())");
-        }
-
         public IQueryable<Regulation> Search(Query query)
         {
-            throw new NotImplementedException();
-        }
+            string sqlWhereClause = String.Empty;
+            IQueryable<Regulation> regulations = new List<Regulation>().AsQueryable();
 
-        public IQueryable<Regulation> Search(int parentId)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                regulations = Search(sqlWhereClause);
+                return regulations;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
         }
 
         public IQueryable<Regulation> Search(string searchString)

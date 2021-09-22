@@ -1,112 +1,99 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationListViewModel
-@using System.Data.SqlClient;
 
-<div class="box-header with-border">
-    <h3 class="box-title">Search Results</h3>
-</div>
-<div class="box-body">
 
-    <div style="margin-top:15px;">
-        <div class="mailbox-controls">
-            <button type="button" class="btn btn-success btn-sm check-all-search-results disabled">
-                <i class="fa fa-check"></i>
+@if ((Model.Action != "Parent") && (Model.Action != "Folder") && (Model.Format != 3))
+{
+    <div class="mailbox-controls">
+        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check"></i>
+        </button>
+        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check-circle-o"></i>
+        </button>
+        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("FamilyEdit", "Taxonomy", new { id = 0 })'">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
             </button>
-            <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results disabled">
-                <i class="fa fa-check-circle-o"></i>
-            </button>
-            <button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm disabled" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
-                <i class="fa fa-folder"></i>
-            </button>
-            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("CitationEdit", "Taxonomy", new { id = 0 })'">
-                <i class="fa fa-plus"></i>
-            </button>
-            <div class="pull-right">
-                <button type="button" disabled class="btn btn-default btn-sm">
-                    Export
-                </button>
-            </div>
-        </div>
-        <div class="table-responsive mailbox-messages">
-
-            @if (Model.Citations != null)
-            {
-                if (Model.Citations.Count() > 0)
-                {
-                    <table class="table table-hover table-striped ggtools">
-                        <thead>
-                            <tr>
-                                <th width="5%"></th>
-                                <th>ID</th>
-                                <th>Type</th>
-                                <th>Taxon Name</th>
-                                <th>Lit. Abbrev.</th>
-                                <th>Reference Title</th>
-                                <th>Author(s)</th>
-                                <th>Publication Year(s)</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model != null)
-                            {
-                                if (Model.Citations.Count() > 0)
-                                {
-                                    foreach (var citation in Model.Citations)
-                                    {
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@citation.ID">
-                                            </td>
-                                            <td>
-                                                <span class="label label-default">@citation.ID</span>
-                                            </td>
-                                            <td>
-                                                @citation.TypeCode
-                                            </td>
-                                            <td>
-                                                @citation.TaxonName
-                                            </td>
-                                            <td>
-                                                @citation.LiteratureAbbreviation
-                                            </td>
-                                            <td>
-                                                @citation.LiteratureReferenceTitle
-                                            </td>
-
-                                            <td>
-                                                @citation.CitationYear
-                                            </td>
-                                            <td>
-                                                <a href="@Url.Action("CitationEdit", "Taxonomy", new { id = citation.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-
-                            }
-                        </tbody>
-                    </table>
-                }
-                else
-                {
-                    <div class="alert alert-info alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-info"></i> Alert!</h4>
-                        Your search returned no matches.
-                    </div>
-                }
-            }
         </div>
     </div>
+}
+@if (Model.Citations != null)
+{
+    if (Model.Citations.Count() > 0)
+    {
+        <table id="data-table" class="table table-hover table-striped table-responsive ggtools">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Reference Title</th>
+                    <th>Std. Abbrev.</th>
+                    <th>Author</th>
+                    <th>Year</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    if (Model.Citations.Count() > 0)
+                    {
+                        foreach (var citation in Model.Citations)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge">@citation.ID</span>
+                                </td>
+                                <td>
+                                    @citation.LiteratureReferenceTitle
+                                </td>
+                                <td>
+                                    @citation.LiteratureAbbreviation
+                                </td>
+                                <td>
+                                    @citation.LiteratureEditorAuthorName
+                                </td>
+                                <td>
+                                    @citation.LiteraturePublicationYear
+                                </td>
+                                <td>
+                                    @if (Model.Action == "Folder")
+                                    {
+                                        <button id="btnDeleteFolderItem_@citation.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit">
+                                            <i class="fa fa-trash"></i> Remove From Folder
+                                        </button>
+                                    }
+                                    <a href="@Url.Action("CitationEdit", "Taxonomy", new { id = citation.ID })" class="btn btn-primary btn-sm pull-right row-edit margin-r-5">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
 
-
-</div>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-info"></i> Alert!</h4>
+            Your search returned no matches.
+        </div>
+    }
+}
+        </div>
 
 
 <script type="text/javascript">
-    $('#data-table-citations').DataTable(
+    $('#data-table').DataTable(
         {
             responsive: true,
             select: true,

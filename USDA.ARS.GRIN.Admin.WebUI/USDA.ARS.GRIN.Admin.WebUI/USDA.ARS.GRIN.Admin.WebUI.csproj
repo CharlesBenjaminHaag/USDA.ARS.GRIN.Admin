@@ -402,6 +402,21 @@
     <Content Include="Views\Taxonomy\CropForCWR\_SelectList.cshtml" />
     <Content Include="Views\Taxonomy\CWRMap\_Widget.cshtml" />
     <Content Include="Views\Taxonomy\Citation\Literature\_Search.cshtml" />
+    <Content Include="Views\Taxonomy\Species\CommonName\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Species\CommonName\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\GeographyMap\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\GeographyMap\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Species\Use\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\Use\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Regulation\RegulationMap\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Regulation\RegulationMap\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Species\CommonName\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Species\GeographyMap\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Species\Use\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Author\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Author\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Author\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Regulation\RegulationMap\_List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -509,9 +524,9 @@
     <Compile Include="ViewModels\Taxonomy\Genus\GenusListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Geography\GeographySearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\IndexViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\Literature\LiteratureEditViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\Literature\LiteratureHomeViewModel.cs" />
-    <Compile Include="ViewModels\Taxonomy\Literature\LiteratureListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Citation\Literature\LiteratureEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Citation\Literature\LiteratureHomeViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Citation\Literature\LiteratureListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Regulation\RegulationListViewModel.cs" />

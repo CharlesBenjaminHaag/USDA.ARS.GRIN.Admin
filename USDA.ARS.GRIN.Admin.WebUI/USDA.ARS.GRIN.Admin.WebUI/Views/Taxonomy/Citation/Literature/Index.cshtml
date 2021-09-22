@@ -1,12 +1,19 @@
-﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.CitationHomeViewModel
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.LiteratureHomeViewModel
 @{
     ViewBag.Title = "Taxonomy: Citations";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
 <div class="row">
     <div class="col-md-2">
-        <a href="@Url.Action("CitationEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+        <a href="@Url.Action("LiteratureEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
             <i class="fa fa-plus"></i>
             New
         </a>
@@ -18,7 +25,7 @@
 <!-- ============================================================================================== -->
 <div class="box box-primary">
 
-    @using (Html.BeginForm("CitationSearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+    @using (Html.BeginForm("LiteratureSearch", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
     {
         <div class="box-header with-border">
             <h3 class="box-title">Search</h3>
@@ -35,75 +42,27 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div class="row pad-top">
-                <div class="col-md-1">
-                    <label>Search Type</label>
-                    <select id="ddlSearchType" class="form-control">
-                        <option value="family">Family</option>
-                        <option value="genus">Genus</option>
-                        <option value="species">Species</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <div id="form-group-family">
-                        <label>Family Name</label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(x => x.FamilyName, new { @class = "form-control" })
-                            @Html.HiddenFor(x => x.FamilyID)
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-family-search">...</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div id="form-group-genus">
-                        <label>Genus Name</label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
-                            @Html.HiddenFor(x => x.GenusID)
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
-                            </span>
-                        </div>
-                    </div>
-                    <div id="form-group-species">
-                        <label>Species Name</label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
-                            @Html.HiddenFor(x => x.SpeciesID)
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">...</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-2">
-                    <label>Citation Type</label>
-                    @Html.DropDownListFor(x => x.TypeCode, Model.CitationTypeCodes, "Select a type code", new { @class = "form-control" })
-                </div>
-                <div class="col-md-3">
-                    <label>Vol. and Page</label>
-                    @Html.TextBoxFor(x => x.Reference, new { @class = "form-control" })
-                </div>
-                <div class="col-md-3">
-                    <label>DOI Reference</label>
-                    @Html.TextBoxFor(x => x.DOIReference, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="row pad-top">
-                <div class="col-md-2">
-                    <label>Lit. Abbrev.</label>
+                    <label>Abbreviation</label>
                     @Html.TextBoxFor(x => x.Abbreviation, new { @class = "form-control" })
                 </div>
                 <div class="col-md-2">
-                    <label>Article or Chapter Title</label>
-                    @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>Author</label>
-                    @Html.TextBoxFor(x => x.Author, new { @class = "form-control" })
+                    <label>Standard Abbreviation</label>
+                    @Html.TextBoxFor(x => x.StandardAbbreviation, new { @class = "form-control" })
                 </div>
                 <div class="col-md-3">
-                    <label>Year</label>
-                    @Html.TextBoxFor(x => x.Year, new { @class = "form-control" })
+                    <label>Reference Title</label>
+                    @Html.TextBoxFor(x => x.ReferenceTitle, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    <label>Editor or Author Name</label>
+                    @Html.TextBoxFor(x => x.EditorAuthorName, new { @class = "form-control" })
+                </div>
+                @*</div>
+                    <div class="row pad-top">*@
+                <div class="col-md-2">
+                    <label>Type</label>
+                    @Html.DropDownListFor(x => x.TypeCode, Model.TypeCodes, "All types", new { @class = "form-control" })
                 </div>
                 <div class="col-md-3">
                     <label>Note</label>
@@ -142,27 +101,17 @@
     </div>
 </div>
 
-@*@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
-@{ Html.RenderAction("_FamilySearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
-@{ Html.RenderAction("_GenusSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
-@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }*@
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "literature" }); }
 
 <script type="text/javascript">
 
-    //$(document).ready(function () {
-    //    Init();
-    //});
+    $(document).ready(function () {
+        Init();
+    });
 
-    //function Init() {
-    //    var searchType = $("#ddlSearchType").val();
-    //    var formGroupName = "#form-group-" + searchType;
-
-    //    $(".overlay").hide();
-    //    $("#form-group-family").hide();
-    //    $("#form-group-genus").hide();
-    //    $("#form-group-species").hide();
-    //    $(formGroupName).show();
-    //}
+    function Init() {
+        $(".overlay").hide();
+    }
 
     $(document).on({
         ajaxStart: function () {
@@ -176,16 +125,15 @@
     $(function () {
         $("#btnSearch").click(function () {
             var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
-            var link = '@Url.Action("CitationSearch", "Taxonomy")';
+            var link = '@Url.Action("LiteratureSearch", "Taxonomy")';
             var formData = new FormData();
 
             formData.append("DataSourceName", dataSourceName);
-            formData.append("FamilyID", $("#FamilyID").val());
-            formData.append("FamilyName", $("#FamilyName").val());
+            formData.append("Abbreviation", $("#Abbreviation").val());
+            formData.append("StandardAbbreviation", $("#StandardAbbreviation").val());
+            formData.append("ReferenceTitle", $("#ReferenceTitle").val());
+            formData.append("EditorAuthorName", $("#EditorAuthorName").val());
             formData.append("TypeCode", $("#TypeCode").val());
-            formData.append("Reference", $("#Reference").val());
-            formData.append("DOIReference", $("#DOIReference").val());
-            formData.append("Title", $("#Title").val());
 
             $.ajax({
                 url: link,
@@ -210,43 +158,73 @@
         });
     });
 
-    /*
-    ===========================================================================
-    FAMILY SEARCH MODAL
-    ===========================================================================
+   /*
+    =============================================================================
+    FOLDERS
+    =============================================================================
     */
-    $(document).on("click", "[id='btnSearchFamilies']", function () {
-        var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
-        var familyName = $("#txtSearchFamilyName").val();
-        var link = '@Url.Action("FamilySearch", "Taxonomy")';
-        var formData = new FormData();
-
-        try {
-            formData.append("ResultsFormat", 2);
-            formData.append("DataSourceName", dataSourceName);
-            formData.append("Name", familyName);
-            $.ajax({
-                url: link,
-                type: 'POST',
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData,
-                success: function (response) {
-                    $("#section-family-search-results").html(response);
-                }
-            });
-        }
-        catch (ex) {
-            console.log(ex);
-        }
-
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        $('#modal-folder-edit').modal('show');
     });
 
-    function SelectFamily(familyId, familyName) {
-        $('#modal-family-search').modal('hide');
-        $("#FamilyID").val(familyId);
-        $("#FamilyName").val(familyName);
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "literature";
+        var dataSourceTitle = "Literature";
+        var itemList = GetSelectedItems();
+
+        alert("DEBUG " + itemList);
+
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+
+        },
+        error: function () {
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>", "");
+            valueArray.push(itemId);
+        });
+        return valueArray;
     }
+
+/*
+=============================================================================
+DATATABLES
+=============================================================================
+*/
+$(document).on("click", "[id='btnSelectAll']", function () {
+var table = $('#data-table').DataTable();
+table.rows().select();
+});
+
+$(document).on("click", "[id='btnDeSelectAll']", function () {
+var table = $('#data-table').DataTable();
+table.rows().deselect();
+});
 
 </script>

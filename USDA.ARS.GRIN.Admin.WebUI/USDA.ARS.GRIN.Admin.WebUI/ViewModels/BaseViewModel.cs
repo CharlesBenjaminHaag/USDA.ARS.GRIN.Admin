@@ -14,6 +14,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int DefaultCooperatorID { get; set; }
         public int ReferenceID { get; set; }
         public int Format { get; set; }
+        public int ItemIdList { get; set; }
         public string ListViewName { get; set; }
         public int ID { get; set; }
         public int CurrentID { get; set; }

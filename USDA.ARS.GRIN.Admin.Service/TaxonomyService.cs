@@ -249,6 +249,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _citationDAO.Get(id);
         }
+        public IQueryable<Citation> GetCitationFolderItems(int folderId)
+        {
+            return _citationDAO.GetFolderItems(folderId);
+        }
 
         public IEnumerable<Citation> CitationSearch(Query query)
         {
@@ -275,6 +279,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         public Literature GetLiterature(int id)
         {
             return _citationDAO.GetLiterature(id);
+        }
+        public IQueryable<Literature> GetLiteratureFolderItems(int folderId)
+        {
+            return _citationDAO.GetLiteratureFolderItems(folderId);
         }
 
         public ResultContainer AddLiterature(Literature literature)
@@ -347,13 +355,9 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region Regulation
 
-        public IQueryable<Regulation> FindUserRegulations(int cooperatorId)
+        public IQueryable<Regulation> RegulationSearch(Query query)
         {
-            return _regulationDAO.FindUserRegulations(cooperatorId);
-        }
-        public IQueryable<Regulation> FindRecentRegulations()
-        {
-            return _regulationDAO.FindRecentRegulations();
+            return _regulationDAO.Search(query);
         }
 
         #endregion
