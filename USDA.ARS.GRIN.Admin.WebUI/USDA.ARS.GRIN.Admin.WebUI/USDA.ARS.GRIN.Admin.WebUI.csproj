@@ -406,17 +406,17 @@
     <Content Include="Views\Taxonomy\Species\CommonName\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\GeographyMap\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\GeographyMap\Index.cshtml" />
-    <Content Include="Views\Taxonomy\Species\Use\Edit.cshtml" />
-    <Content Include="Views\Taxonomy\Species\Use\Index.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\RegulationMap\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\RegulationMap\Index.cshtml" />
     <Content Include="Views\Taxonomy\Species\CommonName\_List.cshtml" />
     <Content Include="Views\Taxonomy\Species\GeographyMap\_List.cshtml" />
-    <Content Include="Views\Taxonomy\Species\Use\_List.cshtml" />
     <Content Include="Views\Taxonomy\Author\_List.cshtml" />
     <Content Include="Views\Taxonomy\Author\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Author\Index.cshtml" />
     <Content Include="Views\Taxonomy\Regulation\RegulationMap\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Species\EconomicUse\_List.cshtml" />
+    <Content Include="Views\Taxonomy\Species\EconomicUse\Edit.cshtml" />
+    <Content Include="Views\Taxonomy\Species\EconomicUse\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -496,6 +496,9 @@
     <Compile Include="ViewModels\SiteManagementHomeViewModel.cs" />
     <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentEditViewModel.cs" />
     <Compile Include="ViewModels\SiteManagement\CGC\CGCDocumentSearchViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Author\AuthorEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Author\AuthorListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Author\AuthorSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationHomeViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Citation\CitationSearchViewModel.cs" />
@@ -536,6 +539,12 @@
     <Compile Include="ViewModels\Taxonomy\SearchComparisonOperatorViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\SearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\AddSubTaxaViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\CommonNames\SpeciesCommonNameEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\CommonNames\SpeciesCommonNameListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\CommonNames\SpeciesCommonNameSearchViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\EcomomicUse\SpeciesEconomicUseEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\EcomomicUse\SpeciesEconomicUseListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\EcomomicUse\SpeciesEconomicUseSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
     <Compile Include="ViewModels\AccessRightsManagement\User\UserEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />
@@ -678,8 +687,6 @@
     <Folder Include="ViewModels\Home\" />
     <Folder Include="ViewModels\Shared\" />
     <Folder Include="ViewModels\Taxonomy\Reports\" />
-    <Folder Include="ViewModels\Taxonomy\Species\CommonNames\" />
-    <Folder Include="ViewModels\Taxonomy\Species\EcomomicUse\" />
     <Folder Include="Views\Utilities\_UPLOADS\" />
   </ItemGroup>
   <ItemGroup>

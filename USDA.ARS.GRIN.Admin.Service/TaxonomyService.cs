@@ -104,7 +104,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         #endregion
 
         #region Species
-        public IQueryable<Species> SpeciesSearch(Query query)
+        public System.Linq.IQueryable<Species> SpeciesSearch(Query query)
         {
             return _speciesDAO.Search(query);
         }
@@ -358,6 +358,10 @@ namespace USDA.ARS.GRIN.Admin.Service
         public IQueryable<Regulation> RegulationSearch(Query query)
         {
             return _regulationDAO.Search(query);
+        }
+        public IQueryable<Regulation> GetRegulationFolderItems(int folderId)
+        {
+            return _regulationDAO.GetFolderItems(folderId);
         }
 
         #endregion

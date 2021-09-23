@@ -1,16 +1,18 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.RegulationListViewModel
-    <div style="margin-top:15px;">
+
+    @if ((Model.Action != "Parent") && (Model.Action != "Folder"))
+    {
         <div class="mailbox-controls">
-            <button type="button" class="btn btn-success btn-sm check-all-search-results">
+            <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
                 <i class="fa fa-check"></i>
             </button>
-            <button type="button" class="btn btn-danger btn-sm uncheck-all-search-results">
+            <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
                 <i class="fa fa-check-circle-o"></i>
             </button>
-            @*<button type="button" id="btnAddSearchResultsToFolder" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-add-search-results-to-folder">
-                <img src="~/Content/img/folder-open.png" style="width:18px; height:18px;" />
-            </button>*@
-            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("RegulationEdit", "Taxonomy")'">
+            <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+                <i class="fa fa-folder"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("GenusEdit", "Taxonomy", new { id = 0 })'">
                 <i class="fa fa-plus"></i>
             </button>
             <div class="pull-right">
@@ -19,48 +21,73 @@
                 </button>
             </div>
         </div>
-        <div class="table-responsive mailbox-messages">
-            <table id="data-list" class="table table-hover table-striped">
-                <thead>
+    }
+    <table id="data-table" class="table table-hover table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Level</th>
+                <th>Geography</th>
+                <th>Description</th>
+                <th>URL</th>
+                <th>Last Modified</th>
+                <th>By</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Regulations != null)
+            {
+                foreach (var regulation in Model.Regulations)
+                {
                     <tr>
-                        <th width="5%"></th>
-                        <th>ID</th>
-                        <th>Type</th>
-                        <th>Level</th>
-                        <th>Geography</th>
-                        <th>Last Modified</th>
-                        <th>By</th>
-                        <th></th>
+                        <td>
+                            <span class="badge">@regulation.ID</span>
+                        </td>
+                        <td>@regulation.RegulationTypeCode</td>
+                        <td>@regulation.RegulationLevelCode</td>
+                        <td>@regulation.GeographyDescription</td>
+                        <td>@regulation.Description</td>
+                        <td>@if (!String.IsNullOrEmpty(regulation.PrimaryURL))
+                        {
+                                @Html.Raw("<a href='" + regulation.PrimaryURL + "'>" + regulation.PrimaryURL + "</a>")
+                            }
+                        </td>
+                        <td>
+                            @if (regulation.ModifiedDate > DateTime.MinValue)
+                            {
+                                @regulation.ModifiedDate.ToShortDateString()
+                            }
+                        </td>
+                        <td>
+                            @regulation.ModifiedByCooperatorName
+                        </td>
+                        <td>
+                            <a href="@Url.Action("RegulationEdit", "Taxonomy", new { id = regulation.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            @if (Model.Action == "Folder")
+                            {
+                                <button id="btnDeleteFolderItem_@regulation.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
+                                    <i class="fa fa-trash"></i> Remove From Folder
+                                </button>
+                            }
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Regulations != null)
-                    {
-                        foreach (var regulation in Model.Regulations)
-                        { 
-                            <tr>
-                                <td>
-                                    <input type="checkbox" class="form-check-input" style="position: absolute; opacity:1;" id="@regulation.ID">
-                                </td>
-                                <td>
-                                    <span class="label label-default">@regulation.ID</span>
-                                </td>
-                                <td>@regulation.RegulationTypeCode</td>
-                                <td>@regulation.RegulationLevelCode</td>
-                                <td>@regulation.GeographyID</td>
-                                <td></td>
-                                <td>
-                                    <a href="#" id="@regulation.ID" class="btn btn-danger btn-sm pull-right row-edit" style="margin-left:5px;">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                    <a href="@Url.Action("RegulationEdit", "Taxonomy", new { id = regulation.ID })" class="btn btn-primary btn-sm pull-right row-edit">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+                }
+            }
+        </tbody>
+    </table>
+
+<script type="text/javascript">
+    $('#data-table').DataTable(
+        {
+            responsive: true,
+            select: true,
+            'checkboxes': {
+                'selectRow': true
+            }
+        }
+    );
+</script>

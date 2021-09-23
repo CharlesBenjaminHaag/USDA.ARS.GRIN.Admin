@@ -777,11 +777,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         #region Regulation
 
-        public List<RegulationMapping> FindAllRegulations(int speciesId)
+        public List<RegulationMap> FindAllRegulations(int speciesId)
         {
             String commandText = "usp_GetSpeciesRegulations";
 
-            List<RegulationMapping> regulationMappings = new List<RegulationMapping>();
+            List<RegulationMap> regulationMappings = new List<RegulationMap>();
             try
             {
                 using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
@@ -796,7 +796,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         {
                             while (reader.Read())
                             {
-                                RegulationMapping regulationMapping = new RegulationMapping();
+                                RegulationMap regulationMapping = new RegulationMap();
                                 regulationMapping.ID = Int32.Parse(reader["taxonomy_regulation_map_id"].ToString());
                                 regulationMapping.RegulationTypeCode = reader["regulation_type_code"].ToString();
                                 regulationMapping.RegulationLevel = reader["regulation_level"].ToString();

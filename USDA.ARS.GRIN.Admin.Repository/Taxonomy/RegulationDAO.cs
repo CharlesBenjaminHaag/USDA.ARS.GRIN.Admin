@@ -16,15 +16,13 @@ namespace USDA.ARS.GRIN.Admin.Repository
             this._context = context;
         }
 
-        public int Add(Regulation entity)
+        #region Regulation
+
+        public ResultContainer Add(Regulation entity)
         {
             throw new NotImplementedException();
         }
 
-        public int AddREFACTOR(Regulation entity)
-        {
-            throw new NotImplementedException();
-        }
 
         public IQueryable<Regulation> FindAll()
         {
@@ -72,11 +70,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
 
-        public int Remove(Regulation entity)
+        public ResultContainer Remove(Regulation entity)
         {
             throw new NotImplementedException();
         }
-
+       
         public IQueryable<Regulation> Search(Query query)
         {
             string sqlWhereClause = String.Empty;
@@ -92,6 +90,51 @@ namespace USDA.ARS.GRIN.Admin.Repository
             {
                 throw ex;
             }
+        }
+
+        public IQueryable<Regulation> GetFolderItems(int folderId)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyFolderRegulationItemMaps_Select";
+            List<Regulation> regulationList = new List<Regulation>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_folder_id", folderId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Regulation regulation = new Regulation();
+                                regulation.ReferenceID = GetInt(reader["taxonomy_folder_item_id"].ToString());
+                                regulation.ID = GetInt(reader["taxonomy_regulation_id"].ToString());
+                                regulation.RegulationTypeCode = reader["regulation_type_code"].ToString();
+                                regulation.RegulationLevelCode = reader["regulation_level_code"].ToString();
+                                regulation.GeographyID = GetInt(reader["geography_id"].ToString());
+                                regulation.GeographyDescription = reader["geography_description"].ToString();
+                                regulation.Description = reader["description"].ToString();
+                                regulation.PrimaryURL = reader["url_1"].ToString();
+                                regulation.CreatedDate = GetDate(reader["created_date"].ToString());
+                                regulation.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                                regulationList.Add(regulation);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return regulationList.AsQueryable();
         }
 
         public IQueryable<Regulation> Search(string searchString)
@@ -120,6 +163,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
                                 regulation.RegulationTypeCode = reader["regulation_type_code"].ToString();
                                 regulation.RegulationLevelCode = reader["regulation_level_code"].ToString();
                                 regulation.GeographyID = GetInt(reader["geography_id"].ToString());
+                                regulation.GeographyDescription = reader["geography_description"].ToString();
                                 regulation.Description = reader["description"].ToString();
                                 regulation.PrimaryURL = reader["url_1"].ToString();
                                 regulation.CreatedDate = GetDate(reader["created_date"].ToString());
@@ -137,24 +181,84 @@ namespace USDA.ARS.GRIN.Admin.Repository
             return regulationList.AsQueryable();
         }
 
-        public int Update(Regulation entity)
+        public ResultContainer Update(Regulation entity)
+        {
+            throw new NotImplementedException();
+        }
+    
+        #endregion
+
+        #region Regulation Map
+
+        public ResultContainer GetRegulationMap(int id)
         {
             throw new NotImplementedException();
         }
 
-        ResultContainer IRepository<Regulation>.Add(Regulation entity)
+        public ResultContainer AddRegulationMap(RegulationMap regulationMap)
         {
             throw new NotImplementedException();
         }
 
-        ResultContainer IRepository<Regulation>.Remove(Regulation entity)
+        public ResultContainer UpdateRegulationMap(RegulationMap regulationMap)
         {
             throw new NotImplementedException();
         }
 
-        ResultContainer IRepository<Regulation>.Update(Regulation entity)
+        public ResultContainer DeleteRegulationMap(int id)
         {
             throw new NotImplementedException();
         }
+        public IQueryable<RegulationMap> SearchRegulationMaps(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyRegulationMaps_Search";
+            List<RegulationMap> regulationMapList = new List<RegulationMap>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@search_text", searchString);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                regulationMapList.Add(new RegulationMap { RegulationID = GetInt(""),  });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return regulationMapList.AsQueryable();
+        }
+        public IQueryable<RegulationMap> SearchRegulationMaps(Query query)
+        {
+            string sqlWhereClause = String.Empty;
+            IQueryable<RegulationMap> regulationMaps = new List<RegulationMap>().AsQueryable();
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                regulationMaps = SearchRegulationMaps(sqlWhereClause);
+                return regulationMaps;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
     }
 }

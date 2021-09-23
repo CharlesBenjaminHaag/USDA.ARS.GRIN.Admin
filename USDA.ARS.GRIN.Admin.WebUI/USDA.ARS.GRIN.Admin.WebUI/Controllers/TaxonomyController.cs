@@ -42,7 +42,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         #region Crop for CWR
 
         //[Route("Taxonomy/CropForCWR/Home")]
-        public ActionResult CropForCWRHome()
+        public ActionResult CropForCWRSearch()
         {
             TempData["page_title"] = "Crop For CWR Search";
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -188,7 +188,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #region CWR Map
 
-        public ActionResult CWRMapHome()
+        public ActionResult CWRMapSearch()
         {
             CWRMapHomeViewModel cWRMapHomeViewModel = new CWRMapHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -464,7 +464,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #region CWR Trait
 
-        public ActionResult CWRTraitHome()
+        public ActionResult CWRTraitSearch()
         {
             CWRTraitHomeViewModel cwrTraitHomeViewModel = new CWRTraitHomeViewModel();
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -1398,6 +1398,43 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #endregion Species
 
+        #region Common Name
+
+        //TODO
+
+        public ActionResult CommonNameHome()
+        {
+            return View(BASE_PATH + "Species/CommonName/Index.cshtml");
+        }
+
+        #endregion
+
+        #region Economic Use
+        //TODO
+        public ActionResult EconomicUseHome()
+        {
+            return View(BASE_PATH + "Species/EconomicUse/Index.cshtml");
+        }
+
+        #endregion
+
+        #region Geography Map
+        //TODO
+        public ActionResult GeographyMapHome()
+        {
+            return View(BASE_PATH + "Species/GeographyMap/Index.cshtml");
+        }
+
+        #endregion
+
+        #region Author
+        //TODO
+        public ActionResult AuthorHome()
+        {
+            return View(BASE_PATH + "Author/Index.cshtml");
+        }
+        #endregion
+
         #region Citation
         public ActionResult CitationHome()
         {
@@ -1560,7 +1597,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.ModifiedByCooperatorID = citation.ModifiedByCooperatorID;
                     viewModel.ModifiedDate = citation.ModifiedDate;
                     viewModel.ModifiedByCooperatorName = citation.ModifiedByCooperatorName;
-                    viewModel.Species = _taxonomyService.GetSpecies(citation.SpeciesID);
+                    viewModel.RelatedSpecies = _taxonomyService.GetSpecies(citation.SpeciesID);
                 }
                 else
                 {
@@ -2123,8 +2160,12 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         cwrTraitListViewModel.CWRTraits = _taxonomyService.GetCWRTraitFolderItems(folderId);
                         return PartialView(BASE_PATH + "CWRTrait/_List.cshtml", cwrTraitListViewModel);
                     case "taxonomy_regulation":
-                        //TODO
-                        return PartialView(BASE_PATH + "Regulation/_List.cshtml", genusListViewModel);
+                        RegulationListViewModel regulationListViewModel = new RegulationListViewModel();
+                        regulationListViewModel.ReferenceID = folderId;
+                        regulationListViewModel.Format = 3;
+                        regulationListViewModel.Action = "Folder";
+                        regulationListViewModel.Regulations = _taxonomyService.GetRegulationFolderItems(folderId); 
+                        return PartialView(BASE_PATH + "Regulation/_List.cshtml", regulationListViewModel);
                     case "taxonomy_regulation_map":
                         //TODO
                         return PartialView(BASE_PATH + "Regulation/RegulationMap/_List.cshtml", genusListViewModel);
@@ -2222,7 +2263,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #region Regulation
 
-        public ActionResult RegulationHome()
+        public ActionResult RegulationSearch()
         {
             TempData["page_title"] = "Regulation";
             TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
@@ -2262,22 +2303,22 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
                 if (!String.IsNullOrEmpty(formCollection["RegulationTypeCode"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_type_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationTypeCode"], DataType = "INT" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_type_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationTypeCode"], DataType = "NVARCHAR" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["RegulationLevelCode"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_level_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationLevelCode"], DataType = "INT" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_level_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationLevelCode"], DataType = "NVARCHAR" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["Description"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "description", SearchOperatorCode = "LIKE", FieldValue = formCollection["Description"], DataType = "INT" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "description", SearchOperatorCode = "LIKE", FieldValue = formCollection["Description"], DataType = "NVARCHAR" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["URL"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "url_1", SearchOperatorCode = "LIKE", FieldValue = formCollection["URL"], DataType = "INT" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "url_1", SearchOperatorCode = "LIKE", FieldValue = formCollection["URL"], DataType = "NVARCHAR" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["Note"]))
@@ -2312,10 +2353,10 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             return View("~/Views/Taxonomy/Regulation/Edit.cshtml");
         }
 
-        public ActionResult RegulationMapHome()
+        public ActionResult RegulationMapSearch()
         {
             TempData["page_title"] = "Regulation Map";
-            return View("Index.cshtml");
+            return View(BASE_PATH + "/Regulation/RegulationMap/Index.cshtml");
         }
         #endregion
 

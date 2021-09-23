@@ -141,7 +141,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("SpeciesUseHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
+                            <li><a href="@Url.Action("EconomicUseHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
                             <li><a href="#section-top-summary"><i class="fa fa-edit"></i> Edit</a></li>
                         </ul>
                     </li>
@@ -153,7 +153,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("SpeciesUseHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
+                            <li><a href="@Url.Action("CommonNameHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
                             <li><a href="#section-top-summary"><i class="fa fa-edit"></i> Edit</a></li>
                         </ul>
                     </li>
@@ -169,33 +169,33 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="@Url.Action("CropForCWRHome", "Taxonomy")"><i class="fa fa-home"></i> Crop For CWR Home</a></li>
-                    <li><a href="@Url.Action("CWRMapHome", "Taxonomy")"><i class="fa fa-home"></i> CWR Map Home</a></li>
-                    <li><a href="@Url.Action("CWRTraitHome", "Taxonomy")"><i class="fa fa-home"></i> CWR Trait Home</a></li>
+                    <li><a href="@Url.Action("CropForCWRSearch", "Taxonomy")"><i class="fa fa-search"></i> Crop For CWR Search</a></li>
+                    <li><a href="@Url.Action("CWRMapSearch", "Taxonomy")"><i class="fa fa-search"></i> CWR Map Search</a></li>
+                    <li><a href="@Url.Action("CWRTraitSearch", "Taxonomy")"><i class="fa fa-search"></i> CWR Trait Search</a></li>
                     @*<li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-circle-o"></i> Detail
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                            <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-circle-o"></i> Level Two
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>*@
+                    <a href="#">
+                        <i class="fa fa-circle-o"></i> Detail
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-circle-o"></i> Level Two
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                                <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>*@
                 </ul>
             </li>
 
@@ -222,115 +222,25 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="@Url.Action("RegulationHome", "Taxonomy")"><i class="fa fa-home"></i> Regulation Home</a></li>
-                    <li><a href="@Url.Action("RegulationMapHome", "Taxonomy")"><i class="fa fa-home"></i> Reulation Map Home</a></li>
+                    <li><a href="@Url.Action("RegulationSearch", "Taxonomy")"><i class="fa fa-search"></i> Regulation Search</a></li>
+                    <li><a href="@Url.Action("RegulationMapSearch", "Taxonomy")"><i class="fa fa-search"></i> Regulation Map Search</a></li>
                 </ul>
             </li>
 
-            <!-- ************** OLD ********************** -->
-            @*<li class="treeview menu-open">
-            <a href="#">
-                <i class="fa fa-circle-o"></i>
-                <span>TAXONOMY</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu" style="display: block;">
-                <li>
-                    <a href="@Url.Action("FamilyHome", "Taxonomy")">
-                        <i class="fa fa-table"></i>Family
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("GenusHome", "Taxonomy")">
-                        <i class="fa fa-table"></i>Genus
-                    </a>
-                </li>
-                <li class="treeview menu-open" style="height: auto;">
-                    <a href="@Url.Action("SpeciesHome", "Taxonomy")">
-                        <i class="fa fa-table"></i>Species
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu" style="display: block;">
-                        <li><a href="@Url.Action("SpeciesHome", "Taxonomy")#Dtail"><i class="fa fa-bookmark"></i> Detail</a></li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-bookmark"></i> Level Two
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu" style="display: none;">
-                                <li><a href="#"><i class="fa fa-bookmark"></i> Details</a></li>
-                                <li><a href="#"><i class="fa fa-bookmark"></i> Citations</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="@Url.Action("CropForCWRHome", "Taxonomy")">
-                        <i class="fa fa-table"></i>Crop for CWR
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("CWRMapHome", "Taxonomy")">
-                        <i class="fa fa-table"></i>CWR Map
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("CWRTraitHome", "Taxonomy")">
-                        <i class="fa fa-table"></i>CWR Trait
-                    </a>
-                </li>
-            </ul>
-        </li>*@
-
-
-
-
-            <!-- REFERENCE -->
-            <!--<li class="treeview menu-open">
-    <a href="#">
-        <i class="fa fa-circle-o"></i>
-        <span>REFERENCE</span>
-        <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu" style="display: block;">-->
-            @*<li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
-            <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                <i class="fa fa-table"></i>
-                <span>Regulation</span>
-            </a>
-        </li>
-        <li class="@Url.IsLinkActive("RegulationMapHome", "Taxonomy")">
-            <a href="@Url.Action("RegulationMapHome", "Taxonomy")">
-                <i class="fa fa-table"></i>
-                <span>Regulation Map</span>
-            </a>
-        </li>*@
-            <!--<li class="@Url.IsLinkActive("CitationHome", "Taxonomy")">
-                <a href="@Url.Action("CitationHome", "Taxonomy")">
-                    <i class="fa fa-table"></i>
-                    <span>Citations</span>
+            <!-- AUTHOR -->
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-table"></i> <span>Author</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("AuthorHome", "Taxonomy")"><i class="fa fa-search"></i> Author Search</a></li>
+                </ul>
             </li>
-            <li class="@Url.IsLinkActive("LiteratureHome", "Taxonomy")">
-                <a href="@Url.Action("LiteratureHome", "Taxonomy")">
-                    <i class="fa fa-table"></i>
-                    <span>Literature</span>
-                </a>
-            </li>
-        </ul>
-    </li>-->
 
             <li class="header">REPORTS</li>
-
-
 
             <!-- REPORTS -->
             @*<li class="treeview menu-open">
@@ -350,38 +260,5 @@
                 </li>
             </ul>
         </li>*@
-
-            <!-- VALIDATION -->
-            @*<li class="treeview menu-open">
-            <a href="#">
-                <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
-                <span>VALIDATION</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu" style="display: block;">
-                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
-                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
-                        <span>Missing Basionyms</span>
-                    </a>
-                </li>
-                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
-                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
-                        <span>Missing Subspecies, All</span>
-                    </a>
-                </li>
-                <li class="@Url.IsLinkActive("RegulationHome", "Taxonomy")">
-                    <a href="@Url.Action("RegulationHome", "Taxonomy")">
-                        <img src="https://npgsweb.ars-grin.gov/gringlobal/images/admin/circle-o.png" class="toolbar-icon" />
-                        <span>Missing Autonyms Varieties</span>
-                    </a>
-                </li>
-            </ul>
-        </li>*@
-        </ul>
-        @* END Menu *@
-    </section>
+</section>
 </aside>

@@ -54,7 +54,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         //public List<Geography> Geographies { get; set; }
         public IEnumerable<CommonName> CommonNames { get; set; }
         public IEnumerable<Usage> Usages { get; set; }
-        public IEnumerable<RegulationMapping> RegulationMappings { get; set; }
+        public IEnumerable<RegulationMap> RegulationMappings { get; set; }
         public Species CurrentSpecies { get; set; }
         public SelectList SynonymCodes { get; set; }
 
@@ -63,7 +63,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
             CurrentSpecies = new Species();
             Citations = new List<Citation>().AsEnumerable();
             Usages = new List<Usage>().AsEnumerable();
-            RegulationMappings = new List<RegulationMapping>().AsEnumerable();
+            RegulationMappings = new List<RegulationMap>().AsEnumerable();
         }
 
         public SpeciesEditViewModel(Species species): base()

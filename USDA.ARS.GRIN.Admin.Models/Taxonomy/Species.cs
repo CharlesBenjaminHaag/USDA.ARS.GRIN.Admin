@@ -46,7 +46,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public List<Citation> Citations { get; set; }
         public IEnumerable<CommonName> CommonNames { get; set; }
         public List<Geography> Geographies { get; set; }
-        public List<RegulationMapping> RegulationMappings { get; set; }
+        public List<RegulationMap> RegulationMappings { get; set; }
         public List<Usage> Usages { get; set; }
         public List<Accession> Accessions { get; set; }
 
@@ -55,7 +55,7 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
             Citations = new List<Citation>();
             CommonNames = new List<CommonName>().AsEnumerable();
             Geographies = new List<Geography>();
-            RegulationMappings = new List<RegulationMapping>();
+            RegulationMappings = new List<RegulationMap>();
             Usages = new List<Usage>();
             Accessions = new List<Accession>();
         }

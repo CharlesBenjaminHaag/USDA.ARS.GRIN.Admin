@@ -11,6 +11,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
     {
         public string FullName { get; set; }
         public bool IsAcceptedName { get; set; }
-        public IQueryable<Species> SpeciesList { get; set; }
+        public System.Linq.IQueryable<Species> SpeciesList { get; set; }
     }
 }

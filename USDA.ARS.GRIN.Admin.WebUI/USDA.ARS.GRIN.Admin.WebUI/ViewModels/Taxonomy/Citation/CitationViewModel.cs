@@ -29,7 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public int FamilyID { get; set; }
         public string TypeCode { get; set; }
         public Literature Literature { get; set; }
-        public Species Species { get; set; }
+        public Species RelatedSpecies { get; set; }
         public Genus Genus { get; set; }
         public Family Family { get; set; }
         public SelectList CitationTypeCodes { get; set;}

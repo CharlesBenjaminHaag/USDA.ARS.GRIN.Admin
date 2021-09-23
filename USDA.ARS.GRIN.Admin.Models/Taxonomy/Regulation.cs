@@ -10,11 +10,11 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
     {
         public int ID { get; set; }
         public int GeographyID { get; set; }
+        public string GeographyDescription { get; set; }
         public string Description { get; set; }
         public string RegulationTypeCode { get; set; }
         public string RegulationLevelCode { get; set; }
         public string PrimaryURL { get; set; }
         public string SecondaryURL { get; set; }
-        public string Note { get; set; }
     }
 }

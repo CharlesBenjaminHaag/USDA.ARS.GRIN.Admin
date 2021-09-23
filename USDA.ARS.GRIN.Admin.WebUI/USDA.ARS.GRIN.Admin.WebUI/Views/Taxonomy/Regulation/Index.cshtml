@@ -142,10 +142,10 @@
             var formData = new FormData();
 
             formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
-            formData.append("Name", $("#Name").val());
-            formData.append("SubRegulationName", $("#SubRegulationName").val());
-            formData.append("HybridCode", $("#HybridCode").val());
-            formData.append("QualifyingCode", $("#QualifyingCode").val());
+            formData.append("RegulationTypeCode", $("#RegulationTypeCode").val());
+            formData.append("RegulationLevelCode", $("#RegulationLevelCode").val());
+            formData.append("Description", $("#Description").val());
+            formData.append("URL", $("#URL").val());
             formData.append("Note", $("#Note").val());
 
             $.ajax({
@@ -184,6 +184,8 @@
         var folderTitle = $("#Title").val();
         var folderCategory = $("#Category").val();
         var folderDescription = $("#Description").val();
+
+        alert("DEBUG " + itemList + folderTitle)
 
         $.ajax({
         url: '@Url.Action("AddToFolder","Taxonomy")',
