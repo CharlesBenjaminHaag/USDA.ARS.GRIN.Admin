@@ -1,5 +1,12 @@
 ﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesListViewModel
 
+<style type="text/css">
+    .dataTables_wrapper .dataTables_filter {
+        /*float: right;*/
+        text-align: left;
+    }
+</style>
+
 @if ((Model.Action != "Parent") && (Model.Action != "Folder"))
 {
     <div class="mailbox-controls">

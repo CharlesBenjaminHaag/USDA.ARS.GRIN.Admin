@@ -355,6 +355,25 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #region Regulation
 
+        public Regulation GetRegulation(int id)
+        {
+            return _regulationDAO.Get(id);
+        }
+
+        public ResultContainer AddRegulation(Regulation regulation)
+        {
+            return _regulationDAO.Add(regulation);
+        }
+        public ResultContainer UpdateRegulation(Regulation regulation)
+        {
+            return _regulationDAO.Update(regulation);
+        }
+        public ResultContainer DeleteRegulation(int id)
+        {
+            //return _regulationDAO.DeleteRegulationMap
+            return null;
+        }
+
         public IQueryable<Regulation> RegulationSearch(Query query)
         {
             return _regulationDAO.Search(query);
@@ -363,6 +382,8 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _regulationDAO.GetFolderItems(folderId);
         }
+
+        //TODO: reg map
 
         #endregion
 

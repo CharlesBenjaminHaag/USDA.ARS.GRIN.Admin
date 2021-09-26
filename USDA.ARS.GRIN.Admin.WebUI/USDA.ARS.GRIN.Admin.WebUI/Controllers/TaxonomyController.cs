@@ -2273,8 +2273,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 regulationHomeViewModel.DataSourceName = "taxonomy_regulation";
                 regulationHomeViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_regulation"), "ID", "FullName");
-                regulationHomeViewModel.RegulationLevelCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_NOXIOUS_LEVEL"), "CodeValue", "Title");
-                regulationHomeViewModel.RegulationTypeCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_NOXIOUS_TYPE"), "CodeValue", "Title");
+                regulationHomeViewModel.RegulationLevelCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_REGULATION_LEVEL"), "CodeValue", "Title");
+                regulationHomeViewModel.RegulationTypeCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_REGULATION_TYPE"), "CodeValue", "Title");
                 return View(BASE_PATH + "Regulation/Index.cshtml", regulationHomeViewModel);
             }
             catch (Exception ex)
@@ -2342,15 +2342,78 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             }
         }
 
-        public ActionResult RegulationEdit(int id)
+        public ActionResult RegulationEdit(int id = 0)
         {
-            //TODO
-            return View("~/Views/Taxonomy/Regulation/Edit.cshtml");
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            RegulationEditViewModel regulationEditViewModel = null;
+            Regulation regulation = new Regulation();
+            Genus currentGenus = new Genus();
+
+            try
+            {
+                if (id > 0)
+                {
+                    TempData["page_title"] = String.Format("Edit Regulation [{0}]", id);
+                    regulation = taxonomyService.GetRegulation(id);
+                }
+                else
+                {
+                    TempData["page_title"] = "Add Regulation";
+                }
+                regulationEditViewModel = new RegulationEditViewModel(regulation);
+                regulationEditViewModel.RegulationLevelCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_REGULATION_LEVEL"), "CodeValue", "Title");
+                regulationEditViewModel.RegulationTypeCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_REGULATION_TYPE"), "CodeValue", "Title");
+                regulationEditViewModel.DataSourceName = "taxonomy_regulation";
+
+                return View(BASE_PATH + "Regulation/Edit.cshtml", regulationEditViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
-        public ActionResult RegulationEdit(RegulationEditViewModel viewModel)
+
+        [HttpPost]
+        public ActionResult RegulationEdit(RegulationEditViewModel regulationEditViewModel)
         {
-            //TODO
-            return View("~/Views/Taxonomy/Regulation/Edit.cshtml");
+            Regulation regulation = new Regulation();
+            ResultContainer resultContainer = new ResultContainer();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                regulation.ID = regulationEditViewModel.ID;
+                regulation.RegulationTypeCode = regulationEditViewModel.RegulationTypeCode;
+                regulation.RegulationLevelCode = regulationEditViewModel.RegulationLevelCode;
+                regulation.GeographyID = regulationEditViewModel.GeographyID;
+                regulation.Description = regulationEditViewModel.Description;
+                regulation.PrimaryURL = regulationEditViewModel.URL;
+                regulation.Note = regulationEditViewModel.Note;
+
+                if (regulationEditViewModel.ID > 0)
+                {
+                    regulation.ModifiedByCooperatorID = AuthenticatedUser.Cooperator.ID;
+                    resultContainer = taxonomyService.UpdateRegulation(regulation); 
+                }
+                else
+                {
+                    regulation.CreatedByCooperatorID = AuthenticatedUser.Cooperator.ID;
+                    resultContainer = taxonomyService.AddRegulation(regulation);
+                    regulationEditViewModel.ID = resultContainer.EntityID;
+                }
+
+                if (resultContainer.ResultCode == ResultContainer.ResultCodeValue.Error.ToString())
+                {
+                    throw new Exception(resultContainer.ResultMessage);
+                }
+                return RedirectToAction("RegulationEdit", "Taxonomy", new { @id = regulationEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         public ActionResult RegulationMapSearch()
@@ -2483,6 +2546,20 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
             }
             return PartialView(BASE_PATH + "Shared/Modals/_NoteSearchModal.cshtml");
+        }
+
+        public PartialViewResult _GeographySearchModal()
+        {
+            try 
+            {
+                GeographySearchViewModel geographySearchViewModel = new GeographySearchViewModel();
+                return PartialView(BASE_PATH + "Shared/Modals/_GeographySearchModal.cshtml", geographySearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
         }
 
         #endregion 

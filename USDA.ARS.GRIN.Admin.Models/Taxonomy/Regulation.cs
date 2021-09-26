@@ -8,7 +8,6 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
 {
     public class Regulation : BaseModel, IEntity
     {
-        public int ID { get; set; }
         public int GeographyID { get; set; }
         public string GeographyDescription { get; set; }
         public string Description { get; set; }

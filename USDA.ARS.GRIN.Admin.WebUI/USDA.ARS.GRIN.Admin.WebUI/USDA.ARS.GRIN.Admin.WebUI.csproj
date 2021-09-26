@@ -417,6 +417,7 @@
     <Content Include="Views\Taxonomy\Species\EconomicUse\_List.cshtml" />
     <Content Include="Views\Taxonomy\Species\EconomicUse\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\EconomicUse\Index.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_GeographySearchModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
