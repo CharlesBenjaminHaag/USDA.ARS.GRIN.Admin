@@ -528,52 +528,6 @@ namespace USDA.ARS.GRIN.Admin.Repository
         #endregion Geography
 
         #region Common Name
-
-        public List<CommonName> FindAllCommonNames(int speciesId)
-        {
-            String commandText = "usp_GetSpeciesCommonNames";
-
-            List<CommonName> commonNames = new List<CommonName>();
-            try
-            {
-                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
-                {
-                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@taxonomy_species_id", speciesId);
-                        SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                CommonName commonName = new CommonName();
-                                commonName.ID = Int32.Parse(reader["taxonomy_common_name_id"].ToString());
-                                commonName.LanguageDescription = reader["language_description"].ToString();
-                                commonName.Name = reader["name"].ToString();
-                                commonName.SimplifiedName = reader["simplified_name"].ToString();
-                                commonName.AlternateTranscription = reader["alternate_transcription"].ToString();
-                                commonName.CitationTitle = reader["citation_title"].ToString();
-                                commonName.ReferenceTitle = reader["citation_title"].ToString();
-
-                                if (reader["modified_date"] != DBNull.Value)
-                                {
-                                    commonName.ModifiedDate = DateTime.Parse(reader["modified_date"].ToString());
-                                }
-                                commonNames.Add(commonName);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return commonNames;
-        }
-
         public CommonName GetCommonName(int commonNameId)
         {
             String commandText = "usp_GetSpeciesCommonName";

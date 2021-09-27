@@ -13,6 +13,5 @@ namespace USDA.ARS.GRIN.Admin.Models.Taxonomy
         public string FullName { get; set; }
         public string ShortNameExpandedDiacritic { get; set; }
         public string FullNameExpandedDiacritic { get; set; }
-        public string Note { get; set; }
     }
 }

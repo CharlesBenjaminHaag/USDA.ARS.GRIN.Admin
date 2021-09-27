@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
-{
-    public class SpeciesCommonNameEditViewModel:BaseViewModel
+{ 
+    public class SpeciesGeographyMapSearchViewModel : BaseViewModel
     {
     }
 }

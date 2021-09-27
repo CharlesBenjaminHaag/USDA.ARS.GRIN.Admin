@@ -78,7 +78,9 @@
     <Compile Include="Taxonomy\Accession.cs" />
     <Compile Include="Taxonomy\Authority.cs" />
     <Compile Include="Taxonomy\DemoContainer.cs" />
+    <Compile Include="Taxonomy\EconomicUse.cs" />
     <Compile Include="Taxonomy\Family.cs" />
+    <Compile Include="Taxonomy\GeographyMap.cs" />
     <Compile Include="Taxonomy\Region.cs" />
     <Compile Include="Taxonomy\Regulation.cs" />
     <Compile Include="ResultContainer.cs" />

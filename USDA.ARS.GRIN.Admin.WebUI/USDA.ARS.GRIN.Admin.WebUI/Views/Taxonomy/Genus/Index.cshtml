@@ -199,7 +199,7 @@
         var i = 0;
         var itemId = "";
         var valueArray = [];
-        table = $("#data-table-genera").DataTable();
+        table = $("#data-table").DataTable();
 
         var oData = table.rows('.selected').data();
         $.each($(oData), function (key, value) {
@@ -218,12 +218,12 @@
     =============================================================================
     */
     $(document).on("click", "[id='btnSelectAll']", function () {
-        var table = $('#data-table-genera').DataTable();
+        var table = $('#data-table').DataTable();
         table.rows().select();
     });
 
     $(document).on("click", "[id='btnDeSelectAll']", function () {
-        var table = $('#data-table-genera').DataTable();
+        var table = $('#data-table').DataTable();
         table.rows().deselect();
     });
 </script>

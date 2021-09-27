@@ -657,5 +657,702 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return species;
         }
+
+        #region Use
+        public IQueryable<EconomicUse> EconomicUseSearch(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyUse_Search";
+
+            List<EconomicUse> economicUsesList = new List<EconomicUse>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+
+                    cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        EconomicUse economicUse = new EconomicUse();
+                        economicUse.ID = GetInt(reader["taxonomy_use_id"].ToString());
+                        economicUse.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                        economicUse.SpeciesName = reader["name"].ToString();
+                        economicUse.EconomicUsageCode = reader["economic_usage_code"].ToString();
+                        economicUse.UsageType = reader["usage_type"].ToString();
+                        economicUse.PlantPartCode = reader["plant_part_code"].ToString();
+                        economicUse.CitationID = GetInt(reader["citation_id"].ToString());
+                        economicUse.Note = reader["note"].ToString();
+                        economicUse.CreatedDate = GetDate(reader["created_date"].ToString());
+                        economicUse.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        economicUse.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                        economicUse.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        economicUsesList.Add(economicUse);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return economicUsesList.AsQueryable();
+        }
+
+        public IQueryable<EconomicUse> EconomicUseSearch(Query query)
+        {
+            string sqlWhereClause = String.Empty;
+            IQueryable<EconomicUse> economicUseList = new List<EconomicUse>().AsQueryable();
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                economicUseList = EconomicUseSearch(sqlWhereClause);
+                return economicUseList;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public EconomicUse GetEconomicUse(int id)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyUse_Select";
+            EconomicUse economicUse = new EconomicUse();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+
+                    cmd.Parameters.AddWithValue("@taxonomy_use_id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        economicUse = new EconomicUse();
+                        economicUse.ID = GetInt(reader["taxonomy_use_id"].ToString());
+                        economicUse.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                        economicUse.SpeciesName = reader["name"].ToString();
+                        economicUse.EconomicUsageCode = reader["economic_usage_code"].ToString();
+                        economicUse.UsageType = reader["usage_type"].ToString();
+                        economicUse.PlantPartCode = reader["plant_part_code"].ToString();
+                        economicUse.CitationID = GetInt(reader["citation_id"].ToString());
+                        economicUse.CitationText = reader["citation_text"].ToString();
+                        economicUse.Note = reader["note"].ToString();
+                        economicUse.CreatedDate = GetDate(reader["created_date"].ToString());
+                        economicUse.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        economicUse.CreatedByCooperatorName = reader["created_by_name"].ToString();
+                        economicUse.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                        economicUse.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        economicUse.ModifiedByCooperatorName = reader["modified_by_name"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return economicUse;
+        }
+
+        public ResultContainer AddEconomicUse(EconomicUse economicUse)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyUse_Insert";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", economicUse.SpeciesID);
+               
+                        if (String.IsNullOrEmpty(economicUse.EconomicUsageCode))
+                            cmd.Parameters.AddWithValue("@economic_usage_code", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@economic_usage_code", economicUse.EconomicUsageCode);
+
+                        if (String.IsNullOrEmpty(economicUse.UsageType))
+                            cmd.Parameters.AddWithValue("@usage_type", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@usage_type", economicUse.UsageType);
+
+                        if (String.IsNullOrEmpty(economicUse.PlantPartCode))
+                        {
+                            cmd.Parameters.AddWithValue("@plant_part_code", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@plant_part_code", economicUse.PlantPartCode);
+
+                        cmd.Parameters.AddWithValue("@citation_id", economicUse.CitationID);
+
+                        if (String.IsNullOrEmpty(economicUse.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", economicUse.Note);
+
+                        cmd.Parameters.AddWithValue("@created_by", economicUse.CreatedByCooperatorID);
+
+                        SqlParameter retParam = new SqlParameter();
+                        retParam.SqlDbType = System.Data.SqlDbType.Int;
+                        retParam.ParameterName = "@out_taxonomy_use_id";
+                        retParam.Direction = System.Data.ParameterDirection.Output;
+                        retParam.Value = 0;
+                        cmd.Parameters.Add(retParam);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultString))
+                        {
+                            resultContainer.EntityID = Int32.Parse(resultString);
+                        }
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        public ResultContainer UpdateEconomicUse(EconomicUse economicUse)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyUse_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_use_id", economicUse.ID);
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", economicUse.SpeciesID);
+
+                        if (String.IsNullOrEmpty(economicUse.EconomicUsageCode))
+                            cmd.Parameters.AddWithValue("@economic_usage_code", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@economic_usage_code", economicUse.EconomicUsageCode);
+
+                        if (String.IsNullOrEmpty(economicUse.UsageType))
+                            cmd.Parameters.AddWithValue("@usage_type", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@usage_type", economicUse.UsageType);
+
+                        if (String.IsNullOrEmpty(economicUse.PlantPartCode))
+                        {
+                            cmd.Parameters.AddWithValue("@plant_part_code", DBNull.Value);
+                        }
+                        else
+                            cmd.Parameters.AddWithValue("@plant_part_code", economicUse.PlantPartCode);
+
+                        if (economicUse.CitationID > 0)
+                            cmd.Parameters.AddWithValue("@citation_id", economicUse.CitationID);
+                        else
+                            cmd.Parameters.AddWithValue("@citation_id", DBNull.Value);
+
+                        if (String.IsNullOrEmpty(economicUse.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", economicUse.Note);
+
+                        cmd.Parameters.AddWithValue("@modified_by", economicUse.ModifiedByCooperatorID);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        public ResultContainer DeleteEconomicUse(int id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Common Name
+
+        public IQueryable<CommonName> CommonNameSearch(Query query)
+        {
+            string sqlWhereClause = String.Empty;
+            IQueryable<CommonName> commonNameList = new List<CommonName>().AsQueryable();
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                commonNameList = CommonNameSearch(sqlWhereClause);
+                return commonNameList;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public IQueryable<CommonName> CommonNameSearch(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Search";
+
+            List<CommonName> commonNameList = new List<CommonName>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+
+                    cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        CommonName commonName = new CommonName();
+                        commonName.ID = GetInt(reader["taxonomy_common_name_id"].ToString());
+                        commonName.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
+                        commonName.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                        commonName.LanguageID = GetInt(reader["taxonomy_language_id"].ToString());
+                        commonName.Name = reader["name"].ToString();
+                        commonName.SimplifiedName = reader["simplified_name"].ToString();
+                        commonName.AlternateTranscription = reader["alternate_transcription"].ToString();
+                        commonName.CreatedDate = GetDate(reader["created_date"].ToString());
+                        commonName.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        commonName.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                        commonName.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        commonNameList.Add(commonName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return commonNameList.AsQueryable();
+        }
+
+        public ResultContainer AddCommonName(CommonName commonName)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Insert";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.ID);
+                        cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
+                        cmd.Parameters.AddWithValue("@taxonomy_common_name_id", commonName.ID);
+
+                        //if (String.IsNullOrEmpty(economicUse.EconomicUsageCode))
+                        //    cmd.Parameters.AddWithValue("@economic_usage_code", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@economic_usage_code", economicUse.EconomicUsageCode);
+
+                        //if (String.IsNullOrEmpty(economicUse.UsageType))
+                        //    cmd.Parameters.AddWithValue("@usage_type", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@usage_type", economicUse.UsageType);
+
+                        //if (String.IsNullOrEmpty(economicUse.PlantPartCode))
+                        //{
+                        //    cmd.Parameters.AddWithValue("@plant_part_code", DBNull.Value);
+                        //}
+                        //else
+                        //    cmd.Parameters.AddWithValue("@plant_part_code", economicUse.PlantPartCode);
+
+                        //cmd.Parameters.AddWithValue("@citation_id", economicUse.CitationID);
+
+                        //if (String.IsNullOrEmpty(economicUse.Note))
+                        //    cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@note", economicUse.Note);
+
+                        cmd.Parameters.AddWithValue("@created_by", commonName.CreatedByCooperatorID);
+
+                        SqlParameter retParam = new SqlParameter();
+                        retParam.SqlDbType = System.Data.SqlDbType.Int;
+                        retParam.ParameterName = "@out_taxonomy_common_name_id";
+                        retParam.Direction = System.Data.ParameterDirection.Output;
+                        retParam.Value = 0;
+                        cmd.Parameters.Add(retParam);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultString))
+                        {
+                            resultContainer.EntityID = Int32.Parse(resultString);
+                        }
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        public ResultContainer UpdateCommonName(CommonName commonName)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.SpeciesID);
+                        cmd.Parameters.AddWithValue("@taxonomy_language_id", commonName.LanguageID);
+                        if (String.IsNullOrEmpty(commonName.LanguageDescription))
+                            cmd.Parameters.AddWithValue("@language_description", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@language_description", commonName.LanguageDescription);
+
+                        if (String.IsNullOrEmpty(commonName.Name))
+                            cmd.Parameters.AddWithValue("@name", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@name", commonName.Name);
+
+                        if (String.IsNullOrEmpty(commonName.SimplifiedName))
+                            cmd.Parameters.AddWithValue("@simplified_name", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@simplified_name", commonName.SimplifiedName);
+
+                        if (String.IsNullOrEmpty(commonName.AlternateTranscription))
+                            cmd.Parameters.AddWithValue("@alternate_transcription", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@alternate_transcription", commonName.AlternateTranscription);
+                        cmd.Parameters.AddWithValue("@citation_id", commonName.CitationID);
+
+                        if (String.IsNullOrEmpty(commonName.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", commonName.Note);
+
+                        cmd.Parameters.AddWithValue("@created_by", commonName.CreatedByCooperatorID);
+
+                        SqlParameter retParam = new SqlParameter();
+                        retParam.SqlDbType = System.Data.SqlDbType.Int;
+                        retParam.ParameterName = "@out_taxonomy_use_id";
+                        retParam.Direction = System.Data.ParameterDirection.Output;
+                        retParam.Value = 0;
+                        cmd.Parameters.Add(retParam);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultString))
+                        {
+                            resultContainer.EntityID = Int32.Parse(resultString);
+                        }
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        public ResultContainer DeleteCommonName(int id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region Geography Map
+        public IQueryable<GeographyMap> GeographyMapSearch(Query query)
+        {
+            string sqlWhereClause = String.Empty;
+            IQueryable<GeographyMap> geographyMaps = new List<GeographyMap>().AsQueryable();
+
+            try
+            {
+                sqlWhereClause = query.GetSQLSyntax();
+                geographyMaps = GeographyMapSearch(sqlWhereClause);
+                return geographyMaps;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public IQueryable<GeographyMap> GeographyMapSearch(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyGeographyMap_Search";
+
+            List<GeographyMap> geographyMapList = new List<GeographyMap>();
+
+            try
+            {
+                using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = COMMAND_TEXT;
+
+                    cmd.Parameters.AddWithValue("@sql_where_clause", searchString);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        GeographyMap geographyMap = new GeographyMap();
+                        geographyMap.ID = GetInt(reader["taxonomy_use_id"].ToString());
+                        geographyMap.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+
+
+
+                        geographyMap.CreatedDate = GetDate(reader["created_date"].ToString());
+                        geographyMap.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
+                        geographyMap.ModifiedDate = GetDate(reader["modified_date"].ToString());
+                        geographyMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        geographyMapList.Add(geographyMap);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return geographyMapList.AsQueryable();
+        }
+
+        public ResultContainer AddGeographyMap(GeographyMap geographyMap)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Insert";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        //cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.ID);
+                        //cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
+                        //cmd.Parameters.AddWithValue("@taxonomy_common_name_id", commonName.ID);
+
+                        //if (String.IsNullOrEmpty(economicUse.EconomicUsageCode))
+                        //    cmd.Parameters.AddWithValue("@economic_usage_code", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@economic_usage_code", economicUse.EconomicUsageCode);
+
+                        //if (String.IsNullOrEmpty(economicUse.UsageType))
+                        //    cmd.Parameters.AddWithValue("@usage_type", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@usage_type", economicUse.UsageType);
+
+                        //if (String.IsNullOrEmpty(economicUse.PlantPartCode))
+                        //{
+                        //    cmd.Parameters.AddWithValue("@plant_part_code", DBNull.Value);
+                        //}
+                        //else
+                        //    cmd.Parameters.AddWithValue("@plant_part_code", economicUse.PlantPartCode);
+
+                        //cmd.Parameters.AddWithValue("@citation_id", economicUse.CitationID);
+
+                        //if (String.IsNullOrEmpty(economicUse.Note))
+                        //    cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@note", economicUse.Note);
+
+                        //cmd.Parameters.AddWithValue("@created_by", commonName.CreatedByCooperatorID);
+
+                        SqlParameter retParam = new SqlParameter();
+                        retParam.SqlDbType = System.Data.SqlDbType.Int;
+                        retParam.ParameterName = "@out_taxonomy_common_name_id";
+                        retParam.Direction = System.Data.ParameterDirection.Output;
+                        retParam.Value = 0;
+                        cmd.Parameters.Add(retParam);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultString))
+                        {
+                            resultContainer.EntityID = Int32.Parse(resultString);
+                        }
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        public ResultContainer UpdateGeographyMap(GeographyMap geographyMap)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Update";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        //cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
+                        //cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.SpeciesID);
+                        //cmd.Parameters.AddWithValue("@taxonomy_language_id", commonName.LanguageID);
+                        //if (String.IsNullOrEmpty(commonName.LanguageDescription))
+                        //    cmd.Parameters.AddWithValue("@language_description", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@language_description", commonName.LanguageDescription);
+
+                        //if (String.IsNullOrEmpty(commonName.Name))
+                        //    cmd.Parameters.AddWithValue("@name", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@name", commonName.Name);
+
+                        //if (String.IsNullOrEmpty(commonName.SimplifiedName))
+                        //    cmd.Parameters.AddWithValue("@simplified_name", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@simplified_name", commonName.SimplifiedName);
+
+                        //if (String.IsNullOrEmpty(commonName.AlternateTranscription))
+                        //    cmd.Parameters.AddWithValue("@alternate_transcription", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@alternate_transcription", commonName.AlternateTranscription);
+                        //cmd.Parameters.AddWithValue("@citation_id", commonName.CitationID);
+
+                        //if (String.IsNullOrEmpty(commonName.Note))
+                        //    cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        //else
+                        //    cmd.Parameters.AddWithValue("@note", commonName.Note);
+
+                        //cmd.Parameters.AddWithValue("@created_by", commonName.CreatedByCooperatorID);
+
+                        SqlParameter retParam = new SqlParameter();
+                        retParam.SqlDbType = System.Data.SqlDbType.Int;
+                        retParam.ParameterName = "@out_taxonomy_use_id";
+                        retParam.Direction = System.Data.ParameterDirection.Output;
+                        retParam.Value = 0;
+                        cmd.Parameters.Add(retParam);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        cmd.ExecuteNonQuery();
+
+                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultString))
+                        {
+                            resultContainer.EntityID = Int32.Parse(resultString);
+                        }
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
+        }
+
+        public ResultContainer DeleteGeographyMap(int id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

@@ -464,6 +464,45 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
         }
 
+        public IQueryable<RegulationMap> GetRegulationMapFolderItems(string searchString)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyRegulationMaps_Search";
+            List<RegulationMap> regulationMapList = new List<RegulationMap>();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        cmd.Parameters.AddWithValue("@search_text", searchString);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                RegulationMap regulationMap = new RegulationMap();
+                                regulationMap.FamilyID = GetInt(reader["taxonomy_family_id"].ToString());
+                                regulationMap.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
+                                regulationMap.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
+                                regulationMap.RegulationID = GetInt(reader["taxonomy_regulation_id"].ToString());
+                                regulationMapList.Add(regulationMap);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return regulationMapList.AsQueryable();
+        }
+
         #endregion
     }
 }

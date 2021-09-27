@@ -42,6 +42,8 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels
         public int OwnedByCooperatorID { get; set; }
         public string OwnedByCooperatorName { get; set; }
         public DateTime OwnedDate { get; set; }
+        public int CitationID { get; set; }
+        public string CitationText { get; set; }
         protected List<Cooperator> AuthorizedCooperators { get; set; }
         public SelectList Cooperators { get; set; }
         public string RevisionHistoryText

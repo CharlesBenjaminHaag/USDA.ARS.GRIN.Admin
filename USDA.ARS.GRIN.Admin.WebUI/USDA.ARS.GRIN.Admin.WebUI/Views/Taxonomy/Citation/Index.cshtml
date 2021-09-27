@@ -43,6 +43,12 @@
         <div class="box-body">
             <div class="row pad-top">
                 <div class="col-md-2">
+                    <div class="form-group form-horizontal">
+                        <label>Created By</label>
+                        @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All Cooperators", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <label>Search Type</label>
                     <select id="ddlSearchType" class="form-control">
                         <option value="family">Family</option>
@@ -87,15 +93,15 @@
                     @Html.DropDownListFor(x => x.TypeCode, Model.CitationTypeCodes, "Select a type code", new { @id = "ddlCitationTypes", @class = "form-control" })
                 </div>
                 @*<div class="col-md-3">
-                        <label>Vol. and Page</label>
-                        @Html.TextBoxFor(x => x.Reference, new { @class = "form-control" })
-                    </div>
-                    <div class="col-md-3">
-                        <label>DOI Reference</label>
-                        @Html.TextBoxFor(x => x.DOIReference, new { @class = "form-control" })
-                    </div>*@
+            <label>Vol. and Page</label>
+            @Html.TextBoxFor(x => x.Reference, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <label>DOI Reference</label>
+            @Html.TextBoxFor(x => x.DOIReference, new { @class = "form-control" })
+        </div>*@
                 @*</div>
-                    <div class="row pad-top">*@
+        <div class="row pad-top">*@
                 <div class="col-md-2">
                     <label>Std. Abbrev.</label>
                     @Html.TextBoxFor(x => x.Abbreviation, new { @class = "form-control" })
@@ -167,10 +173,7 @@
         var formGroupName = "#form-group-" + searchType;
 
         $(".overlay").hide();
-
         $("#ddlCitationTypes").prop('disabled', true);
-
-        $(".overlay").hide();
         $("#form-group-family").hide();
         $("#form-group-genus").hide();
         $("#form-group-species").hide();

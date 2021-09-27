@@ -14,11 +14,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
     public class RegulationMapListViewModel : BaseSearchViewModel
     {
         
-        public IQueryable<Regulation> Regulations { get; set; }
+        public IQueryable<RegulationMap> RegulationMaps { get; set; }
 
         public RegulationMapListViewModel()
         {
-            this.Regulations = new List<Regulation>().AsQueryable();
+            this.RegulationMaps = new List<RegulationMap>().AsQueryable();
         }
     }
 }

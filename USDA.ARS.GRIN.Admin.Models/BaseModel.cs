@@ -22,5 +22,7 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string OwnedByCooperatorName { get; set; }
         public DateTime OwnedDate { get; set; }
         public string Note { get; set; }
+        public int CitationID { get; set; }
+        public string CitationText { get; set; }
     }
 }

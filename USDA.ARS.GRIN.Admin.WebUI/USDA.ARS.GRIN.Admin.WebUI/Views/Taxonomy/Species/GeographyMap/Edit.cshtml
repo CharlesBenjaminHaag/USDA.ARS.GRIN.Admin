@@ -1,8 +1,85 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesGeographyMapEditViewModel
+
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = TempData["page_title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<!--
+======================================================================================================
+REVISION HISTORY
+======================================================================================================
+-->
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+        </div>
+    </div>
+}
 
+
+@using (Html.BeginForm("GeographyMapEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.DataSourceName)
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            @Html.ValidationSummary()
+            @Html.Raw(Model.ErrorMessage)
+
+            <div class="row" style="margin-top:.9em;">
+
+                <div class="col-md-4">
+                    <label for="txtFamily">Family</label>
+                    <div class="input-group">
+                        @*@Html.TextBoxFor(x => x.FamilyFullName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(x => x.FamilyFullName, "", new { @class = "text-danger" })*@
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-family-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        <span class="input-group-btn">
+                            @*<a href="@Url.Action("FamilyEdit","Taxonomy", new { @id = Model.FamilyID })" class="btn btn-primary btn-flat">
+                                <i class="fa fa-link"></i>
+                            </a>*@
+                        </span>
+                    </div>
+                    @*@Html.ValidationMessageFor(x => x.FamilyID, "", new { @class = "text-danger" })*@
+                </div>
+             
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-top:1.0em;">
+                    <label>Note</label>
+                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-note-search">
+                    <i class="fa fa-search"></i>
+                    Search Notes...
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                    Save Edits
+                </button>
+            </div>
+        </div>
+    </div>
+}

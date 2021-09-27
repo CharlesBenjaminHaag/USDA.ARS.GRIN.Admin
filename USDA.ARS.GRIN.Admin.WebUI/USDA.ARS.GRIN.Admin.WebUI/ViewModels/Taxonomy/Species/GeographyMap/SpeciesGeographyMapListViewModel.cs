@@ -7,8 +7,8 @@ using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class AuthorListViewModel:BaseViewModel
-    { 
-        public IEnumerable<Author> Authors { get; set; }
+    public class SpeciesGeographyMapListViewModel: BaseViewModel
+    {
+        public IQueryable<GeographyMap> GeographyMaps { get; set; }
     }
 }

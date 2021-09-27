@@ -1,1 +1,93 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesEconomicUseListViewModel
+@if ((Model.Action != "Parent") && (Model.Action != "Folder"))
+{
+    <div class="mailbox-controls">
+        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check"></i>
+        </button>
+        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check-circle-o"></i>
+        </button>
+        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("EconomicUseEdit", "Taxonomy")'">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
+    </div>
+}
+<table id="data-table" class="table table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Species Name</th>
+            <th>Usage Code</th>
+            <th>Usage Type</th>
+            <th>Plant Part Code</th>
+            <th>Last Modified</th>
+            <th>By</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var economicUse in Model.EconomicUses)
+        {
+            <tr>
+                <td><span class="badge">@economicUse.ID</span></td>
+                <td>@Html.Raw(economicUse.SpeciesName)</td>
+                <td>@economicUse.EconomicUsageCode</td>
+                <td>@economicUse.UsageType</td>
+                <td>@economicUse.PlantPartCode</td>
+                <td>
+                    @if (economicUse.ModifiedDate != DateTime.MinValue)
+                    {
+                        @economicUse.ModifiedDate.ToShortDateString()
+                    }
+                </td>
+                <td>
+                    @economicUse.ModifiedByCooperatorName
+                </td>
+                <td>
+                    <a href="@Url.Action("EconomicUseEdit", "Taxonomy", new { id = economicUse.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    @if (Model.Action == "Folder")
+                    {
+                        <button id="btnDeleteFolderItem_@economicUse.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
+                            <i class="fa fa-trash"></i> Remove From Folder
+                        </button>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#data-table').DataTable(
+        {
+            responsive: true,
+            select: true,
+            buttons: [
+                {
+                    text: 'Select all',
+                    action: function () {
+                        table.rows().select();
+                    }
+                },
+                {
+                    text: 'Select none',
+                    action: function () {
+                        table.rows().deselect();
+                    }
+                }
+            ]
+        }
+    );
+</script>

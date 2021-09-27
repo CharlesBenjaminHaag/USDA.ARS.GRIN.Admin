@@ -142,7 +142,6 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="@Url.Action("EconomicUseHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
-                            <li><a href="#section-top-summary"><i class="fa fa-edit"></i> Edit</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -154,7 +153,17 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="@Url.Action("CommonNameHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
-                            <li><a href="#section-top-summary"><i class="fa fa-edit"></i> Edit</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-table"></i> Geography Map
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("GeographyMapHome", "Taxonomy")"><i class="fa fa-home"></i> Home</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -240,7 +249,7 @@
                 </ul>
             </li>
 
-            <li class="header">REPORTS</li>
+            @*<li class="header">REPORTS</li>*@
 
             <!-- REPORTS -->
             @*<li class="treeview menu-open">

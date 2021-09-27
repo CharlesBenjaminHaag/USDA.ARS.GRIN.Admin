@@ -41,7 +41,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
 
         #region Crop for CWR
 
-        //[Route("Taxonomy/CropForCWR/Home")]
         public ActionResult CropForCWRSearch()
         {
             TempData["page_title"] = "Crop For CWR Search";
@@ -1378,7 +1377,6 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     viewModel.ErrorMessage = "The species name must be unique.";
                     return View("~/Views/Taxonomy/Species/Edit.cshtml", viewModel);
                 }
-
                 return RedirectToAction("SpeciesEdit", "Taxonomy", new { id = viewModel.ID, currentId = 0, synonymCode = "", infraspecificTypeCode = "" });
             }
             catch (Exception ex)
@@ -1387,52 +1385,583 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
-     
-        [HttpGet]
-        public ActionResult GetBreedingTypes(string traitClassCode)
-        {
-            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
-            IEnumerable <CodeValueReferenceItem> breedingTypeCodes = _taxonomyService.GetBreedingTypeCodes(traitClassCode);
-            return Json(breedingTypeCodes, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion Species
-
+    
         #region Common Name
-
-        //TODO
-
         public ActionResult CommonNameHome()
         {
-            return View(BASE_PATH + "Species/CommonName/Index.cshtml");
+            TempData["page_title"] = "Common Name Search";
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            SpeciesCommonNameSearchViewModel speciesCommonNameSearchViewModel = new SpeciesCommonNameSearchViewModel();
+
+            try
+            {
+                speciesCommonNameSearchViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_common_name"), "ID", "FullName");
+                
+                return View(BASE_PATH + "Species/CommonName/Index.cshtml", speciesCommonNameSearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CommonNameSearch(FormCollection formCollection)
+        {
+            Query query = new Query();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            SpeciesCommonNameListViewModel speciesCommonNameListViewModel = new SpeciesCommonNameListViewModel();
+            speciesCommonNameListViewModel.ListViewName = "Species/_List.cshtml";
+
+            try
+            {
+  
+                if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                }
+
+                if ((!String.IsNullOrEmpty(formCollection["GenusID"])) && (Int32.Parse(formCollection["GenusID"]) > 0))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_genus_id", SearchOperatorCode = "=", FieldValue = formCollection["GenusID"], DataType = "INT" });
+                }
+
+                if ((!String.IsNullOrEmpty(formCollection["GenusID"])) && (Int32.Parse(formCollection["SpeciesID"]) > 0))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_species_id", SearchOperatorCode = "=", FieldValue = formCollection["SpeciesID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Name"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "name", SearchOperatorCode = "LIKE", FieldValue = formCollection["Name"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["SimplifiedName"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "simplified_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["SimplifiedName"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["SimplifiedName"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "simplified_name", SearchOperatorCode = "LIKE", FieldValue = formCollection["SimplifiedName"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["AlternateTranscription"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "alternate_transcription", SearchOperatorCode = "LIKE", FieldValue = formCollection["AlternateTranscription"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                {
+                    speciesCommonNameListViewModel.Format = Int32.Parse(formCollection["ResultsFormat"]);
+                    if (speciesCommonNameListViewModel.Format == 2)
+                        speciesCommonNameListViewModel.ListViewName = "Species/CommonName/_SelectList.cshtml";
+                }
+                speciesCommonNameListViewModel.CommonNames = taxonomyService.CommonNameSearch(query);
+                return PartialView(BASE_PATH + speciesCommonNameListViewModel.ListViewName, speciesCommonNameListViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult CommonNameEdit(int id = 0)
+        {
+            TempData["page_title"] = "Edit Common Name";
+            SpeciesCommonNameEditViewModel speciesCommonNameEditViewModel = new SpeciesCommonNameEditViewModel();
+            CommonName commonName = new CommonName();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            //try
+            //{
+            //    if (id > 0)
+            //    {
+            //        TempData["page_title"] = "Edit Citation";
+            //        citation = _taxonomyService.GetCitation(id);
+            //        viewModel.ID = citation.ID;
+            //        viewModel.LiteratureID = citation.LiteratureID;
+            //        viewModel.LiteratureReferenceTitle = citation.LiteratureReferenceTitle;
+            //        viewModel.CitationTitle = citation.CitationTitle;
+            //        viewModel.AuthorName = citation.LiteratureEditorAuthorName;
+            //        viewModel.Year = citation.CitationYear;
+            //        viewModel.Reference = citation.Reference;
+            //        viewModel.DOIReference = citation.DOIReference;
+            //        viewModel.URL = citation.URL;
+            //        viewModel.CitationTitle = citation.Title;
+            //        viewModel.Description = citation.Description;
+            //        viewModel.AccessionID = citation.AccessionID;
+            //        viewModel.SpeciesID = citation.SpeciesID;
+            //        viewModel.GenusID = citation.GenusID;
+            //        viewModel.FamilyID = citation.FamilyID;
+            //        viewModel.TypeCode = citation.TypeCode;
+            //        viewModel.CreatedByCooperatorID = citation.CreatedByCooperatorID;
+            //        viewModel.CreatedDate = citation.CreatedDate;
+            //        viewModel.CreatedByCooperatorName = citation.CreatedByCooperatorName;
+            //        viewModel.ModifiedByCooperatorID = citation.ModifiedByCooperatorID;
+            //        viewModel.ModifiedDate = citation.ModifiedDate;
+            //        viewModel.ModifiedByCooperatorName = citation.ModifiedByCooperatorName;
+            //        viewModel.RelatedSpecies = _taxonomyService.GetSpecies(citation.SpeciesID);
+            //    }
+            //    else
+            //    {
+            //        TempData["page_title"] = "Add  Citation";
+            //    }
+            //    List<ReferenceItem> citationTypeCodes = new List<ReferenceItem>();
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 1, Name = "MEDICINE", Description = "MEDICINE" });
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "NODULATION" });
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "RELATIVE" });
+            //    viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "Name", "Description");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Error(ex, ex.Message);
+            //    return RedirectToAction("InternalServerError", "Error");
+            //}
+            return View(BASE_PATH + "Species/CommonName/Edit.cshtml", speciesCommonNameEditViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CommonNameEdit(SpeciesCommonNameEditViewModel commonNameEditViewModel)
+        {
+            return RedirectToAction("CommonNameEdit", "Taxonomy");
         }
 
         #endregion
 
         #region Economic Use
-        //TODO
         public ActionResult EconomicUseHome()
         {
-            return View(BASE_PATH + "Species/EconomicUse/Index.cshtml");
+            TempData["page_title"] = "Economic Use Search";
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            SpeciesEconomicUseSearchViewModel speciesEconomicUseSearchViewModel = new SpeciesEconomicUseSearchViewModel();
+
+            try
+            {
+                speciesEconomicUseSearchViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_use"), "ID", "FullName");
+                speciesEconomicUseSearchViewModel.EconomicUsageCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_USAGE"),"CodeValue","Title");
+                speciesEconomicUseSearchViewModel.UsageTypes = new SelectList("","","");
+                speciesEconomicUseSearchViewModel.PlantPartCodes = new SelectList(taxonomyService.GetCodeValues("TAXONOMY_PLANT_PART"), "CodeValue", "Title");
+                return View(BASE_PATH + "Species/EconomicUse/Index.cshtml", speciesEconomicUseSearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
+        [HttpPost]
+        public ActionResult EconomicUseSearch(FormCollection formCollection)
+        {
+            Query query = new Query();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            SpeciesEconomicUseListViewModel speciesEconomicUseListViewModel = new SpeciesEconomicUseListViewModel();
+            speciesEconomicUseListViewModel.ListViewName = "Species/EconomicUse/_List.cshtml";
+
+            try
+            {
+                if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                }
+
+                if ((!String.IsNullOrEmpty(formCollection["SpeciesID"])) && (Int32.Parse(formCollection["SpeciesID"]) > 0))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_species_id", SearchOperatorCode = "=", FieldValue = formCollection["SpeciesID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["EconomicUsageCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "economic_usage_code", SearchOperatorCode = "=", FieldValue = formCollection["EconomicUsageCode"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["UsageType"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "usage_type", SearchOperatorCode = "=", FieldValue = formCollection["UsageType"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["PlantPartCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "plant_part_code", SearchOperatorCode = "=", FieldValue = formCollection["PlantPartCode"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                { speciesEconomicUseListViewModel.Format = Int32.Parse(formCollection["ResultsFormat"]);
+                    if (speciesEconomicUseListViewModel.Format == 2)
+                        speciesEconomicUseListViewModel.ListViewName = "Species/EconomicUse/_SelectList.cshtml";
+                }
+                speciesEconomicUseListViewModel.EconomicUses = taxonomyService.EconomicUseSearch(query);
+                return PartialView(BASE_PATH + speciesEconomicUseListViewModel.ListViewName, speciesEconomicUseListViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult EconomicUseEdit(int id = 0)
+        {
+            TempData["page_title"] = "Edit Economic Use";
+            SpeciesEconomicUseEditViewModel speciesEconomicUseEditViewModel = new SpeciesEconomicUseEditViewModel();
+            EconomicUse economicUse = new EconomicUse();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                if (id > 0)
+                {
+                    TempData["page_title"] = "Edit Economic Use";
+                    economicUse = _taxonomyService.GetEconomicUse(id);
+                    speciesEconomicUseEditViewModel = new SpeciesEconomicUseEditViewModel(economicUse);
+                }
+                else
+                {
+                    TempData["page_title"] = "Add Economic Use";
+                }
+                speciesEconomicUseEditViewModel.EconomicUsageCodes = new SelectList(_taxonomyService.GetCodeValues("TAXONOMY_USAGE"), "CodeValue", "Title");
+                speciesEconomicUseEditViewModel.UsageTypes = new SelectList("", "", "");
+                speciesEconomicUseEditViewModel.PlantPartCodes = new SelectList(_taxonomyService.GetCodeValues("TAXONOMY_PLANT_PART"), "CodeValue", "Title");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            return View(BASE_PATH + "Species/EconomicUse/Edit.cshtml", speciesEconomicUseEditViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EconomicUseEdit(SpeciesEconomicUseEditViewModel speciesEconomicUseEditViewModel)
+        {
+            ResultContainer resultContainer = new ResultContainer();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                if (speciesEconomicUseEditViewModel.ID > 0)
+                {
+                    speciesEconomicUseEditViewModel.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    resultContainer = _taxonomyService.UpdateEconomicUse(speciesEconomicUseEditViewModel.GetData());
+                }
+                else
+                {
+                    speciesEconomicUseEditViewModel.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    resultContainer = _taxonomyService.AddEconomicUse(speciesEconomicUseEditViewModel.GetData());
+                    speciesEconomicUseEditViewModel.ID = resultContainer.EntityID;
+
+                }
+                return RedirectToAction("EconomicUseEdit", "Taxonomy", new { ID=speciesEconomicUseEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
         #endregion
 
         #region Geography Map
-        //TODO
         public ActionResult GeographyMapHome()
         {
-            return View(BASE_PATH + "Species/GeographyMap/Index.cshtml");
+            TempData["page_title"] = "Geography Map Search";
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            SpeciesGeographyMapSearchViewModel speciesGeographyMapSearchViewModel = new SpeciesGeographyMapSearchViewModel();
+
+            try
+            {
+                speciesGeographyMapSearchViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_geography_map"), "ID", "FullName");
+                return View(BASE_PATH + "Species/GeographyMap/Index.cshtml", speciesGeographyMapSearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GeographyMapSearch(FormCollection formCollection)
+        {
+            Query query = new Query();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            SpeciesGeographyMapListViewModel speciesGeographyMapListViewModel = new SpeciesGeographyMapListViewModel();
+            speciesGeographyMapListViewModel.ListViewName = "Species/GeographyMap/_List.cshtml";
+
+            try
+            {
+
+                if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                {
+                    speciesGeographyMapListViewModel.Format = Int32.Parse(formCollection["ResultsFormat"]);
+                    if (speciesGeographyMapListViewModel.Format == 2)
+                        speciesGeographyMapListViewModel.ListViewName = "Species/GeographyMap/_SelectList.cshtml";
+                }
+                speciesGeographyMapListViewModel.GeographyMaps = taxonomyService.GeographyMapSearch(query);
+                return PartialView(BASE_PATH + speciesGeographyMapListViewModel.ListViewName, speciesGeographyMapListViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult GeographyMapEdit(int id = 0)
+        {
+            TempData["page_title"] = "Edit Geography Map";
+            SpeciesGeographyMapEditViewModel speciesGeographyMapEditViewModel = new SpeciesGeographyMapEditViewModel();
+            //CommonName commonName = new CommonName();
+            //TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            //try
+            //{
+            //    if (id > 0)
+            //    {
+            //        TempData["page_title"] = "Edit Citation";
+            //        citation = _taxonomyService.GetCitation(id);
+            //        viewModel.ID = citation.ID;
+            //        viewModel.LiteratureID = citation.LiteratureID;
+            //        viewModel.LiteratureReferenceTitle = citation.LiteratureReferenceTitle;
+            //        viewModel.CitationTitle = citation.CitationTitle;
+            //        viewModel.AuthorName = citation.LiteratureEditorAuthorName;
+            //        viewModel.Year = citation.CitationYear;
+            //        viewModel.Reference = citation.Reference;
+            //        viewModel.DOIReference = citation.DOIReference;
+            //        viewModel.URL = citation.URL;
+            //        viewModel.CitationTitle = citation.Title;
+            //        viewModel.Description = citation.Description;
+            //        viewModel.AccessionID = citation.AccessionID;
+            //        viewModel.SpeciesID = citation.SpeciesID;
+            //        viewModel.GenusID = citation.GenusID;
+            //        viewModel.FamilyID = citation.FamilyID;
+            //        viewModel.TypeCode = citation.TypeCode;
+            //        viewModel.CreatedByCooperatorID = citation.CreatedByCooperatorID;
+            //        viewModel.CreatedDate = citation.CreatedDate;
+            //        viewModel.CreatedByCooperatorName = citation.CreatedByCooperatorName;
+            //        viewModel.ModifiedByCooperatorID = citation.ModifiedByCooperatorID;
+            //        viewModel.ModifiedDate = citation.ModifiedDate;
+            //        viewModel.ModifiedByCooperatorName = citation.ModifiedByCooperatorName;
+            //        viewModel.RelatedSpecies = _taxonomyService.GetSpecies(citation.SpeciesID);
+            //    }
+            //    else
+            //    {
+            //        TempData["page_title"] = "Add  Citation";
+            //    }
+            //    List<ReferenceItem> citationTypeCodes = new List<ReferenceItem>();
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 1, Name = "MEDICINE", Description = "MEDICINE" });
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "NODULATION" });
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "RELATIVE" });
+            //    viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "Name", "Description");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Error(ex, ex.Message);
+            //    return RedirectToAction("InternalServerError", "Error");
+            //}
+            return View(BASE_PATH + "Species/GeographyMap/Edit.cshtml", speciesGeographyMapEditViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult GeographyMapEdit(SpeciesGeographyMapEditViewModel geographyMapEditViewModel)
+        {
+            GeographyMap geographyMap = new GeographyMap();
+            ResultContainer resultContainer = new ResultContainer();
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                if (geographyMapEditViewModel.ID > 0)
+                {
+                    geographyMap.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    resultContainer = _taxonomyService.UpdateGeographyMap(geographyMap);
+                }
+                else
+                {
+                    geographyMap.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
+                    resultContainer = _taxonomyService.AddGeographyMap(geographyMap);
+                    geographyMapEditViewModel.ID = resultContainer.EntityID;
+
+                }
+                return RedirectToAction("GeographyMapEdit", "Taxonomy", new { ID = geographyMapEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+
+            return RedirectToAction("GeographyMapEdit", "Taxonomy");
         }
 
         #endregion
 
+        #endregion Species
+
         #region Author
-        //TODO
         public ActionResult AuthorHome()
         {
-            return View(BASE_PATH + "Author/Index.cshtml");
+            TempData["page_title"] = "Author Search";
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            AuthorSearchViewModel authorSearchViewModel = new AuthorSearchViewModel();
+
+            try
+            {
+                authorSearchViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_author"), "ID", "FullName");
+                return View(BASE_PATH + "/Author/Index.cshtml", authorSearchViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
+
+        [HttpPost]
+        public ActionResult AuthorSearch(FormCollection formCollection)
+        {
+            Query query = new Query();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            AuthorListViewModel authorListViewModel = new AuthorListViewModel();
+            authorListViewModel.ListViewName = "Author/_List.cshtml";
+
+            try
+            {
+
+                if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                {
+                    authorListViewModel.Format = Int32.Parse(formCollection["ResultsFormat"]);
+                    if (authorListViewModel.Format == 2)
+                        authorListViewModel.ListViewName = "Author/_SelectList.cshtml";
+                }
+                // speciesCommonNameListViewModel.CommonNames = taxonomyService.
+                return PartialView(BASE_PATH + authorListViewModel.ListViewName, authorListViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+        public ActionResult AuthorEdit(int id = 0)
+        {
+            TempData["page_title"] = "Edit Author";
+            AuthorEditViewModel authorEditViewModel = new AuthorEditViewModel();
+            //CitationViewModel viewModel = new CitationViewModel();
+            //Citation citation = new Citation();
+            //TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            //try
+            //{
+            //    if (id > 0)
+            //    {
+            //        TempData["page_title"] = "Edit Citation";
+            //        citation = _taxonomyService.GetCitation(id);
+            //        viewModel.ID = citation.ID;
+            //        viewModel.LiteratureID = citation.LiteratureID;
+            //        viewModel.LiteratureReferenceTitle = citation.LiteratureReferenceTitle;
+            //        viewModel.CitationTitle = citation.CitationTitle;
+            //        viewModel.AuthorName = citation.LiteratureEditorAuthorName;
+            //        viewModel.Year = citation.CitationYear;
+            //        viewModel.Reference = citation.Reference;
+            //        viewModel.DOIReference = citation.DOIReference;
+            //        viewModel.URL = citation.URL;
+            //        viewModel.CitationTitle = citation.Title;
+            //        viewModel.Description = citation.Description;
+            //        viewModel.AccessionID = citation.AccessionID;
+            //        viewModel.SpeciesID = citation.SpeciesID;
+            //        viewModel.GenusID = citation.GenusID;
+            //        viewModel.FamilyID = citation.FamilyID;
+            //        viewModel.TypeCode = citation.TypeCode;
+            //        viewModel.CreatedByCooperatorID = citation.CreatedByCooperatorID;
+            //        viewModel.CreatedDate = citation.CreatedDate;
+            //        viewModel.CreatedByCooperatorName = citation.CreatedByCooperatorName;
+            //        viewModel.ModifiedByCooperatorID = citation.ModifiedByCooperatorID;
+            //        viewModel.ModifiedDate = citation.ModifiedDate;
+            //        viewModel.ModifiedByCooperatorName = citation.ModifiedByCooperatorName;
+            //        viewModel.RelatedSpecies = _taxonomyService.GetSpecies(citation.SpeciesID);
+            //    }
+            //    else
+            //    {
+            //        TempData["page_title"] = "Add  Citation";
+            //    }
+            //    List<ReferenceItem> citationTypeCodes = new List<ReferenceItem>();
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 1, Name = "MEDICINE", Description = "MEDICINE" });
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 2, Name = "NODULATION", Description = "NODULATION" });
+            //    citationTypeCodes.Add(new ReferenceItem { ID = 3, Name = "RELATIVE", Description = "RELATIVE" });
+            //    viewModel.CitationTypeCodes = new SelectList(citationTypeCodes, "Name", "Description");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Error(ex, ex.Message);
+            //    return RedirectToAction("InternalServerError", "Error");
+            //}
+            return View(BASE_PATH + "Author/Edit.cshtml", authorEditViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult AuthorEdit(AuthorEditViewModel authorEditViewModel)
+        {
+            TempData["page_title"] = "Edit Citation";
+            Author author = new Author();
+            ResultContainer resultContainer = null;
+            TaxonomyService _taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+
+            try
+            {
+                //citation.ID = viewModel.ID;
+                //citation.LiteratureID = viewModel.LiteratureID;
+                //citation.Title = viewModel.CitationTitle;
+                //citation.LiteratureEditorAuthorName = viewModel.AuthorName;
+                //citation.CitationYear = viewModel.Year;
+                //citation.Reference = viewModel.Reference;
+                //citation.URL = viewModel.URL;
+                //citation.AccessionID = viewModel.AccessionID;
+                //citation.SpeciesID = viewModel.SpeciesID;
+                //citation.GenusID = viewModel.GenusID;
+                //citation.FamilyID = viewModel.FamilyID;
+                //citation.TypeCode = viewModel.TypeCode;
+                //citation.CreatedByCooperatorID = viewModel.CreatedByCooperatorID;
+                //citation.CreatedDate = viewModel.CreatedDate;
+                //citation.CreatedByCooperatorName = viewModel.CreatedByCooperatorName;
+                //citation.ModifiedByCooperatorID = viewModel.ModifiedByCooperatorID;
+                //citation.ModifiedDate = viewModel.ModifiedDate;
+                //citation.ModifiedByCooperatorName = viewModel.ModifiedByCooperatorName;
+
+                //if (viewModel.ID > 0)
+                //{
+                //    citation.ModifiedByCooperatorID = AuthenticatedUser.CooperatorID;
+                //    resultContainer = _taxonomyService.UpdateCitation(citation);
+                //}
+                //else
+                //{
+                //    citation.CreatedByCooperatorID = AuthenticatedUser.CooperatorID;
+                //    resultContainer = _taxonomyService.AddCitation(citation);
+                //    viewModel.ID = resultContainer.EntityID;
+                //}
+                return RedirectToAction("AuthorEdit", "Taxonomy", new { id = authorEditViewModel.ID });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
         #endregion
 
         #region Citation
@@ -2298,7 +2827,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
             {
                 if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
                 {
-                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "tr.created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
                 }
 
                 if (!String.IsNullOrEmpty(formCollection["RegulationTypeCode"]))
@@ -2419,8 +2948,97 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         public ActionResult RegulationMapSearch()
         {
             TempData["page_title"] = "Regulation Map";
-            return View(BASE_PATH + "/Regulation/RegulationMap/Index.cshtml");
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            RegulationMapHomeViewModel regulationMapHomeViewModel = new RegulationMapHomeViewModel();
+
+            try
+            {
+                regulationMapHomeViewModel.DataSourceName = "taxonomy_regulation_map";
+                regulationMapHomeViewModel.Cooperators = new SelectList(taxonomyService.GetCreatedByCooperators("taxonomy_regulation"), "ID", "FullName");
+                return View(BASE_PATH + "Regulation/RegulationMap/Index.cshtml", regulationMapHomeViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
+
+        [HttpPost]
+        public ActionResult RegulationMapSearch(FormCollection formCollection)
+        {
+            string resultsViewName = "Regulation/_List.cshtml";
+            string resultsFormat = String.Empty;
+            string dataSourceIdFieldName = String.Empty;
+            Query query = new Query();
+            TaxonomyService taxonomyService = new TaxonomyService(AuthenticatedUserSession.Environment);
+            RegulationMapListViewModel regulationMapListViewModel = new RegulationMapListViewModel();
+
+            try
+            {
+                if (!String.IsNullOrEmpty(formCollection["CreatedByCooperatorID"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "tr.created_by", SearchOperatorCode = "=", FieldValue = formCollection["CreatedByCooperatorID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["DataSourceName"]))
+                {
+                    dataSourceIdFieldName = formCollection["DataSourceName"] + "_id";
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = dataSourceIdFieldName, SearchOperatorCode = "IS NOT", FieldValue = "NULL", DataType = "INT" });
+                }
+
+                if ((!String.IsNullOrEmpty(formCollection["FamilyID"])) && (Int32.Parse(formCollection["FamilyID"]) > 0))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_family_id", SearchOperatorCode = "=", FieldValue = formCollection["FamilyID"], DataType = "INT" });
+                }
+
+                if ((!String.IsNullOrEmpty(formCollection["GenusID"])) && (Int32.Parse(formCollection["GenusID"]) > 0))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_genus_id", SearchOperatorCode = "=", FieldValue = formCollection["GenusID"], DataType = "INT" });
+                }
+
+                if ((!String.IsNullOrEmpty(formCollection["SpeciesID"])) && (Int32.Parse(formCollection["SpeciesID"]) > 0))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "taxonomy_species_id", SearchOperatorCode = "=", FieldValue = formCollection["SpeciesID"], DataType = "INT" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["RegulationTypeCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_type_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationTypeCode"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["RegulationLevelCode"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "regulation_level_code", SearchOperatorCode = "=", FieldValue = formCollection["RegulationLevelCode"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Description"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "description", SearchOperatorCode = "LIKE", FieldValue = formCollection["Description"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["Note"]))
+                {
+                    query.QueryCriteria.Add(new QueryCriterion { FieldName = "note", SearchOperatorCode = "LIKE", FieldValue = formCollection["Note"], DataType = "NVARCHAR" });
+                }
+
+                if (!String.IsNullOrEmpty(formCollection["ResultsFormat"]))
+                {
+                    resultsFormat = formCollection["ResultsFormat"];
+                    if (resultsFormat == "2")
+                        resultsViewName = "Regulation/_SelectList.cshtml";
+                }
+                regulationMapListViewModel.RegulationMaps = taxonomyService.RegulationMapSearch(query);
+                return PartialView(BASE_PATH + resultsViewName, regulationMapListViewModel);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return PartialView("~/Views/Error/_Error.cshtml");
+            }
+        }
+
+
         #endregion
 
         #region Geography

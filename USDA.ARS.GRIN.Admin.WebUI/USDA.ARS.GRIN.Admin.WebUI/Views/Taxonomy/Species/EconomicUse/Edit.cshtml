@@ -1,8 +1,233 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesEconomicUseEditViewModel
+
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = TempData["page_title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<!--
+======================================================================================================
+REVISION HISTORY
+======================================================================================================
+-->
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+        </div>
+    </div>
+}
 
+@using (Html.BeginForm("EconomicUseEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.DataSourceName)
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            @Html.ValidationSummary()
+            @Html.Raw(Model.ErrorMessage)
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Species</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(x => x.SpeciesID)
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group form-horizontal">
+                        <label>Usage Code</label>
+                        @Html.DropDownListFor(x => x.EconomicUsageCode, Model.EconomicUsageCodes, "All codes", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group form-horizontal">
+                        <label>Usage Type</label>
+                        @Html.DropDownListFor(x => x.UsageType, Model.UsageTypes, "All types", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group form-horizontal">
+                        <label>Plant Part Code</label>
+                        @Html.DropDownListFor(x => x.PlantPartCode, Model.PlantPartCodes, "All codes", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Citation</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.CitationText, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(x => x.CitationID)
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-citation-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-top:1.0em;">
+                    <label>Note</label>
+                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-note-search">
+                    <i class="fa fa-search"></i>
+                    Search Notes...
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                    Save Edits
+                </button>
+            </div>
+        </div>
+    </div>
+}
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy"); }
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_CitationSearchModal", "Taxonomy", new { taxonId = Model.ID, dataSourceName = "taxononomy_species" }); }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Init();
+    });
+
+    function Init() {
+        try {
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+     /*
+    ===========================================================================
+    CITATION SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchCitations']", function () {
+        var dataSourceName = $("#DataSourceName").val();
+        var citationText = $("#FullText").val();
+
+        var link = '@Url.Action("CitationSearch", "Taxonomy")';
+        var formData = new FormData();
+        try {
+            formData.append("ResultsFormat", 2);
+            formData.append("DataSourceName", dataSourceName);
+            formData.append("FullText", citationText);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citation-search-results").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+
+    });
+
+    function SelectCitation(id) {
+        $('#modal-citation-search').modal('hide');
+        $("#CitationID").val(id);
+    }
+
+    function GetCitations(taxonName) {
+    var taxonId = $("#ID").val();
+    var link = '@Url.Action("CitationSearch", "Taxonomy")';
+    var formData = new FormData();
+    try {
+            formData.append(taxonName + "ID", taxonId);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citations").html(response);
+                }
+            });
+        }
+            catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    function AddCitation(citationId) {
+
+        var familyId = $("#ID").val();
+
+        ResetCitationSearch();
+        $('#modal-citation-search').modal('hide');
+
+        $.ajax({
+            url: '@Url.Action("CitationAdd","Taxonomy")',
+            type: "GET",
+            data: {citationId: citationId, taxonId: familyId, dataSource: "taxonomy_species" },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                GetCitations("Species","taxonomy_species");
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+    }
+
+    function ResetCitationSearch() {
+        $("#FullText").val();
+        $("#section-citation-search-results").html();
+    }
+
+    /*
+    ===========================================================================
+    NOTE SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchNotes']", function () {
+        var url = '@Url.Action("NoteSearch", "Taxonomy")';
+        var dataSourceName = $("#DataSourceName").val();
+        var searchText = $("#txtSearchNotes").val();
+
+        $.post(url, { dataSourceName: dataSourceName, searchText: searchText })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+            });
+    });
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        CKEDITOR.instances.txtNote.setData(noteText);
+    }
+</script>

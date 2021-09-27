@@ -1,8 +1,205 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.AuthorSearchViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = @TempData["page_title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
 
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+
+<div class="row">
+    <div class="col-md-2">
+        <a href="@Url.Action("AuthorEdit","Taxonomy")" class="btn btn-primary btn-block margin-bottom">
+            <i class="fa fa-plus"></i>
+            New
+        </a>
+    </div>
+</div>
+
+<!-- ============================================================================================== -->
+<!-- SEARCH CRITERIA -->
+<!-- ============================================================================================== -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- Custom Tabs -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">New Search</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Saved Searches</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                    <div id="section-search-criteria">
+                        @using (Html.BeginForm("GenusSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
+                        {
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Created By</label>
+                                        @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All cooperators", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
+                                <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="tab_2">
+
+                </div>
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- nav-tabs-custom -->
+    </div>
+</div>
+
+<!-- ============================================================================================== -->
+<!-- SEARCH RESULTS -->
+<!-- ============================================================================================== -->
+<div class="box box-default" style="padding:10px;">
+    <div class="box-header with-border">
+        <h3 class="box-title">Search Results</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+            </div>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body no-padding">
+        <div id="section-search-results">
+
+        </div>
+    </div>
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+</div>
+@{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Init();
+    });
+
+    function Init() {
+        $(".overlay").hide();
+    }
+
+    $(document).on({
+        ajaxStart: function () {
+            $(".overlay").show();
+        },
+        ajaxStop: function () {
+            $(".overlay").hide();
+        }
+    });
+
+    $(function () {
+        $("#btnSearch").click(function () {
+            var link = '@Url.Action("GenusSearch", "Taxonomy")';
+            var formData = new FormData();
+
+            formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
+            formData.append("Name", $("#Name").val());
+            formData.append("SubGenusName", $("#SubGenusName").val());
+            formData.append("HybridCode", $("#HybridCode").val());
+            formData.append("QualifyingCode", $("#QualifyingCode").val());
+            formData.append("Note", $("#Note").val());
+
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-search-results").html(response);
+                }
+            });
+        });
+
+        $("#btnReset").click(function () {
+            $(this).closest('form').find("input[type=text], textarea").val("");
+            $("#section-search-criteria select").val("");
+            $('#section-search-results').html("");
+        });
+    });
+
+    /*
+    =============================================================================
+    FOLDERS
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnAddFolder']", function () {
+        $('#modal-folder-edit').modal('show');
+    });
+
+    $(document).on("click", "[id='btnSaveFolder']", function () {
+        var dataSourceName = "taxonomy_genus";
+        var dataSourceTitle = "Genus";
+        var itemList = GetSelectedItems();
+        var folderTitle = $("#Title").val();
+        var folderCategory = $("#Category").val();
+        var folderDescription = $("#Description").val();
+
+        $.ajax({
+        url: '@Url.Action("AddToFolder","Taxonomy")',
+        type: "GET",
+        data: {folderId: 0, folderTitle: folderTitle, folderCategory: folderCategory, folderDescription: folderDescription, isShared:false, dataSourceName: dataSourceName, dataSourceTitle: "Family", values:itemList.toString() },
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+        },
+        error: function () {
+        }
+    });
+        $('#modal-folder-edit').modal('hide');
+    });
+
+    function GetSelectedItems() {
+
+        var i = 0;
+        var itemId = "";
+        var valueArray = [];
+        table = $("#data-table").DataTable();
+
+        var oData = table.rows('.selected').data();
+        $.each($(oData), function (key, value) {
+            itemId = value[i];
+            i = i++;
+
+            itemId = itemId.replace("<span class=\"badge\">", "").replace("</span>", "");
+            valueArray.push(itemId);
+        });
+        return valueArray;
+    }
+
+    /*
+    =============================================================================
+    DATATABLES
+    =============================================================================
+    */
+    $(document).on("click", "[id='btnSelectAll']", function () {
+        var table = $('#data-table').DataTable();
+        table.rows().select();
+    });
+
+    $(document).on("click", "[id='btnDeSelectAll']", function () {
+        var table = $('#data-table').DataTable();
+        table.rows().deselect();
+    });
+</script>

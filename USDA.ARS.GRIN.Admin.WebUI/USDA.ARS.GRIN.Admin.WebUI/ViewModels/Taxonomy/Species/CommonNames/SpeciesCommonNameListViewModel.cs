@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using USDA.ARS.GRIN.Admin.Models;
+using USDA.ARS.GRIN.Admin.Models.Taxonomy;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
-    public class SpeciesCommonNameListViewModel
+    public class SpeciesCommonNameListViewModel: BaseViewModel
     {
+        public IQueryable<CommonName> CommonNames { get; set; }
     }
 }

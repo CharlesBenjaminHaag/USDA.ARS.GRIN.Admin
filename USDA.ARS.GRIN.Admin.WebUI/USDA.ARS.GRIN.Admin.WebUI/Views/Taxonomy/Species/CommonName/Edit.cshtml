@@ -1,8 +1,22 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.SpeciesCommonNameEditViewModel
+
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = TempData["page_title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
+<!--
+======================================================================================================
+REVISION HISTORY
+======================================================================================================
+-->
+@if (Model.ID > 0)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="callout callout-info" style="vertical-align:middle;">
+                @Html.Raw(Model.RevisionHistoryText)
+            </div>
+        </div>
+    </div>
+}

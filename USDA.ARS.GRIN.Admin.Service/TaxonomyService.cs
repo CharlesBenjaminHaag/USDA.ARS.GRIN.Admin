@@ -20,6 +20,7 @@ namespace USDA.ARS.GRIN.Admin.Service
         protected CwrMapDAO _cwrMapDAO = null;
         protected CwrTraitDAO _cwrTraitDAO = null;
         protected FolderDAO _folderDAO = null;
+        protected AuthorDAO _authorDAO = null;
         protected CitationDAO _citationDAO = null;
         protected ReferenceDAO _referenceDAO = null;
         protected RegulationDAO _regulationDAO = null;
@@ -35,6 +36,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             this._cwrMapDAO = new CwrMapDAO(context);
             this._cwrTraitDAO = new CwrTraitDAO(context);
             this._folderDAO = new FolderDAO(context);
+            this._authorDAO = new AuthorDAO(context);
             this._citationDAO = new CitationDAO(context);
             this._referenceDAO = new ReferenceDAO(context);
             this._regulationDAO = new RegulationDAO(context);
@@ -126,6 +128,74 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _speciesDAO.Update(species);
         }
+
+        #region Economic Use
+
+        public IQueryable<EconomicUse> EconomicUseSearch(Query query)
+        {
+            return _speciesDAO.EconomicUseSearch(query);
+        }
+
+        public EconomicUse GetEconomicUse(int id)
+        {
+            return _speciesDAO.GetEconomicUse(id);
+        }
+
+        public ResultContainer AddEconomicUse(EconomicUse economicUse)
+        {
+            return _speciesDAO.AddEconomicUse(economicUse);
+        }
+        public ResultContainer UpdateEconomicUse(EconomicUse economicUse)
+        {
+            return _speciesDAO.UpdateEconomicUse(economicUse);
+        }
+
+        public ResultContainer DeleteEconomicUse(int id)
+        {
+            return _speciesDAO.DeleteEconomicUse(id);
+        }
+
+        #endregion
+
+        #region Common Names
+        public IQueryable<CommonName> CommonNameSearch(Query query)
+        {
+            return _speciesDAO.CommonNameSearch(query);
+        }
+
+        public ResultContainer AddCommonName(CommonName commonName)
+        {
+            return _speciesDAO.AddCommonName(commonName);
+        }
+        public ResultContainer UpdateCommonName(CommonName commonName)
+        {
+            return _speciesDAO.UpdateCommonName(commonName);
+        }
+        public ResultContainer DeleteCommonName(int id)
+        {
+            return _speciesDAO.DeleteCommonName(id);
+        }
+        #endregion
+
+        #region Geography Map
+        public IQueryable<GeographyMap> GeographyMapSearch(Query query)
+        {
+            return _speciesDAO.GeographyMapSearch(query);
+        }
+        public ResultContainer AddGeographyMap(GeographyMap geographyMap)
+        {
+            return _speciesDAO.AddGeographyMap(geographyMap);
+        }
+        public ResultContainer UpdateGeographyMap(GeographyMap geographyMap)
+        {
+            return _speciesDAO.UpdateGeographyMap(geographyMap);
+        }
+        public ResultContainer DeleteGeographyMap(int id)
+        {
+            return _speciesDAO.DeleteGeographyMap(id);
+        }
+
+        #endregion
 
         #endregion Species
 
@@ -314,11 +384,7 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         public Folder GetFolder(int id)
         {
-            Folder folder = null;
-            folder = _folderDAO.Get(id);
-            //folder.FolderItems = _folderDAO.FindFolderItems(id, folder.DataSource);
-            
-            return folder;
+            return _folderDAO.Get(id);
         }
 
         public int AddFolder(Folder folder)
@@ -353,6 +419,34 @@ namespace USDA.ARS.GRIN.Admin.Service
 
         #endregion
 
+        #region Author
+
+        public Author GetAuthor(int id)
+        {
+            return _authorDAO.Get(id);
+        }
+        public IQueryable<Author> AuthorSearch(Query query)
+        {
+            return _authorDAO.Search(query);
+        }
+
+        public ResultContainer AddAuthor(Author author)
+        {
+            return _authorDAO.Add(author);
+        }
+
+        public ResultContainer UpdateAuthor(Author author)
+        {
+            return _authorDAO.Update(author);
+        }
+
+        public ResultContainer DeleteAuthor(Author author)
+        {
+            return _authorDAO.Remove(author);
+        }
+
+        #endregion
+
         #region Regulation
 
         public Regulation GetRegulation(int id)
@@ -382,9 +476,15 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _regulationDAO.GetFolderItems(folderId);
         }
-
-        //TODO: reg map
-
+        public IQueryable<RegulationMap> RegulationMapSearch(Query query)
+        {
+            return _regulationDAO.SearchRegulationMaps(query);
+        }
+        public IQueryable<RegulationMap> GetRegulationMapFolderItems(int folderId)
+        {
+            return null;
+            //return _regulationDAO.getrGetFolderItems(folderId);
+        }
         #endregion
 
         #region Reference

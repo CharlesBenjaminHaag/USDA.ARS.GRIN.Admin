@@ -546,6 +546,9 @@
     <Compile Include="ViewModels\Taxonomy\Species\EcomomicUse\SpeciesEconomicUseEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\EcomomicUse\SpeciesEconomicUseListViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\EcomomicUse\SpeciesEconomicUseSearchViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\GeographyMap\SpeciesGeographyMapEditViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\GeographyMap\SpeciesGeographyMapListViewModel.cs" />
+    <Compile Include="ViewModels\Taxonomy\Species\GeographyMap\SpeciesGeographyMapSearchViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesEditViewModel.cs" />
     <Compile Include="ViewModels\AccessRightsManagement\User\UserEditViewModel.cs" />
     <Compile Include="ViewModels\Taxonomy\Species\SpeciesHomeViewModel.cs" />
