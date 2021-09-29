@@ -37,61 +37,61 @@
                     <div id="section-search-criteria">
                         @using (Html.BeginForm("GenusSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
                         {
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group form-horizontal">
-                                    <label>Created By</label>
-                                    @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All cooperators", new { @class = "form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <label>Search Type</label>
-                                <select id="ddlSearchType" class="form-control">
-                                    <option value="genus">Genus</option>
-                                    <option value="species">Species</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <div id="form-group-genus">
-                                    <label>Genus Name</label>
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
-                                        @Html.HiddenFor(x => x.GenusID)
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div id="form-group-species">
-                                    <label>Species Name</label>
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
-                                        @Html.HiddenFor(x => x.SpeciesID)
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">...</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label>Name</label>
-                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-                            </div>
-                            <div class="col-md-2">
-                                <label>Language</label>
-                                @Html.TextBoxFor(x => x.LanguageDescription, new { @class = "form-control" })
-                            </div>    
-                        </div>
                             <div class="row">
-                            <div class="col-md-3">
-                                <label>Simplified Name</label>
-                                @Html.TextBoxFor(x => x.SimplifiedName, new { @class = "form-control" })
+                                <div class="col-md-2">
+                                    <div class="form-group form-horizontal">
+                                        <label>Created By</label>
+                                        @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All cooperators", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Search Type</label>
+                                    <select id="ddlSearchType" class="form-control">
+                                        <option value="genus">Genus</option>
+                                        <option value="species">Species</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <div id="form-group-genus">
+                                        <label>Genus Name</label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
+                                            @Html.HiddenFor(x => x.GenusID)
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="form-group-species">
+                                        <label>Species Name</label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
+                                            @Html.HiddenFor(x => x.SpeciesID)
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">...</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Name</label>
+                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Language</label>
+                                    @Html.TextBoxFor(x => x.LanguageDescription, new { @class = "form-control" })
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label>Alternate Transcription</label>
-                                @Html.TextBoxFor(x => x.AlternateTranscription, new { @class = "form-control" })
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Simplified Name</label>
+                                    @Html.TextBoxFor(x => x.SimplifiedName, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Alternate Transcription</label>
+                                    @Html.TextBoxFor(x => x.AlternateTranscription, new { @class = "form-control" })
+                                </div>
                             </div>
-                        </div>
                             <div class="box-footer">
                                 <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
                                 <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
@@ -133,7 +133,9 @@
         <i class="fa fa-refresh fa-spin"></i>
     </div>
 </div>
+
 @{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_use" }); }
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -174,7 +176,7 @@
             formData.append("SimplifiedName", $("#SimplifiedName").val());
             formData.append("LanguageDescription", $("#LanguageDescription").val());
             formData.append("AlternateTranscription", $("#AlternateTranscription").val());
-            
+
             $.ajax({
                 url: link,
                 type: 'POST',
@@ -194,6 +196,38 @@
             $('#section-search-results').html("");
         });
     });
+
+    /*
+    ===========================================================================
+    SPECIES MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchSpecies']", function () {
+        var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+        var isAcceptedName = $('#IsAcceptedName').is(':checked');
+
+        var formData = new FormData();
+        formData.append("FullName", $("#FullName").val());
+        formData.append("IsAcceptedName", isAcceptedName);
+        formData.append("ResultsFormat", "2");
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-species-search-results").html(response);
+            }
+        });
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-species-search').modal('hide');
+        $("#SpeciesName").val(speciesText);
+        $("#SpeciesID").val(ID);
+    }
 
     /*
     =============================================================================

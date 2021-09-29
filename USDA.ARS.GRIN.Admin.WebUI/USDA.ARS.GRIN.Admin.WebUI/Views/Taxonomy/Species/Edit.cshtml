@@ -20,88 +20,96 @@ REVISION HISTORY
     </div>
 }
 
+@if (!String.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="callout callout-danger">
+        <strong>Author Validation Erorrs</strong>
+        <p>@Model.ErrorMessage</p>
+    </div>
+}
+
 @if (Model.VerifierCooperatorID > 0)
-{ 
-<div class="callout callout-success">
-    <p><strong>Verified by</strong> @Model.VerifiedByCooperatorName <strong>on</strong> @Model.NameVerifiedDate.ToShortDateString()</p>
-</div>
+{
+    <div class="callout callout-success">
+        <p><strong>Verified by</strong> @Model.VerifiedByCooperatorName <strong>on</strong> @Model.NameVerifiedDate.ToShortDateString()</p>
+    </div>
 }
 
 <div class="row" style="padding-bottom:10px;">
     <div class="col-md-12">
         @if (Model.ID > 0)
         {
-            
 
-            
+
+
 
             @*<a class="btn btn-app">
-                <i class="fa fa-save"></i> Save
-            </a>
-            <a class="btn btn-app">
-                <span class="badge bg-yellow">3</span>
-                <i class="fa fa-bullhorn"></i> Notifications
-            </a>
-            <a class="btn btn-app">
-                <span class="badge bg-green">300</span>
-                <i class="fa fa-barcode"></i> Products
-            </a>
-            <a class="btn btn-app">
-                <span class="badge bg-purple">891</span>
-                <i class="fa fa-users"></i> Users
-            </a>
-            <a class="btn btn-app">
-                <span class="badge bg-teal">67</span>
-                <i class="fa fa-inbox"></i> Orders
-            </a>
-            <a class="btn btn-app">
-                <span class="badge bg-aqua">12</span>
-                <i class="fa fa-envelope"></i> Inbox
-            </a>
-            <a class="btn btn-app">
-                <span class="badge bg-red">531</span>
-                <i class="fa fa-heart-o"></i> Likes
-            </a>*@
+                    <i class="fa fa-save"></i> Save
+                </a>
+                <a class="btn btn-app">
+                    <span class="badge bg-yellow">3</span>
+                    <i class="fa fa-bullhorn"></i> Notifications
+                </a>
+                <a class="btn btn-app">
+                    <span class="badge bg-green">300</span>
+                    <i class="fa fa-barcode"></i> Products
+                </a>
+                <a class="btn btn-app">
+                    <span class="badge bg-purple">891</span>
+                    <i class="fa fa-users"></i> Users
+                </a>
+                <a class="btn btn-app">
+                    <span class="badge bg-teal">67</span>
+                    <i class="fa fa-inbox"></i> Orders
+                </a>
+                <a class="btn btn-app">
+                    <span class="badge bg-aqua">12</span>
+                    <i class="fa fa-envelope"></i> Inbox
+                </a>
+                <a class="btn btn-app">
+                    <span class="badge bg-red">531</span>
+                    <i class="fa fa-heart-o"></i> Likes
+                </a>*@
 
             @*<a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "syn" })" class="btn btn-default">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-exchange"></i>
-                Synonym
-            </a>
-            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "sub" })" class="btn btn-default">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-leaf"></i>
-                Subspecies
-            </a>
-            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "var" })" class="btn btn-default">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-leaf"></i>
-                Variety
-            </a>
-            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "for" })" class="btn btn-default">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-leaf"></i>
-                Form
-            </a>
-            <button type="button" id="btnAddCitation" class="btn btn-default" data-toggle="modal" data-target="#modal-citation-search">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-book"></i>
-                Citation
-            </button>
-            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, genusId = Model.GenusID, })" class="btn btn-default disabled">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-money"></i>
-                Economic Use
-            </a>
-            <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, genusId = Model.GenusID, })" class="btn btn-default disabled">
-                <i class="fa fa-plus"></i>
-                <i class="fa fa-globe"></i>
-                Geography
-            </a>*@
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-exchange"></i>
+                    Synonym
+                </a>
+                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "sub" })" class="btn btn-default">
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-leaf"></i>
+                    Subspecies
+                </a>
+                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "var" })" class="btn btn-default">
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-leaf"></i>
+                    Variety
+                </a>
+                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, context = "for" })" class="btn btn-default">
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-leaf"></i>
+                    Form
+                </a>
+                <button type="button" id="btnAddCitation" class="btn btn-default" data-toggle="modal" data-target="#modal-citation-search">
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-book"></i>
+                    Citation
+                </button>
+                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, genusId = Model.GenusID, })" class="btn btn-default disabled">
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-money"></i>
+                    Economic Use
+                </a>
+                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, genusId = Model.GenusID, })" class="btn btn-default disabled">
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-globe"></i>
+                    Geography
+                </a>*@
         }
     </div>
     <div class="col-md-3">
-        
+
         @if ((Model.ID > 0) && (Model.VerifierCooperatorID <= 0))
         {
             <button id="btnVerify" type="button" class="btn btn-success pull-right" style="margin-right:.2em;">
@@ -131,133 +139,110 @@ REVISION HISTORY
             @Html.ValidationSummary()
             @Html.Raw(Model.ErrorMessage)
 
-                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { id = 0, currentId = Model.ID, genusId = Model.GenusID, })" class="btn btn-app">
-                    <i class="fa fa-leaf"></i> + Synonym
-                </a>
-                <a class="btn btn-app">
-                    <i class="fa fa-leaf"></i> + Variety
-                </a>
-                <a class="btn btn-app">
-                    <i class="fa fa-leaf"></i> Subvariety
-                </a>
-                <a class="btn btn-app">
-                    <i class="fa fa-leaf"></i> Subspecies
-                </a>
-
-                @if (Model.IsSynonym)
-                {
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a class="btn btn-app">
-                                <i class="fa fa-leaf"></i> + Synonym
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-leaf"></i> + Variety
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-leaf"></i> Subvariety
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-leaf"></i> Subspecies
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-book"></i> Citation
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-globe"></i> Geography
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-dollar"></i> Economic Use
-                            </a>
-                            <a class="btn btn-app">
-                                <i class="fa fa-address-book"></i> Common Names
-                            </a>
-                        </div>
+            @if (Model.IsSynonym)
+            {
+                <div class="row">
+                    <div class="col-md-12">
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>Synonym of</label>
-                            <div class="input-group">
-                                @Html.TextBoxFor(x => x.CurrentName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
-                                <span class="input-group-btn">
-                                    <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { @id = Model.CurrentID })" class="btn btn-default btn-flat">
-                                        <i class="fa fa-link"></i>
-                                    </a>
-                                </span>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label>Synonym Type</label>
-                            @Html.DropDownListFor(x => x.SynonymCode, Model.SynonymCodes, "Select type", new { @class = "form-control" })
-                        </div>
-                    </div>
-                }
-                <div class="row pad-top">
+                </div>
+                <div class="row">
                     <div class="col-md-4">
-                        <label>Genus</label>
+                        <label>Synonym of</label>
                         <div class="input-group">
-                            @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
-                            @Html.HiddenFor(x => x.GenusID)
-
-                            @if (Model.GenusID > 0)
-                            {
-                                <span class="input-group-btn">
-                                    <a href="@Url.Action("GenusEdit", "Taxonomy", new { @id = Model.GenusID })" class="btn btn-default btn-flat">
-                                        <i class="fa fa-link"></i>
-                                    </a>
-                                </span>
-                            }
+                            @Html.TextBoxFor(x => x.CurrentName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">
+                                <a href="@Url.Action("SpeciesEdit", "Taxonomy", new { @id = Model.CurrentID })" class="btn btn-default btn-flat">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            </span>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
                         </div>
-                        @Html.ValidationMessageFor(x => x.GenusName, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col-md-4">
-                        @if (Model.Context == "var")
+                    <div class="col-md-3">
+                        <label>Synonym Type</label>
+                        @Html.DropDownListFor(x => x.SynonymCode, Model.SynonymCodes, "Select type", new { @class = "form-control" })
+                    </div>
+                </div>
+            }
+            <div class="row pad-top">
+                <div class="col-md-4">
+                    <label>Genus</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
+                        @Html.HiddenFor(x => x.GenusID)
+
+                        @if (Model.GenusID > 0)
                         {
-                            <label>Variety Name</label>
-                            @Html.TextBoxFor(x => x.VarietyName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.VarietyName, "", new { @class = "text-danger" })
+                            <span class="input-group-btn">
+                                <a href="@Url.Action("GenusEdit", "Taxonomy", new { @id = Model.GenusID })" class="btn btn-default btn-flat">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            </span>
+                        }
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                    @Html.ValidationMessageFor(x => x.GenusName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    @if (Model.Context == "var")
+                    {
+                        <label>Variety Name</label>
+                        @Html.TextBoxFor(x => x.VarietyName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.VarietyName, "", new { @class = "text-danger" })
+                    }
+                    else
+                    {
+                        if (Model.Context == "sub")
+                        {
+                            <label>Subspecies Name</label>
+                            @Html.TextBoxFor(x => x.SubSpeciesName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.SubSpeciesName, "", new { @class = "text-danger" })
                         }
                         else
                         {
-                            if (Model.Context == "sub")
+                            if (Model.Context == "for")
                             {
-                                <label>Subspecies Name</label>
-                                @Html.TextBoxFor(x => x.SubSpeciesName, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(x => x.SubSpeciesName, "", new { @class = "text-danger" })
+                                <label>Form Name</label>
+                                @Html.TextBoxFor(x => x.FormaName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.FormaName, "", new { @class = "text-danger" })
                             }
                             else
                             {
-                                if (Model.Context == "for")
-                                {
-                                    <label>Form Name</label>
-                                    @Html.TextBoxFor(x => x.FormaName, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(x => x.FormaName, "", new { @class = "text-danger" })
-                                }
-                                else
-                                {
-                                    <label>Name</label>
-                                    @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
-                                }
+                                <label>Name</label>
+                                @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.SpeciesName, "", new { @class = "text-danger" })
                             }
                         }
-                    </div>
-                    <div class="col-md-4">
-                        @if (Model.Context == "var")
+                    }
+                </div>
+                <div class="col-md-4">
+                    @if (Model.Context == "var")
+                    {
+                        <label>Variety Authority</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(x => x.VarietyAuthority, new { @class = "form-control" })
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        if (Model.Context == "sub")
                         {
-                            <label>Variety Authority</label>
+                            <label>Subspecies Authority</label>
                             <div class="input-group">
-                                @Html.TextBoxFor(x => x.VarietyAuthority, new { @class = "form-control" })
+                                @Html.TextBoxFor(x => x.SubSpeciesAuthority, new { @class = "form-control" })
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
                                         <i class="fa fa-search"></i>
@@ -267,11 +252,11 @@ REVISION HISTORY
                         }
                         else
                         {
-                            if (Model.Context == "sub")
+                            if (Model.Context == "for")
                             {
-                                <label>Subspecies Authority</label>
+                                <label>Forma Authority</label>
                                 <div class="input-group">
-                                    @Html.TextBoxFor(x => x.SubSpeciesAuthority, new { @class = "form-control" })
+                                    @Html.TextBoxFor(x => x.FormaAuthority, new { @class = "form-control" })
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
                                             <i class="fa fa-search"></i>
@@ -281,103 +266,89 @@ REVISION HISTORY
                             }
                             else
                             {
-                                if (Model.Context == "for")
-                                {
-                                    <label>Forma Authority</label>
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(x => x.FormaAuthority, new { @class = "form-control" })
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <label>Name Authority</label>
-                                    <div class="input-group">
-                                        @Html.TextBoxFor(x => x.Authority, new { @class = "form-control" })
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                }
+                                <label>Name Authority</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(x => x.NameAuthority, new { @class = "form-control" })
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
                             }
                         }
+                    }
+                </div>
+            </div>
+            <div class="row pad-top">
+                <div class="col-md-4">
+                    <label>Protologue</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.Protologue, new { @class = "form-control" })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-protologue-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
                 </div>
-                <div class="row pad-top">
-                    <div class="col-md-4">
-                        <label>Protologue</label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(x => x.Protologue, new { @class = "form-control" })
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-protologue-search">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label>Species Authority</label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(x => x.Authority, new { @class = "form-control" })
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <label>Hybrid Options</label>
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBoxFor(x => x.IsSpecificHybrid, new { id = "cbxIsSpecificHybrid", style = "margin-left:5x;" })
-                                Specific
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <label style="color:white;">Hybrid</label>
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBoxFor(x => x.IsSubSpecificHybrid, new { id = "cbxIsSubSpecificHybrid", style = "margin-left:5x;" })
-                                Subspecific
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <label style="color:white;">Hybrid Options</label>
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBoxFor(x => x.IsVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })
-                                Varietal
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <label style="color:white;">Hybrid Options</label>
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBoxFor(x => x.IsSubVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })
-                                SubVarietal
-                            </label>
-                        </div>
+                <div class="col-md-4">
+                    <label>Species Authority</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.Authority, new { @class = "form-control" })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-author-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
                 </div>
-                <div class="row pad-top">
-                    <div class="col-md-12">
-                        <label>Note</label>
-                        @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
-                        <script>
-                            CKEDITOR.replace('txtNote');
-                        </script>
+                <div class="col-md-1">
+                    <label>Hybrid Options</label>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.IsSpecificHybrid, new { id = "cbxIsSpecificHybrid", style = "margin-left:5x;" })
+                            Specific
+                        </label>
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <label style="color:white;">Hybrid</label>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.IsSubSpecificHybrid, new { id = "cbxIsSubSpecificHybrid", style = "margin-left:5x;" })
+                            Subspecific
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label style="color:white;">Hybrid Options</label>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.IsVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })
+                            Varietal
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label style="color:white;">Hybrid Options</label>
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(x => x.IsSubVarietalHybrid, new { id = "cbxIsVarietalHybrid", style = "margin-left:5x;" })
+                            SubVarietal
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row pad-top">
+                <div class="col-md-12">
+                    <label>Note</label>
+                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
+                </div>
+            </div>
         </div>
         <div class="box-footer">
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-note-search">

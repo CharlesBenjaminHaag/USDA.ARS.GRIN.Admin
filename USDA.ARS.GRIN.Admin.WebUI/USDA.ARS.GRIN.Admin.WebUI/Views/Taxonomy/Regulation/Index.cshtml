@@ -141,6 +141,7 @@
             var link = '@Url.Action("RegulationSearch", "Taxonomy")';
             var formData = new FormData();
 
+            formData.append("DataSourceName", $("#DataSourceName").val());
             formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
             formData.append("RegulationTypeCode", $("#RegulationTypeCode").val());
             formData.append("RegulationLevelCode", $("#RegulationLevelCode").val());

@@ -39,27 +39,47 @@ REVISION HISTORY
             @Html.ValidationSummary()
             @Html.Raw(Model.ErrorMessage)
 
-            <div class="row" style="margin-top:.9em;">
-
-                <div class="col-md-4">
-                    <label for="txtFamily">Family</label>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Species Name</label>
                     <div class="input-group">
-                        @*@Html.TextBoxFor(x => x.FamilyFullName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(x => x.FamilyFullName, "", new { @class = "text-danger" })*@
+                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
+                        @Html.HiddenFor(x => x.SpeciesID)
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-family-search">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Geography</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.GeographyDescription, new { @class = "form-control" })
+                        @Html.HiddenFor(x => x.GeographyID)
                         <span class="input-group-btn">
-                            @*<a href="@Url.Action("FamilyEdit","Taxonomy", new { @id = Model.FamilyID })" class="btn btn-primary btn-flat">
-                                <i class="fa fa-link"></i>
-                            </a>*@
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-geography-search">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </span>
                     </div>
-                    @*@Html.ValidationMessageFor(x => x.FamilyID, "", new { @class = "text-danger" })*@
                 </div>
-             
+                <div class="col-md-2">
+                    <label>Status</label>
+                    @Html.DropDownListFor(x => x.GeographyStatusCode, Model.GeographyMapStatuses, "All Statuses", new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    <label>Citation</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.CitationText, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(x => x.CitationID)
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-citation-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12" style="margin-top:1.0em;">
@@ -83,3 +103,132 @@ REVISION HISTORY
         </div>
     </div>
 }
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy"); }
+@{ Html.RenderAction("_GeographySearchModal", "Taxonomy"); }
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_CitationSearchModal", "Taxonomy", new { taxonId = Model.ID, dataSourceName = "taxononomy_species" }); }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Init();
+    });
+
+    function Init() {
+        try {
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    /*
+    ===========================================================================
+    CITATION SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchCitations']", function () {
+        var dataSourceName = $("#DataSourceName").val();
+        var citationText = $("#FullText").val();
+
+        var link = '@Url.Action("CitationSearch", "Taxonomy")';
+        var formData = new FormData();
+        try {
+            formData.append("ResultsFormat", 2);
+            formData.append("DataSourceName", dataSourceName);
+            formData.append("FullText", citationText);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citation-search-results").html(response);
+                }
+            });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+
+    });
+
+    function SelectCitation(id) {
+        $('#modal-citation-search').modal('hide');
+        $("#CitationID").val(id);
+    }
+
+    function GetCitations(taxonName) {
+    var taxonId = $("#ID").val();
+    var link = '@Url.Action("CitationSearch", "Taxonomy")';
+    var formData = new FormData();
+    try {
+            formData.append(taxonName + "ID", taxonId);
+            $.ajax({
+                url: link,
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    $("#section-citations").html(response);
+                }
+            });
+        }
+            catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    function AddCitation(citationId) {
+
+        var familyId = $("#ID").val();
+
+        ResetCitationSearch();
+        $('#modal-citation-search').modal('hide');
+
+        $.ajax({
+            url: '@Url.Action("CitationAdd","Taxonomy")',
+            type: "GET",
+            data: {citationId: citationId, taxonId: familyId, dataSource: "taxonomy_species" },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                GetCitations("Species","taxonomy_species");
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+    }
+
+    function ResetCitationSearch() {
+        $("#FullText").val();
+        $("#section-citation-search-results").html();
+    }
+
+    /*
+    ===========================================================================
+    NOTE SEARCH MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchNotes']", function () {
+        var url = '@Url.Action("NoteSearch", "Taxonomy")';
+        var dataSourceName = $("#DataSourceName").val();
+        var searchText = $("#txtSearchNotes").val();
+
+        $.post(url, { dataSourceName: dataSourceName, searchText: searchText })
+            .done(function (response) {
+                $("#section-note-search-results").html(response);
+            });
+    });
+
+    function SelectNote(noteText) {
+        $('#modal-note-search').modal('hide');
+        CKEDITOR.instances.txtNote.setData(noteText);
+    }
+</script>

@@ -43,6 +43,34 @@
                                         @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All cooperators", new { @class = "form-control" })
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <label>Species Name</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
+                                        @Html.HiddenFor(x => x.SpeciesID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Geography</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.GeographyDescription, new { @class = "form-control" })
+                                        @Html.HiddenFor(x => x.GeographyID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-geography-search">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Status</label>
+                                    @Html.DropDownListFor(x => x.StatusCode, Model.GeographyMapStatuses, "All Statuses", new { @class="form-control" })
+                                </div>
                             </div>
                             <div class="box-footer">
                                 <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
@@ -85,7 +113,11 @@
         <i class="fa fa-refresh fa-spin"></i>
     </div>
 </div>
+
 @{ Html.RenderAction("_FolderModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_genus" }); }
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy", new { id = Model.ID, context = "taxononomy_use" }); }
+@{ Html.RenderAction("_GeographySearchModal", "Taxonomy", new { id = Model.ID }); }
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -111,11 +143,9 @@
             var formData = new FormData();
 
             formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
-            //formData.append("Name", $("#Name").val());
-            //formData.append("SubGenusName", $("#SubGenusName").val());
-            //formData.append("HybridCode", $("#HybridCode").val());
-            //formData.append("QualifyingCode", $("#QualifyingCode").val());
-            //formData.append("Note", $("#Note").val());
+            formData.append("GeographyID", $("#GeographyID").val());
+            formData.append("StatusCode", $("#StatusCode").val());
+            formData.append("SpeciesID", $("#SpeciesID").val());
 
             $.ajax({
                 url: link,
@@ -134,8 +164,42 @@
             $(this).closest('form').find("input[type=text], textarea").val("");
             $("#section-search-criteria select").val("");
             $('#section-search-results').html("");
+            $("#SpeciesID").val();
+            $("#GeographyID").val();
         });
     });
+
+    /*
+    ===========================================================================
+    SPECIES MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchSpecies']", function () {
+        var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+        var isAcceptedName = $('#IsAcceptedName').is(':checked');
+
+        var formData = new FormData();
+        formData.append("FullName", $("#FullName").val());
+        formData.append("IsAcceptedName", isAcceptedName);
+        formData.append("ResultsFormat", "2");
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-species-search-results").html(response);
+            }
+        });
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-species-search').modal('hide');
+        $("#SpeciesName").val(speciesText);
+        $("#SpeciesID").val(ID);
+    }
 
     /*
     =============================================================================

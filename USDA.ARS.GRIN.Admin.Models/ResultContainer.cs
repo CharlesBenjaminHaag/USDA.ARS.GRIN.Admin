@@ -13,7 +13,7 @@ namespace USDA.ARS.GRIN.Admin.Models
         public string ResultCode { get; set; }
         public string ResultMessage { get; set; }
         public string ResultDescription { get; set; }
-
+        public int RecordsAffected { get; set; }
         public string GetUserFriendlyDescription(string errorCode)
         {
             string errorMessage = String.Empty;

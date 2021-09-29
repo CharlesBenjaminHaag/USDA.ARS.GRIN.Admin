@@ -402,12 +402,170 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public ResultContainer AddRegulationMap(RegulationMap regulationMap)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_TaxonomyRegulationMap_Insert";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        if (regulationMap.FamilyID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_family_id", regulationMap.FamilyID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_family_id", DBNull.Value);
+
+                        if (regulationMap.GenusID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_genus_id", regulationMap.GenusID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_genus_id", DBNull.Value);
+
+                        if (regulationMap.SpeciesID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_species_id", regulationMap.SpeciesID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_species_id", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@taxonomy_regulation_id", regulationMap.RegulationID);
+
+                        if (!String.IsNullOrEmpty(regulationMap.Note))
+                            cmd.Parameters.AddWithValue("@note", regulationMap.Note);
+                        else
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+
+                        cmd.Parameters.AddWithValue("@created_by", regulationMap.CreatedByCooperatorID);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        SqlParameter newIdParam = new SqlParameter();
+                        newIdParam.SqlDbType = System.Data.SqlDbType.Int;
+                        newIdParam.ParameterName = "@out_taxonomy_regulation_map_id";
+                        newIdParam.Direction = System.Data.ParameterDirection.Output;
+                        newIdParam.Value = 0;
+                        cmd.Parameters.Add(newIdParam);
+
+                        cmd.ExecuteNonQuery();
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultContainer.ResultCode))
+                        {
+                            if (Int32.Parse(resultContainer.ResultCode) > 0)
+                            {
+                                throw new Exception(resultContainer.ResultCode + resultContainer.ResultMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                switch (ex.Errors[0].Number)
+                {
+                    case 547: // Foreign Key violation
+                        string s = ex.Message;
+                        s = s.Substring(s.IndexOf("column "));
+                        string[] array = s.Split('.');
+                        s = array[0].Substring(array[0].IndexOf('\''));
+                        break;
+                }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
         }
 
         public ResultContainer UpdateRegulationMap(RegulationMap regulationMap)
         {
-            throw new NotImplementedException();
+            const string COMMAND_TEXT = "usp_TaxonomyRegulationMap_Insert";
+            ResultContainer resultContainer = new ResultContainer();
+
+            try
+            {
+                using (SqlConnection cn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.Connection = cn;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = COMMAND_TEXT;
+
+                        if (regulationMap.FamilyID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_family_id", regulationMap.FamilyID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_family_id", DBNull.Value);
+
+                        if (regulationMap.GenusID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_genus_id", regulationMap.GenusID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_genus_id", DBNull.Value);
+
+                        if (regulationMap.SpeciesID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_species_id", regulationMap.SpeciesID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_species_id", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@taxonomy_regulation_id", regulationMap.RegulationID);
+
+                        if (!String.IsNullOrEmpty(regulationMap.Note))
+                            cmd.Parameters.AddWithValue("@note", regulationMap.Note);
+                        else
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+
+                        cmd.Parameters.AddWithValue("@created_by", regulationMap.CreatedByCooperatorID);
+
+                        SqlParameter errorParam = new SqlParameter();
+                        errorParam.SqlDbType = System.Data.SqlDbType.Int;
+                        errorParam.ParameterName = "@out_error_number";
+                        errorParam.Direction = System.Data.ParameterDirection.Output;
+                        errorParam.Value = 0;
+                        cmd.Parameters.Add(errorParam);
+
+                        SqlParameter newIdParam = new SqlParameter();
+                        newIdParam.SqlDbType = System.Data.SqlDbType.Int;
+                        newIdParam.ParameterName = "@out_taxonomy_regulation_map_id";
+                        newIdParam.Direction = System.Data.ParameterDirection.Output;
+                        newIdParam.Value = 0;
+                        cmd.Parameters.Add(newIdParam);
+
+                        cmd.ExecuteNonQuery();
+                        resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
+                        if (!String.IsNullOrEmpty(resultContainer.ResultCode))
+                        {
+                            if (Int32.Parse(resultContainer.ResultCode) > 0)
+                            {
+                                throw new Exception(resultContainer.ResultCode + resultContainer.ResultMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                switch (ex.Errors[0].Number)
+                {
+                    case 547: // Foreign Key violation
+                        string s = ex.Message;
+                        s = s.Substring(s.IndexOf("column "));
+                        string[] array = s.Split('.');
+                        s = array[0].Substring(array[0].IndexOf('\''));
+                        break;
+                }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultContainer;
         }
 
         public ResultContainer DeleteRegulationMap(int id)
@@ -435,7 +593,18 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         {
                             while (reader.Read())
                             {
-                                regulationMapList.Add(new RegulationMap { RegulationID = GetInt(""),  });
+                                regulationMapList.Add(new RegulationMap
+                                {
+                                    ID = reader.GetFieldValue<int>("taxonomy_regulation_map_id"),
+                                    RegulationID = reader.GetFieldValue<int>("taxonomy_regulation_id"),
+                                    TaxonID = reader.GetFieldValue<int>("taxon_id"),
+                                    TaxonType = reader.GetFieldValue<string>("table_type"),
+                                    RegulationLevelCode = reader.GetFieldValue<string>("regulation_level_code"),
+                                    RegulationTypeCode = reader.GetFieldValue<string>("regulation_type_code"),
+                                    RegulationDescription = reader.GetFieldValue<string>("description"),
+                                    ModifiedByCooperatorName = reader.GetFieldValue<string>("modified_by_name"),
+                                    ModifiedDate = reader.GetFieldValue<DateTime>("modified_date")
+                                }); ;
                             }
                         }
                     }

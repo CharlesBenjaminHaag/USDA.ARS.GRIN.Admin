@@ -394,5 +394,31 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
             return protologues;
         }
+
+        public ResultContainer GetAuthorMatch(string authorities)
+        {
+            const string COMMAND_TEXT = "usp_TaxonomyAuthorName_Select";
+            ResultContainer resultContainer = new ResultContainer();
+
+            using (SqlConnection conn = DataContext.GetConnection(this.GetConnectionStringKey(_context)))
+            {
+                using (SqlCommand cmd = new SqlCommand(COMMAND_TEXT, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@short_name", authorities);
+                    SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            resultContainer.RecordsAffected = reader.GetFieldValue<int>("author_match_count");
+                        }
+                    }
+                }
+            }
+            return resultContainer;
+
+        }
     }
 }

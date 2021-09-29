@@ -163,6 +163,11 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _speciesDAO.CommonNameSearch(query);
         }
 
+        public CommonName GetCommonName(int id)
+        {
+            return _speciesDAO.GetCommonName(id);
+        }
+
         public ResultContainer AddCommonName(CommonName commonName)
         {
             return _speciesDAO.AddCommonName(commonName);
@@ -182,6 +187,12 @@ namespace USDA.ARS.GRIN.Admin.Service
         {
             return _speciesDAO.GeographyMapSearch(query);
         }
+
+        public GeographyMap GetGeographyMap(int id)
+        {
+            return _speciesDAO.GeographyMapSearch(" WHERE taxonomy_geography_map_id = " + id.ToString()).FirstOrDefault();
+        }
+
         public ResultContainer AddGeographyMap(GeographyMap geographyMap)
         {
             return _speciesDAO.AddGeographyMap(geographyMap);
@@ -562,5 +573,14 @@ namespace USDA.ARS.GRIN.Admin.Service
         }
 
         #endregion Reports
-    }
+
+        #region Validation
+
+        public ResultContainer GetAuthorMatch(string authorities)
+        {
+            return _referenceDAO.GetAuthorMatch(authorities);
+        }
+
+        #endregion
+        }
 }

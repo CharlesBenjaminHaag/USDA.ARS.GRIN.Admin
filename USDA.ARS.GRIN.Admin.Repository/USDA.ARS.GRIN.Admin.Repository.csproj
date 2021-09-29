@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTaxonomyDAO.cs" />
+    <Compile Include="DataReaderHelpers.cs" />
     <Compile Include="GRINGlobal\ApplicationDAO.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="GRINGlobal\EmailTemplateDAO.cs" />

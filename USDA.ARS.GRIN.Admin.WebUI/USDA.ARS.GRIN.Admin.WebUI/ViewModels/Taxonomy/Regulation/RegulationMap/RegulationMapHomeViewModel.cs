@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
 {
@@ -13,6 +14,11 @@ namespace USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy
         public string GenusName { get; set; }
         public int FamilyID { get; set; }
         public string FamilyName { get; set; }
+        public string RegulationTypeCode { get; set; }
+        public string RegulationLevelCode { get; set; }
+        public SelectList RegulationTypeCodes { get; set; }
+        public SelectList RegulationLevelCodes { get; set; }
+
         public RegulationMapHomeViewModel()
         {
             this.DataSourceName = "taxonomy_regulation_map";

@@ -418,6 +418,8 @@
     <Content Include="Views\Taxonomy\Species\EconomicUse\Edit.cshtml" />
     <Content Include="Views\Taxonomy\Species\EconomicUse\Index.cshtml" />
     <Content Include="Views\Taxonomy\Shared\Modals\_GeographySearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_LanguageSearchModal.cshtml" />
+    <Content Include="Views\Taxonomy\Shared\Modals\_CWRTraitEditModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

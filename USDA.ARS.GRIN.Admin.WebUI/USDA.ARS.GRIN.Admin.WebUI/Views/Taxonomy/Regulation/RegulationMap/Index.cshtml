@@ -37,62 +37,73 @@
                         @using (Html.BeginForm("RegulationSearch", "Taxonomy", FormMethod.Post, new { id = "frmSearch" }))
                         {
                             @Html.HiddenFor(x=>x.DataSourceName)
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group form-horizontal">
-                                        <label>Created By</label>
-                                        @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All Cooperators", new { @class = "form-control" })
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Created By</label>
+                                    @Html.DropDownListFor(x => x.CreatedByCooperatorID, Model.Cooperators, "All Cooperators", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Search Type</label>
+                                <select id="ddlSearchType" class="form-control">
+                                    <option value="family">Family</option>
+                                    <option value="genus">Genus</option>
+                                    <option value="species">Species</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="form-group-family">
+                                    <label>Family Name</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.FamilyName, new { @class = "form-control" })
+                                        @Html.HiddenFor(x => x.FamilyID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-family-search">...</button>
+                                        </span>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <label>Search Type</label>
-                                    <select id="ddlSearchType" class="form-control">
-                                        <option value="family">Family</option>
-                                        <option value="genus">Genus</option>
-                                        <option value="species">Species</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <div id="form-group-family">
-                                        <label>Family Name</label>
-                                        <div class="input-group">
-                                            @Html.TextBoxFor(x => x.FamilyName, new { @class = "form-control" })
-                                            @Html.HiddenFor(x => x.FamilyID)
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-family-search">...</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div id="form-group-genus">
-                                        <label>Genus Name</label>
-                                        <div class="input-group">
-                                            @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
-                                            @Html.HiddenFor(x => x.GenusID)
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div id="form-group-species">
-                                        <label>Species Name</label>
-                                        <div class="input-group">
-                                            @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
-                                            @Html.HiddenFor(x => x.SpeciesID)
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">...</button>
-                                            </span>
-                                        </div>
+                                <div id="form-group-genus">
+                                    <label>Genus Name</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.GenusName, new { @class = "form-control" })
+                                        @Html.HiddenFor(x => x.GenusID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-genus-search">...</button>
+                                        </span>
                                     </div>
                                 </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group form-horizontal">
-                                        <label>Note</label>
-                                        @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                                <div id="form-group-species">
+                                    <label>Species Name</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control" })
+                                        @Html.HiddenFor(x => x.SpeciesID)
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">...</button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Regulation Type</label>
+                                    @Html.DropDownListFor(x => x.RegulationTypeCode, Model.RegulationTypeCodes, "All Regulation Types", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-horizontal">
+                                    <label>Regulation Level</label>
+                                    @Html.DropDownListFor(x => x.RegulationLevelCode, Model.RegulationLevelCodes, "All Regulation Levels", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group form-horizontal">
+                                    <label>Note</label>
+                                    @Html.TextBoxFor(x => x.Note, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
                             <div class="box-footer">
                                 <input id="btnReset" type="button" class="btn btn-danger" value="Clear" />
                                 <input id="btnSearch" type="button" class="btn btn-default" value="Search" />
@@ -172,9 +183,9 @@
     $(function () {
         $("#btnSearch").click(function () {
             var link = '@Url.Action("RegulationMapSearch", "Taxonomy")';
-            var dataSourceName = $("#DataSourceName").val();
-            var formData = new FormData();
 
+            var dataSourceName = "taxonomy_" + $("#ddlSearchType").val();
+            var formData = new FormData();
             formData.append("CreatedByCooperatorID", $("#CreatedByCooperatorID").val());
             formData.append("DataSourceName", dataSourceName);
             formData.append("FamilyID", $("#FamilyID").val());

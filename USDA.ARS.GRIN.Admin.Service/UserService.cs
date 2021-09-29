@@ -24,15 +24,6 @@ namespace USDA.ARS.GRIN.Admin.Service
             return _userDAO.Find(searchObject, sql);
         }
 
-        //public User GetUser(string userName)
-        //{
-        //    User user = new User();
-        //    user = _userDAO.Search(userName);
-        //    user.Applications = _userDAO.GetUserApplications(user.ID);
-        //    user.Groups = _userDAO.GetUserGroups(user.ID);
-        //    return user;
-        //}
-
         public User GetUser(int id)
         {
             return _userDAO.Get(id);

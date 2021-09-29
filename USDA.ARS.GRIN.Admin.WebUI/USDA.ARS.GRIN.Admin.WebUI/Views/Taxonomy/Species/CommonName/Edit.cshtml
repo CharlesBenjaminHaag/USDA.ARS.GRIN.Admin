@@ -20,3 +20,125 @@ REVISION HISTORY
         </div>
     </div>
 }
+@using (Html.BeginForm("CommonNameEdit", "Taxonomy", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.DataSourceName)
+    @Html.HiddenFor(x=>x.CitationID)
+    <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"><a name="section-detail"></a>Summary</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            @Html.ValidationSummary()
+            @Html.Raw(Model.ErrorMessage)
+            <div class="row" style="margin-top:.9em;">
+                <div class="col-md-3">
+                    <label>Species</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.SpeciesName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                        @Html.HiddenFor(x => x.SpeciesID)
+                        @Html.HiddenFor(x=>x.LanguageID)
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-species-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Name</label>
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-3">
+                    <label>Simplified Name</label>
+                    @Html.TextBoxFor(x => x.SimplifiedName, new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
+                </div>
+                <div class="col-md-3">
+                    <label>Language</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.LanguageDescription, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.LanguageDescription, "", new { @class = "text-danger" })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-language-search">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:.9em;">
+                <div class="col-md-4">
+                    <label>Alternate Transcription</label>
+                    @Html.TextBoxFor(x => x.AlternateTranscription, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-top:1.0em;">
+                    <label>Note</label>
+                    @Html.TextAreaFor(x => x.Note, new { @id = "txtNote", @class = "form-control" })
+                    <script>
+                        CKEDITOR.replace('txtNote');
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-note-search">
+                <i class="fa fa-search"></i>
+                Search Notes...
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-save"></i>
+                Save Edits
+            </button>
+        </div>
+    </div>
+}
+
+@{ Html.RenderAction("_SpeciesSearchModal", "Taxonomy"); }
+@{ Html.RenderAction("_NoteSearchModal", "Taxonomy", new { taxonId = Model.ID }); }
+@{ Html.RenderAction("_LanguageSearchModal", "Taxonomy"); }
+
+<script type="text/javascript">
+
+    /*
+    ===========================================================================
+    SPECIES MODAL
+    ===========================================================================
+    */
+    $(document).on("click", "[id='btnSearchSpecies']", function () {
+        var link = '@Url.Action("SpeciesSearch", "Taxonomy")';
+        var isAcceptedName = $('#IsAcceptedName').is(':checked');
+
+        var formData = new FormData();
+        formData.append("FullName", $("#FullName").val());
+        formData.append("IsAcceptedName", isAcceptedName);
+        formData.append("ResultsFormat", "2");
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                $("#section-species-search-results").html(response);
+            }
+        });
+    });
+
+    function SelectSpecies(ID, speciesText) {
+        $('#modal-species-search').modal('hide');
+        $("#SpeciesName").val(speciesText);
+        $("#SpeciesID").val(ID);
+    }
+</script>

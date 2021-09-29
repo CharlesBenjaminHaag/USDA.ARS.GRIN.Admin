@@ -1,1 +1,88 @@
-﻿
+﻿@model USDA.ARS.GRIN.Admin.WebUI.ViewModels.Taxonomy.RegulationMapListViewModel
+
+@if ((Model.Action != "Parent") && (Model.Action != "Folder"))
+{
+    <div class="mailbox-controls">
+        <button type="button" id="btnSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check"></i>
+        </button>
+        <button type="button" id="btnDeSelectAll" class="btn btn-default btn-sm">
+            <i class="fa fa-check-circle-o"></i>
+        </button>
+        <button type="button" id="btnAddFolder" class="btn btn-primary btn-sm">
+            <i class="fa fa-folder"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("RegulationMapEdit", "Taxonomy", new { id = 0 })'">
+            <i class="fa fa-plus"></i>
+        </button>
+        <div class="pull-right">
+            <button type="button" disabled class="btn btn-default btn-sm">
+                Export
+            </button>
+        </div>
+    </div>
+}
+<table id="data-table" class="table table-hover table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Regulation</th>
+            <th>Level</th>
+            <th>Type</th>
+            <th>Taxon Type</th>
+            <th>Last Modified</th>
+            <th>By</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.RegulationMaps != null)
+        {
+            foreach (var record in Model.RegulationMaps)
+            {
+                <tr>
+                    <td>
+                        <span class="badge">@record.ID</span>
+                    </td>
+                    <td>@record.RegulationDescription</td>
+                    <td>@record.RegulationLevelCode</td>
+                    <td>@record.RegulationTypeCode</td>
+                    <td>@record.TaxonType</td>
+                    <td>
+                    @if (record.ModifiedDate > DateTime.MinValue)
+                    {
+                        @record.ModifiedDate.ToShortDateString()
+                    }
+                </td>
+                <td>
+                    @record.ModifiedByCooperatorName
+                </td>
+                <td>
+                    <a href="@Url.Action("RegulationMapEdit", "Taxonomy", new { id = record.ID })" class="btn btn-primary btn-sm pull-right row-edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    @if (Model.Action == "Folder")
+                    {
+                        <button id="btnDeleteFolderItem_@record.ReferenceID" class="btn btn-danger btn-sm pull-right row-edit margin-r-5">
+                            <i class="fa fa-trash"></i> Remove From Folder
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#data-table').DataTable(
+        {
+            responsive: true,
+            select: true,
+            'checkboxes': {
+                'selectRow': true
+            }
+        }
+    );
+</script>
+

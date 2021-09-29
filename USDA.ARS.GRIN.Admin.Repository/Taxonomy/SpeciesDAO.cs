@@ -346,8 +346,17 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             cmd.Parameters.AddWithValue("@current_taxonomy_species_id", entity.CurrentID);
 
                         cmd.Parameters.AddWithValue("@is_specific_hybrid", entity.IsSpecificHybrid);
-                        cmd.Parameters.AddWithValue("@species_name", entity.SpeciesName);
-                        cmd.Parameters.AddWithValue("@species_authority", "TODO");
+
+                        if (!String.IsNullOrEmpty(entity.SpeciesName))
+                            cmd.Parameters.AddWithValue("@species_name", entity.SpeciesName);
+                        else
+                            cmd.Parameters.AddWithValue("@species_name", "Species");
+
+                        if (!String.IsNullOrEmpty(entity.Authority))
+                            cmd.Parameters.AddWithValue("@species_authority", entity.Authority);
+                        else
+                            cmd.Parameters.AddWithValue("@species_authority", DBNull.Value);
+
                         cmd.Parameters.AddWithValue("@is_subspecific_hybrid", entity.IsSubSpecificHybrid);
                         cmd.Parameters.AddWithValue("@is_varietal_hybrid", entity.IsVarietalHybrid);
 
@@ -408,8 +417,11 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         {
                             cmd.Parameters.AddWithValue("@verifier_cooperator_id", DBNull.Value);
                         }
+                        if (!String.IsNullOrEmpty(entity.Name))
+                            cmd.Parameters.AddWithValue("@name", entity.Name);
+                        else
+                            cmd.Parameters.AddWithValue("@name", "Species");
 
-                        cmd.Parameters.AddWithValue("@name", entity.SpeciesName);
                         cmd.Parameters.AddWithValue("@name_authority", String.IsNullOrEmpty(entity.NameAuthority) ? "" : entity.NameAuthority);
                         cmd.Parameters.AddWithValue("@protologue", String.IsNullOrEmpty(entity.Protologue) ? "" : entity.Protologue);
                         cmd.Parameters.AddWithValue("@protologue_virtual_path", String.IsNullOrEmpty(entity.ProtologueVirtualPath) ? "" : entity.ProtologueVirtualPath);
@@ -930,9 +942,20 @@ namespace USDA.ARS.GRIN.Admin.Repository
             }
         }
 
+        public CommonName GetCommonName(int id)
+        {
+            return CommonNameSearch(" WHERE taxonomy_common_name_id = " + id.ToString()).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        /// <remarks>NOTE: Refactor using improved ADO format. (CBH, 9/28/2021)</remarks>
         public IQueryable<CommonName> CommonNameSearch(string searchString)
         {
-            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Search";
+            const string COMMAND_TEXT = "usp_TaxonomyCommonNames_Search";
 
             List<CommonName> commonNameList = new List<CommonName>();
 
@@ -949,19 +972,26 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        CommonName commonName = new CommonName();
-                        commonName.ID = GetInt(reader["taxonomy_common_name_id"].ToString());
-                        commonName.GenusID = GetInt(reader["taxonomy_genus_id"].ToString());
-                        commonName.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
-                        commonName.LanguageID = GetInt(reader["taxonomy_language_id"].ToString());
-                        commonName.Name = reader["name"].ToString();
-                        commonName.SimplifiedName = reader["simplified_name"].ToString();
-                        commonName.AlternateTranscription = reader["alternate_transcription"].ToString();
-                        commonName.CreatedDate = GetDate(reader["created_date"].ToString());
-                        commonName.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
-                        commonName.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                        commonName.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
-                        commonNameList.Add(commonName);
+                        commonNameList.Add(new CommonName
+                        {
+                            ID = reader.GetFieldValue<int>("taxonomy_common_name_id"),
+                            CitationID = reader.GetFieldValue<int>("taxonomy_common_name_id"),
+                            GenusID = reader.GetFieldValue<int>("taxonomy_genus_id"),
+                            GenusName = reader.GetFieldValue<string>("genus_name"),
+                            SpeciesID = reader.GetFieldValue<int>("taxonomy_species_id"),
+                            SpeciesName = reader.GetFieldValue<string>("species_name"),
+                            LanguageID = reader.GetFieldValue<int>("taxonomy_language_id"),
+                            LanguageDescription = reader.GetFieldValue<string>("language_description"),
+                            Name = reader.GetFieldValue<string>("name"),
+                            SimplifiedName = reader.GetFieldValue<string>("simplified_name"),
+                            AlternateTranscription = reader.GetFieldValue<string>("alternate_transcription"),
+                            CreatedDate = reader.GetFieldValue<DateTime>("created_date"),
+                            CreatedByCooperatorID = reader.GetFieldValue<int>("created_by"),
+                            CreatedByCooperatorName = reader.GetFieldValue<string>("created_by_name"),
+                            ModifiedDate = reader.GetFieldValue<DateTime>("modified_date"),
+                            ModifiedByCooperatorID = reader.GetFieldValue<int>("modified_by"),
+                            ModifiedByCooperatorName = reader.GetFieldValue<string>("modified_by_name")
+                        }) ; 
                     }
                 }
             }
@@ -1065,9 +1095,23 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
 
-                        cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
-                        cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.SpeciesID);
-                        cmd.Parameters.AddWithValue("@taxonomy_language_id", commonName.LanguageID);
+                        cmd.Parameters.AddWithValue("@taxonomy_common_name_id", commonName.ID);
+
+                        if (commonName.GenusID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_genus_id", DBNull.Value);
+
+                        if (commonName.SpeciesID > 0)   
+                            cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.SpeciesID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_species_id", DBNull.Value);
+
+                        if (commonName.LanguageID > 0)
+                            cmd.Parameters.AddWithValue("@taxonomy_language_id", commonName.LanguageID);
+                        else
+                            cmd.Parameters.AddWithValue("@taxonomy_language_id", DBNull.Value);
+
                         if (String.IsNullOrEmpty(commonName.LanguageDescription))
                             cmd.Parameters.AddWithValue("@language_description", DBNull.Value);
                         else
@@ -1087,21 +1131,18 @@ namespace USDA.ARS.GRIN.Admin.Repository
                             cmd.Parameters.AddWithValue("@alternate_transcription", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@alternate_transcription", commonName.AlternateTranscription);
-                        cmd.Parameters.AddWithValue("@citation_id", commonName.CitationID);
+                        
+                        if(commonName.CitationID > 0)                          
+                            cmd.Parameters.AddWithValue("@citation_id", commonName.CitationID);
+                        else
+                            cmd.Parameters.AddWithValue("@citation_id", DBNull.Value);
 
                         if (String.IsNullOrEmpty(commonName.Note))
                             cmd.Parameters.AddWithValue("@note", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@note", commonName.Note);
 
-                        cmd.Parameters.AddWithValue("@created_by", commonName.CreatedByCooperatorID);
-
-                        SqlParameter retParam = new SqlParameter();
-                        retParam.SqlDbType = System.Data.SqlDbType.Int;
-                        retParam.ParameterName = "@out_taxonomy_use_id";
-                        retParam.Direction = System.Data.ParameterDirection.Output;
-                        retParam.Value = 0;
-                        cmd.Parameters.Add(retParam);
+                        cmd.Parameters.AddWithValue("@modified_by", commonName.ModifiedByCooperatorID);
 
                         SqlParameter errorParam = new SqlParameter();
                         errorParam.SqlDbType = System.Data.SqlDbType.Int;
@@ -1109,16 +1150,8 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         errorParam.Direction = System.Data.ParameterDirection.Output;
                         errorParam.Value = 0;
                         cmd.Parameters.Add(errorParam);
-
                         cmd.ExecuteNonQuery();
-
-                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
-                        if (!String.IsNullOrEmpty(resultString))
-                        {
-                            resultContainer.EntityID = Int32.Parse(resultString);
-                        }
                         resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
-
                     }
                 }
             }
@@ -1134,6 +1167,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
             throw new NotImplementedException();
         }
         #endregion
+        
         #region Geography Map
         public IQueryable<GeographyMap> GeographyMapSearch(Query query)
         {
@@ -1172,15 +1206,19 @@ namespace USDA.ARS.GRIN.Admin.Repository
                     while (reader.Read())
                     {
                         GeographyMap geographyMap = new GeographyMap();
-                        geographyMap.ID = GetInt(reader["taxonomy_use_id"].ToString());
-                        geographyMap.SpeciesID = GetInt(reader["taxonomy_species_id"].ToString());
-
-
-
-                        geographyMap.CreatedDate = GetDate(reader["created_date"].ToString());
-                        geographyMap.CreatedByCooperatorID = GetInt(reader["created_by"].ToString());
-                        geographyMap.ModifiedDate = GetDate(reader["modified_date"].ToString());
-                        geographyMap.ModifiedByCooperatorID = GetInt(reader["modified_by"].ToString());
+                        geographyMap.ID = reader.GetFieldValue<int>("taxonomy_geography_map_id");
+                        geographyMap.SpeciesID = reader.GetFieldValue<int>("taxonomy_species_id");
+                        geographyMap.SpeciesName = reader.GetFieldValue<string>("full_name");
+                        geographyMap.GeographyID = reader.GetFieldValue<int>("geography_id");
+                        geographyMap.GeographyText = reader.GetFieldValue<string>("geography_description");
+                        geographyMap.GeographyStatusCode = reader.GetFieldValue<string>("geography_status_code");
+                        geographyMap.CitationID = reader.GetFieldValue<int>("citation_id");
+                        geographyMap.CreatedDate = reader.GetFieldValue<DateTime>("created_date");
+                        geographyMap.CreatedByCooperatorID = reader.GetFieldValue<int>("created_by");
+                        geographyMap.CreatedByCooperatorName = reader.GetFieldValue<string>("created_by_name");
+                        geographyMap.ModifiedDate = reader.GetFieldValue<DateTime>("modified_date");
+                        geographyMap.ModifiedByCooperatorID = reader.GetFieldValue<int>("modified_by");
+                        geographyMap.ModifiedByCooperatorName = reader.GetFieldValue<string>("modified_by_name");
                         geographyMapList.Add(geographyMap);
                     }
                 }
@@ -1272,7 +1310,7 @@ namespace USDA.ARS.GRIN.Admin.Repository
 
         public ResultContainer UpdateGeographyMap(GeographyMap geographyMap)
         {
-            const string COMMAND_TEXT = "usp_TaxonomyCommonName_Update";
+            const string COMMAND_TEXT = "usp_TaxonomyGeographyMap_Update";
             ResultContainer resultContainer = new ResultContainer();
 
             try
@@ -1284,44 +1322,25 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         cmd.Connection = cn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = COMMAND_TEXT;
+                        cmd.Parameters.AddWithValue("@taxonomy_geography_map_id", geographyMap.ID);
+                        cmd.Parameters.AddWithValue("@taxonomy_species_id", geographyMap.SpeciesID);
+                        cmd.Parameters.AddWithValue("@geography_id", geographyMap.GeographyID);
+                        if (String.IsNullOrEmpty(geographyMap.GeographyStatusCode))
+                            cmd.Parameters.AddWithValue("@geography_status_code", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@geography_status_code", geographyMap.GeographyStatusCode);
+                        
+                        if (geographyMap.CitationID > 0)
+                            cmd.Parameters.AddWithValue("@citation_id", geographyMap.CitationID);
+                        else
+                            cmd.Parameters.AddWithValue("@citation_id", DBNull.Value);
 
-                        //cmd.Parameters.AddWithValue("@taxonomy_genus_id", commonName.GenusID);
-                        //cmd.Parameters.AddWithValue("@taxonomy_species_id", commonName.SpeciesID);
-                        //cmd.Parameters.AddWithValue("@taxonomy_language_id", commonName.LanguageID);
-                        //if (String.IsNullOrEmpty(commonName.LanguageDescription))
-                        //    cmd.Parameters.AddWithValue("@language_description", DBNull.Value);
-                        //else
-                        //    cmd.Parameters.AddWithValue("@language_description", commonName.LanguageDescription);
+                        if (String.IsNullOrEmpty(geographyMap.Note))
+                            cmd.Parameters.AddWithValue("@note", DBNull.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@note", geographyMap.Note);
 
-                        //if (String.IsNullOrEmpty(commonName.Name))
-                        //    cmd.Parameters.AddWithValue("@name", DBNull.Value);
-                        //else
-                        //    cmd.Parameters.AddWithValue("@name", commonName.Name);
-
-                        //if (String.IsNullOrEmpty(commonName.SimplifiedName))
-                        //    cmd.Parameters.AddWithValue("@simplified_name", DBNull.Value);
-                        //else
-                        //    cmd.Parameters.AddWithValue("@simplified_name", commonName.SimplifiedName);
-
-                        //if (String.IsNullOrEmpty(commonName.AlternateTranscription))
-                        //    cmd.Parameters.AddWithValue("@alternate_transcription", DBNull.Value);
-                        //else
-                        //    cmd.Parameters.AddWithValue("@alternate_transcription", commonName.AlternateTranscription);
-                        //cmd.Parameters.AddWithValue("@citation_id", commonName.CitationID);
-
-                        //if (String.IsNullOrEmpty(commonName.Note))
-                        //    cmd.Parameters.AddWithValue("@note", DBNull.Value);
-                        //else
-                        //    cmd.Parameters.AddWithValue("@note", commonName.Note);
-
-                        //cmd.Parameters.AddWithValue("@created_by", commonName.CreatedByCooperatorID);
-
-                        SqlParameter retParam = new SqlParameter();
-                        retParam.SqlDbType = System.Data.SqlDbType.Int;
-                        retParam.ParameterName = "@out_taxonomy_use_id";
-                        retParam.Direction = System.Data.ParameterDirection.Output;
-                        retParam.Value = 0;
-                        cmd.Parameters.Add(retParam);
+                        cmd.Parameters.AddWithValue("@modified_by", geographyMap.ModifiedByCooperatorID);
 
                         SqlParameter errorParam = new SqlParameter();
                         errorParam.SqlDbType = System.Data.SqlDbType.Int;
@@ -1329,17 +1348,9 @@ namespace USDA.ARS.GRIN.Admin.Repository
                         errorParam.Direction = System.Data.ParameterDirection.Output;
                         errorParam.Value = 0;
                         cmd.Parameters.Add(errorParam);
-
                         cmd.ExecuteNonQuery();
-
-                        string resultString = cmd.Parameters["@out_taxonomy_use_id"].Value.ToString();
-                        if (!String.IsNullOrEmpty(resultString))
-                        {
-                            resultContainer.EntityID = Int32.Parse(resultString);
-                        }
                         resultContainer.ResultCode = cmd.Parameters["@out_error_number"].Value.ToString();
-
-                    }
+                     }
                 }
             }
             catch (SqlException ex)
