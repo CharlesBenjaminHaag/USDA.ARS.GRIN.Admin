@@ -27,23 +27,23 @@ namespace USDA.ARS.GRIN.Admin.WebUI
         {
         }
 
-        protected void Application_Error(object sender, EventArgs e)
-        {
-            var exception = Server.GetLastError();
-            Log.Error(exception, "Unhandled application exception");
-            log.Error(exception.Message + exception.StackTrace);
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    var exception = Server.GetLastError();
+        //    Log.Error(exception, "Unhandled application exception");
+        //    log.Error(exception.Message + exception.StackTrace);
 
-            var httpContext = ((HttpApplication)sender).Context;
-            httpContext.Response.Clear();
-            httpContext.ClearError();
+        //    var httpContext = ((HttpApplication)sender).Context;
+        //    httpContext.Response.Clear();
+        //    httpContext.ClearError();
 
-            if (new HttpRequestWrapper(httpContext.Request).IsAjaxRequest())
-            {
-                return;
-            }
+        //    if (new HttpRequestWrapper(httpContext.Request).IsAjaxRequest())
+        //    {
+        //        return;
+        //    }
 
-            ExecuteErrorController(httpContext, exception as HttpException);
-        }
+        //    ExecuteErrorController(httpContext, exception as HttpException);
+        //}
 
         private void ExecuteErrorController(HttpContext httpContext, HttpException exception)
         {

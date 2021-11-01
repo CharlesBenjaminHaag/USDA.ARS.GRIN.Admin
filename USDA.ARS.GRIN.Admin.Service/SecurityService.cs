@@ -47,7 +47,7 @@ namespace USDA.ARS.GRIN.Admin.Service
             return resultContainer;
         }
 
-        public ResultContainer Login(string userName, string password, out User user)
+        public ResultContainer Login(string userName, string inputPassword, out User user)
         {
             string hashedPassword = String.Empty;
             Query query = new Query();
@@ -65,8 +65,8 @@ namespace USDA.ARS.GRIN.Admin.Service
                     return resultContainer;
                 }
 
-                hashedPassword = Crypto.HashText(password);
-                passwordIsValid = (validateHashedPassword(password, user.Password) || validateHashedPassword(hashedPassword, user.Password));
+                hashedPassword = Crypto.HashText(inputPassword);
+                passwordIsValid = (validateHashedPassword(inputPassword, user.Password) || validateHashedPassword(hashedPassword, user.Password));
 
                 if (passwordIsValid)
                     resultContainer.ResultCode = LoginResult.SUCCESS.ToString();

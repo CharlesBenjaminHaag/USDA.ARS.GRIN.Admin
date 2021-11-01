@@ -3357,11 +3357,76 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                         if (resultContainer.RecordsAffected < 1)
                         {
                             sbAuthorValidationErrors.Append("The name " + authClean + "was not found in the Author table.");
+                            sbAuthorValidationErrors.Append("<br>");
                         }
                     }
                 }
             }
             return sbAuthorValidationErrors.ToString();
+        }
+
+        public Family ValidateFamily(Family family)
+        {
+            string subFam = String.Empty;
+    
+            family.Name = family.Name.ToLower();
+            subFam = family.Name.Substring(0, 1).ToUpper() + family.Name.Substring(1);
+        
+            if (!String.IsNullOrEmpty(family.SubFamilyName))
+            {
+                string subSf = family.SubFamilyName.ToLower();
+                subSf = family.SubFamilyName.Substring(0, 1).ToUpper() + family.SubFamilyName.Substring(1);
+            }
+
+            //if (h.FieldExists("tribe_name") && !h.IsValueEmpty("tribe_name"))
+            //{
+            //    string tribe = h.GetValue("tribe_name", "", true).ToString().ToLower();
+            //    tribe = tribe.Substring(0, 1).ToUpper() + tribe.Substring(1);
+            //    h.SetValue("tribe_name", tribe, typeof(string), false);
+            //}
+
+            //if (h.FieldExists("subtribe_name") && !h.IsValueEmpty("subtribe_name"))
+            //{
+            //    string subtribe = h.GetValue("subtribe_name", "", true).ToString().ToLower();
+            //    subtribe = subtribe.Substring(0, 1).ToUpper() + subtribe.Substring(1);
+            //    h.SetValue("subtribe_name", subtribe, typeof(string), false);
+            //}
+
+            // set alt family if conserved
+            /*" SELECT DECODE (:NEW.family,'Asteraceae','Compositae','Apiaceae','Umbelliferae','Arecaceae','Palmae',Brassicaceae','Cruciferae','Clusiaceae','Guttiferae','Fabaceae','Leguminosae','Lamiaceae','Labiatae','Poaceae','Gramineae',NULL) INTO altfam FROM dual; :NEW.altfamily := altfam;  */
+            switch (family.Name)
+            {
+                case "Asteraceae":
+                    family.AlternateName = "Compositae";
+                    break;
+                case "Apiaceae":
+                    family.AlternateName = "Umbelliferae";
+                    break;
+                    //case "Arecaceae":
+                    //    h.SetValue("alternate_name", "Palmae", typeof(string), false);
+                    //    break;
+                    //case "Brassicaceae":
+                    //    h.SetValue("alternate_name", "Cruciferae", typeof(string), false);
+                    //    break;
+                    //case "Clusiaceae":
+                    //    h.SetValue("alternate_name", "Guttiferae", typeof(string), false);
+                    //    break;
+                    //case "Fabaceae":
+                    //    h.SetValue("alternate_name", "Leguminosae", typeof(string), false);
+                    //    break;
+                    //case "Lamiaceae":
+                    //    h.SetValue("alternate_name", "Labiatae", typeof(string), false);
+                    //    break;
+                    //case "Poaceae":
+                    //    h.SetValue("alternate_name", "Gramineae", typeof(string), false);
+                    //    break;
+            }
+            return family;
+        }
+
+        public Species ValidateSpecies(Species species)
+        {
+            return species;
         }
 
         #endregion
