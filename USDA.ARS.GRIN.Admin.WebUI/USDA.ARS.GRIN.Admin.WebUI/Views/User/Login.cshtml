@@ -74,21 +74,14 @@
                 </div>
             }
         <form action="@Url.Action("Login","User")" method="post">
-            <label>Select Server</label>
+            @Html.HiddenFor(x => x.Environment)
             <div class="form-group has-feedback">
-                <select id="ddlSelectEnvironment" name="Environment" class="form-control">
-                    <option value="LOCAL">Local</option>
-                    @*<option value="DEVELOPMENT">Development</option>*@
-                    @*<option value="TEST">Test</option>*@
-                    <option value="TRAINING">Training</option>
-                    <option value="PRODUCTION">Production</option>
-                </select>
-            </div>
-            <div class="form-group has-feedback">
+                <label>Username</label>
                 @Html.TextBoxFor(x => x.UserName, new { @placeholder = "Enter GRIN-Global user name", @class = "form-control" })
                 @*<span class="glyphicon glyphicon-envelope form-control-feedback"></span>*@
             </div>
             <div class="form-group has-feedback">
+                <label>Password</label>
                 @Html.TextBoxFor(x => x.Password, new { @placeholder = "Enter GRIN-Global password", @type = "password", @class = "form-control" })
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>

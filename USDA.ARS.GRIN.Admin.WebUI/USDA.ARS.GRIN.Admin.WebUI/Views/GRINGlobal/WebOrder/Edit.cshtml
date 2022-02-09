@@ -55,9 +55,8 @@
 
     <div class="row">
         <div class="col-md-12" style="margin-bottom:20px;">
-            @if (Model.IsReviewMode)
-            {
-                if ((Model.IsLocked) && (Model.WebCooperatorID == Model.OwnedByCooperatorID))
+            
+                @if (Model.IsLocked)
                 {
                     <button type="button" id="btn-unlock" class="btn btn-warning pull-right" style="margin-right: 5px;">
                         <i class="fa fa-unlock"></i><span id="button-label">End Review and Unlock</span>
@@ -67,8 +66,7 @@
                 <input type="button" id="btnApprove" class="btn btn-success pull-right open-modal" data-toggle="modal" data-target="#modal-approve" value="Approve..." />
                 <input type="button" id="btnAddNote" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-note" value="Add Note..." />
                 <input type="button" id="btnContactRequestor" class="btn btn-default pull-right open-modal" data-toggle="modal" data-target="#modal-contact-requestor" value="Request Additional Information..." />
-            }
-            @*<a href="@Url.Action("Index", "WebOrder")" class="btn btn-default">Return to  Home Page</a>*@
+           
         </div>
     </div>
 

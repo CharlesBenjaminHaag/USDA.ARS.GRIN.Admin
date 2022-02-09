@@ -29,7 +29,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
         {
             LoginViewModel loginViewModel = new LoginViewModel();
             loginViewModel.Status = loginStatus;
-            //string DEBUG_PW = _securityService.GenerateRandomPassword(8);
+            loginViewModel.Environment = "PRODUCTION";
             return View(loginViewModel);
         }
 
@@ -49,7 +49,7 @@ namespace USDA.ARS.GRIN.Admin.WebUI.Controllers
                     userSession.AuthenticatedUser.Cooperator.FirstName = user.Cooperator.FirstName;
                     userSession.AuthenticatedUser.Cooperator.LastName = user.Cooperator.LastName;
                     userSession.AuthenticatedUser.Cooperator.EmailAddress = user.Cooperator.EmailAddress;
-                    userSession.Environment = viewModel.Environment;
+                    userSession.Environment = "PRODUCTION";
                     Session["USER_SESSION"] = userSession;
                 }
                 else
